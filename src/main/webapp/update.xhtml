@@ -1,0 +1,44 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     <p:dialog widgetVar="dlgUpdate" width="900" height="600" position="center center" closable="false" modal="true" closeOnEscape="true" visible="true" rendered="#{menuBean.hasUpdate}">
+    	
+    	<p:card style="width: 53em">
+		    <f:facet name="header">
+		        <p:graphicImage name="gif/logo.png" styleClass="img-fluid rounded-circle" style="height: 15%; width: 15%"/>
+		        <p:outputLabel value="Application Update #{versionBean.copyright.currentversion}"/>
+		    </f:facet>
+		    <f:facet name="title">
+		        <p:outputLabel value="Turn Off this notification"/>
+		    </f:facet>
+		    <f:facet name="subtitle">
+		        <p:toggleSwitch value="#{menuBean.hasUpdate}">
+					<p:ajax listener="#{menuBean.updateOff}"/>
+				</p:toggleSwitch>	
+		    </f:facet>
+		    
+			<p:dataList value="#{versionBean.fixes}" var="rpt" type="ordered">
+        			<f:facet name="header">What is new?</f:facet>
+        			<p>#{rpt.fixdesc}</p>
+        	</p:dataList>
+			
+		    <f:facet name="footer">
+		        	<p:commandButton icon="pi pi-times" value="Close" onclick="PF('dlgUpdate').hide()" style="float: bottom"/>
+		    </f:facet>
+		</p:card>
+    	
+    </p:dialog>
+     </ui:composition>
+</html>

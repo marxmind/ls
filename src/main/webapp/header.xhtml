@@ -1,0 +1,23 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     	<div class="page-header">
+	 			<div id="onProgId" style="display:none; z-index: 9999999999;">
+    				<p:progressBar id="progressBarIndecator" style="height:10px" mode="indeterminate"/>
+    			</div>
+    			<a><p:outputLabel value="#{menuBean.userFullName} On Board"/> </a>
+	</div>
+     </ui:composition>
+ </html>

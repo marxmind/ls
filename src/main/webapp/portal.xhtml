@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    <h:head>
+    	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+		<link rel="manifest" type="image/x-icon" href="#{resource['bris-manifest.json']}" />
+		
+        <title>Portal</title>
+	 	
+		
+		
+        <f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/resume.css" target="head"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.bundle.min.js" target="head"/>
+            <h:outputScript name="jquery-easing/jquery.easing.min.js" target="head"/>
+            <h:outputScript name="js/resume.min.js" target="head"/>
+    </f:facet>
+    
+        
+        <style>
+        	<!-- 
+
+.ui-growl{
+	top: 100px;
+	right: 500px; important!;
+}
+
+
+								.button {
+								  background-color: #008CBA; /* blue */
+								  border: none;
+								  color: white;
+								  padding: 20px 50px;
+								  text-align: center;
+								  text-decoration: none;
+								  display: inline-block;
+								  font-size: 16px;
+								  margin: 1px 2px;
+								  cursor: pointer;
+								  width: 100%;
+								  -webkit-transition-duration: 0.4s; /* Safari */
+								  transition-duration: 0.4s;
+								  cursor: pointer;
+								}
+								.ui-button.button:hover {
+								  background-color: #e7e7e7; /* gray */
+								  color: black;
+								}  
+							
+
+ -->
+        </style>
+        
+        
+    </h:head>
+    <h:body id="page-top">
+        <h:form prependId="false" id="formId">
+        <p:growl id="msg" showDetail="true" />
+		
+			
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+		<a class="navbar-brand js-scroll-trigger">
+			<p:graphicImage name="gif/portal.png" height="100%" width="100%"/>
+		</a>
+		<a class="navbar-brand js-scroll-trigger">
+			<p:graphicImage name="gif/logo.png" styleClass="img-fluid rounded-circle" />
+		</a>
+      	
+      
+    </nav>
+		
+	<div class="container-fluid p-0">
+		
+	  <section id="banner">
+	  <p:panelGrid columns="1" styleClass="ui-noborder">
+        <p:graphicImage name="gif/banner.jpg" styleClass="img-fluid" height="20"/>
+        </p:panelGrid>
+	  </section>	
+      <section class="resume-section p-3 p-lg-5 d-flex d-column" id="login">
+        
+        <div class="p-col-12 p-md-12">
+        	
+        	<div class="ui-inputgroup">
+			        		<p:commandButton  action="#{portalBean.mayor}" value="Mayor's Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.vice}" value="Vice Mayor's Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   value="SB Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   value="Admin Office" styleClass="button" immediate="false" ajax="false"/>
+			</div>
+			<div class="ui-inputgroup">				
+				            <p:commandButton   value="Budget Office" styleClass="button" immediate="false" ajax="false"/>
+				            <p:commandButton   action="#{portalBean.treas}" value="Treasurer's Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.accounting}" value="Accounting Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.licensing}"  value="Licensing Office" styleClass="button" immediate="false" ajax="false"/>
+			</div>
+			<div class="ui-inputgroup">						
+							<p:commandButton   value="MSDWD Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   value="Registrar's Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.da}" value="MAO Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.personnel}"  value="Personnel Office" styleClass="button" immediate="false" ajax="false"/>
+			</div>
+			<div class="ui-inputgroup">						
+							<p:commandButton   value="Engineering Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   value="MPDC Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.gso}" value="GSO Office" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton   action="#{portalBean.dilg}" value="DILG Documents" styleClass="button" immediate="false" ajax="false"/>
+        	
+        	</div>
+        	
+        </div>
+        
+        
+        
+        
+        
+      </section>
+	
+      
+      </div>
+
+<footer id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 text-lg-left text-center">
+          <div class="copyright">
+            Copyright <strong>2023</strong>. All Rights Reserved
+          </div>
+          <div class="credits">
+            Managed by <a href="http://www.facebook.com/marxmind">MARXMIND</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+            <a href="#page-top" class="scrollto">Home</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<ui:include src="loader.xhtml" />
+</h:form>
+</h:body>
+</html>

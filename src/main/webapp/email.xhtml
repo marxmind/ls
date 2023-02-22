@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<title>Login</title>
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+    		<h:outputStylesheet name="css/pageHeaderFooter.css"/>
+    		<h:outputStylesheet name="primeflex/primeflex.min.css" />
+			<h:outputStylesheet name="primeflex/layout.css" />
+			 <h:outputStylesheet name="css/bodyconf.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+        
+    <f:facet name="last">
+ 		<h:outputStylesheet name="css/font-awesome.css" />
+    </f:facet>
+
+<style>
+<!-- 
+	body{
+		background-color: linear-gradient(red, yellow);
+	}
+ -->
+ </style>
+
+</h:head>
+<h:body>
+
+<ui:include src="header.xhtml" />
+
+<h:form prependId="false" id="formId">
+<p:growl id="msg" life="2000" showDetail="true"/>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+    <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+	
+	
+	<div class="card">
+    <div class="p-grid sample-layout">
+    
+    <div class="p-col-12 p-md-3">
+            
+            <p:tabView prependId="false" orientation="top" id="tabViewId" cache="true">
+					<p:ajax event="tabChange" listener="#{emailBean.onChange}" update="tabViewId idContent menuId sendTable"/>
+					<p:tab title="Inbox">
+							<p:accordionPanel id="inDataId" value="#{emailBean.mails}" var="in" prependId="false">
+							
+								<p:ajax event="tabChange" listener="#{emailBean.clickEmail(in, 'INBOX')}" update="tabViewId idContent menuId sendTable"/>
+							
+								<p:tab title="#{in.fromNamesCut} [#{in.titleCut}]" >
+									
+									<p:panelGrid columns="1" layout="grid">
+									
+										<p:outputLabel value="To: #{in.toNames}" />
+										<p:outputLabel value="From: #{in.fromNames}" />
+										<p:outputLabel value="Sent: #{in.timestamp}" />
+										<p:outputLabel value="Title: #{in.title}" />
+										
+									</p:panelGrid>
+									
+								</p:tab>
+							</p:accordionPanel>		
+						
+					</p:tab>
+					<p:tab title="Outbox">
+						
+						<p:accordionPanel id="outDataId" value="#{emailBean.mails}" var="out" prependId="false">
+						
+							<p:ajax event="tabChange" listener="#{emailBean.clickEmail(out, 'OUTBOX')}" update="tabViewId idContent menuId sendTable"/>
+						
+							<p:tab title="#{out.fromNamesCut} [#{out.titleCut}]">
+								<p:panelGrid columns="1" layout="grid">
+										
+									<p:outputLabel value="To: #{out.toNames}" />
+									<p:outputLabel value="From: #{out.fromNames}" />
+									<p:outputLabel value="Sent: #{out.timestamp}" />
+									<p:outputLabel value="Title: #{out.title}" />
+									
+								</p:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+						
+					</p:tab>
+					<p:tab title="Sent">
+						
+						<p:accordionPanel id="sentDataId" value="#{emailBean.mails}" var="sent" prependId="false">
+						
+							<p:ajax event="tabChange" listener="#{emailBean.clickEmail(sent, 'SEND')}" update="tabViewId idContent menuId sendTable"/>
+						
+							<p:tab title="#{sent.toNamesCut} [#{sent.titleCut}]">
+								<p:panelGrid columns="1" layout="grid">
+									
+									<p:outputLabel value="To: #{sent.toNames}" />
+									<p:outputLabel value="From: #{sent.fromNames}" />
+									<p:outputLabel value="Sent: #{sent.timestamp}" />
+									<p:outputLabel value="Title: #{sent.title}" />
+									
+								</p:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+						
+					</p:tab>
+					<p:tab title="Draft">
+						<p:accordionPanel id="draftDataId" value="#{emailBean.mails}" var="dr" prependId="false">
+						
+							<p:ajax event="tabChange" listener="#{emailBean.clickEmail(dr, 'DRAFT')}" update="tabViewId idContent menuId sendTable"/>
+						
+							<p:tab title="#{dr.toNamesCut} [#{dr.titleCut}]">
+								<p:panelGrid columns="1" layout="grid">
+									
+									<p:outputLabel value="To: #{dr.toNames}" />
+									<p:outputLabel value="From: #{dr.fromNames}" />
+									<p:outputLabel value="Sent: #{dr.timestamp}" />
+									<p:outputLabel value="Title: #{dr.title}" />
+									
+								</p:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+					</p:tab>
+					<p:tab title="Trash">
+						<p:accordionPanel id="trashDataId" value="#{emailBean.mails}" var="tr" prependId="false">
+						
+							<p:ajax event="tabChange" listener="#{emailBean.clickEmail(tr, 'DELETED')}" update="tabViewId idContent menuId sendTable"/>
+							
+							<p:tab title="#{tr.fromNamesCut} [#{tr.titleCut}]">
+								<p:panelGrid columns="1" layout="grid">
+									<p:outputLabel value="To: #{tr.toNames}" />
+									<p:outputLabel value="From: #{tr.fromNames}" />
+									<p:outputLabel value="Sent: #{tr.timestamp}" />
+									<p:outputLabel value="Title: #{tr.title}" />
+								</p:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+					</p:tab>
+				</p:tabView>
+            
+            
+    </div>
+        <div class="p-col-12 p-md-9 p-col-nogutter">
+            <div class="p-grid">
+                <div class="p-col-12 p-col-nogutter">
+                    <div class="ui-inputgroup">
+                    	
+                    	<p:menubar id="menuId" style="float:bottom; position: fixed;z-index: 1500;width: 100em">
+					<p:menuitem value="#{emailBean.bLabels[0]}" icon="pi pi-file-o" disabled="#{emailBean.buttons[0]}" actionListener="#{emailBean.clickButton('New')}" title="Create new Email" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[1]}" icon="pi pi-pencil" disabled="#{emailBean.buttons[1]}" actionListener="#{emailBean.clickButton('Edit')}" title="Edit Email" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[2]}" icon="pi pi-undo" disabled="#{emailBean.buttons[2]}" actionListener="#{emailBean.clickButton('Cancel')}" title="Cancel Email" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[3]}" icon="pi pi-pencil" disabled="#{emailBean.buttons[3]}" actionListener="#{emailBean.clickButton('Delete')}" title="Delete  Email" update="menuId tabViewId idContent sendTable msg">
+						<p:confirm header="Confirmation" message="Are you sure you want to delete this email?" icon="ui-icon-alert" />
+					</p:menuitem>
+					<p:menuitem value="#{emailBean.bLabels[4]}" icon="pi pi-save" disabled="#{emailBean.buttons[4]}" actionListener="#{emailBean.clickButton('Draft')}" title="Save as Draft new created Email" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[5]}" icon="pi pi-reply" disabled="#{emailBean.buttons[5]}" actionListener="#{emailBean.clickButton('Reply')}" title="Reply to Email" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[6]}" icon="pi pi-arrow-right-arrow-left" disabled="#{emailBean.buttons[6]}" actionListener="#{emailBean.clickButton('ReplyAll')}" title="Reply to all" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[7]}" icon="pi pi-share-alt" disabled="#{emailBean.buttons[7]}" actionListener="#{emailBean.clickButton('Send')}" title="Send Email" update="menuId tabViewId idContent sendTable msg"/>
+					<p:menuitem value="#{emailBean.bLabels[8]}" icon="pi pi-history" disabled="#{emailBean.buttons[8]}" actionListener="#{emailBean.clickButton('Recall')}" title="Recall newly send Email" update="menuId tabViewId idContent sendTable msg">
+						<p:confirm header="Confirmation" message="Are you sure you want to recall this email?" icon="ui-icon-alert" />
+					</p:menuitem>
+					<p:menuitem value="#{emailBean.bLabels[9]}" icon="pi pi-print" disabled="#{emailBean.buttons[9]}" actionListener="#{emailBean.clickButton('Print')}" title="Print Email Received" update="menuId tabViewId idContent sendTable msg">
+						<p:printer target="idContent" />
+					</p:menuitem>
+				</p:menubar>
+                    	
+                    	
+                    	
+                    </div>
+                    <br/><br/><br/>
+                     <p:panelGrid id="sendTable" columns="1" layout="grid" style="float: left; z-index: 1500">
+                	<p:selectCheckboxMenu id="sendNameId" value="#{emailBean.selectedSendUsers}" style="width: 100em"  disabled="#{emailBean.sendToEnable}" label="Select Names" updateLabel="true" filterMatchMode="contains" filter="true">
+						<f:selectItems value="#{emailBean.sendUsers}" />
+					 </p:selectCheckboxMenu>	
+					 						
+		    		 <p:inputText value="#{emailBean.title}" readonly="#{emailBean.sendToEnable}" style="width: 100em" placeholder="Title of Email"/>
+				</p:panelGrid> 
+                </div>
+                <div class="p-col-12">
+                    <div class="p-grid">
+                        
+                 
+               
+				
+                <p:divider/>
+				
+				<p:textEditor id="idContent" toolbarVisible="#{emailBean.editorToolbar}" widgetVar="msgComposeText" height="300" style="color: black; width: 100em" value="#{emailBean.contentMsg}" readonly="#{emailBean.sendToEnable}">
+									<f:facet name="toolbar">
+										<span class="ql-formats">
+											<button class="ql-bold"></button>
+											<button class="ql-italic"></button>
+											<button class="ql-underline"></button>
+											<button class="ql-strike"></button>
+										</span>
+										<span class="ql-formats">
+											<select class="ql-font"></select>
+											<select class="ql-size"></select>
+										</span>
+										<span class="ql-formats">
+											<select class="ql-color"></select>
+											<select class="ql-align"></select>
+										</span>
+									</f:facet>
+				  </p:textEditor>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+	
+	</div><!-- card -->	
+	
+	
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" />
+</h:form>		
+</h:body>
+</f:view>
+</html>
+
+
+

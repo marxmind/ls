@@ -1,0 +1,34 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+		
+		<p:ajaxStatus widgetVar="loadWidget" styleClass="ui-noborder" onstart="showLoading();" onsuccess="hideLoading();" /> 
+			<div id="loader" style="display: none;position: fixed; bottom: 300px; right: 600px; z-index: 9999999999;">
+				<p:graphicImage name="/gif/loading.gif" style="width: 10em;height: 10em"/>
+			</div>		
+		
+		<script>
+			function showLoading() {
+				//$("#loader").show();
+				$("#onProgId").show();//header.xhtml
+			}
+			function hideLoading() {
+				//$("#loader").hide();
+				$("#onProgId").hide();//header.xhtml
+			}
+		</script>
+		
+    </ui:composition>
+</html>

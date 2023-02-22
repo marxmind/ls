@@ -1,0 +1,15 @@
+.common_table{
+    display:table;
+    border-collapse:collapse;
+    border:1px solid grey;
+    color: red;
+    }
+.common_table div{
+    display:table-row;
+    border:1px solid grey;
+    color: red;
+    }
+.common_table div div{
+    display:table-cell;
+    color: red;
+    }

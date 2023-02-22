@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >    
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<title>Login</title>
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+    		<h:outputStylesheet name="css/pageHeaderFooter.css"/>
+    		<h:outputStylesheet name="primeflex/primeflex.min.css" />
+			<h:outputStylesheet name="primeflex/layout.css" />
+			 <h:outputStylesheet name="css/bodyconf.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	body{
+		background-color: linear-gradient(red, yellow);
+	}
+ -->
+ </style>
+
+</h:head>
+<h:body>
+
+<h:form prependId="false" id="formId" style="background-color: #8fdbf5">
+	<ui:include src="header.xhtml" />
+	<p:growl id="msg" life="2000" />
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	 </p:confirmDialog>
+
+		
+	 	<p:commandButton id="showNoteId" value="#{menuBean.total}" action="email.xhtml" icon="pi pi-envelope" style="#{notiBean.styleButton};-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 50px;width: 50px;bottom: 30px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; " immediate="false" ajax="false" />
+	 
+	
+	<p:dialog widgetVar="dlgMain" closable="false" draggable="false" modal="true" showEffect="fade" visible="true"  showHeader="false" position="center center" styleClass="menuDlg">
+		
+		<p:panelGrid columns="3" styleClass="ui-noborder">
+				
+				<h:outputStylesheet>
+								
+								.button {
+								  background-color: #008CBA; /* blue */
+								  border: none;
+								  color: white;
+								  padding: 5px 32px;
+								  text-align: center;
+								  text-decoration: none;
+								  display: inline-block;
+								  font-size: 16px;
+								  margin: 4px 2px;
+								  cursor: pointer;
+								  width: 100%;
+								  -webkit-transition-duration: 0.4s; /* Safari */
+								  transition-duration: 0.4s;
+								  cursor: pointer;
+								}
+								.ui-button.button:hover {
+								  background-color: #e7e7e7; /* gray */
+								  color: black;
+								}  
+							</h:outputStylesheet>
+						
+							
+							<p:commandButton icon="fa fa-money" action="#{menuBean.writing}" value="Check Writing" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.voucher}" value="Voucher" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-text" action="#{menuBean.form56}" value="RPTax" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-text" action="#{menuBean.landTaxCert}" value="Land Tax Certification" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-caret-square-o-down" action="#{menuBean.departmentexp}" value="MOOE" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.funds}" value="Cash in Bank" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.funds2}" value="Cash in Treasury" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.dtrReport}" value="DTR Generator" styleClass="button" immediate="false" ajax="false"/>
+				              <p:commandButton icon="fa fa-file-o" action="#{menuBean.market}" value="Market Rentals" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.stocks}" value="Stocks Recording" styleClass="button" immediate="false" ajax="false"/>
+				              <p:commandButton icon="fa fa-file-o" action="#{menuBean.issuedForm}" value="Issued Form Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.logform}" value="Collector's Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.reportsgraph}" value="Graph Reports" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.orlisting}" value="General Collections" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.uploadrcd}" value="Upload Forms" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.vr}" value="Vourcher Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.waterowner}" value="Water Billing" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.citizenreg}" value="Citizen Registration" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.checkIssued}" value="Check Issued Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.cashDv}" value="Cash Disbursement Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.collectionDeposit}" value="Collection and Deposit Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="kobotoolbox.xhtml" value="Business Mapping 2022" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa fa-file-o" action="#{menuBean.bm}" value="Business Mapping" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="fa  fa-power-off" action="portal" value="Logout" styleClass="button" actionListener="#{loginBean.logout}" immediate="false" ajax="false"/>
+				             <p:outputLabel/>
+			
+		</p:panelGrid>
+		
+	</p:dialog>
+	
+	<ui:include src="loader.xhtml" />	
+	 
+</h:form>
+</h:body>
+</html>

@@ -1,0 +1,43 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     	<style type="text/css">
+			    .ui-chart {
+			        margin-bottom: 50px;
+			    }
+			</style>
+    		
+    		<p:dialog widgetVar="dlgGraph" fitViewport="true" position="center top" header="Graph" closable="true" modal="true" closeOnEscape="true">
+    		<p:card style="width: 120em">
+    		<p:toolbar id="toolGraph">
+    		<f:facet name="left">
+    			<div class="ui-inputgroup">
+    			<p:selectCheckboxMenu id="grapYearId" value="#{checkGraphBean.selectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 20em">
+					<f:selectItems value="#{checkGraphBean.years}" />
+				</p:selectCheckboxMenu>
+				<p:commandButton icon="fa fa-search" value="Search" actionListener="#{checkGraphBean.loadBar}" />
+    			</div>
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+    		
+	    	<p:barChart id="graphBarId" model="#{checkGraphBean.barModel}" style="width: 100%; height: 500px;"/>
+	    		
+	        	
+    		
+    		</p:card>
+    		</p:dialog>
+     </ui:composition>
+</html>
