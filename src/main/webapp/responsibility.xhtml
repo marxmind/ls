@@ -1,0 +1,69 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+    <ui:composition>
+    	<p:dialog header="Responsibility Maintenance" widgetVar="resDlg" width="800" height="1000" position="center top">
+		<p:toolbar id="tbRes">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText id="idRes" value="#{rssBean.searchName}" placeholder="Search here...">
+    				<p:ajax event="keyup" listener="#{rssBean.init}" update="dataRs" delay="800"/>
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">
+    			<p:commandButton update="rssId" value="New" icon="fa fa-file-o" actionListener="#{rssBean.clearRes}" />
+    			<p:commandButton update="rssId" value="Clear" icon="fa fa-trash" actionListener="#{rssBean.clearRes}" />
+    			<p:commandButton update="dataRs idRes msg" value="Save" icon="fa fa-floppy-o" actionListener="#{rssBean.saveRes}">
+    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert" />
+    			</p:commandButton>
+    			<p:commandButton value="Close" oncomplete="PF('resDlg').hide();" />
+    			</div>
+    		</f:facet>
+			</p:toolbar> 
+			<p:panelGrid id="rssId" layout="grid" columns="2" >
+				<p:outputLabel value="Center"/>
+				<p:selectOneMenu value="#{rssBean.depResId}" style="width:15em;color: black;" filter="true" filterMatchMode="contains">
+					<f:selectItems value="#{rssBean.depRes}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Name"/>
+				<p:inputText value="#{rssBean.responsibilityName}" placeholder="Name here" />
+				
+			</p:panelGrid>
+				<p:dataTable id="dataRs" value="#{rssBean.rss}" var="rs" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         lazy="false" paginatorPosition="top"
+                         
+                         >
+                         	
+							<p:column headerText="[*]" width="20" exportable="false">
+            					<p:commandButton update="dataRs msg" icon="pi pi-trash" actionListener="#{rssBean.deleteRow(rs)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            				</p:column>
+            				
+							<p:column headerText="Edit" width="20" exportable="false">
+								<p:commandButton icon="pi pi-pencil" update="dataRs rssId" actionListener="#{rssBean.clickItem(rs)}"/>
+							</p:column>
+							
+							<p:column headerText="Name" width="100">
+            						<p:outputLabel value="#{rs.name}"/>
+            				</p:column>
+            				<p:column headerText="Department" width="70">
+            						<p:outputLabel value="#{rs.department.departmentName}"/>
+            				</p:column>
+            	</p:dataTable>			
+			
+			
+	</p:dialog>
+    </ui:composition>
+</html>

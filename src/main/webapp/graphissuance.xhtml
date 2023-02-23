@@ -1,0 +1,109 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     
+     <style type="text/css">
+			    .ui-chart {
+			        margin-bottom: 50px;
+			    }
+			</style>
+    		
+    		<p:dialog widgetVar="dlgGraph" fitViewport="true" position="center top" header="Graph" closable="true" modal="true" closeOnEscape="true">
+    		<p:card style="width: 120em">
+    		<p:scrollPanel style="width:120em;height:650px" mode="native">
+    		
+    		
+    		<p:tabView prependId="false">
+    		
+            <p:tab title="Reported Collection">
+    		
+    		<p:toolbar id="tbGraph">
+    		<f:facet name="left">
+    			<div class="ui-inputgroup">
+    			
+    			<p:selectCheckboxMenu id="grapYearId" value="#{graphIssuanceBean.selectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 20em">
+					<f:selectItems value="#{graphIssuanceBean.years}" />
+				</p:selectCheckboxMenu>
+				<p:selectCheckboxMenu id="grapCollectorId" value="#{graphIssuanceBean.selectedCollector}" label="Select Collector" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 50em">
+					<f:selectItems value="#{graphIssuanceBean.collectors}" />
+				</p:selectCheckboxMenu>
+				<p:selectOneMenu id="grapFormId" value="#{graphIssuanceBean.selectedForm}" label="Select Forms" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 30em">
+					<f:selectItems value="#{graphIssuanceBean.forms}" />
+				</p:selectOneMenu>
+				<p:commandButton icon="pi pi-search" update="graphLineId graphBardId" actionListener="#{graphIssuanceBean.selectedGraph}"/>
+    			
+    			</div>
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+    		
+    		
+    		
+			
+				
+			<p:tabView prependId="false" cache="true" id="tabRevenue">
+    		
+    		<p:ajax event="tabChange" listener="#{graphIssuanceBean.onChange}" update="graphLineId graphBardId"/>
+    		
+	    		<p:tab title="Line Graph">
+	    			<p:lineChart id="graphLineId" model="#{graphIssuanceBean.lineModel}" style="width: 100%; height: 500px;"/>
+	    		</p:tab>
+	    		
+	    		<p:tab title="Bar Graph">
+	    			<p:barChart id="graphBardId" model="#{graphIssuanceBean.barModel2}" style="width: 100%; height: 500px;">
+	            		<p:ajax event="itemSelect" listener="#{graphIssuanceBean.itemSelect}" update="msg"/>
+	        		</p:barChart>
+	    		</p:tab>
+    			
+    			
+    			
+    		</p:tabView>	
+	        
+	        </p:tab>
+	        
+	        
+	        <p:tab title="Per Account Collection">
+	        	
+	        <p:toolbar id="tbGraphRun">
+    		<f:facet name="left">
+    			<div class="ui-inputgroup">
+    			
+    			<p:selectCheckboxMenu id="grapAccountYearId" value="#{graphIssuanceBean.accountSelectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 20em">
+					<f:selectItems value="#{graphIssuanceBean.accountYears}" />
+				</p:selectCheckboxMenu>
+				<p:selectCheckboxMenu id="grapAccountId" value="#{graphIssuanceBean.accountSelected}" label="Select Account" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 50em">
+					<f:selectItems value="#{graphIssuanceBean.accounts}" />
+				</p:selectCheckboxMenu>
+				<p:commandButton icon="pi pi-search" update="graphAccBardId" actionListener="#{graphIssuanceBean.reportAcc}"/>
+				
+    			</div>
+    			
+    			<p:barChart id="graphAccBardId" model="#{graphIssuanceBean.barModel3}" style="width: 100%; height: 500px;"/>
+    			
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+	        	
+	        	
+	        </p:tab>
+	        
+	        </p:tabView>
+	        	
+    		</p:scrollPanel>
+    		</p:card>
+    		</p:dialog>
+     
+     </ui:composition>
+</html>

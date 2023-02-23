@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Stocks Transactions</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" showDetail="true"/>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+    <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid grid-nogutter">
+	    	
+	    	
+		    	<div class="col-3">
+		    		<div class="ui-inputgroup" style="float:right">
+		            	<p:commandButton value="Show Forms Remaining" oncomplete="PF('dlgForms').show(1000)" />
+		            	<p:commandButton update="gridId" value="New" icon="pi pi-file-o" actionListener="#{stocksBean.createNew}"/>
+		    			<p:commandButton update="gridId" value="Clear" icon="pi pi-trash" action="#{stocksBean.createNew}"/>
+		    			<p:commandButton update="gridId dataForm dataForm1 reqFields msg" value="Save" icon="pi pi-save" actionListener="#{stocksBean.saveData}">
+		    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
+		    			</p:commandButton>
+		            </div>
+		            
+		            <p:panelGrid id="gridId" columns="2" layout="grid" styleClass="ui-noborder">
+						
+						<p:outputLabel value="Recorded Date"/>
+						<p:calendar value="#{stocksBean.recordedDate}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 12em"/>
+						
+						<p:outputLabel value="Form Type"/>	
+					    <p:selectOneMenu id="frmId" value="#{stocksBean.formTypeId}" style="width: 12em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{stocksBean.formType}"/>
+								<p:ajax event="change" listener="#{stocksBean.generateSeries}" update="fromId toId idS msg"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Start Stab No"/>
+						<p:inputNumber value="#{stocksBean.stabNo}" inputStyle="width: 12em"/>
+						
+						<p:outputLabel value="Number of Stab(CT quantity)"/>
+						<p:inputNumber id="idS" value="#{stocksBean.numberOfStab}" inputStyle="width: 12em">
+							<p:ajax event="keyup" listener="#{stocksBean.generateSeries}" update="toId msg"/>
+						</p:inputNumber>
+						
+						<p:outputLabel value="Series From"/>
+						<p:inputText id="fromId" value="#{stocksBean.seriesFrom}" style="width: 12em">
+							<p:ajax event="keyup" listener="#{stocksBean.generateSeries}" update="toId msg"/>
+						</p:inputText>
+						
+						<p:outputLabel value="Series To"/>
+						<p:inputText id="toId" value="#{stocksBean.seriesTo}" style="width: 12em" readonly="true"/>
+					
+						</p:panelGrid>
+	    		</div>
+	    	
+	    	<div class="col-9">
+	    		
+	    		<p:tabView prependId="false" widgetVar="tabSel">
+        	
+		        	<p:ajax event="tabChange" listener="#{stocksBean.onTabChange}" update="dataForm dataForm1 dataHis reqFields reqDateTmpId"/>
+		            
+		            <p:tab title="Stocks">
+		        
+		            <div class="grid">
+		                <div class="col-12 grid-nogutter">
+		                    <div class="ui-inputgroup">
+		                    	<p:selectOneMenu id="frmIdSearch" value="#{stocksBean.formTypeIdSearch}" style="width: 12em" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{stocksBean.formTypeSearch}"/>
+									<p:ajax event="change" listener="#{stocksBean.stockInit}" update="dataForm" />
+								</p:selectOneMenu>
+		                    </div>
+		                </div>
+		                <div class="col-12">
+		                    <div class="grid">
+		                        <p:dataTable id="dataForm" value="#{stocksBean.stocks}" var="rpt" stickyHeader="false"
+									rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="5,10,15,20,50,100"
+		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
+		                         
+		                         >
+		                         
+		                         	<f:facet name="{Exporters}">
+		                         			<p:menuButton value="Exports" style="float: left">
+												<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-excel">
+													<p:dataExporter type="xls" target="dataForm" fileName="Department"/> 
+												</p:menuitem>
+												<p:menuitem value="Export PDF" ajax="false" immediate="true" icon="pi pi-file-pdf">
+													<p:dataExporter type="pdf" target="dataForm" fileName="Department"/> 
+												</p:menuitem>
+											</p:menuButton> 
+		            				</f:facet>			
+		                         	
+		                         	<p:column headerText="No" width="10" exportable="false">
+										<p:outputLabel value="#{rpt.count}"/>
+									</p:column>
+		                         	
+									<p:column headerText="[*]" width="30" exportable="false">
+		            					<p:commandButton update="dataForm gridId msg" icon="pi pi-trash" actionListener="#{stocksBean.deleteRow(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		            				
+									<p:column headerText="Edit" width="30" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="gridId" actionListener="#{stocksBean.clickItem(rpt)}"/>
+									</p:column>
+									
+									<p:column headerText="Created" width="70">
+		            						<p:outputLabel value="#{rpt.dateTrans}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Stab#" width="30">
+		            						<p:outputLabel value="#{rpt.stabNo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="AF Form Type" width="100">
+		            						<p:outputLabel value="#{rpt.formTypeName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Status" width="70">
+		            						<p:outputLabel value="#{rpt.statusName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="From" width="70">
+		            						<p:outputLabel value="#{rpt.seriesFrom}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="To" width="70">
+		            						<p:outputLabel value="#{rpt.seriesTo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Qty" width="30">
+		            						<p:outputLabel value="#{rpt.quantity}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Collector" width="100">
+		            						<p:outputLabel value="#{rpt.collector.name}"/>
+		            				</p:column>
+		            				
+		            			</p:dataTable>	
+		                    </div>
+		                </div>
+		            </div><!-- end of p-grid -->
+		            </p:tab>
+		            <p:tab title="Create Requisition Slip">
+		            
+		            	<p:panelGrid id="reqFields" columns="4" layout="grid" style="text-align: left">
+		            		
+		            		<p:outputLabel value="Fund Type"/>
+		            		<p:selectOneMenu id="f1" value="#{stocksBean.slip.fundId}" style="width: 15em;" filter="true" filterMatchMode="contains">
+						      	<f:selectItems value="#{stocksBean.slip.funds}"/>
+						    </p:selectOneMenu>
+		            		
+		            		<p:outputLabel value="Date Request"/>
+		            		<p:calendar id="reqDateTmpId" value="#{stocksBean.slip.tmpDateTrans}"  required="true" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
+		            		
+		            		<p:outputLabel value="Requestor/Receiver"/>
+		            		<p:selectOneMenu id="d0" value="#{stocksBean.slip.collector.id}" style="width: 15em;" filter="true" filterMatchMode="contains">
+						      	<f:selectItems value="#{stocksBean.slip.requestors}"/>
+						      	<p:ajax event="change" listener="#{stocksBean.positionUpdate}" update="posId d1 d2 codeId" />
+						    </p:selectOneMenu>
+		            		
+		            		<p:outputLabel value="Requestor Position"/>
+		            		<p:inputText id="posId" value="#{stocksBean.slip.position}" placeholder="" style="width: 15em;"/>
+		            		
+		            		<p:outputLabel value="Division"/>
+		            		<p:selectOneMenu id="d1" value="#{stocksBean.slip.division.id}" style="width: 15em;" filter="true" filterMatchMode="contains">
+						      	<f:selectItems value="#{stocksBean.slip.divisions}"/>
+						    </p:selectOneMenu>
+		            		
+		            		<p:outputLabel value="Office/Department"/>
+		            		<p:selectOneMenu id="d2" value="#{stocksBean.slip.office.id}" style="width: 15em;" filter="true" filterMatchMode="contains">
+						      	<f:selectItems value="#{stocksBean.slip.offices}"/>
+						      	<p:ajax event="change" listener="#{stocksBean.selectedDep}" update="codeId" />
+						    </p:selectOneMenu>
+		            		
+		            		<p:outputLabel  value="Department Code"/>
+		            		<p:inputText id="codeId" value="#{stocksBean.slip.codeNo}" placeholder="000" style="width: 15em;"/>
+		            		
+		            		<p:outputLabel value="RIS No/SAI No"/>
+		            		<p:inputText value="#{stocksBean.slip.requestNo}" placeholder="2012-12-0000" style="width: 15em;" readonly="true"/>
+		            		
+		            		<p:outputLabel value="Position"/>
+		            		<p:inputText value="#{stocksBean.slip.approvedPosition}" placeholder="Municipal Treasurer" style="width: 15em;"/>
+		            		
+		            		<p:outputLabel value="Approved By"/>
+		            		<p:inputText value="#{stocksBean.slip.approvedBy}" placeholder="Ferdinand L. Lopez" style="width: 15em;"/>
+		            		
+		            		<p:outputLabel value="Position"/>
+		            		<p:inputText value="#{stocksBean.slip.issuedPosition}" placeholder="Releasing Officer" style="width: 15em;"/>
+		            		
+		            		<p:outputLabel value="Issued By"/>
+		            		<p:inputText value="#{stocksBean.slip.issuedBy}" placeholder="" style="width: 15em;"/>
+		            		
+		            		<p:outputLabel value="Purpose"/>
+		            		<p:inputText value="#{stocksBean.slip.purspose}" placeholder="For issuance of receipt" style="width: 15em;"/>
+		            		
+		            		
+		            		
+		            		<p:outputLabel value="Action"/>
+		            		<p:commandButton style="width: 15em;" title="Save" icon="pi pi-save" id="saveRISId" actionListener="#{stocksBean.saveRIS}" update="dataForm1 reqFields msg">
+								<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
+		    				</p:commandButton>
+		            		
+		            		
+		            	</p:panelGrid>
+		            		
+		            		<p:dataTable id="dataForm1" value="#{stocksBean.stocks}" var="rpt" stickyHeader="false"
+		                         scrollable="true" style="text-align: left" reflow="true" selection="#{stocksBean.stockSelected}" rowKey="#{rpt.id}"
+		                         editable="true" editMode="cell" lazy="false"
+		                         >
+		                         	
+		                         	<p:ajax event="cellEdit"  listener="#{stocksBean.onCellEdit}" update="dataForm1" />
+		                         	
+		                         	<p:column headerText="No" width="10" exportable="false">
+										<p:outputLabel value="#{rpt.count}"/>
+									</p:column>
+		                         	
+									<p:column selectionMode="multiple" width="15"/>
+									
+									<p:column headerText="Created" width="70">
+		            						<p:outputLabel value="#{rpt.dateTrans}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Stab#" width="30">
+		            						<p:outputLabel value="#{rpt.stabNo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="AF Form Type" width="100">
+		            						<p:outputLabel value="#{rpt.formTypeName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="From-To" width="70">
+		            						<p:outputLabel value="#{rpt.seriesFrom}-#{rpt.seriesTo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Qty" width="30">
+		            						<p:outputLabel value="#{rpt.quantity}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Remarks" width="70">
+		            						<p:cellEditor>
+		            							<f:facet name="output"><p:outputLabel value="#{rpt.remarks==null? 'Input here':rpt.remarks}"/></f:facet>
+		            							<f:facet name="input">
+		            								<p:inputText value="#{rpt.remarks}"/>
+		            							</f:facet>
+		            						</p:cellEditor>
+		            				</p:column>
+		            				
+		            			</p:dataTable>	
+		            		
+		            </p:tab>
+		            
+		            <p:tab title="RIS History">
+		            	
+		            	<p:dataTable id="dataHis" value="#{stocksBean.slips}" var="rs" stickyHeader="false" lazy="false"
+		                         scrollable="true" style="text-align: left" reflow="true">
+		                         
+		                         <p:column headerText="[*]" width="30" exportable="false">
+		            					<p:commandButton update="dataHis dataEditId msg" icon="pi pi-trash"  actionListener="#{stocksBean.deleteHis(rs)}" title="Click this button to delete">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            			 </p:column>
+		                         
+		                         <p:column headerText="Edit" width="30" exportable="false">
+		            					<p:commandButton icon="pi pi-pencil" update="reqFields dataForm1 dataEditId" actionListener="#{stocksBean.clickReq(rs)}"/>
+		            			 </p:column>
+		                         
+		                         <p:column headerText="Print" width="30" exportable="false">
+		            						<p:commandLink title="Print in PDF" target="_blank" action="#{stocksBean.printRIS(rs)}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+											</p:commandLink>
+		            			</p:column>
+		                         
+		                         <p:column headerText="Date" width="70">
+		            						<p:outputLabel value="#{rs.dateTrans}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="RIS No" width="70">
+		            						<p:outputLabel value="#{rs.requestNo}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Requestor" width="70">
+		            						<p:outputLabel value="#{rs.collector.name}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Fund Type" width="70">
+		            						<p:outputLabel value="#{rs.fundName}"/>
+		            			 </p:column>
+		                         
+		                 </p:dataTable>        
+		            	
+		            </p:tab>
+		            
+		            </p:tabView>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:dialog widgetVar="dlgForms"  width="900" height="600" position="center top" header="Collector Forms Available">
+	
+			<div class="ui-inputgroup" style="float:right">
+           				<p:commandButton value="Close" oncomplete="PF('dlgForms').hide(1000)"/>
+    		</div>
+    		
+    		<p:panelGrid columns="3" layout="grid">
+    		
+    			<p:inputText value="#{stocksBean.searchSeries}" placeholder="Search start or ending series of stab" style="width: 20em">
+    				<p:ajax event="keyup" listener="#{stocksBean.loadIssuedForm}" update="formsDataId" delay="800"/>
+    			</p:inputText>
+    		
+    			<p:selectOneMenu id="fundIdx" value="#{stocksBean.fundId}" style="width: 20em">
+					<f:selectItems value="#{stocksBean.funds}"/>
+					<p:ajax event="change" listener="#{stocksBean.loadIssuedForm}" update="formsDataId"/>
+				</p:selectOneMenu>
+    			
+    			 <p:selectOneMenu id="colIdx" value="#{stocksBean.collectorId}" style="width: 20em" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{stocksBean.collectors}"/>
+						<p:ajax event="change" listener="#{stocksBean.loadIssuedForm}" update="formsDataId"/>
+				</p:selectOneMenu>
+    			
+    		</p:panelGrid>
+    		
+    		<p:dataTable id="formsDataId" value="#{stocksBean.forms}" var="fm" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true" 
+                         lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+                         			<p:menuButton value="Exports" style="float: left">
+										<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-excel">
+											<p:dataExporter type="xls" target="formsDataId" fileName="formsData"/> 
+										</p:menuitem>
+										<p:menuitem value="Export PDF" ajax="false" immediate="true" icon="pi pi-file-pdf">
+											<p:dataExporter type="pdf" target="formsDataId" fileName="formsData"/> 
+										</p:menuitem>
+									</p:menuButton> 
+            			 </f:facet>	
+                         
+                         <p:column headerText="Issued Date" width="100">
+            						<p:outputLabel value="#{fm.f6}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Accountable" width="100">
+            						<p:outputLabel value="#{fm.f1}"/>
+            		     </p:column>
+                         <p:column headerText="Forms" width="50">
+            						<p:outputLabel value="#{fm.f2}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Beginning" width="50">
+            						<p:outputLabel value="#{fm.f3}"/>
+            		     </p:column>
+            		     <p:column headerText="Ending" width="50">
+            						<p:outputLabel value="#{fm.f4}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Pieces" width="50">
+            						<p:outputLabel value="#{fm.f5}"/>
+            		     </p:column>
+                         
+            </p:dataTable>             
+    			
+	
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgView"  width="900" height="600" position="center top" header="Maintenance for Stock">
+	
+	<p:toolbar>
+		<f:facet name="left">
+		</f:facet>
+		<f:facet name="right">
+			<p:commandButton value="Close" actionListener="#{stocksBean.loadHistory}" update="dataHis" oncomplete="PF('dlgView').hide(1000)" />
+		</f:facet>
+	</p:toolbar>
+	
+	<p:dataTable id="dataEditId" value="#{stocksBean.requesitionData}" var="rq" stickyHeader="false"
+                         scrollable="true" style="text-align: left" reflow="true" 
+                         editable="true" editMode="cell" lazy="false"
+                         >
+                         	
+                         	<p:ajax event="cellEdit"  listener="#{stocksBean.onCellEditHis}" update="dataEditId" />
+                         	
+                         	<p:column headerText="Stub No" width="30">
+            						<p:cellEditor>
+            							<f:facet name="output"><p:outputLabel value="#{rq.stocks.stabNo}"/></f:facet>
+            							<f:facet name="input">
+            								<p:inputNumber value="#{rq.stocks.stabNo}" disabled="#{rq.disableRow}"/>
+            							</f:facet>
+            						</p:cellEditor>
+            				</p:column>
+                         	
+            				<p:column headerText="AF Form Type" width="100">
+            						<p:cellEditor>
+            							<f:facet name="output"><p:outputLabel value="#{rq.stocks.formTypeName}"/></f:facet>
+            							<f:facet name="input">
+	            						<p:selectOneMenu value="#{rq.stocks.formType}" style="width: 15em;" filter="true" filterMatchMode="contains" disabled="#{rq.disableRow}">
+									      	<f:selectItems value="#{rq.formTypes}"/>
+									    </p:selectOneMenu>
+									    </f:facet>
+									 </p:cellEditor>   
+            				</p:column>
+            				
+            				<p:column headerText="From-To" width="70">
+            						<p:cellEditor>
+            							<f:facet name="output"><p:outputLabel value="#{rq.stocks.seriesFrom}-#{rq.stocks.seriesTo}"/></f:facet>
+            							<f:facet name="input">
+            								<p:inputText value="#{rq.stocks.seriesFrom}" style="width: 5em" disabled="#{rq.disableRow}"/>
+            								<p:inputText value="#{rq.stocks.seriesTo}" style="width: 5em" disabled="#{rq.disableRow}"/>
+            							</f:facet>
+            						</p:cellEditor>
+            				</p:column>
+            				
+            				<p:column headerText="Qty" width="30">
+            						<p:cellEditor>
+            							<f:facet name="output"><p:outputLabel value="#{rq.stocks.quantity}"/></f:facet>
+            							<f:facet name="input">
+            								<p:inputText value="#{rq.stocks.quantity}" disabled="#{rq.disableRow}"/>
+            							</f:facet>
+            						</p:cellEditor>
+            				</p:column>
+            				
+            				<p:column headerText="Remarks" width="70" >
+            						<p:cellEditor>
+            							<f:facet name="output"><p:outputLabel value="#{rq.stocks.remarks==null? 'Input here':rq.stocks.remarks}"/></f:facet>
+            							<f:facet name="input">
+            								<p:inputText value="#{rq.stocks.remarks}" disabled="#{rq.disableRow}"/>
+            							</f:facet>
+            						</p:cellEditor>
+            				</p:column>
+            				
+            				<p:column headerText="Save" width="30" exportable="false">
+	            				<p:commandButton update="dataEditId msg"  icon="pi pi-save" title="Click this button to save your changes" actionListener="#{stocksBean.saveHisData(rq)}" disabled="#{rq.disableRow}">
+			        				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+			        			</p:commandButton>
+            				</p:column>
+            				
+            				
+            				<p:column headerText="Delete" width="30" exportable="false">
+            					<p:commandButton update="dataEditId msg" icon="fa fa-trash"  actionListener="#{stocksBean.deleteHisRow(rq)}" title="Click this button to delete" disabled="#{rq.disableRow}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            				</p:column>
+            				
+            			</p:dataTable>	
+	
+	</p:dialog>		
+	
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
