@@ -57,7 +57,7 @@ public class TaxPayor implements ITaxPayor{
 			
 		}
 		
-		//System.out.println("SQL : " + ps.toString());
+		//System.out.println("SQL Payor : " + ps.toString());
 		
 		rs = ps.executeQuery();
 		
@@ -139,7 +139,7 @@ public class TaxPayor implements ITaxPayor{
 	}
 	
 	public static List<ITaxPayor> retrievePayor(String sql, String[] params){
-		List<ITaxPayor> pays = new ArrayList<ITaxPayor>();//Collections.synchronizedList(new ArrayList<ITaxPayor>());
+		List<ITaxPayor> pays = new ArrayList<ITaxPayor>();
 		
 		Connection conn = null;
 		ResultSet rs = null;
@@ -554,96 +554,112 @@ public class TaxPayor implements ITaxPayor{
 	@Override
 	public long getId() {
 		// TODO Auto-generated method stub
-		return 0;
+		return id;
 	}
 
 	@Override
 	public void setId(long id) {
 		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	@Override
 	public String getFullName() {
 		// TODO Auto-generated method stub
-		return null;
+		return fullName;
 	}
 
 	@Override
 	public void setFullName(String fullName) {
 		// TODO Auto-generated method stub
-		
+		this.fullName = fullName;
 	}
 
 	@Override
 	public String getAddress() {
 		// TODO Auto-generated method stub
-		return null;
+		return address;
 	}
 
 	@Override
 	public void setAddress(String address) {
 		// TODO Auto-generated method stub
-		
+		this.address = address;
 	}
 
 	@Override
 	public int getIsactive() {
 		// TODO Auto-generated method stub
-		return 0;
+		return isactive;
 	}
 
 	@Override
 	public void setIsactive(int isactive) {
 		// TODO Auto-generated method stub
-		
+		this.isactive = isactive;
 	}
 
 	@Override
 	public Timestamp getTimestamp() {
 		// TODO Auto-generated method stub
-		return null;
+		return timestamp;
 	}
 
 	@Override
 	public void setTimestamp(Timestamp timestamp) {
 		// TODO Auto-generated method stub
+		this.timestamp = timestamp;
+	}
+	
+	public static void main(String[] args) {
+		ITaxPayor pay = new TaxPayor();
+		pay.setId(5);
+		pay.setFullName("mark italia 13");
+		pay.setAddress("lake sebu");
+		pay.setIsactive(1);
+		pay.delete();
+		//pay = TaxPayor.save(pay);
+		//System.out.println(pay.getFullName());
 		
+		String sql = "SELECT * FROM taxpayor";
+		String[] params = new String[0];
+		  for(ITaxPayor tax : TaxPayor.retrieve(sql, params)){
+			 System.out.println(tax.getAddress());
+			 System.out.println(tax.getTimestamp());
+		  }
 	}
 
 	@Override
 	public Barangay getBarangay() {
 		// TODO Auto-generated method stub
-		return null;
+		return barangay;
 	}
 
 	@Override
 	public void setBarangay(Barangay barangay) {
 		// TODO Auto-generated method stub
-		
+		this.barangay = barangay;
+				
 	}
 
 	@Override
 	public UserDtls getUserDtls() {
 		// TODO Auto-generated method stub
-		return null;
+		return userDtls;
 	}
 
 	@Override
 	public void setUserDtls(UserDtls userDtls) {
 		// TODO Auto-generated method stub
-		
+		this.userDtls = userDtls;
 	}
-
+	
 	@Override
 	public List<LandPayor> getLandPayor() {
-		// TODO Auto-generated method stub
-		return null;
+		return landPayor;
 	}
-
 	@Override
 	public void setLandPayor(List<LandPayor> landPayor) {
-		// TODO Auto-generated method stub
-		
+		this.landPayor = landPayor;
 	}
 }

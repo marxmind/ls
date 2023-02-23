@@ -647,216 +647,212 @@ public void updateData(){
 	@Override
 	public long getId() {
 		// TODO Auto-generated method stub
-		return 0;
+		return id;
 	}
 
 	@Override
 	public void setId(long id) {
 		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	@Override
 	public String getTransDate() {
 		// TODO Auto-generated method stub
-		return null;
+		return transDate;
 	}
 
 	@Override
 	public void setTransDate(String transDate) {
 		// TODO Auto-generated method stub
-		
+		this.transDate = transDate;
 	}
 
 	@Override
 	public double getAmount() {
 		// TODO Auto-generated method stub
-		return 0;
+		return amount;
 	}
 
 	@Override
 	public void setAmount(double amount) {
 		// TODO Auto-generated method stub
-		
+		this.amount = amount;
 	}
 
 	@Override
 	public String getAmountInWords() {
 		// TODO Auto-generated method stub
-		return null;
+		return amountInWords;
 	}
 
 	@Override
 	public void setAmountInWords(String amountInWords) {
 		// TODO Auto-generated method stub
-		
+		this.amountInWords = amountInWords;
 	}
 
 	@Override
 	public String getScNo() {
 		// TODO Auto-generated method stub
-		return null;
+		return scNo;
 	}
 
 	@Override
 	public void setScNo(String scNo) {
 		// TODO Auto-generated method stub
-		
+		this.scNo = scNo;
 	}
 
 	@Override
 	public int getAccountFormNo() {
 		// TODO Auto-generated method stub
-		return 0;
+		return accountFormNo;
 	}
 
 	@Override
 	public void setAccountFormNo(int accountFormNo) {
 		// TODO Auto-generated method stub
-		
+		this.accountFormNo = accountFormNo;
 	}
 
 	@Override
 	public int getIsactive() {
 		// TODO Auto-generated method stub
-		return 0;
+		return isactive;
 	}
 
 	@Override
 	public void setIsactive(int isactive) {
 		// TODO Auto-generated method stub
-		
+		this.isactive = isactive;
 	}
 
 	@Override
 	public String getCheckNo() {
 		// TODO Auto-generated method stub
-		return null;
+		return checkNo;
 	}
 
 	@Override
 	public void setCheckNo(String checkNo) {
 		// TODO Auto-generated method stub
-		
+		this.checkNo = checkNo;
 	}
 
 	@Override
 	public String getCheckDate() {
 		// TODO Auto-generated method stub
-		return null;
+		return checkDate;
 	}
 
 	@Override
 	public void setCheckDate(String checkDate) {
 		// TODO Auto-generated method stub
-		
+		this.checkDate = checkDate;
 	}
 
 	@Override
 	public String getSigned1() {
 		// TODO Auto-generated method stub
-		return null;
+		return signed1;
 	}
 
 	@Override
 	public void setSigned1(String signed1) {
 		// TODO Auto-generated method stub
-		
+		this.signed1 = signed1;
 	}
 
 	@Override
 	public String getSigned2() {
 		// TODO Auto-generated method stub
-		return null;
+		return signed2;
 	}
 
 	@Override
 	public void setSigned2(String signed2) {
 		// TODO Auto-generated method stub
-		
+		this.signed2 = signed2;
 	}
 
 	@Override
 	public ITaxPayor getTaxPayor() {
 		// TODO Auto-generated method stub
-		return null;
+		return taxPayor;
 	}
 
 	@Override
 	public void setTaxPayor(ITaxPayor taxPayor) {
 		// TODO Auto-generated method stub
-		
+		this.taxPayor = taxPayor;
 	}
 
 	@Override
 	public Timestamp getTimestamp() {
 		// TODO Auto-generated method stub
-		return null;
+		return timestamp;
 	}
 
 	@Override
 	public void setTimestamp(Timestamp timestamp) {
 		// TODO Auto-generated method stub
-		
+		this.timestamp = timestamp;
 	}
-
+	
 	@Override
 	public int getStatus() {
 		// TODO Auto-generated method stub
-		return 0;
+		return status;
 	}
 
 	@Override
 	public void setStatus(int status) {
 		// TODO Auto-generated method stub
-		
+		this.status = status;
 	}
 
 	@Override
 	public int getPaymentType() {
 		// TODO Auto-generated method stub
-		return 0;
+		return paymentType;
 	}
 
 	@Override
 	public void setPaymentType(int paymentType) {
 		// TODO Auto-generated method stub
-		
+		this.paymentType = paymentType;
 	}
 
 	@Override
 	public UserDtls getUserDtls() {
 		// TODO Auto-generated method stub
-		return null;
+		return userDtls;
 	}
 
 	@Override
 	public void setUserDtls(UserDtls userDtls) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getIsSpecialCase() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setIsSpecialCase(int isSpecialCase) {
-		// TODO Auto-generated method stub
-		
+		this.userDtls = userDtls;
 	}
 
 	@Override
 	public LandPayor getLandPayor() {
 		// TODO Auto-generated method stub
-		return null;
+		return landPayor;
 	}
 
 	@Override
 	public void setLandPayor(LandPayor landPayor) {
 		// TODO Auto-generated method stub
-		
+		this.landPayor = landPayor;
+	}
+	@Override
+	public int getIsSpecialCase() {
+		return isSpecialCase;
+	}
+	@Override
+	public void setIsSpecialCase(int isSpecialCase) {
+		this.isSpecialCase = isSpecialCase;
 	}
 }

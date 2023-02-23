@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Land Tax Transactions</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true" sticky="false"/>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+        
+        <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid grid-nogutter">
+	    	
+	    	
+		    	<div class="col-7">
+		    		<p:toolbar id="tbDetails">
+			    		<f:facet name="left">
+			    				<p:commandButton update="ownerId,formDataId,recFromId,wordId,scId,statId,payId,caseId,grandId,form56Id,payorSearchId,paySearchId,yearSelId" value="New" icon="pi pi-file-o" actionListener="#{form56Bean.newForm}"/>
+			    		</f:facet>
+			    		<f:facet name="right">
+			    			<div class="ui-inputgroup">
+			    			<p:commandButton update="formDataId,form56Id,grandId,wordId" value="Calculate" icon="pi pi-th-large"  action="#{form56Bean.updateTotal}"/>
+			    			<p:commandButton update="formDataId,form56Id,dataTransId,wordId,paySearchId,yearSelId,caseId,msg,searchNameId,cal1,cal2" value="Save" icon="pi pi-save" actionListener="#{form56Bean.saveData}" >
+			    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert" />
+			    			</p:commandButton>
+			    			</div>
+			    		</f:facet>
+						</p:toolbar> 
+						
+						<p:panelGrid columns="4" id="form56Id" layout="grid">
+						
+						<p:outputLabel/>
+						<p:outputLabel value="Received From: "/>
+						<p:commandButton id="recFromId" update="payorDataId,payorSearchId" value="#{form56Bean.receiveFrom}" actionListener="#{form56Bean.payorLookup}"  icon="pi pi-search" onclick="PF('payorDialog').show()"/>
+					    
+					    <p:outputLabel/>
+						
+						<p:outputLabel  value="OR NO: "/>
+		        		<p:inputText id="scId" value="#{form56Bean.scNo}" disabled="false" placeholder="OR NO:0000000" style="width: 15em;color:red"/>
+						
+						<p:outputLabel  value="Date : "/>
+						<p:calendar value="#{form56Bean.tmpTransDate}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em;"/>
+						
+				        <p:outputLabel value="Status"/>	
+					    <p:selectOneMenu id="statId" value="#{form56Bean.statusId}"  style="width:15em;">
+								<f:selectItem itemLabel="Select"/>
+								<f:selectItems value="#{form56Bean.statusList}"/>
+						</p:selectOneMenu>
+						<p:outputLabel value="Payment Type"/>	
+					    <p:selectOneMenu id="payId" value="#{form56Bean.paymentId}"  style="width: 15em;">
+								<f:selectItem itemLabel="Select"/>
+								<f:selectItems value="#{form56Bean.paymentList}"/>
+						</p:selectOneMenu>
+						
+						</p:panelGrid>
+						<p:outputLabel id="wordId"  value="The Sum of: #{form56Bean.amountInWords}"  
+					            		 style="align-text: left;color:red"/>
+						
+						
+						<p:toolbar id="grcaseIs">
+			    		<f:facet name="left">
+				        <p:outputLabel value="Special Case" style="font-weight: bold"/>
+				        <p:selectBooleanCheckbox id="caseId" value="#{form56Bean.specialCase}" style="width: 15em;">
+				            		<p:ajax event="change" update="formDataId,caseId,wordId,grandId,msg" listener="#{form56Bean.specialCaseCheck}"/>
+				        </p:selectBooleanCheckbox>
+				     	</f:facet>
+				     	<f:facet name="right"/>
+				     	</p:toolbar>
+				      
+				        
+						<p:toolbar id="grandM">
+			    		<f:facet name="left">
+			    			<p:outputLabel id="ownerId" value="Owner: #{form56Bean.selectedOwner}" style="font-size: 20px"/>
+			    		</f:facet>
+			    		<f:facet name="right">
+			    			<p:outputLabel id="grandId" value="Total Php#{form56Bean.grandTotal}" style="font-size: 20px"/>
+			    		</f:facet>
+						</p:toolbar>
+						<p:dataTable id="formDataId" var="rpt" value="#{form56Bean.receipts}" editable="true"
+					       editMode="cell" widgetVar="cellTrans" rowKey="#{rpt.cnt}" scrollable="true" selection="#{form56Bean.receiptSelected}" selectionMode="single" lazy="false">
+							
+							
+								<p:columnGroup type="header">
+										<p:row>
+											<p:column rowspan="2" headerText="Find" width="20"/>
+											<p:column rowspan="2" headerText="Value" width="60"/>
+											<p:column colspan="2" headerText="Year" width="60"/>
+											<p:column rowspan="2" headerText="Type" width="30"/>
+											<p:column rowspan="2" headerText="Case" width="30"/>
+											<p:column rowspan="2" headerText="Adj" width="20"/>
+											<p:column rowspan="2" headerText="Fullpayment" width="70"/>
+											<p:column rowspan="2" headerText="Penalty" width="50"/>
+											<p:column rowspan="2" headerText="Total" width="70"/>
+											<p:column rowspan="2" headerText="Remarks" width="70"/>
+										</p:row>
+										<p:row>
+						                    <p:column colspan="1" headerText="From" width="30"/>
+						                    <p:column colspan="1" headerText="To"  width="30"/>
+					                	</p:row>
+									</p:columnGroup>
+							
+							
+							
+							<p:ajax event="cellEdit"  listener="#{form56Bean.onCellEdit}" update="formDataId,msg" />	
+							
+							<p:column headerText="Find">
+								<p:commandButton id="findOwner" update="ownDataId,paySearchId,yearSelId" icon="pi pi-search" oncomplete="PF('ownerDialog').show()" actionListener="#{form56Bean.viewLandOwner(rpt)}"/>
+							</p:column>		  
+							
+							<p:column headerText="Value">
+								<p:outputLabel value="#{rpt.assValueLand}">
+									<f:convertNumber currencySymbol="" type="currency"/>
+								</p:outputLabel>
+							</p:column>       
+		       				
+		       				<p:column headerText="From Year">
+				               <p:outputLabel value="#{rpt.fromYear}" />
+					       </p:column>
+					       <p:column headerText="To Year">
+								<p:outputLabel value="#{rpt.toYear}" />
+					       </p:column>
+		       			   <p:column headerText="Type">
+								<p:outputLabel value="#{rpt.installmentType}" />
+				       	   </p:column>
+				       	   <p:column headerText="Case">
+		                  	<p:selectBooleanCheckbox value="#{rpt.isCase}">
+		                  		<p:ajax update="formDataId,msg" listener="#{form56Bean.specialCheck(rpt)}" />
+		                  	</p:selectBooleanCheckbox>
+					       </p:column>
+					       <p:column headerText="Adj.">
+					                  	<p:selectBooleanCheckbox value="#{rpt.isAdjust}">
+					                  		<p:ajax update="formDataId,msg" listener="#{form56Bean.adjustmentCheck(rpt)}" />
+					                  	</p:selectBooleanCheckbox>
+					       </p:column>
+					       <p:column headerText="Fullpayment">
+					              <p:cellEditor>
+					                  <f:facet name="output"><h:outputText value="#{rpt.fullPayment}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText></f:facet>
+					                  <f:facet name="input"><p:inputText value="#{rpt.fullPayment}" placeholder="0.00"  disabled="#{form56Bean.disAbleFullPenalty}"/></f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       <p:column headerText="Penalty">
+					              <p:cellEditor>
+					                  <f:facet name="output"><h:outputText value="#{rpt.penaltyPercent}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText></f:facet>
+					                  <f:facet name="input"><p:inputText value="#{rpt.penaltyPercent}" placeholder="0.00"  disabled="#{form56Bean.disAbleFullPenalty}"/></f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       <p:column headerText="Total">
+					              <p:cellEditor>
+					                  <f:facet name="output"><h:outputText value="#{rpt.overallTotal}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+					                  <f:facet name="input"><p:inputText value="#{rpt.overallTotal}" placeholder="0.00" style="width:96%"/></f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       <p:column headerText="Remarks">
+					              <p:cellEditor>
+					                  <f:facet name="output"><p:outputLabel value="#{rpt.remarks}"/></f:facet>
+					                  <f:facet name="input"><p:inputText value="#{rpt.remarks}" style="width:96%"/></f:facet>
+					              </p:cellEditor>
+					       </p:column>
+		       			</p:dataTable>
+						
+					<p:contextMenu for="formDataId" widgetVar="cMenu">
+				       <p:menuitem value="Add Cell" icon="pi pi-search" actionListener="#{form56Bean.addCell}" onclick="PF('cMenu').hide()" update="formDataId,wordId,grandId,yearSelId"/>
+				       <p:menuitem value="Calculate" icon="pi pi-th-large" actionListener="#{form56Bean.updateTotal}" onclick="PF('cMenu').hide()" update="formDataId,wordId,grandId"/>
+				       <p:menuitem value="Copy Paste" onclick="PF('cMenu').hide();PF('dlgCopy').show()" icon="pi pi-clone" update="copyId" actionListener="#{form56Bean.updateCopyPaste}"/>
+				       <p:menuitem value="Delete" update="formDataId,wordId,grandId" icon="pi pi-trash" actionListener="#{form56Bean.deleteCell}"/>
+				       <p:menuitem value="Hide Menu" icon="pi pi-times-circle" onclick="PF('cMenu').hide()"/>  
+				   </p:contextMenu>
+	    	</div>
+	    	
+	    	<div class="col-5">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<p:toolbar id="tb">
+						<f:facet name="left">
+						<div class="ui-inputgroup">
+		    			<p:autoComplete id="searchNameId" placeholder="Search..." value="#{form56Bean.findName}" completeMethod="#{form56Bean.autoPayorName}" effect="fade"/>
+		    			
+		    			<p:calendar id="cal1" value="#{form56Bean.findFromDate}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em"/>
+				    	<p:calendar id="cal2" value="#{form56Bean.findToDate}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em"/>
+		    			
+		    			<p:commandButton id="findId" update="dataTransId"  icon="pi pi-search" value="Load All" actionListener="#{form56Bean.search}" />
+		    			</div>	
+		    		</f:facet>
+		    		<f:facet name="right">
+		    			<div class="ui-inputgroup">
+		    			<p:commandButton update="dataTransId" value="Refresh" icon="ui-icon-document" actionListener="#{form56Bean.init}" />
+		    			<p:commandButton value="Payor Lookup" icon="ui-icon-document" action="landpayor.xhtml"/>
+		    			<p:commandButton value="Penalty Lookup" icon="ui-icon-document" action="penalty.xhtml"/>
+		    			</div>
+		    		</f:facet>
+					</p:toolbar>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			<p:dataTable id="dataTransId" value="#{form56Bean.trans}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" paginatorAlwaysVisible="false" lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+            						<h:commandLink title="Export Form 56 Receipt in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="dataTransId" fileName="Form56Receipt" />
+            						</h:commandLink>
+            						<h:commandLink title="Export Form 56 Receipt in pdf format" target="_blank" ajax="false" immediate="false"  actionListener="#{form56Bean.printReportAll}">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            						</h:commandLink>
+            						
+            				</f:facet>
+            				
+            				
+            						<p:column headerText="[*]" width="30" exportable="false">
+            							<p:commandButton update="dataTransId,:formId:msg" icon="pi pi-trash" actionListener="#{form56Bean.deleteRow(rpt)}">
+            								<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            							</p:commandButton>
+            						</p:column>
+            				
+            						<p:column headerText="PDF" width="30" exportable="false">
+            				 			<p:commandLink title="Print Form 56 Receipt in PDF" target="_blank" action="#{form56Bean.printReportIndividual(rpt)}" ajax="false" immediate="false" >
+            				 				<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+										</p:commandLink>
+									</p:column>
+									
+									<p:column headerText="Edit" width="30" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="form56Id formDataId ownerId grandId wordId" actionListener="#{form56Bean.clickItem(rpt)}"/>
+									</p:column>
+									
+									<p:column headerText="Date Issued" width="70">
+            								<p:outputLabel value="#{rpt.transDate}"/>
+            						</p:column>
+            						
+            						<p:column headerText="OR No" width="70">
+            								<p:outputLabel value="#{rpt.scNo}"/>
+            						</p:column>
+            						
+            						<p:column headerText="Status" width="50" exportable="false">
+		            						<f:view>		
+			            						<my:if condition="#{rpt.status==1}">
+			                         			 	<f:facet name="then">
+			            								<p:outputLabel value="POSTED"/>
+			            							</f:facet>
+			            							<f:facet name="else">
+			            								<p:outputLabel value="CANCELLED"/>
+			            							</f:facet>
+			            						  </my:if>
+			            					</f:view>
+			            			</p:column>		
+            						
+            						<p:column headerText="Owner/Lot No" width="200">
+            								<p:outputLabel value="#{rpt.landPayor.payor.fullName}/#{rpt.landPayor.lotNo}"/>
+            						</p:column>
+            						
+            						<p:column width="100" style="font-weight: bold;font-size: 16px;">
+            							<f:facet name="header">Amount Paid</f:facet>
+            								<p:outputLabel value="#{rpt.amount}" style="font-weight: bold;font-size: 16px;float: right">
+            									<f:convertNumber currencySymbol="" type="currency"/>
+            								</p:outputLabel>
+            							<f:facet name="footer">Total Php: #{form56Bean.transAmountGrandTotal}</f:facet>	
+            						</p:column>
+	 						</p:dataTable>	
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:dialog position="center top" widgetVar="ownerDialog" 
+header="Land Owner Lookup" Height="400" draggable="false" width="1100" maximizable="false" minimizable="false"  
+modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false">
+
+	<p:toolbar id="tbown">
+    		<f:facet name="left">
+    				<p:selectOneMenu  id="bgId" value="#{form56Bean.barangayIdSearch}" style="color: black" filter="true" filterMatchMode="contains">
+    				   <f:selectItem itemLabel="All"/>
+                       <f:selectItems value="#{form56Bean.barangayListSearch}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                   </p:selectOneMenu>
+                   <span class="ui-input-icon-left">
+			    	<i class="pi pi-search" />
+	    				<p:inputText id="paySearchId" value="#{form56Bean.searchParam}" placeholder="Search Owner">
+	    					<p:ajax event="keyup" listener="#{form56Bean.findLandOwner}" update="ownDataId" delay="800"/>
+	    				</p:inputText>
+    				</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">
+    			<p:commandButton update="formId" value="Payor Lookup" icon="ui-icon-document" action="landpayor.xhtml"/>
+    			<p:commandButton update="formDataId" value="Close" icon="ui-icon-close" onclick="PF('ownerDialog').hide()"/>
+    			</div>
+    		</f:facet>
+    		
+	</p:toolbar>
+	
+	 <p:dataList value="#{form56Bean.payorLand}"  id="ownDataId"  var="land" type="ordered" itemType="none"
+	 paginator="true" rows="3" paginatorPosition="top" paginatorAlwaysVisible="false" rowsPerPageTemplate="3,5,10,15,20,50,100" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+        
+        <h:outputText value="#{land.fullName}" style="display:inline-block"/>
+        
+        <p:dataTable id="landDataId" var="prop" value="#{land.landPayor}" 
+        rowsPerPageTemplate="5,10,15,20,50,100" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         scrollable="true" styleClass="dataDesignTable"  style="margin-bottom:20px" paginatorPosition="top" paginatorAlwaysVisible="false"
+                         lazy="false"
+                         >
+       
+       <p:column headerText="Action" width="60">
+				<p:commandButton value="Selected" update="yearSelId" actionListener="#{form56Bean.passLandData(prop)}" oncomplete="PF('dlgYear').show()"/>
+	   </p:column>
+       
+       <p:column headerText="TD No" width="70">
+            	<h:outputText value="#{prop.taxDeclarionNo}"/>
+       </p:column>
+       
+       <p:column headerText="Lot No" width="70">
+            	<h:outputText value="#{prop.lotNo}"/>
+       </p:column>
+       
+       <p:column headerText="Ass. Value" width="70">
+            	<h:outputText value="#{prop.landValue}"/>
+       </p:column>
+       
+       <p:column headerText="Land Type" width="70">
+            	<h:outputText value="#{prop.landType.landType}"/>
+       </p:column>
+       
+     </p:dataTable>  
+     
+     
+    </p:dataList>
+    
+</p:dialog>
+	
+	<p:dialog position="center top" widgetVar="payorDialog" responsive="true" 
+header="Payor Lookup" Height="500" draggable="false" width="800" maximizable="true" minimizable="false" 
+modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false" fitViewport="true">
+	<p:toolbar id="tbpay">
+    		<f:facet name="left">
+    				<span class="ui-input-icon-left">
+			    	<i class="pi pi-search" />
+    				<p:inputText id="payorSearchId" value="#{form56Bean.payorSearchParam}" placeholder="Search Name" style="width: 20em">
+    					<p:ajax event="keyup" listener="#{form56Bean.payorLookup}" update="payorDataId" delay="800"/>
+    				</p:inputText>
+    				</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">
+    			<p:commandButton update="formId" value="Payor Lookup" icon="pi pi-file" action="landpayor.xhtml"/>
+    			<p:commandButton update="formDataId" value="Close" icon="pi pi-times" onclick="PF('payorDialog').hide()"/>
+    			</div>
+    		</f:facet>
+		</p:toolbar>
+     
+	
+	<p:dataList value="#{form56Bean.payorSearchData}" id="payorDataId" var="payor" type="ordered" itemType="none"
+	paginator="true" rows="10" paginatorPosition="top" paginatorAlwaysVisible="false" lazy="false">
+	
+		<p:column headerText="Action" width="60">
+				<p:commandButton value="#{payor.fullName}" icon="pi pi-arrow-down" update="recFromId" actionListener="#{form56Bean.payorLookupSelected(payor)}" oncomplete="PF('payorDialog').hide()"/>
+	   </p:column>
+        
+    </p:dataList>    
+</p:dialog>
+
+<p:dialog position="center center" widgetVar="dlgCopy" width="400" height="150" showHeader="false">
+	
+		<p:toolbar id="tbCopy">
+    		<f:facet name="left">
+    			<p:outputLabel value="Copy and Paste Menu" />
+    		</f:facet>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">
+    			<p:commandButton value="Copy paste" icon="pi pi-clone" actionListener="#{form56Bean.copyPasteNewCell}" onclick="PF('dlgCopy').hide()" update="formDataId,wordId,grandId"/>
+				<p:commandButton value="Close"  icon="pi pi-times" onclick="PF('dlgCopy').hide()" update="formDataId,wordId,grandId, msg"/>
+				</div>
+			</f:facet>	
+		</p:toolbar>
+		       		<p:panelGrid layout="grid" columns="4" id="copyId">
+		       			<p:outputLabel value="Date From"/>
+		       			<p:selectOneMenu  value="#{form56Bean.idFromYear}" style="width:100%;" filter="true" filterMatchMode="contains">
+		                        <f:selectItems value="#{form56Bean.fromYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+		                        <f:ajax event="change" render="formDataId" listener="#{form56Bean.onCellEdit}" />
+		                </p:selectOneMenu>
+		                
+		       			<p:outputLabel value="Date To"/>
+		       			<p:selectOneMenu  value="#{form56Bean.idToYear}" style="width:100%;" filter="true" filterMatchMode="contains">
+			                       <f:selectItems value="#{form56Bean.toYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			            </p:selectOneMenu>
+		       			
+		       			
+		       			<p:outputLabel value="Type"/>
+		       			<p:selectOneMenu  value="#{form56Bean.idPaymentType}" style="width:100%;">
+		                       <f:selectItems value="#{form56Bean.paymentTypes}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+		                </p:selectOneMenu>
+		       			
+	</p:panelGrid>
+	
+		
+</p:dialog>
+	
+<p:dialog position="center center" widgetVar="dlgYear" modal="true" width="500" height="300" showHeader="false">
+	<p:toolbar id="tbYear">
+    		<f:facet name="left">
+    			<p:commandButton value="Add" actionListener="#{form56Bean.selectedLand}" onclick="PF('ownerDialog').hide();PF('dlgYear').hide()" update="formDataId,wordId,grandId,ownerId"/>
+    		</f:facet>
+    		<f:facet name="right">
+				<p:commandButton value="Close"  onclick="PF('dlgYear').hide()"/>
+			</f:facet>
+		</p:toolbar>
+		<p:panelGrid layout="grid" columns="4" id="yearSelId">
+		       			<p:outputLabel value="Date From"/>
+		       			<p:selectOneMenu  value="#{form56Bean.yearSelectedFromId}" style="width:5em;" filter="true" filterMatchMode="contains">
+		                        <f:selectItems value="#{form56Bean.yearSelectedFroms}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+		                </p:selectOneMenu>
+		                
+		       			<p:outputLabel value="Date To"/>
+		       			<p:selectOneMenu  value="#{form56Bean.yearSelectedToId}" style="width:5em;" filter="true" filterMatchMode="contains">
+			                       <f:selectItems value="#{form56Bean.yearSelectedTos}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			            </p:selectOneMenu>
+		       			
+		       			<p:outputLabel value="Adjust Penalty and Fullpayment?"/>
+				        <p:selectBooleanCheckbox id="caseSelId" value="#{form56Bean.specialCase}">
+				            		<p:ajax event="change" update="formDataId,caseId,wordId,grandId,msg" listener="#{form56Bean.specialCaseCheck}"/>
+				        </p:selectBooleanCheckbox>
+		       			
+				</p:panelGrid>
+</p:dialog>	
+	
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

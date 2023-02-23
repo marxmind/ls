@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html 
+<html lang="en"
 	  xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:faces="jakarta.faces"
       xmlns:h="jakarta.faces.html"
@@ -12,26 +12,20 @@
     xmlns:fn="jakarta.tags.functions"
     xmlns:my="jakarta.faces.component"
     >
-<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
 
 <h:head>
 	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
-	<title>Cheque Writing</title>
+	<title>Voucher Transactions</title>
 	<f:facet name="middle">
            <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
             <h:outputStylesheet name="css/pageHeaderFooter.css"/>
             <h:outputStylesheet name="css/growl.css"/>
              <h:outputStylesheet name="css/bodyconf.css"/>
              <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
-			<h:outputStylesheet name="primeflex/layout.css" />
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
             <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
     </f:facet>
-        
-    <f:facet name="last">
- 		<h:outputStylesheet name="css/font-awesome.css" />
-    </f:facet>
-
+    
 <style>
 <!-- 
 	
@@ -43,16 +37,66 @@
 <h:body>
 
 <h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
 	
-	<div class="grid grid-nogutter">
-	    <div class="col-7" style="background-color: orange">
-	    	7
-		</div>
-		<div class="col-5" style="background-color: orange">
-	    	5
-		</div>
-	</div>
-   </h:form>      	 
- </h:body>
- </f:view>
- </html>
+	<p:growl id="alertId" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid grid-nogutter">
+	    	
+	    	
+		    	<div class="col-5">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			toolbox
+		    		</div>
+		    		<div class="col-12">
+		    			content
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-7">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			Search area
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			content
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

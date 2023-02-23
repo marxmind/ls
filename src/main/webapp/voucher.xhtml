@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Voucher Transactions</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="alertId" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    	 	 
+	<p:focus context="searchid"/>
+	
+	<div class="card">
+    
+	    <div class="grid grid-nogutter">
+	    
+	    	<div class="col-12">
+	    		
+	    			<div class="ui-inputgroup">
+                    	<p:selectOneMenu value="#{voucherBean.accountNameId}"  style="width:30em;" filter="true" filterMatchMode="contains">
+							<f:selectItem itemLabel="All Accounts"/>
+							<f:selectItems value="#{voucherBean.accountNameList}"/>
+							<f:ajax event="change" listener="#{voucherBean.init}" render="formDataId" />
+						</p:selectOneMenu>	
+                    	<span class="ui-input-icon-left">
+			    			<i class="pi pi-search" />
+                    		<p:inputText id="searchid" placeholder="Search..." value="#{voucherBean.searchParticulars}" style="width: 20em">
+                    			<p:ajax event="keyup" listener="#{voucherBean.init}" update="formDataId" delay="800"/>
+                    		</p:inputText>
+                    	</span>
+		        		<p:datePicker id="range" selectionMode="range" value="#{voucherBean.rangeDate}" readonlyInput="true" inputStyle="width: 15em"/>
+		        		<p:commandButton id="findId" update="formDataId"  icon="pi pi-search" actionListener="#{voucherBean.init}"/>
+                    </div>
+	    		
+	    	</div>
+	    	
+	    	<div class="col-12">
+	    		
+	    		<p:dataTable id="formDataId" var="rpt" value="#{voucherBean.trans}" editable="true" 
+					       editMode="cell" widgetVar="cellTrans" rowKey="#{rpt.cnt}" scrollable="true" selection="#{voucherBean.selectedData}" selectionMode="single" 
+					       rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					                         rowsPerPageTemplate="5,10,15,20,55,110" paginatorPosition="top" reflow="true" lazy="false"
+					       >
+					       
+					       						<f:facet name="{Exporters}">
+					            						<h:commandLink title="Export in excel format">
+					                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+					                							<p:dataExporter type="xls" target="formDataId" fileName="Voucher" />
+					            						</h:commandLink>
+					            						<h:commandLink title="Print issued Check" actionListener="#{voucherBean.print}" target="_blank" >
+					                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+					            						</h:commandLink>
+					            				</f:facet>
+					       
+					       <p:ajax event="cellEdit"  listener="#{voucherBean.onCellEdit}" update=":formId:formDataId" />
+					       
+					       <p:column headerText="#" width="10">
+					       		<h:outputText value="#{rpt.cnt}"/>
+					       </p:column>
+					       
+					       <p:column headerText="Date" width="80">
+					             <h:outputText value="#{rpt.dateTrans}"/>
+					       </p:column>
+					       
+					       <p:column headerText="Check No" width="70">
+					        	<h:outputText value="#{rpt.checkNo}"/>
+					       </p:column>
+					       
+					       <p:column headerText="Account" width="130">
+					        	<h:outputText value="#{rpt.accounts.bankAccntName} #{rpt.accounts.bankAccntBranch}"/>
+					       </p:column>
+					       
+					       <p:column headerText="Center" width="80">
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.departmentCode} - #{rpt.departmentName}"/></f:facet>
+					                  <f:facet name="input">
+					                   <p:selectOneMenu value="#{voucherBean.departmentId}" style="width:100%" filter="true" filterMatchMode="contains">
+					                   		<f:selectItem itemLabel="Select..."/>
+					                        <f:selectItems value="#{voucherBean.departments}"/>
+					                        <p:ajax event="change" listener="#{voucherBean.updateDepartment}" update="formDataId"/>
+					                   </p:selectOneMenu>
+					                  </f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       
+					       <p:column headerText="Payee" width="150">
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.payee}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText id="modelInput" placeholder="particulars" value="#{rpt.payee}" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       
+					       <p:column headerText="Nature of Payment" width="150">
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.naturePayment}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText placeholder="particulars" value="#{rpt.naturePayment}" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       
+					       <p:column headerText="Transaction Type" width="100">
+					            <h:outputText value="#{rpt.transactionName}"/>
+					       </p:column>
+					       
+					       <p:column width="90">
+					       		  <f:facet name="header">Amount</f:facet>	
+					       			<h:outputText value="Php #{rpt.DAmount}"/>
+					              <f:facet name="footer"><p:outputLabel id="balId" value="Php #{voucherBean.total}"/></f:facet>
+					       </p:column>
+					       
+					       </p:dataTable>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

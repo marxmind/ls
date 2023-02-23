@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Land Payor</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" />
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	 </p:confirmDialog>
+	<p:focus context="tb"/>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid grid-nogutter">
+	    	
+	    	
+		    <div class="col-12">
+		    		 <p:toolbar id="tb">
+			    		<f:facet name="left">
+			    				<div class="ui-inputgroup">	
+			    				<span class="ui-input-icon-left">
+			    				<i class="pi pi-search" />
+			    				<p:inputText id="payId" value="#{payorBean.searchParam}" placeholder="Search..."/>
+			    				</span>
+			    				<p:selectOneMenu  id="bgId" value="#{payorBean.barangayIdSearch}" filter="true" filterMatchMode="contains" style="color: black" >
+			    				   <f:selectItem itemLabel="All"/>
+			                       <f:selectItems value="#{payorBean.barangayListSearch}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                   </p:selectOneMenu>
+			                   <p:commandButton id="findId" update="formDataId"  icon="pi pi-search" actionListener="#{payorBean.init}"/>
+			                   </div>
+			    		</f:facet>
+			    		<f:facet name="right">
+			    			<div class="ui-inputgroup">	
+			    			<p:commandButton update="extractData" value="Load RPTS Files" onclick="PF('dlgExtract').show();"/>
+			    			<p:commandButton update="formDataId" value="New" icon="pi pi-file" actionListener="#{payorBean.addNew}"/>
+			    			<p:commandButton update="formDataId" value="Refresh" icon="pi pi-refresh" actionListener="#{payorBean.init}"/>
+			    			</div>
+			    		</f:facet>
+					</p:toolbar>
+	    	</div>
+	    	
+	    	<div class="col-12">
+	    		
+	    		<p:dataTable id="formDataId" var="rpt" value="#{payorBean.payors}" editable="true" 
+						       editMode="cell" widgetVar="cellTrans" rowKey="#{rpt.id}" scrollable="true" selection="#{payorBean.payorTableData}" selectionMode="single" 
+						       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+						                         rowsPerPageTemplate="5,10,15,20,50,100" lazy="false"
+						                         paginatorAlwaysVisible="false" paginatorPosition="top"
+						                         >
+						       
+						       <f:facet name="header">
+						           Land Owner / Payor
+						       </f:facet>
+						       
+						      						 <f:facet name="{Exporters}">
+						            						<h:commandLink title="Export in excel format">
+						                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+						                							<p:dataExporter type="xls" target="formDataId" fileName="Payor" />
+						            						</h:commandLink>
+						            						<h:commandLink title="Export in pdf format">
+						                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+						                						    <p:dataExporter type="pdf" target="formDataId" fileName="Payor" />
+						            						</h:commandLink>
+						            						
+						            				</f:facet>
+						       
+						       <p:ajax event="cellEdit"  listener="#{payorBean.onCellEdit}" update="formDataId" />	
+						       
+						       <p:column headerText="View Land Details">
+						                  <p:commandButton value="View Details" icon="fa fa-search" update="landDataId"  actionListener="#{payorBean.openLand(rpt)}" oncomplete="PF('landDialog').show()"/>
+						       </p:column>
+						       
+						       <p:column headerText="Payor Name">
+						              <p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{rpt.fullName}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Last Name, First Name" value="#{rpt.fullName}"  style="width:120%"/>
+						                  </f:facet>
+						              </p:cellEditor>
+						       </p:column>
+						       
+						       <p:column headerText="Barangay">
+						              <p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{rpt.barangay.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:selectOneMenu  value="#{payorBean.barangayId}" style="width:100%;" filter="true" filterMatchMode="contains">
+						                       <f:selectItem itemLabel="Select..."/>
+						                       <f:selectItems value="#{payorBean.barangayList}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+						                   </p:selectOneMenu>
+						                  </f:facet>
+						              </p:cellEditor>
+						       </p:column>
+						       
+						       <p:column headerText="Address">
+						              <p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{rpt.address}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Complete address" value="#{rpt.address}"  style="width:100%;"/>
+						                  </f:facet>
+						              </p:cellEditor>
+						       </p:column>
+						       
+						       
+						   </p:dataTable>  
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:contextMenu for="formDataId" widgetVar="cMenu">
+       <p:menuitem value="Add Cell" icon="pi pi-search" actionListener="#{payorBean.addNew}" onclick="PF('cMenu').hide()" update="formDataId"/>
+       <p:menuitem value="Copy Paste Cell" icon="pi pi-search" actionListener="#{payorBean.copyPasteCell}" onclick="PF('cMenu').hide()" update="formDataId"/>
+       <p:menuitem value="Save" icon="pi pi-search" actionListener="#{payorBean.save}" onclick="PF('cMenu').hide()" update="formDataId,payId,bgId"/>
+       <p:menuitem value="Delete" update="formDataId" icon="pi pi-trash" actionListener="#{payorBean.deleteCell}">
+       		<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+       </p:menuitem>
+       <p:menuitem value="Hide Menu" icon="pi pi-times" onclick="PF('cMenu').hide()"/>  
+   </p:contextMenu>
+ 
+ 
+ <p:dialog style="background: transparent; !important;" widgetVar="landDialog" position="center top"
+ Height="800" draggable="false" width="1200" maximizable="false" minimizable="false" 
+ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false">
+ 
+ <p:toolbar id="tbland">
+    		<f:facet name="left"/>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">	
+    			<p:commandButton update="landDataId" value="New" icon="pi pi-file" actionListener="#{payorBean.addNewLand}"/>
+    			<p:commandButton update="formDataId" value="Close" icon="pi pi-times" actionListener="#{payorBean.init}" onclick="PF('landDialog').hide()" />
+    			</div>
+    		</f:facet>
+		</p:toolbar>
+     <p:sticky target="tbland" />
+ 
+ <p:dataTable id="landDataId" var="prop" value="#{payorBean.lands}" editable="true" 
+       editMode="cell" widgetVar="cellLand" rowKey="#{prop.id}" scrollable="true" selection="#{payorBean.landTableData}" selectionMode="single" 
+       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorPosition="top" paginatorAlwaysVisible="false" lazy="true"
+       >
+       
+       <f:facet name="header">
+           #{payorBean.tmpPayorData.fullName}
+       </f:facet>
+       
+      						 <f:facet name="{Exporters}">
+            						<h:commandLink title="Export in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="landDataId" fileName="land" />
+            						</h:commandLink>
+            						<h:commandLink title="Export in pdf format">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+                						    <p:dataExporter type="pdf" target="landDataId" fileName="land" />
+            						</h:commandLink>
+            						
+            				</f:facet>
+       
+       <p:ajax event="cellEdit"  listener="#{payorBean.onCellEditLand}" update=":formId:landDataId" />	   
+       <p:column headerText="Improvement?" width="70">
+	       		 <p:cellEditor>
+              	  <f:facet name="output">
+              	  		<f:view>		
+	            			<my:if condition="#{prop.isImprovment==1}">
+	                     		<f:facet name="then">
+	            					<h:outputText  value="Improvement"/>
+	            				</f:facet>
+	            				<f:facet name="else">
+	            					<h:outputText  value="Origin"/>
+	            				</f:facet>
+	            			</my:if>
+	            		</f:view>
+              	  </f:facet>
+                  <f:facet name="input">
+                  <p:selectOneMenu  value="#{payorBean.imrovedId}" style="width:100%;">
+                  	   <f:selectItem itemLabel="Select..."/>
+                       <f:selectItems value="#{payorBean.improves}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                   </p:selectOneMenu>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       <p:column headerText="Status" width="70">
+              <p:cellEditor>
+              	  <f:facet name="output">
+              	  		<f:view>		
+	            			<my:if condition="#{prop.status==1}">
+	                     		<f:facet name="then">
+	            					<h:outputText  value="ACTIVE"/>
+	            				</f:facet>
+	            				<f:facet name="else">
+	            					<h:outputText  value="RETIRED"/>
+	            				</f:facet>
+	            			</my:if>
+	            		</f:view>
+              	  </f:facet>
+                  <f:facet name="input">
+                  <p:selectOneMenu  value="#{payorBean.landStatusId}" style="width:100%;">
+                  	   <f:selectItem itemLabel="Select..."/>
+                       <f:selectItems value="#{payorBean.landStatus}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                   </p:selectOneMenu>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="TD No" width="100">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.taxDeclarionNo}" /></f:facet>
+                  <f:facet name="input">
+                  <p:inputText  placeholder="TD NO" value="#{prop.taxDeclarionNo}"  style="width:100%;"/>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Lot No" width="70">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.lotNo}" /></f:facet>
+                  <f:facet name="input">
+                  <p:inputText  placeholder="LOT NO" value="#{prop.lotNo}"  style="width:100%;"/>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Land Type" width="70">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.landType.landType}" /></f:facet>
+                  <f:facet name="input">
+                  <p:selectOneMenu  value="#{payorBean.landTypeId}" style="width:100%;">
+                  	   <f:selectItem itemLabel="Select..."/>
+                       <f:selectItems value="#{payorBean.landTypes}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                   </p:selectOneMenu>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Assessed Value" width="70">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.landValue}" /></f:facet>
+                  <f:facet name="input">
+                  <p:inputText  placeholder="0.00" value="#{prop.landValue}" style="width:100%;"/>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+        <p:column headerText="Barangay" width="100">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.barangay.name}" /></f:facet>
+                  <f:facet name="input">
+                  <p:selectOneMenu  value="#{payorBean.barangayIdLand}" style="width:100%;" filter="true" filterMatchMode="contains">
+                       <f:selectItem itemLabel="Select..."/>
+                       <f:selectItems value="#{payorBean.barangayListLand}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                   </p:selectOneMenu>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Address" width="200">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.address}" /></f:facet>
+                  <f:facet name="input">
+                  <p:inputText  placeholder="Complete address" value="#{prop.address}"  style="width:100%;"/>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+       <p:column headerText="Remarks" width="70">
+              <p:cellEditor>
+              	  <f:facet name="output"><h:outputText value="#{prop.remarks}" /></f:facet>
+                  <f:facet name="input">
+                  <p:inputText  placeholder="Remarks" value="#{prop.remarks}"  style="width:100%;"/>
+                  </f:facet>
+              </p:cellEditor>
+       </p:column>
+       
+ </p:dataTable>
+ 
+ </p:dialog>
+ 
+<p:contextMenu for="landDataId" widgetVar="cMenuLand">
+       <p:menuitem value="Add Cell" icon="pi pi-search" actionListener="#{payorBean.addNewLand}" onclick="PF('cMenuLand').hide()" update="landDataId"/>
+       <p:menuitem value="Copy Paste Cell" icon="pi pi-clone" actionListener="#{payorBean.copyPasteCellLand}" onclick="PF('cMenuLand').hide()" update="landDataId"/>
+       <p:menuitem value="Save" icon="pi pi-save" actionListener="#{payorBean.saveLand}" onclick="PF('cMenuLand').hide()" update="landDataId"/>
+       <p:menuitem value="Delete" update="landDataId" icon="pi pi-trash" actionListener="#{payorBean.deleteCellLand}">
+       		<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+       </p:menuitem>
+       <p:menuitem value="Close" update="@form" icon="pi pi-times" onclick="PF('landDialog').hide()" actionListener="#{payorBean.init}"/>
+       <p:menuitem value="Hide Menu" icon="pi pi-sort-alt-slash" onclick="PF('cMenuLand').hide()"/>  
+   </p:contextMenu>
+ 
+ <p:dialog widgetVar="dlgExtract" position="center top" draggable="false" fitViewport="true" responsive="true" maximizable="true" minimizable="false" >
+ 
+ <p:toolbar id="tbExt">
+    		<f:facet name="left">
+    				<p:inputText value="#{extractBean.searchParama}" placeholder="Search Name here">
+    					<p:ajax event="keyup" listener="#{extractBean.searchExtract}" update="extractData"/>
+    				</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:fileUpload listener="#{extractBean.uploadData}"
+					                    			mode="advanced" auto="true" sizeLimit="50000000" label="Upload RPTS File"
+					                    			update="extractData msg" dragDropSupport="true" 
+					                    			allowTypes="/(\.|\/)(xls|xlsx|XLS|XLSX|txt|TXT)$/" />
+    		</f:facet>
+		</p:toolbar>
+ 
+ 		 <p:dataTable id="extractData" var="ex" value="#{extractBean.pays}"
+       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="10,20,50,100" paginatorPosition="top" paginatorAlwaysVisible="false" lazy="false"
+       >
+       
+       	<p:column headerText="TD No">
+       		<p:outputLabel value="#{ex.tdNo}"/>
+       	</p:column>
+       	<p:column headerText="Lot No">
+       		<p:outputLabel value="#{ex.lotNo}"/>
+       	</p:column>
+       	<p:column headerText="Owner">
+       		<p:outputLabel value="#{ex.owner}"/>
+       	</p:column>
+       	<p:column headerText="Assessed Value">
+       		<p:outputLabel value="#{ex.assessedValue}"/>
+       	</p:column>
+       	<p:column headerText="Address">
+       		<p:outputLabel value="#{ex.address}"/>
+       	</p:column>
+       </p:dataTable>
+ </p:dialog>
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

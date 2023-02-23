@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Daily Timesheet Generator</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" />
+	
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	 </p:confirmDialog>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid grid-nogutter">
+	    	
+	    	
+		    	<div class="col-3">
+		    		
+				    <p:panelGrid id="gridId" columns="2" layout="grid">
+						<p:outputLabel value="Year"/>	
+					    <p:selectOneMenu id="yearId" value="#{dtrBean.year}" style="width: 12em">
+								<f:selectItems value="#{dtrBean.years}"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Month"/>	
+					    <p:selectOneMenu id="monthId" value="#{dtrBean.monthId}" style="width: 12em">
+					    		<f:selectItem itemLabel="Please select" />
+								<f:selectItems value="#{dtrBean.months}"/>
+								<p:ajax event="change" listener="#{dtrBean.loadDates}" update="holId bzId"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Holidays"/>
+						<p:selectCheckboxMenu id="holId" value="#{dtrBean.selectedHoliday}" label="Select Holiday" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 12em">
+							<f:selectItems value="#{dtrBean.holidays}" />
+						</p:selectCheckboxMenu>
+						
+						<p:outputLabel value="Official Business"/>
+						<p:selectCheckboxMenu id="bzId" value="#{dtrBean.selectedBz}" label="Select OB" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 12em">
+							<f:selectItems value="#{dtrBean.officialBzs}" />
+						</p:selectCheckboxMenu>
+						
+						<p:outputLabel value="Employee:"/>
+						<p:inputText value="#{dtrBean.employeeName}" placeholder="Employee Name" style="width: 12em"/>
+						
+						<p:outputLabel value="In-Charge:"/>
+						<p:inputText value="#{dtrBean.adminPerson}" placeholder="In-Charge" style="width: 12em"/>
+						
+						<p:commandButton value="Generate DTR" actionListener="#{dtrBean.generateDTR}"  update="dataTransId"/>
+						<h:commandLink title="Export DTR in pdf format" target="_blank" ajax="false" immediate="false"  actionListener="#{dtrBean.printReportAll}">
+			                		<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+			            </h:commandLink>
+					</p:panelGrid>
+		    		
+	    		</div>
+	    	
+	    	<div class="col-9">
+	    		
+				<p:dataTable id="dataTransId" value="#{dtrBean.dtrs}" var="rpt" stickyHeader="false"
+							rows="31" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="31"
+                         scrollable="true" scrollWidth="100%" paginatorPosition="top" lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+            						<h:commandLink title="Export DTR in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="dataTransId" fileName="dtr" />
+            						</h:commandLink>
+            						
+            						
+            				</f:facet>
+            						
+									<p:column headerText="Date" width="20">
+            								<p:outputLabel value="#{rpt.f1}"/>
+            						</p:column>
+            						
+            						<p:column headerText="Morning In" width="70">
+            								<p:outputLabel value="#{rpt.f2}"/>
+            						</p:column>
+            						
+            						<p:column headerText="Morning Out" width="70">
+            								<p:outputLabel value="#{rpt.f3}"/>
+            						</p:column>
+									
+									<p:column headerText="Afternoon In" width="70">
+            								<p:outputLabel value="#{rpt.f4}"/>
+            						</p:column>
+            						
+            						<p:column headerText="Afternoon Out" width="70">
+            								<p:outputLabel value="#{rpt.f5}"/>
+            						</p:column>
+									
+				</p:dataTable>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
