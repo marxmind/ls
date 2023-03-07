@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Cash Disbursement Voucher</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+	
+	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-7">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			 <div class="ui-inputgroup" style="float:right">
+           					<p:commandButton value="New" update="fieldId itemData" icon="pi pi-file" actionListener="#{cashDv.clear}"/>
+    					</div>	
+		    		</div>
+		    		<div class="col-12">
+		    			
+						<p:panelGrid id="fieldId" columns="3" layout="grid" style="text-align: left">
+			
+							<p:outputLabel>
+								<div class="ui-inputgroup">
+								<div class="p-field">
+									<medium class="p-d-block" style="text-align: left">Date</medium>
+									<p:calendar value="#{cashDv.cashDvData.dateReportTmp}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 20em"/>
+								</div>
+								</div>
+							</p:outputLabel>	
+							
+							
+							<p:outputLabel>
+								<div class="ui-inputgroup">
+								<div class="p-field">
+								<medium class="p-d-block" style="text-align: left">Fund</medium>
+								<p:selectOneMenu id="frmColFormId" value="#{cashDv.cashDvData.fundId}" style="width: 20em" filter="true" filterMatchMode="contains">
+									<f:selectItems value="#{cashDv.funds}"/>
+									<p:ajax event="change" listener="#{cashDv.updateInfo}" update="dataId"/>
+								</p:selectOneMenu>
+								</div>
+								</div>
+							</p:outputLabel>
+							
+							<p:outputLabel>
+								<div class="ui-inputgroup">
+								<div class="p-field">
+								<medium class="p-d-block" style="text-align: left">Period Covered</medium>
+									<p:inputText value="#{cashDv.cashDvData.periodCovered}" placeholder="Period Covered" style="width: 20em">
+										<p:ajax event="change" listener="#{cashDv.updateInfo}" update="dataId"/>
+									</p:inputText>
+								</div>
+								</div>
+							</p:outputLabel>
+							
+							<p:outputLabel >
+								<div class="ui-inputgroup">
+								<div class="p-field">
+									<medium class="p-d-block" style="text-align: left">Disbursing Officer</medium>
+									<p:inputText value="#{cashDv.cashDvData.disbursingOfficer}" placeholder="Disbursing Officer" style="width: 20em">
+										<p:ajax event="change" listener="#{cashDv.updateInfo}" update="dataId"/>
+									</p:inputText>
+								</div>
+								</div>
+							</p:outputLabel>	
+							
+							
+								
+							<p:outputLabel >
+								<div class="ui-inputgroup">
+								<div class="p-field">
+									<medium class="p-d-block" style="text-align: left">Designation</medium>
+									<p:inputText value="#{cashDv.cashDvData.designation}" placeholder="Designation" style="width: 20em">
+										<p:ajax event="change" listener="#{cashDv.updateInfo}" update="dataId"/>
+									</p:inputText>
+								</div>
+								</div>
+							</p:outputLabel>	
+							
+							<p:outputLabel >
+								<div class="ui-inputgroup">
+								<div class="p-field">
+									<medium class="p-d-block" style="text-align: left">Report No</medium>
+									<p:inputText value="#{cashDv.cashDvData.reportNo}" placeholder="Report No" style="width: 20em">
+										<p:ajax event="change" listener="#{cashDv.updateInfo}" update="dataId"/>
+									</p:inputText>
+								</div>
+								</div>
+							</p:outputLabel>	
+							
+							<p:outputLabel/>
+							<p:outputLabel/>
+							
+							
+							<p:outputLabel >
+								<div class="ui-inputgroup">
+								<div class="p-field">
+									<medium class="p-d-block" style="text-align: left">Save Action</medium>
+									<p:commandButton value="Create Disbursement" update="itemData dataId msg" actionListener="#{cashDv.createItem}" icon="fa fa-floppy-o" style="width: 20em"/>
+								</div>
+								</div>
+							</p:outputLabel>	
+								
+								
+							</p:panelGrid>
+
+		    		</div>
+		    		
+		    		<div class="col-12">
+		    			
+		    			<p:dataTable id="itemData" var="itm" value="#{cashDv.cashDvData.rpts}" editable="#{cashDv.enabledTable}"
+						       editMode="cell" widgetVar="cellCash" scrollable="true" lazy="false"
+						       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+						                         rowsPerPageTemplate="10,20,30,60,90,120,150,180,210,240,270,300" paginatorPosition="top" paginatorAlwaysVisible="true" draggableRows="true"
+						       >
+       
+				       <p:ajax event="rowReorder" listener="#{cashDv.onRowReorder}" update="itemData"/>
+				       
+				       <f:facet name="{Exporters}">
+				       		<p:commandButton icon="pi pi-file" value="Add Row" actionListener="#{cashDv.addItem}" update="itemData" title="Add Row" style="float: right"/>
+				       </f:facet>
+				       
+				       <p:ajax event="cellEdit"  listener="#{cashDv.onCellEdit}" update="itemData dataId" />
+				       
+				       <p:column headerText="#" width="10" style="text-align: left">
+				       		<p:outputLabel value="#{itm.number}" />
+				       </p:column>
+				       
+				       <p:column headerText="Date" width="50" style="text-align: left">
+				              <p:cellEditor>
+				              	  <f:facet name="output"><p:outputLabel value="#{itm.dateTrans}" /></f:facet>
+				                  <f:facet name="input">
+				                  <p:inputText  placeholder="Date" value="#{itm.dateTrans}"/>
+				                  </f:facet>
+				              </p:cellEditor>
+				       </p:column>
+				       
+				       <p:column headerText="DV/Payroll No" width="100" style="text-align: left">
+				              <p:cellEditor>
+				              	  <f:facet name="output"><p:outputLabel value="#{itm.dvPayroll}" /></f:facet>
+				                  <f:facet name="input">
+				                  <p:inputText  placeholder="DV" value="#{itm.dvPayroll}"/>
+				                  </f:facet>
+				              </p:cellEditor>
+				       </p:column>
+				       
+				       <p:column headerText="CAFOA No." width="100" style="text-align: center">
+				              <p:cellEditor>
+				              	  <f:facet name="output"><p:outputLabel value="#{itm.cafoaNo}" /></f:facet>
+				                  <f:facet name="input">
+				                  <p:inputText  placeholder="CAFOA No" value="#{itm.cafoaNo}"/>
+				                  </f:facet>
+				              </p:cellEditor>
+				       </p:column>
+				       
+				       <p:column headerText="Payee" width="150" style="text-align: center">
+				              <p:cellEditor>
+				              	  <f:facet name="output"><p:outputLabel value="#{itm.payee}" /></f:facet>
+				                  <f:facet name="input">
+				                  <p:inputText  placeholder="Payee" value="#{itm.payee}"/>
+				                  </f:facet>
+				              </p:cellEditor>
+				       </p:column>
+				       
+				       <p:column headerText="Nature of Payment" width="150" style="text-align: center">
+				              <p:cellEditor>
+				              	  <f:facet name="output"><p:outputLabel value="#{itm.naturePay}" /></f:facet>
+				                  <f:facet name="input">
+				                  <p:inputText  placeholder="Nature of Payment" value="#{itm.naturePay}"/>
+				                  </f:facet>
+				              </p:cellEditor>
+				       </p:column>
+				       
+				       <p:column headerText="Amount" width="70" style="text-align: center">
+				              <p:cellEditor>
+				              	  <f:facet name="output"><p:outputLabel value="#{itm.amount}" /></f:facet>
+				                  <f:facet name="input">
+				                  <p:inputNumber  placeholder="0.0" value="#{itm.amount}"/>
+				                  </f:facet>
+				              </p:cellEditor>
+				       </p:column>
+				       
+				       <p:column headerText="Action" width="50" style="text-align: center">
+				       		<p:commandButton update="itemData msg" icon="pi pi-trash" title="Click this button to delete this data" actionListener="#{cashDv.deleteItem(itm)}">
+						           <p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+							</p:commandButton>
+				       </p:column>
+				       
+				       </p:dataTable>			
+		    			
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-5">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			
+					<div class="ui-inputgroup" style="float:left">
+                	
+                	<span class="ui-input-icon-left">
+			    	<i class="pi pi-search" />
+                    <p:inputText value="#{cashDv.searchParam}" placeholder="Search..." style="width: 30em">
+                    	<p:ajax event="keyup" listener="#{cashDv.searchItem}" update="dataId itemData fieldId" delay="800" />
+                    </p:inputText>
+                    </span>
+                    
+                    </div>
+
+
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+	    			<p:dataTable id="dataId" value="#{cashDv.rpts}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true"  paginatorPosition="top" lazy="false"
+                         >
+                         	     	
+		          					<p:column headerText="" width="15" exportable="false">
+		            					<p:commandButton update="dataId msg" icon="pi pi-trash" title="Click this button to delete this data" actionListener="#{cashDv.deleteRpt(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		            				
+		            				<p:column headerText="" width="15" exportable="false">
+		            					<p:commandButton icon="pi pi-pencil" title="Click this button to see the additional information" update="itemData fieldId" actionListener="#{cashDv.clickItemRpt(rpt)}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="" width="15" exportable="false">
+            						<p:commandLink title="Print in PDF" target="_blank" action="#{cashDv.print(rpt)}" ajax="false" immediate="false" >
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+									</p:commandLink>
+            						</p:column>
+		            				
+		            				<p:column headerText="Covered" width="50" sortable="false">
+		            						<p:outputLabel  value="#{rpt.periodCovered}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Date" width="70">
+		            						<p:outputLabel  value="#{rpt.dateReport}"/>
+		            				</p:column>
+		            				
+		                         	<p:column headerText="Total" width="50">
+		            						<p:outputLabel  value="#{rpt.totalAmount}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Officer" width="100">
+		            						<p:outputLabel  value="#{rpt.disbursingOfficer}"/>
+		            				</p:column> 
+		            				
+		            				<p:column headerText="Designation" width="100">
+		            						<p:outputLabel  value="#{rpt.designation}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Fund" width="100">
+		            						<p:outputLabel  value="#{rpt.fundName}"/>
+		            				</p:column>
+		            				
+							</p:dataTable>
+	    			
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<h:outputScript>
+	
+		function hide(){
+			$('#idCommandCreate').hide(1000);
+			$('#idCommandItem').show(1000);
+		}
+		
+		function show(){
+			$('#idCommandCreate').show(1000);
+			$('#idCommandItem').hide(1000);
+		}
+	
+	</h:outputScript>	
+	
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

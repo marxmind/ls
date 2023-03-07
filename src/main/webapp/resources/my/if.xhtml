@@ -1,0 +1,25 @@
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core">
+<cc:interface>
+    <cc:attribute name="condition" required="true"/>
+    <cc:facet name="then"/>
+    <cc:facet name="else" />
+</cc:interface>
+
+<cc:implementation>
+    <ui:fragment rendered="#{cc.attrs.condition}" >
+        <cc:renderFacet name="then" />
+    </ui:fragment>
+    <ui:fragment rendered="#{not cc.attrs.condition}" >
+        <cc:renderFacet name="else" />
+    </ui:fragment>
+</cc:implementation>
+</html>

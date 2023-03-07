@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    xmlns:pe="http://primefaces.org/ui/extensions"  
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Business Official Registration</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+		<p:growl id="msg" showDetail="true" life="2000" />
+	
+	
+		 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+		
+		<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    	</p:confirmPopup>
+		
+		<p:confirmDialog widgetVar="cfNote" header="Please Confirm" message="Are you sure you want to save?" severity="info" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+	       		<p:outputLabel value="Please check below where to send notification" />
+	       		<p:selectManyCheckbox id="custom" value="#{orBean.checks}"
+					layout="custom">
+					<f:selectItem itemLabel="Secretary" itemValue="Secretary"/>
+					<f:selectItem itemLabel="Treasurer" itemValue="Treasurer" />
+					<f:selectItem itemLabel="Clerk" itemValue="Clerk" />
+				</p:selectManyCheckbox>
+				<div class="ui-grid ui-grid-responsive">
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-6">
+							<p:outputLabel for="opt1" value="Secretary" style="display:block"/>
+							<p:checkbox id="opt1" for="custom" itemIndex="0"/>
+						</div>
+						<div class="ui-grid-col-6">
+							<p:outputLabel for="opt2" value="Treasurer" style="display:block"/>
+							<p:checkbox id="opt2" for="custom" itemIndex="1" />
+						</div>
+						<div class="ui-grid-col-6">
+							<p:outputLabel for="opt3" value="Clerk" style="display:block"/>
+							<p:checkbox id="opt3" for="custom" itemIndex="2" />
+						</div>
+					</div>
+				</div>
+	       		<br/><br/>
+	       		<p:commandButton value="Yes" actionListener="#{orBean.saveOR}" update="orFld ORDataId msg" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('cfNote').hide()" />
+	       		<p:commandButton value="No"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('cfNote').hide()"/>
+	       
+	       	
+    	</p:confirmDialog>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-6">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			<p:toolbar id="tbORFld">
+				    		<f:facet name="left"/>
+				    		<f:facet name="right">
+				    			<p:commandButton update="orFld"  value="Clear" icon="pi pi-trash" title="Click this button to clear information" actionListener="#{orBean.clearFlds}"/>
+				    			<p:commandButton type="button" value="Save" icon="pi pi-save" title="Click this button to save your changes" onclick="PF('cfNote').show()" />
+				    		</f:facet>
+						</p:toolbar>
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panelGrid id="orFld" columns="4" layout="grid">
+		
+							<p:outputLabel  value="Issued Date:"/>
+							<p:calendar value="#{orBean.issuedDate}" pattern="yyyy-MM-dd" effect="slideDown"/>
+							
+							<p:outputLabel  value="Status:"/>
+			            	<p:selectOneMenu value="#{orBean.statId}" style="width: 11em;">
+			                	<f:selectItems value="#{orBean.stats}"/>
+			            	</p:selectOneMenu>
+							
+							<p:outputLabel  value="OR Number: "/>
+							<p:inputText id="oridd" value="#{orBean.orNumber}" placeholder="0000000"/>
+							
+							<p:outputLabel  value="Issued Address: "/>	
+							<p:inputTextarea value="#{orBean.issuedAddress}" placeholder="Address"/>
+							
+							<p:outputLabel  value="Purpose: "/>
+							<p:inputTextarea value="#{orBean.purpose}" placeholder="Purpose of OR"/>
+							
+							<p:outputLabel  value="Full Name: "/>
+							<p:outputLabel>
+								<p:outputLabel id="idName" value="#{orBean.citizenName}"/>
+								<p:commandButton update="ownerId idSearchTax" icon="pi pi-search" actionListener="#{orBean.loadTaxpayer}" onclick="PF('multiDialogOwner').show()"/>
+							</p:outputLabel>
+							
+							<p:outputLabel value=""/>
+							<p:outputLabel value="Capital/Gross Amount"/>
+							
+							<p:outputLabel/>
+							<p:outputLabel/>
+											
+							<p:selectBooleanCheckbox value="#{orBean.capital}"><p:outputLabel value="Please check this if for Capital"/> </p:selectBooleanCheckbox>
+							<p:inputNumber value="#{orBean.grossAmount}" placeholder="0.00"/>			
+							
+							
+											
+							<p:outputLabel  value="Amount: "/>
+							<p:inputNumber value="#{orBean.amount}" placeholder="0.00"/>
+							
+					</p:panelGrid> 
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-6">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<p:toolbar id="tbOR" style="#{skin.toolbar}">
+			    		<f:facet name="left">
+			    			<span class="ui-input-icon-left">
+			    			<i class="pi pi-search" />
+			    			<p:inputText value="#{orBean.searchName}" placeholder="Search..." style="width: 20em">
+						    					<p:ajax event="keyup" listener="#{orBean.loadORs}" update="ORDataId" delay="800"/>
+						    </p:inputText>
+						    </span>		
+					        <p:calendar value="#{orBean.calendarFrom}" pattern="yyyy-MM-dd" effect="slideDown"/>
+						    <p:calendar value="#{orBean.calendarTo}" pattern="yyyy-MM-dd" effect="slideDown"/>
+						    <p:commandButton update="ORDataId" icon="pi pi-search" actionListener="#{orBean.loadORs}"/>
+				    		</f:facet>
+				    		<f:facet name="right"/>
+					</p:toolbar>	
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+	    			<p:dataTable id="ORDataId" value="#{orBean.orNumbers}" var="orno" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false" paginatorPosition="top"
+                         >
+                         		
+                         		
+                         		<f:facet name="{Exporters}">
+                         			<p:menuButton value="Exports" style="float: left">
+										<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-excel">
+											<p:dataExporter type="xls" target="ORDataId" fileName="Department"/> 
+										</p:menuitem>
+										<p:menuitem value="Export PDF" ajax="false" immediate="true" icon="pi pi-file-pdf">
+											<p:dataExporter type="pdf" target="ORDataId" fileName="Department"/> 
+										</p:menuitem>
+									</p:menuButton> 
+            				</f:facet>	
+                         		
+                         	
+                         	<p:column headerText="[*]" width="30" exportable="false">
+            					<p:commandButton update="orFld ORDataId msg" icon="pi pi-trash" title="Click this button to delete" actionListener="#{orBean.deleteRow(orno)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            				</p:column>
+                         	
+            				<p:column headerText="Edit" width="30" exportable="false">
+                         		<p:commandButton update="orFld" icon="pi pi-pencil" title="Click this button to see the additional information" actionListener="#{orBean.clickItem(orno)}"/>
+                         	</p:column>	
+            				
+            				<p:column headerText="Date" width="70" sortable="false" sortBy="#{orno.dateTrans}">
+            						<h:outputText  value="#{orno.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="70" sortable="false" sortBy="#{orno.orStatus}">
+            						<h:outputText  value="#{orno.orStatus}"/>
+            				</p:column>
+            				<p:column headerText="Name" width="120" sortable="false" sortBy="#{orno.customer.fullname}">
+            						<h:outputText  value="#{orno.customer.fullname}"/>
+            				</p:column>
+            				<p:column headerText="Purpose" width="120" sortable="false" sortBy="#{orno.purpose}">
+            						<h:outputText  value="#{orno.purpose}"/>
+            				</p:column>
+            				<p:column headerText="OR Number" width="70" sortable="false" sortBy="#{orno.orNumber}">
+            						<h:outputText  value="#{orno.orNumber}"/>
+            				</p:column>
+            				<p:column headerText="Amount" width="70" sortable="false" sortBy="#{orno.amount}">
+            						<h:outputText  value="#{orno.amount}"/>
+            				</p:column>
+            			            				
+     	</p:dataTable> 
+	    			
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<p:dialog header="Name List" showEffect="clip" hideEffect="clip" position="center top" modal="false" widgetVar="multiDialogOwner" Height="500" width="500" closable="true" closeOnEscape="true">
+		<p:toolbar id="tbTax">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+        		<p:inputText id="idSearchTax" value="#{orBean.searchTaxpayerName}" style="width: 15em" placeholder="Search Name">
+    					<p:ajax event="keyup" listener="#{orBean.loadTaxpayer}" update="ownerId idName idSearchTax" delay="800"/>
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    			
+    		<f:facet name="right"/>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="ownerId" value="#{orBean.taxpayers}" var="own" stickyHeader="false"
+							rows="5" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top" lazy="false"
+                         >
+                         
+                         <p:column headerText="Action" width="20">
+                         	<p:commandButton icon="pi  pi-thumbs-up" title="Click this button to select person name" update="idName" actionListener="#{orBean.clickItemOwner(own)}" oncomplete="PF('multiDialogOwner').hide()"/>
+                         </p:column>
+                         
+                         <p:column headerText="Name" width="120">
+            				<p:outputLabel value="#{own.fullname}"/>
+            			</p:column>
+                         
+         </p:dataTable>                
+		
+</p:dialog>
+		
+		
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menulic.xhtml" />	
+</h:form>
+</h:body>
+</html>	

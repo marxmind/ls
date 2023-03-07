@@ -1,0 +1,48 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+    	
+    	
+    		<p:dialog widgetVar="dlgGraph" fitViewport="true" position="center top" header="Graph" closable="true" modal="true" closeOnEscape="true">
+    		<p:card style="width: 120em">
+    		<p:scrollPanel style="width:120em;height:650px" mode="native">
+    		<p:toolbar id="tbGraph">
+    		<f:facet name="left">
+			    <div class="ui-inputgroup">
+    			<p:selectCheckboxMenu id="grapYearId" value="#{graphCollectionBean.selectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 20em">
+					<f:selectItems value="#{graphCollectionBean.years}" />
+				</p:selectCheckboxMenu>
+				<p:selectCheckboxMenu id="grapCollectorId" value="#{graphCollectionBean.selectedCollector}" label="Select Collector" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 90em">
+					<f:selectItems value="#{graphCollectionBean.collectors}" />
+				</p:selectCheckboxMenu>
+				<p:commandButton icon="pi pi-search" update="graphId" actionListener="#{graphCollectionBean.selectedGraph}"/>
+    			</div>
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+    		
+    		
+    		<style type="text/css">
+			    .ui-chart {
+			        margin-bottom: 50px;
+			    }
+			</style>
+
+			
+			 <p:lineChart id="graphId" model="#{graphCollectionBean.lineModel}" style="width: 100%; height: 500px;"/>
+			</p:scrollPanel>
+    		
+    		</p:card>
+    		</p:dialog>
+    		
+    	
+    </ui:composition>
+ </html>

@@ -1,0 +1,368 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+    	
+    	<p:growl id="msgArticle" showDetail="true" life="2000" />
+    		<p:dialog widgetVar="dlgArticle" fitViewport="true" position="center top" header="Revenue Code" closable="true" resizable="true" responsive="true" showHeader="false" modal="true" closeOnEscape="true">
+    		
+    		<p:card style="width: 125em">
+    		
+    		<p:tabView prependId="false" cache="false" id="tabRevenue">
+    		
+    		<p:ajax event="tabChange" listener="#{articleBean.onChange}" update="dataRevenue dataSubRevenue dataPart dataRev"/>
+    		
+    		<p:tab title="Article" rendered="#{articleBean.normalUser}">
+    			
+    		<p:toolbar id="tbFormArticle">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText value="#{articleBean.searchArticle}" placeholder="Search..." style="width: 25em">
+    				<p:ajax event="keyup" listener="#{articleBean.loadArticle}" update="dataRevenue" />
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton value="Close" onclick="PF('dlgArticle').hide(1000);" />
+    		</f:facet>
+			</p:toolbar> 
+    			
+    		
+    		 <p:dataTable id="dataRevenue" value="#{articleBean.articles}" var="tx" stickyHeader="false"
+							rows="5" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" editable="true" editMode="cell" rowKey="#{tx.id}"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available" lazy="false">
+                         
+                         <p:ajax event="cellEdit"  listener="#{articleBean.onCellEditArticle}" update="dataRevenue msgArticle" />	
+                         
+                         <p:column headerText="Article" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.code}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Description" value="#{tx.code}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Name" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputTextarea  placeholder="Description" value="#{tx.name}" cols="40" rows="10"/>
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Description" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.description}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputTextarea  placeholder="Description" value="#{tx.description}" cols="40" rows="10" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Action" width="20">
+						 	<p:commandButton title="Click to save" update="dataRevenue msgArticle"  icon="pi pi-save" actionListener="#{articleBean.saveArticle(tx)}">
+									<p:confirm header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert" />
+							</p:commandButton>
+						 </p:column>
+    		</p:dataTable>
+    		
+    		</p:tab><!-- End of article -->
+    		
+    		<p:tab title="Sub Article" rendered="#{articleBean.normalUser}">
+    			
+    		<p:toolbar id="tbFormArticleSub">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText value="#{articleBean.searchSubArticle}" placeholder="Search..." style="width: 25em">
+    				<p:ajax event="keyup" listener="#{articleBean.loadArticle}" update="dataRevenue" />
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton value="Close" onclick="PF('dlgArticle').hide(1000);" />
+    		</f:facet>
+			</p:toolbar> 
+    			
+    		
+    		 <p:dataTable id="dataSubRevenue" value="#{articleBean.subArticles}" var="art" stickyHeader="false"
+							rows="5" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" editable="true" editMode="cell" rowKey="#{art.id}"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available" lazy="false">
+                         
+                         <p:ajax event="cellEdit"  listener="#{articleBean.onCellEditSubArticle}" update="dataSubRevenue msgArticle" />	
+                         
+                         <p:column headerText="Article Code" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{art.article.code}" /></f:facet>
+						                  <f:facet name="input">
+						                  		<p:selectOneMenu value="#{art.articleId}"  filter="true" filterMatchMode="contains" styleClass="js-tilt" style="width: 15em">
+									      			<f:selectItems value="#{art.articles}"/>
+						      					</p:selectOneMenu>
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+                         
+                         <p:column headerText="Name" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{art.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputTextarea  placeholder="Description" value="#{art.name}" cols="40" rows="10"/>
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 
+						 
+						 <p:column headerText="Action" width="20">
+						 	<p:commandButton title="Click to save" update="dataSubRevenue msgArticle"  icon="pi pi-save" actionListener="#{articleBean.saveArticleSub(art)}">
+									<p:confirm header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert" />
+							</p:commandButton>
+						 </p:column>
+    		</p:dataTable>
+    			
+    		</p:tab>
+    		
+    		<p:tab title="Particulars" rendered="#{articleBean.normalUser}">
+    			
+    		<p:toolbar id="tbParticular">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText value="#{articleBean.searchParticular}" placeholder="Search..." style="width: 25em">
+    				<p:ajax event="keyup" listener="#{articleBean.loadParticulars}" update="dataPart" />
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton value="Close" onclick="PF('dlgArticle').hide(1000);" />
+    		</f:facet>
+			</p:toolbar> 
+    			
+    		
+    		 <p:dataTable id="dataPart" value="#{articleBean.particulars}" var="pt" stickyHeader="false"
+							rows="5" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" editable="true" editMode="cell" rowKey="#{pt.id}"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available" lazy="false">
+                         
+                         <p:ajax event="cellEdit"  listener="#{articleBean.onCellEditArticlePart}" update="dataPart msgArticle" />	
+                         
+                         <p:column headerText="Article" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.article.code}" /></f:facet>
+						                  <f:facet name="input">
+						                  		<p:selectOneMenu value="#{pt.articleId}"  filter="true" filterMatchMode="contains" styleClass="js-tilt" style="width: 15em">
+									      			<f:selectItems value="#{pt.articles}"/>
+						      					</p:selectOneMenu>
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Sub Article" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.articleSubtype.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  		<p:selectOneMenu value="#{pt.subId}"  filter="true" filterMatchMode="contains" styleClass="js-tilt" style="width: 15em">
+									      			<f:selectItems value="#{pt.subs}"/>
+						      					</p:selectOneMenu>
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+                         
+                         <p:column headerText="Name" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputTextarea  placeholder="Name" value="#{pt.name}" cols="40" rows="10"/>
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Description" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.description}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputTextarea  placeholder="Name" value="#{pt.description}" cols="40" rows="10" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Fee" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.amount}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.amount}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="MPF" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.mpf}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.mpf}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="ESPF(6%)" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.espf}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.espf}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="EMF(5%,2%)" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.emf}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.emf}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="SF(2%)" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.sf}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.sf}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="SSF(2%)" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.ssf}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.ssf}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="RMF" width="60">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{pt.rmf}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Name" value="#{pt.rmf}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 
+						 <p:column headerText="Action" width="20">
+						 	<p:commandButton title="Click to save" update="dataPart msgArticle"  icon="pi pi-save" actionListener="#{articleBean.saveParticular(pt)}">
+									<p:confirm header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert" />
+							</p:commandButton>
+						 </p:column>
+    		</p:dataTable>
+    			
+    			
+    		</p:tab>
+    		
+    		<p:tab title="Revenue Code Details">
+    			
+    		<p:toolbar id="tbRev">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText value="#{articleBean.searchRevenueCode}" placeholder="Search..." style="width: 25em">
+    				<p:ajax event="keyup" listener="#{articleBean.loadAll}" update="dataRev" delay="900"/>
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton value="Close" onclick="PF('dlgArticle').hide(1000);" />
+    		</f:facet>
+			</p:toolbar>
+			
+			<p:dataTable id="dataRev" value="#{articleBean.revenues}" var="rv" stickyHeader="false"
+							rows="5" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" scrollable="true" scrollHeight="1000"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available" lazy="false">
+                        
+                       <p:column headerText="Article" width="100">  
+                         <p:outputLabel value="#{rv.articleCode}"/>
+                       </p:column>
+                       
+                       <p:column headerText="Article Name" width="200">  
+                         <p:outputLabel value="#{rv.articleName}"/>
+                       </p:column> 
+                       
+                       <p:column headerText="Sub Type" width="200">  
+                         <p:outputLabel value="#{rv.subName}"/>
+                       </p:column>
+                       
+                       <p:column headerText="Particular" width="200">  
+                         <p:outputLabel value="#{rv.particular}"/>
+                       </p:column>
+                       
+                       <p:column headerText="Description" width="200">  
+                         <p:outputLabel value="#{rv.description}"/>
+                      </p:column>
+                         
+                        <p:column headerText="Fee" width="60">  
+                         <p:outputLabel value="#{rv.fee}" style="font-weight: bold">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel>  
+                       </p:column> 
+                       
+                       <p:column headerText="MPF" width="60">
+                       	<p:outputLabel value="#{rv.mpf}">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel> 
+					   </p:column>
+						 
+					   <p:column headerText="ESPF(6%)" width="60">
+						<p:outputLabel value="#{rv.espf}">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel> 
+					   </p:column>
+						 
+					   <p:column headerText="EMF(5%,2%)" width="60">
+						<p:outputLabel value="#{rv.emf}">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel> 
+					   </p:column>
+						 
+						 <p:column headerText="SF(2%)" width="60">
+						 <p:outputLabel value="#{rv.sf}">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel> 
+						 </p:column>
+						 
+						 <p:column headerText="SSF(2%)" width="60">
+						 <p:outputLabel value="#{rv.ssf}">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel> 
+						 </p:column>
+						 
+						 <p:column headerText="RMF" width="60">
+						 <p:outputLabel value="#{rv.rmf}">
+                         	<f:convertNumber currencySymbol="" type="currency"/>
+                       </p:outputLabel> 
+						 </p:column>
+                         
+             </p:dataTable>            
+			
+    			
+    		</p:tab>
+    		
+    		</p:tabView>
+    		</p:card>
+    		</p:dialog>
+    	
+    </ui:composition>
+ </html>	

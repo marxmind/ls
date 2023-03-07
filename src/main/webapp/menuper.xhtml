@@ -1,0 +1,86 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+    <p:tooltip position="top"/>
+    	<div 
+	   					style="width: 100%;
+						  padding-right: 15px;
+						  padding-left: 15px;
+						  margin-right: auto;
+						  margin-left: auto;
+	   					  padding: 0 !important; 
+	   					  position: fixed;
+						  right: 0;
+						  bottom: 0;
+						  left: 0;
+						  z-index: 1;
+						  background: linear-gradient(#0789b2, #086583, #044357);
+						  
+						  ">
+						<h:outputStylesheet>
+							.menuButton{
+								width: 100%;
+								-webkit-transition-duration: 0.4s; /* Safari */
+								  transition-duration: 0.4s;
+								  cursor: pointer;
+							}
+							.ui-button.menuButton:hover {
+								  background-color: #e7e7e7; /* gray */
+								  color: black;
+								  transform:scale(1.3,1.3);
+							    -webkit-transform:scale(1.3,1.3);
+							    -moz-transform:scale(1.3,1.3);
+							    padding: 20px 10px; /* 5px top/bottom, 10px left/right */
+								} 
+						</h:outputStylesheet>	 
+			             <p:commandButton value="Menu" styleClass="menuButton" onclick="PF('dlgMain').show();"/>
+			               
+			</div>
+    		<p:dialog widgetVar="dlgMain" closable="false" draggable="false" modal="true" showEffect="fade" hideEffect="fade" showHeader="false" position="center center">
+		
+			<p:panelGrid columns="3" styleClass="ui-noborder">
+							
+							<h:outputStylesheet>
+								.button {
+								  background-color: #008CBA; /* blue */
+								  border: none;
+								  color: white;
+								  padding: 15px 32px;
+								  text-align: center;
+								  text-decoration: none;
+								  display: inline-block;
+								  font-size: 16px;
+								  margin: 4px 2px;
+								  cursor: pointer;
+								  width: 100%;
+								  -webkit-transition-duration: 0.4s; /* Safari */
+								  transition-duration: 0.4s;
+								  cursor: pointer;
+								}
+								.ui-button.button:hover {
+								  background-color: #e7e7e7; /* gray */
+								  color: black;
+								}  
+							</h:outputStylesheet>
+							<p:commandButton icon="pi pi-list" action="departmentper.xhtml" value="Department" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-money-bill" action="employeemain.xhtml" value="Employee" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" onclick="PF('dlgMain').hide();" value="Close" styleClass="button"/>
+				             <p:commandButton icon="pi pi-power-off" action="portal" value="Logout" styleClass="button" actionListener="#{loginBean.logout}" immediate="false" ajax="false"/>
+				             <p:outputLabel/>
+			</p:panelGrid>
+		
+	</p:dialog>
+   	<p:commandButton title="Calendar" icon="pi pi-calendar" id="calId" onclick="PF('calId').show(1000)" update="dataCalId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 0px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>		
+   	
+   	<ui:include src="update.xhtml"/>
+   		<ui:include src="calendar.xhtml"/>
+    </ui:composition>
+</html>

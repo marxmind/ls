@@ -1,0 +1,314 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+    	
+    	<p:growl id="msgTax" showDetail="true" life="2000" />
+    		<p:dialog widgetVar="dlgTaxCode" fitViewport="true" position="center top" header="Particular Settings" closable="true" modal="true" closeOnEscape="true">
+    		<p:scrollPanel style="width:120em;height:650px" mode="native">
+    		
+    		<p:tabView prependId="false" cache="true" id="tabCodeId">
+    		
+    		<p:ajax event="tabChange" listener="#{paymentTaxCodeBean.onChange}" update="tabCodeId"/>
+    		
+    		<p:tab title="Particulars">
+    			
+    		<p:toolbar id="tbFormTaxCode">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText value="#{paymentTaxCodeBean.searchName}" placeholder="Search..." style="width: 25em">
+    				<p:ajax event="keyup" listener="#{paymentTaxCodeBean.loadTaxCode}" update="dataTax dataGroup" />
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+					
+    				 <p:dataTable id="dataTax" value="#{paymentTaxCodeBean.paynames}" var="tx" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" editable="true" editMode="cell" rowKey="#{tx.id}"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available">
+                         
+                         <p:ajax event="cellEdit"  listener="#{paymentTaxCodeBean.onCellEdit}" update="dataTax dataGroup dataAccountGroup msgTax" />	
+                         
+                         <p:column headerText="Particular Name" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Description" value="#{tx.name}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Code" width="10">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.accountingCode}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="000" value="#{tx.accountingCode}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Amount" width="50">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.amount}"><f:convertNumber currencySymbol="" type="currency"/> </h:outputText> </f:facet>
+						                  <f:facet name="input">
+						                  <p:inputNumber  placeholder="Description" value="#{tx.amount}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Description" width="150">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{tx.description}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Description" value="#{tx.description}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+                         
+                     </p:dataTable>
+    			
+    		</p:tab>
+    		
+    		
+    		
+    		<p:tab title="Accounting Code">
+    				
+    				 <p:dataTable id="dataAccountGroup" value="#{paymentTaxCodeBean.groupAccs}" var="gp" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" editable="true" editMode="cell" rowKey="#{gp.id}"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available">
+                         
+                         <p:ajax event="cellEdit"  listener="#{paymentTaxCodeBean.onCellEditAccountGroup}" update="dataAccountGroup msgTax" />	
+                         
+                         <p:column headerText="[*]" style="width:2rem" exportable="false">
+            					<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteAccountGroup(gp)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+            					</p:commandButton>
+            			 </p:column>
+                         
+                         <p:column headerText="Group Name" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{gp.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Description" value="#{gp.name}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Action" style="width:2rem" exportable="false">
+            					<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveAccountGroup(gp)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+            					</p:commandButton>
+            			 </p:column>
+						 
+						 <p:column headerText="Particular Names" style="width:2rem">
+			                <p:rowToggler />
+			             </p:column>
+						 
+						 <p:rowExpansion rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+						 	<p:dataTable id="dataAccntNames" value="#{gp.groups}" var="gpx" reflow="true" emptyMessage="No data available">
+								
+								<p:column headerText="[*]" style="width:2rem" exportable="false">
+            					
+            					<f:view>		
+			         				<my:if condition="#{gpx.name.equalsIgnoreCase('Add Name')}">
+		                			 	<f:facet name="then">
+	          								
+            							</f:facet>
+             							<f:facet name="else">
+			         						<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteAccountGroupId(gp,gpx)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+			            					</p:commandButton>
+		        						</f:facet>
+			           				  </my:if>
+			            			</f:view>
+            					
+            			 		</p:column>
+								
+								<p:column headerText="Name" width="100">
+									
+									<f:view>		
+						         				<my:if condition="#{gpx.name.equalsIgnoreCase('Add Name')}">
+					                			 	<f:facet name="then">
+						                			 	<p:selectOneMenu id="colTaxAccntId" value="#{gpx.pyId}" style="width: 15em" filterMatchMode="contains" filter="true">
+														<f:selectItems value="#{gpx.pyNames}"/>
+													</p:selectOneMenu>
+				          								
+			            							</f:facet>
+			             							<f:facet name="else">
+						         						<p:outputLabel value="#{gpx.name}"/>
+					        						</f:facet>
+						           				  </my:if>
+					            			</f:view>
+									
+								</p:column>
+								
+								<p:column headerText="Action" style="width:2rem" exportable="false">
+            					
+            					
+	          								<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveAccountGroupPaymentCode(gp,gpx.pyId)}" rendered="#{gpx.name.equalsIgnoreCase('Add Name')}">
+			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+			            					</p:commandButton>
+            							
+            			 		</p:column>
+            					
+								</p:dataTable>
+						 </p:rowExpansion>
+						 
+						 
+                         
+                     </p:dataTable>
+    			
+    		</p:tab>
+    		
+    		<p:tab title="Customization">
+    				
+    				 <p:dataTable id="dataGroup" value="#{paymentTaxCodeBean.groups}" var="gp" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false" editable="true" editMode="cell" rowKey="#{gp.id}"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available">
+                         
+                         <p:ajax event="cellEdit"  listener="#{paymentTaxCodeBean.onCellEditGroup}" update="dataGroup msgTax" />	
+                         
+                         <p:column headerText="[*]" style="width:2rem" exportable="false">
+            					<p:commandButton update="dataGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteGroup(gp)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+            					</p:commandButton>
+            			 </p:column>
+                         
+                         <p:column headerText="Group Name" width="100">
+								<p:cellEditor>
+						              	  <f:facet name="output"><h:outputText value="#{gp.name}" /></f:facet>
+						                  <f:facet name="input">
+						                  <p:inputText  placeholder="Description" value="#{gp.name}" />
+						                  </f:facet>
+						        </p:cellEditor>
+						 </p:column>
+						 
+						 <p:column headerText="Action" style="width:2rem" exportable="false">
+            					<p:commandButton update="dataGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveGroup(gp)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+            					</p:commandButton>
+            			 </p:column>
+						 
+						 <p:column headerText="Particular Names" style="width:2rem">
+			                <p:rowToggler />
+			             </p:column>
+						 
+						 <p:rowExpansion rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+						 	<p:dataTable id="dataNames" value="#{gp.groups}" var="gpx" reflow="true" emptyMessage="No data available">
+								
+								<p:column headerText="[*]" style="width:2rem" exportable="false">
+            					
+            					<f:view>		
+			         				<my:if condition="#{gpx.name.equalsIgnoreCase('Add Name')}">
+		                			 	<f:facet name="then">
+	          								
+            							</f:facet>
+             							<f:facet name="else">
+			         						<p:commandButton update="dataGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteGroupId(gp,gpx)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+			            					</p:commandButton>
+		        						</f:facet>
+			           				  </my:if>
+			            			</f:view>
+            					
+            			 		</p:column>
+								
+								<p:column headerText="Particular Name" width="100">
+									
+									<f:view>		
+						         				<my:if condition="#{gpx.name.equalsIgnoreCase('Add Name')}">
+					                			 	<f:facet name="then">
+						                			 	<p:selectOneMenu id="colTaxId" value="#{gpx.pyId}" style="width: 15em" filterMatchMode="contains" filter="true">
+														<f:selectItems value="#{gpx.pyNames}"/>
+													</p:selectOneMenu>
+				          								
+			            							</f:facet>
+			             							<f:facet name="else">
+						         						<p:outputLabel value="#{gpx.name}"/>
+					        						</f:facet>
+						           				  </my:if>
+					            			</f:view>
+									
+								</p:column>
+								
+								<p:column headerText="Action" style="width:2rem" exportable="false">
+            					
+            					
+	          								<p:commandButton update="dataGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveGroupPaymentCode(gp,gpx.pyId)}" rendered="#{gpx.name.equalsIgnoreCase('Add Name')}">
+			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
+			            					</p:commandButton>
+            							
+            			 		</p:column>
+            					
+								</p:dataTable>
+						 </p:rowExpansion>
+						 
+						 
+                         
+                     </p:dataTable>
+    			
+    		</p:tab>
+    		
+    		<p:tab title="Issuance">
+    				
+    				<p:toolbar id="tbFormAcc">
+		    		<f:facet name="left">
+		    			<span class="ui-input-icon-left">
+			    		<i class="pi pi-search" />
+		    			<p:inputText value="#{paymentTaxCodeBean.searchGroup}" placeholder="Search..." style="width: 30em">
+		    				<p:ajax event="keyup" listener="#{paymentTaxCodeBean.loadCollections}" update="dataGroupColl" delay="800" />
+		    			</p:inputText>
+		    			</span>
+		    			<p:datePicker id="range" selectionMode="range" value="#{paymentTaxCodeBean.rangeDate}" readonlyInput="true" inputStyle="width: 15em">
+		    				<p:ajax event="dateSelect" listener="#{paymentTaxCodeBean.loadCollections}" update="dataGroupColl"/>
+		    			</p:datePicker>
+		    			<p:selectOneMenu id="accGId" value="#{paymentTaxCodeBean.accountParticularId}" style="width: 25em" filter="true" filterMatchMode="contains">
+							<f:selectItems value="#{paymentTaxCodeBean.accountingParticular}"/>
+							<p:ajax event="change" listener="#{paymentTaxCodeBean.loadCollections}" update="dataGroupColl"/>
+						</p:selectOneMenu>
+						
+		    		</f:facet>
+		    		<f:facet name="right"/>
+					</p:toolbar>
+    				<p:dataTable id="dataGroupColl" value="#{paymentTaxCodeBean.collects}" var="gp" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false"
+                         paginatorPosition="top" reflow="true" emptyMessage="No data available">
+                          
+                         <p:column headerText="Nature Of Income" width="100">
+                         	<p:outputLabel value="#{gp.groupName}" />
+						 </p:column>
+						 
+						 <p:column headerText="Payname" width="100">
+                         	<p:outputLabel value="#{gp.taxName}" />
+						 </p:column>
+						 
+						 <p:column headerText="Total" width="50">
+                         	<p:outputLabel value="#{gp.total}" />
+						 </p:column>
+						 
+                         
+                     </p:dataTable>
+    				
+    		</p:tab>
+    		
+    		</p:tabView>
+    		
+    		</p:scrollPanel>
+    		</p:dialog>
+    	
+    
+    </ui:composition>
+ </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Main</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" />
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	 </p:confirmDialog>
+
+	 	<p:commandButton id="showNoteId" value="#{menuBean.total}" action="email.xhtml" icon="fa fa-envelope-o" style="#{notiBean.styleButton}#{skin.emailButton}" title="This is where your email or notification messages save" />
+	 
+	
+	<p:dialog widgetVar="dlgMain" closable="false" draggable="false" modal="true" showEffect="fade" visible="true"  showHeader="false" position="center center" styleClass="menuDlg">
+		
+		<p:panelGrid columns="3" styleClass="ui-noborder">
+				
+				<h:outputStylesheet>
+								
+								.button {
+								  background-color: #008CBA; /* blue */
+								  border: none;
+								  color: white;
+								  padding: 15px 32px;
+								  text-align: center;
+								  text-decoration: none;
+								  display: inline-block;
+								  font-size: 16px;
+								  margin: 4px 2px;
+								  cursor: pointer;
+								  width: 100%;
+								  -webkit-transition-duration: 0.4s; /* Safari */
+								  transition-duration: 0.4s;
+								  cursor: pointer;
+								}
+								.ui-button.button:hover {
+								  background-color: #e7e7e7; /* gray */
+								  color: black;
+								}  
+							</h:outputStylesheet>
+						
+							<p:commandButton icon="pi pi-file" action="businessowner.xhtml" value="Owner Registration" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" action="permit.xhtml" value="Business Certification" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" action="business.xhtml" value="Business Registration" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" action="orlicense.xhtml" value="Official Receipt Recording" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" action="businesstracking.xhtml" value="Business Monitoring" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" action="transpo.xhtml" value="Transpo Certification" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-file" action="kobotoolbox.xhtml" value="Business Mapping 2022" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file" action="bm.xhtml" value="Business Mapping" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-power-off" action="portal" value="Logout" styleClass="button" actionListener="#{loginBean.logout}" immediate="false" ajax="false"/>
+				             <p:outputLabel/>
+			
+		</p:panelGrid>
+		
+	</p:dialog>
+	
+	<ui:include src="loader.xhtml" />		
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

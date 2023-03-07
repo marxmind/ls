@@ -1,0 +1,153 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+    
+    
+    <p:dialog widgetVar="calId" width="600" height="600" position="center center" header="Calendar" >
+    	
+    	<div id="calViewId" style="display: block">
+    	
+    	<p:commandButton value="Previous" actionListener="#{calendarBean.updatePrevCalendar}" update="dataCalId monthSelId yearSelId" rendered="false"/>
+    	<p:selectOneMenu id="monthSelId" value="#{calendarBean.monthId}" style="width: 15em" filterMatchMode="contains" filter="true">
+				<f:selectItems value="#{calendarBean.months}"/>
+				<p:ajax event="change" update="dataCalId" listener="#{calendarBean.updateCalendar}" />
+		</p:selectOneMenu>
+		<p:selectOneMenu id="yearSelId" value="#{calendarBean.yearId}" style="width: 15em" filterMatchMode="contains" filter="true">
+				<f:selectItems value="#{calendarBean.years}"/>
+				<p:ajax event="change" update="dataCalId" listener="#{calendarBean.updateCalendar}" />
+		</p:selectOneMenu>
+		<p:commandButton value="Next" actionListener="#{calendarBean.updateNextCalendar}" update="dataCalId monthSelId yearSelId" rendered="false"/>
+    	
+    	
+    		
+    		<p:dataTable id="dataCalId" value="#{calendarBean.calendars}" var="cd" stickyHeader="false"
+							rows="6" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="7"
+                         scrollable="true"  paginatorPosition="top" paginatorAlwaysVisible="false"
+                         >   
+                         
+                         <p:column headerText="Sunday" width="15" exportable="false" style="#{cd.sundayStyle}" >
+                         		<p:panel id="idSunday" rendered="#{cd.sunday!=0}" >
+					                	<p:commandLink value="#{cd.sunday}" style="#{cd.sundayStyle}" actionListener="#{calendarBean.clickDate(cd.sunday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+					            
+		            	 </p:column>
+                         <p:column headerText="Monday" width="15" exportable="false">
+		            			<p:panel id="idMonday" rendered="#{cd.monday!=0}">
+					                <p:commandLink value="#{cd.monday}" style="#{cd.mondayStyle}" actionListener="#{calendarBean.clickDate(cd.monday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+		            	 </p:column>
+    					<p:column headerText="Tuesday" width="15" exportable="false">
+		            			<p:panel id="idTuesday" rendered="#{cd.tuesday!=0}">
+					                <p:commandLink value="#{cd.tuesday}" style="#{cd.tuesdayStyle}" actionListener="#{calendarBean.clickDate(cd.tuesday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+		            	 </p:column>
+		            	 <p:column headerText="Wednesday" width="15" exportable="false">
+		            			<p:panel id="idWednesday" rendered="#{cd.wednesday!=0}">
+					                <p:commandLink value="#{cd.wednesday}" style="#{cd.wednesdayStyle}" actionListener="#{calendarBean.clickDate(cd.wednesday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+		            	 </p:column>
+		            	 <p:column headerText="Thursday" width="15" exportable="false">
+		            			<p:panel id="idThursday" rendered="#{cd.thursday!=0}">
+					                <p:commandLink value="#{cd.thursday}" style="#{cd.thursdayStyle}" actionListener="#{calendarBean.clickDate(cd.thursday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+		            	 </p:column>
+		            	 <p:column headerText="Friday" width="15" exportable="false">
+		            			<p:panel id="idFriday" rendered="#{cd.friday!=0}">
+					                <p:commandLink value="#{cd.friday}" style="#{cd.fridayStyle}" actionListener="#{calendarBean.clickDate(cd.friday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+		            	 </p:column>
+		            	 <p:column headerText="Saturday" width="15" exportable="false">
+		            			<p:panel id="idSaturday" rendered="#{cd.saturday!=0}">
+					                <p:commandLink value="#{cd.saturday}" style="#{cd.saturdayStyle}" actionListener="#{calendarBean.clickDate(cd.saturday)}" update="dataCalRecordId fldRecordId"/>
+					            </p:panel>
+		            	 </p:column>
+    	</p:dataTable>
+    	
+    	<p:panelGrid  columns="3" layout="grid" style="text-align: left">
+		    	<p:outputLabel value="Legend:" /><p:outputLabel/><p:outputLabel/>
+		    	<p:commandButton type="button" value="Sunday" style="background-color: red; width: 12em"/>
+		    	<p:commandButton type="button" value="Holiday" style="background-color: green; width: 12em"/>
+		    	<p:commandButton type="button" value="Holiday/Current Date" style="background-color: yellow; width: 12em"/>
+		    </p:panelGrid>  
+    		
+    	</div>
+    	
+    	<div id="calRecordId" style="display: none">
+    		<p:commandButton value="Show Calendar" icon="fa fa-calendar" onclick="hideRecord()" actionListener="#{calendarBean.updateCalendar}" update="dataCalId" style="width: 15em"/>
+    		<p:commandButton value="Save" update="dataCalRecordId fldRecordId msg"  icon="fa fa-floppy-o" title="Click this button to save your changes" actionListener="#{calendarBean.saveRecord}" style="width: 15em">
+        		<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+        	</p:commandButton>
+    		
+    		<p:panelGrid id="fldRecordId"  columns="3" layout="grid" style="text-align: left">
+    			
+    			<p:outputLabel value="#{calendarBean.dateVal}"/>
+    			<p:inputText value="#{calendarBean.remarks}" placeholder="Remarks" style="width: 15em"/>
+    			<p:selectOneMenu id="calSelId" value="#{calendarBean.type}" style="width: 15em" filterMatchMode="contains" filter="true">
+					<f:selectItems value="#{calendarBean.types}"/>
+				</p:selectOneMenu>
+    			
+    		</p:panelGrid>
+    		
+    		<p:dataTable id="dataCalRecordId" value="#{calendarBean.calendarRecords}" var="rd" stickyHeader="false"
+							rows="6"
+							 paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="7"
+                         scrollable="true"  paginatorPosition="top" paginatorAlwaysVisible="false"
+                         >   
+                         
+                         <p:column headerText="[*]" width="5" exportable="false">
+		            		<p:commandButton update="dataCalRecordId msg" icon="fa fa-trash-o" title="Click this button to delete this data" actionListener="#{calendarBean.deleteRecord(rd)}">
+		            				<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            		</p:commandButton>
+		            	</p:column>
+		            				
+		            	<p:column headerText="View" width="5" exportable="false">
+		            			<p:commandButton icon="fa fa-search" title="Click this button to see the additional information" update="fldRecordId" actionListener="#{calendarBean.clickRecord(rd)}"/>
+		            	</p:column>
+                         
+                         <p:column headerText="Date" width="30">
+					              <p:outputLabel value="#{rd.dateVal}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Remarks" width="70">
+					              <p:outputLabel value="#{rd.remarks}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Type" width="70">
+					              <p:outputLabel value="#{rd.typeName}"/>
+		            	 </p:column>
+		            	 
+		    </p:dataTable>
+		    
+		          	 
+    	</div>
+    	
+    	 
+    	
+    </p:dialog>
+    
+    
+    <script>
+    
+    function showRecord(){
+    	$('#calViewId').hide(1000);
+    	$('#calRecordId').show(1000);
+    }
+    function hideRecord(){
+    	$('#calViewId').show(1000);
+    	$('#calRecordId').hide(1000);
+    }
+    
+    </script>
+    
+    </ui:composition>
+</html>

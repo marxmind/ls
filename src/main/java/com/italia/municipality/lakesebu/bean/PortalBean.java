@@ -56,11 +56,11 @@ public class PortalBean implements Serializable {
 	}
 	
 	public String da() {
-		return getPortal(AppDepartment.MAO);
+		return "loginda";
 	}
 	
 	public String licensing() {
-		return getPortal(AppDepartment.LICENSING);
+		return "loginlic";
 	}
 	public String gso() {
 		return getPortal(AppDepartment.GSO);

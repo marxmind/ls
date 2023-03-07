@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Employee</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+	
+	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-3">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			<div class="ui-inputgroup" style="float:right">
+			    			<p:commandButton update="panId" value="New" icon="pi pi-file" actionListener="#{departmentBean.clear}" />
+			    			<p:commandButton update="panId" value="Clear" icon="pi pi-trash" actionListener="#{departmentBean.clear}" />
+			    			<p:commandButton update="panId dataDs msg" value="Save" icon="pi pi-save" actionListener="#{departmentBean.saveDep}">
+			    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert" />
+			    			</p:commandButton>
+			    		</div>
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panelGrid id="panId" layout="grid" columns="2" >
+							<p:outputLabel value="Department Name"/>
+							<p:inputText value="#{departmentBean.name}" placeholder="Name here" />
+							
+							<p:outputLabel value="Code"/>
+							<p:inputText value="#{departmentBean.code}" placeholder="0000" />
+							
+							<p:outputLabel value="Department Head"/>
+							<p:inputText value="#{departmentBean.departmentHead}" placeholder="Department Head here" />
+							
+							<p:outputLabel value="Code Name"/>
+							<p:inputText value="#{departmentBean.abrevation}" placeholder="Code Name" />
+							
+						</p:panelGrid>
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-9">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			
+	    			<div class="ui-inputgroup" style="float:left">
+	                	<span class="ui-input-icon-left">
+				    	<i class="pi pi-search" />
+	                    <p:inputText value="#{departmentBean.searchName}" placeholder="Search here..." style="width: 20em">
+	    					<p:ajax event="keyup" listener="#{departmentBean.init}" update="dataDs panId" delay="800"/>
+	    				</p:inputText>
+	                    </span>
+                    </div>
+	    			
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+						<p:dataTable id="dataDs" value="#{departmentBean.deps}" var="ds" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         paginatorPosition="top" lazy="false"
+                         >
+                         	
+							<p:column headerText="[*]" width="20" exportable="false">
+            					<p:commandButton update="dataDs msg" icon="pi pi-trash" actionListener="#{departmentBean.deleteRow(ds)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            				</p:column>
+            				
+							<p:column headerText="Edit" width="20" exportable="false">
+								<p:commandButton icon="pi pi-pencil" update="panId" actionListener="#{departmentBean.clickItem(ds)}"/>
+							</p:column>
+							
+							<p:column headerText="Name" width="100">
+            						<p:outputLabel value="#{ds.departmentName}"/>
+            				</p:column>
+            				<p:column headerText="Code" width="100">
+            						<p:outputLabel value="#{ds.code}"/>
+            				</p:column>
+            				<p:column headerText="Code Name" width="100">
+            						<p:outputLabel value="#{ds.abrevation}"/>
+            				</p:column>
+            				<p:column headerText="Department Head" width="100">
+            						<p:outputLabel value="#{ds.departmentHead}"/>
+            				</p:column>
+            				</p:dataTable>	
+
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menuper.xhtml" />
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

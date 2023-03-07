@@ -158,7 +158,7 @@ public class LoginBean implements Serializable{
 				case 18: result="checkissued.xhtml"; break;
 			  
 			  case 19: {
-				  result="welcome.xhtml";
+				  result="check.xhtml";
 				  det = License.dbLicense(AppModule.CHECK_WRITING);
 				  	if(checkdate(det)) {
 				  		result="expired";

@@ -54,13 +54,12 @@
 	
 	<div class="card">
     
-	    <div class="grid grid-nogutter">
+	    <div class="grid">
 	    	
 	    	
 		    	<div class="col-6">
 		    		
-		    			<p:card style="width: 63em">
-						
+		    			<div class="col-12">
 			            <p:toolbar id="tbDetails">
 			    		<f:facet name="left">
 			    				<div class="ui-inputgroup">
@@ -78,7 +77,8 @@
 			    			</div>
 			    		</f:facet>
 						</p:toolbar>
-						
+						</div>
+						<div class="col-12">
 						<p:panelGrid id="vId" layout="grid" columns="4" style="text-align: left">
 							
 							<p:outputLabel value="Responsibility" />
@@ -151,6 +151,8 @@
 								<f:selectItems value="#{vrBean.sigs1}"/>
 							</p:selectOneMenu>
 							
+							<p:outputLabel/>
+							<p:outputLabel/>
 							
 							<p:outputLabel value="Sign by Government Official"/>
 							<p:selectOneMenu value="#{vrBean.sig2}" style="width:12em;">
@@ -159,7 +161,7 @@
 							
 								
 						</p:panelGrid>
-						</p:card>
+						</div>
 	    		</div>
 	    	
 	    	<div class="col-6">
@@ -207,7 +209,7 @@
 	    		<div class="col-12">
 	    			<p:dataTable id="dataVr" value="#{vrBean.vrs}" var="vr" stickyHeader="false"
 							rows="10" rowKey="#{vr.id}" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
-                         rowsPerPageTemplate="5,10,15,20,50,100" scrollable="true" scrollWidth="700"
+                         rowsPerPageTemplate="5,10,15,20,50,100" scrollable="true" 
                           paginatorPosition="top" style="text-align: left" lazy="false"
                          
                          >

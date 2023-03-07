@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    xmlns:pe="http://primefaces.org/ui/extensions"  
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Business Tracking</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+    <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    	</p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+	    <div class="grid">
+		    	<div class="col-12">
+		    		<p:dataTable id="bzId" value="#{businessTrackingBean.tracks}" var="tr" stickyHeader="false" stickyTopAt=".layout-topbar"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,20,50,100,500,1000"
+                         scrollable="true" paginatorPosition="top" scrollWidth="100%" emptyMessage="No data to display" reflow="true" lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+                         
+                         	<div class="ui-inputgroup">
+		                    	<span class="ui-input-icon-left">
+					    		<i class="pi pi-search" />
+				    			<p:inputText value="#{businessTrackingBean.searchName}" placeholder="Seach..." style="width: 30em" >
+				    				<p:ajax event="keyup" listener="#{businessTrackingBean.search}" update="bzId msg" delay="800"/>
+				    			</p:inputText>
+				    			</span>
+				    			<p:selectOneMenu id="frmColFormId" value="#{businessTrackingBean.type}" style="width: 12em" filter="true" filterMatchMode="contains">
+									<f:selectItems value="#{businessTrackingBean.types}"/>
+									<p:ajax event="change" listener="#{businessTrackingBean.searchType}" update="bzId msg" />
+								</p:selectOneMenu>
+				    		</div>
+                         
+                         	<p:menuButton id="exiD" value="Exports" style="float: right">
+                         		<p:menuitem value="Download Excel" ajax="false" immediate="true" icon="pi pi-file-excel" target="_blank">
+									<p:dataExporter type="xls" target="bzId" fileName="business-list" pageOnly="false"/>
+								</p:menuitem>
+								<p:menuitem value="Download Pdf" ajax="false" immediate="true" icon="pi pi-file-pdf" target="_blank">
+									<p:dataExporter type="pdf" target="bzId" fileName="business-list" pageOnly="false" />
+								</p:menuitem>
+                         	</p:menuButton>
+                         </f:facet>
+                         	
+                         	<p:column headerText="No" width="30">
+            						<h:outputText  value="#{tr.number}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Status" width="70">
+            						<h:outputText  value="#{tr.status}"/>
+            				</p:column>
+                         	
+                         	<p:column headerText="Plate No" width="50">
+            						<h:outputText  value="#{tr.plateNo}"/>
+            				</p:column>
+            				
+                         	<p:column headerText="Business" width="300" >
+            						<h:outputText  value="#{tr.businessName}" style="text-align: left;#{tr.style}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Owner" width="300" style="text-align: left; font-weight: bold">
+            						<h:outputText  value="#{tr.owner}" />
+            				</p:column>
+            				
+            				<p:column headerText="Location" width="200" style="text-align: left; font-weight: bold">
+            						<h:outputText  value="#{tr.location}" />
+            				</p:column>
+            				
+            				<p:column headerText="2019" width="110">
+            						<h:outputText  value="#{tr.year1}" style="#{tr.style1}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2020" width="110">
+            						<h:outputText  value="#{tr.year2}" style="#{tr.style2}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2021" width="110">
+            						<h:outputText  value="#{tr.year3}" style="#{tr.style3}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2022" width="110">
+            						<h:outputText  value="#{tr.year4}" style="#{tr.style4}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2023" width="110">
+            						<h:outputText  value="#{tr.year5}" style="#{tr.style5}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2024" width="110">
+            						<h:outputText  value="#{tr.year6}" style="#{tr.style6}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2025" width="110">
+            						<h:outputText  value="#{tr.year7}" style="#{tr.style7}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2026" width="110">
+            						<h:outputText  value="#{tr.year8}" style="#{tr.style8}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2027" width="110">
+            						<h:outputText  value="#{tr.year9}" style="#{tr.style9}"/>
+            				</p:column>
+            				
+            				<p:column headerText="2028" width="110">
+            						<h:outputText  value="#{tr.year10}" style="#{tr.style10}"/>
+            				</p:column>
+                         
+                         </p:dataTable>
+	    		</div>
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menulic.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	

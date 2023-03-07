@@ -1,0 +1,39 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+    <ui:composition>
+    	
+    	<script>
+				function showFetch() {
+					$("#onPid").show();
+				}
+				function hideFetch() {
+					$("#onPid").hide();
+				}
+			</script>
+    		<p:growl id="msgFetch" showDetail="true" life="2000" />
+    		<p:dialog widgetVar="dlgFetch" width="700" height="700" header="Fetch to server" closable="true" modal="true" closeOnEscape="true">
+    		
+    		<p:toolbar id="tbFetch">
+    		<f:facet name="left">
+    			<p:commandButton id="idFetch" disabled="#{syncBean.success}" update="dataFetch idFetch idUp msgFetch" value="Fetch Data From Server" icon="fa fa-cloud-download" actionListener="#{syncBean.fetchDataFromServer}" onclick="showFetch()" oncomplete="hideFetch()"/>
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton id="idUp" disabled="#{!syncBean.success}" update="dataFetch idFetch idUp msgFetch" value="Update Local Data" icon="fa fa-desktop" actionListener="#{syncBean.uploadData}" onclick="showFetch()" oncomplete="hideFetch()"/>
+    		</f:facet>
+			</p:toolbar> 
+			<div id="onPid" style="display:none">
+    			<p:progressBar id="progressFetch" style="height:6px" mode="indeterminate"/>
+    		</div>
+    		<p:inputTextarea id="dataFetch" value="#{syncBean.notify}" cols="70" rows="25" readonly="true"/>		
+    				 
+    				 
+    		</p:dialog>
+    
+    </ui:composition>
+ </html>

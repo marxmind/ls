@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Transpo Certification</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+	
+	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-6">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			<div class="ui-inputgroup" style="float:right">
+           				<p:commandButton value="Clear" update="usercusId itemData itemId" icon="pi pi-trash" actionListener="#{transpoBean.clear}" title="Click this button to clear information"/>
+            			<p:commandButton value="Save" update="usercusId cusId itemData itemId msg"  icon="pi pi-save" title="Click this button to save your changes" actionListener="#{transpoBean.save}">
+        					<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+        				</p:commandButton>
+    					</div>	
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panelGrid id="usercusId" columns="4" layout="grid" style="text-align: left">
+			
+						<p:outputLabel>
+							<div class="ui-inputgroup">
+							<div class="p-field">
+								<medium class="p-d-block" style="text-align: left">Date</medium>
+								<p:calendar value="#{transpoBean.dateCreated}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>	
+						
+						<p:outputLabel>
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<medium class="p-d-block" style="text-align: left">Control No</medium>
+							<p:inputText value="#{transpoBean.transpo.controlNo}" placeholder="year-month-series" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel >
+							<div class="ui-inputgroup">
+							<div class="p-field">
+								<medium class="p-d-block" style="text-align: left">OR Number  and  Amount</medium>
+								<p:inputText value="#{transpoBean.orNumber}" placeholder="0000000" style="width: 7.5em"/>
+							
+								<p:inputText value="#{transpoBean.amount}" placeholder="00.00" style="width: 5em; text-align: right"/>
+							</div>
+							</div>
+						</p:outputLabel>	
+							
+						<p:outputLabel value="Requestor">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:autoComplete value="#{transpoBean.transpo.requestor}" placeholder="Requestor Name" completeMethod="#{transpoBean.payorNameSuggested}" autoHighlight="true" autoSelection="true" emptyMessage="Name is not existing"   queryDelay="800" effect="fade" maxResults="10" inputStyle="width:15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Address">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.address}" placeholder="Address" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>	
+						
+						<p:outputLabel value="From and To">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.fromAndTo}" placeholder="from and to delivery" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>	
+						
+						<p:outputLabel value="Purpose">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.purpose}" placeholder="Purpose" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Delivery Date">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.deliveredDate}" placeholder="Delivered to" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+							
+						<p:outputLabel value="Issued Date">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.issuedDay}" placeholder="Issued Date" style="width: 15em"/>
+							</div>
+							</div>			
+						</p:outputLabel>
+						
+						<p:outputLabel value="Issued Month">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.issuedMonth}" placeholder="Issued Month" style="width: 15em"/>
+							</div>
+							</div>			
+						</p:outputLabel>
+						
+						<p:outputLabel/>
+						<p:outputLabel/>
+						
+						<p:outputLabel value="Prepared By Name">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.preparedBy}" placeholder="Prepared By Name" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Prepared By Position">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.preparedByPosition}" placeholder="Prepared By Position" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="License Officer Name">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.licenseOfficer}" placeholder="License Officer Name" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="License Officer Position">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.licenseOfficerPosition}" placeholder="License Officer Position" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="MENRO/DA Officer Name">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.menroOfficer}" placeholder="MENRO Officer Name" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="MENRO/DA Officer Name">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.menroPosition}" placeholder="MENRO/DA Officer Position" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Public Official">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.officialName}" placeholder="Official Name" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Public Official Position">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+							<p:inputText value="#{transpoBean.transpo.officialPosition}" placeholder="Official Position" style="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>
+						
+						</p:panelGrid>
+		    		</div>
+		    		
+		    		<div class="col-12">
+	    			
+	    				<p:panelGrid id="itemId" columns="4" layout="grid" style="text-align: left">
+							<p:inputText value="#{transpoBean.name}" placeholder="Name" style="width: 15em"/>
+							<p:inputText value="#{transpoBean.unit}" placeholder="Unit" style="width: 15em"/>
+							<p:inputText value="#{transpoBean.qty}" placeholder="Quantity" style="width: 15em"/>
+							<p:commandButton value="Add Item" icon="pi pi-clone" actionListener="#{transpoBean.addItem}" update="itemData itemId msg" style="width: 15em"/>
+						</p:panelGrid>
+	    			
+		    		</div>
+		    		
+		    		<div class="col-12">
+		    			
+		    			<p:dataTable id="itemData" var="itm" value="#{transpoBean.transpo.items}" editable="true" 
+					       editMode="cell" widgetVar="cellLand" rowKey="#{itm.id}" scrollable="true" selection="#{transpoBean.itemDataSelected}" selectionMode="single" 
+					       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorPosition="top" paginatorAlwaysVisible="false" lazy="false"
+					       >
+					       
+					       <p:ajax event="cellEdit"  listener="#{transpoBean.onCellEdit}" update="itemData" />
+					       
+					       
+					       
+					       <p:column headerText="Name" width="100" style="text-align: left">
+					              <p:cellEditor>
+					              	  <f:facet name="output"><p:outputLabel value="#{itm.name}" /></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  placeholder="Name" value="#{itm.name}"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       
+					       <p:column headerText="Unit" width="50" style="text-align: left">
+					              <p:cellEditor>
+					              	  <f:facet name="output"><p:outputLabel value="#{itm.unit}" /></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  placeholder="Unit" value="#{itm.unit}"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       
+					       <p:column headerText="Qty" width="50" style="text-align: center">
+					              <p:cellEditor>
+					              	  <f:facet name="output"><p:outputLabel value="#{itm.quantity}" /></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputNumber  placeholder="0.0" value="#{itm.quantity}"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					       </p:column>
+					       
+					       
+					       
+					       <p:column headerText="X" width="10" exportable="false">
+							     <p:commandButton update="itemData msg" icon="pi pi-trash" actionListener="#{transpoBean.deleteItem(itm)}"/>
+						   </p:column>
+					       
+					       </p:dataTable>
+		    			
+		    		</div>
+		    		
+		    		
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-6">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<div class="ui-inputgroup" style="float:left">
+                	<span class="ui-input-icon-left">
+			    	<i class="pi pi-search" />
+                    <p:inputText value="#{transpoBean.searchName}" placeholder="Search..." style="width: 30em">
+                    	<p:ajax event="keyup" listener="#{transpoBean.search}" update="cusId" delay="800" />
+                    </p:inputText>
+                    </span>
+                    
+                    </div>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+	    			<p:dataTable id="cusId" value="#{transpoBean.trans}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" draggableColumns="true" draggableRows="true" paginatorPosition="top"
+                         >
+                         	     	
+		          					<p:column headerText="" width="20" exportable="false">
+		            					<p:commandButton update="cusId msg" icon="pi pi-trash" title="Click this button to delete this data" actionListener="#{transpoBean.delete(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		            				
+		            				<p:column headerText="" width="20" exportable="false">
+		            					<p:commandButton icon="pi pi-search" title="Click this button to see the additional information" update="usercusId itemData itemId" actionListener="#{transpoBean.clickItem(rpt)}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="" width="20" exportable="false">
+            						<p:commandLink title="Print in PDF" target="_blank" action="#{transpoBean.print(rpt)}" ajax="false" immediate="false" >
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+									</p:commandLink>
+            						</p:column>
+		            				
+		            				<p:column headerText="Date" width="70" sortable="false">
+		            						<p:outputLabel  value="#{rpt.dateTrans}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="OR/Amount" width="70">
+		            						<p:outputLabel  value="#{rpt.orNumber}"/>
+		            				</p:column>
+		            				
+		                         	<p:column headerText="Control No" width="70">
+		            						<p:outputLabel  value="#{rpt.controlNo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Requestor" width="150">
+		            						<p:outputLabel  value="#{rpt.requestor}"/>
+		            				</p:column> 
+		            				
+		            				<p:column headerText="From-To" width="150">
+		            						<p:outputLabel  value="#{rpt.fromAndTo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Purpose" width="150">
+		            						<p:outputLabel  value="#{rpt.purpose}"/>
+		            				</p:column>
+		            				
+							</p:dataTable>
+	    			
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menulic.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	

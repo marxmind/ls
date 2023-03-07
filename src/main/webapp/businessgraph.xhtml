@@ -1,0 +1,65 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     
+     <p:dialog widgetVar="dlgGraph" fitViewport="true" position="center top" header="Graph" closable="true" modal="true" closeOnEscape="true">
+    		<p:card style="width: 120em">
+    		<p:scrollPanel style="width:120em;height:650px" mode="native">
+    		<p:toolbar id="tbBizGraph">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+			    
+    			<p:selectCheckboxMenu id="graphYearId" value="#{businessGraphBean.selectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 20em">
+					<f:selectItems value="#{businessGraphBean.years}" />
+				</p:selectCheckboxMenu>
+				<p:selectCheckboxMenu id="graphTypeId" value="#{businessGraphBean.selectedType}" label="Select Type" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 60em">
+					<f:selectItems value="#{businessGraphBean.types}" />
+				</p:selectCheckboxMenu>
+				<p:selectCheckboxMenu id="graphMemo" value="#{businessGraphBean.selectedMemo}" label="Select Memos" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 30em">
+					<f:selectItems value="#{businessGraphBean.memos}" />
+				</p:selectCheckboxMenu>
+				<p:commandButton icon="fa fa-search" update="graphLineId graphBardId" actionListener="#{businessGraphBean.showGraph}"/>
+				
+    			</span>
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+    		
+    		
+    		<style type="text/css">
+			    .ui-chart {
+			        margin-bottom: 50px;
+			    }
+			</style>
+			
+			
+    			<p:tabView prependId="false" cache="true" id="tabRevenue">
+	    			<p:tab title="Line Graph">
+	    			<p:lineChart id="graphLineId" model="#{businessGraphBean.lineModel}" style="width: 100%; height: 500px;"/>
+	    			</p:tab>
+	    			
+	    			<p:tab title="Bar Graph">
+	    			<p:barChart id="graphBardId" model="#{businessGraphBean.barModel2}" style="width: 100%; height: 500px;"/>
+	    			</p:tab>
+    			</p:tabView>
+	        	
+    		</p:scrollPanel>
+    		</p:card>
+    		</p:dialog>
+    		
+    
+    </ui:composition>
+</html>

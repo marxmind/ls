@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Main Personnel</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" />
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	 </p:confirmDialog>
+
+
+
+	 	
+	 	<p:commandButton id="showNoteId" value="#{menuBean.total}" action="email.xhtml" icon="fa fa-envelope-o" style="#{notiBean.styleButton}#{skin.emailButton}" title="This is where your email or notification messages save" />
+	 
+	<h:outputStylesheet>
+		img{
+		  height: 300px;
+		  width: 300px;
+		}
+		table {
+		  width: 100%;
+		  border-collapse: collapse;
+		  border: 1px solid;
+		}
+		table, th, td {
+		  border: 1px solid;
+		}
+		
+		
+		
+		.div-table {
+		  display: table;         
+		  width: auto;         
+		  background-color: #eee;         
+		  border: 1px solid #666666;         
+		  border-spacing: 5px; /* cellspacing:poor IE support for  this */
+		}
+		.div-table-row {
+		  display: table-row;
+		  width: auto;
+		  clear: both;
+		}
+		.div-table-col {
+		  float: left; /* fix for  buggy browsers */
+		  display: table-column;         
+		  width: 200px;         
+		  background-color: #ccc;  
+		}
+		
+	</h:outputStylesheet>
+	
+	<h:outputScript>
+	//var Block = Quill.import('blots/block');
+	//Block.tagName = 'DIV';
+	//Quill.register(Block, true);
+	
+	</h:outputScript>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-12">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			
+						<div class="ui-inputgroup">
+								  	<span class="ui-input-icon-left">
+								        <i class="pi pi-search" />
+								        <p:inputText id="idSearch" value="#{mainPersonnelBean.searchParam}" placeholder="Search..." style="width: 50em">
+						    					<p:ajax event="keyup" update="resultId payDataId" listener="#{mainPersonnelBean.searchFilter}"  delay="800"/>
+						    			</p:inputText>
+								    </span>
+						</div>
+						
+		    		</div>
+		    		<div class="col-12">
+		    						<div id="displayMain">
+										<p:textEditor id="resultId" widgetVar="resultView" value="#{mainPersonnelBean.results}" height="600" 
+										placeholder="Your search will show here" toolbarVisible="false" readonly="true" secure="false"/>
+							        </div>
+							        
+							        <div id="displayMain2" style="display: none">
+							        	
+							        	<p:dataTable id="payDataId" var="fd" value="#{mainPersonnelBean.rolls}"
+							            rows="10" paginator="true" rowsPerPageTemplate="5,10,15,20,50,100" paginatorPosition="top" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							            lazy="false"
+							            >
+							            
+							            	<f:facet name="{Exporters}">
+			            						
+			            						<p:menuButton id="exiD" value="Exports" style="float: left">
+			            							<p:menuitem icon="fa fa-file-o" value="Export to excel">
+			            								<p:dataExporter type="xls" target="payDataId" fileName="payroll" />
+			            							</p:menuitem>
+			            						</p:menuButton>
+			            					</f:facet>
+							            	
+							            	<p:columnGroup type="header">
+								                <p:row>
+								                    <p:column rowspan="2" headerText="Name" width="100"/>
+								                    <p:column rowspan="2" headerText="Designation" width="100"/>
+								                    <p:column rowspan="2" headerText="Days" width="50"/>
+								                    <p:column rowspan="2" headerText="Rate" width="50"/>
+								                    <p:column rowspan="2" headerText="Gross" width="50"/>
+								                    <p:column colspan="4" headerText="Deduction" width="200"/>
+								                     <p:column rowspan="2" headerText="Net" width="50"/>
+								                </p:row>
+								               
+								                <p:row>
+								                    <p:column headerText="EE" width="50"/>
+								                    <p:column headerText="Loan" width="50"/>
+								                    <p:column headerText="Coop" width="50"/>
+								                    <p:column headerText="Tax" width="50"/>
+								                </p:row>
+								                
+								                
+								            </p:columnGroup>
+							            	
+							            	
+							                
+							                <p:column  >
+							                    <h:outputText value="#{fd.employeeMain.fullName}"/>
+							                </p:column>
+							                
+							                <p:column  >
+							                    <h:outputText value="#{fd.designation}"/>
+							                </p:column>
+							                
+							                <p:column  >
+							                    <h:outputText value="#{fd.numberOfWork}"/>
+							                </p:column>
+							                
+							                <p:column  >
+							                    <h:outputText value="#{fd.rate}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							 
+							                <p:column  >
+							                    <h:outputText value="#{fd.gross}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							                
+							                <p:column  >
+							                    <h:outputText value="#{fd.ee}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							                <p:column  >
+							                    <h:outputText value="#{fd.er}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							 				<p:column  >
+							                    <h:outputText value="#{fd.coop}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							 				<p:column  >
+							                    <h:outputText value="#{fd.tax}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							 				
+							 				<p:column  >
+							                    <h:outputText value="#{fd.net}">
+							                    	<f:convertNumber currencySymbol="" type="currency"/>
+							                    </h:outputText>
+							                </p:column>
+							                
+							                <p:columnGroup type="footer">
+									            <p:row>
+									                <p:column colspan="4" style="text-align:right" footerText="Totals:" exportable="true"/>
+									                <p:column footerText="#{mainPersonnelBean.grossTotal}" exportable="true"/>
+									                <p:column footerText="#{mainPersonnelBean.eeTotal}" exportable="true"/>
+									                <p:column footerText="#{mainPersonnelBean.erTotal}" exportable="true"/>
+									                <p:column footerText="#{mainPersonnelBean.coopTotal}" exportable="true"/>
+									                <p:column footerText="#{mainPersonnelBean.taxTotal}" exportable="true"/>
+									                <p:column footerText="#{mainPersonnelBean.netTotal}" exportable="true"/>
+									            </p:row>
+									        </p:columnGroup>
+							                
+							            </p:dataTable>
+							        	
+							        </div>
+							        
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<ui:include src="loader.xhtml" />	
+	<ui:include src="menuper.xhtml" />
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

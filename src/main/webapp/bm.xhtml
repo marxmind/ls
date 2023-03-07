@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Business Mapping Record</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	<p:tabView prependId="false">
+			
+			<p:ajax event="tabChange" listener="#{mapping.onTabChange}" update="mapDataId barangayDataId permitDataId rentedDataId combineDataId barDataInfo"/>
+			
+			<p:tab title="Business List">
+			
+				<p:inputText value="#{mapping.searchParam}" placeholder="Search..." style="width: 30em; float: left">
+				<p:ajax event="keyup" listener="#{mapping.businessList}" update="mapDataId" delay="500"/>
+			</p:inputText>
+			<p:dataTable id="mapDataId" value="#{mapping.maps}" var="pt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorAlwaysVisible="true" paginatorPosition="top" style="text-align: left" stripedRows="true"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+                         	  <div class="ui-inputgroup" style="float: right">
+                         	  <p:commandButton id="btn" icon="fa fa-map"  value="Show Map" onclick="PF('dlg').show();" actionListener="#{mapping.openMap}" update="gmap"/>
+	                          <p:menuButton id="exInqiD" value="Exports" >
+	                          	<p:menuitem value="Export Excel All Data">
+	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData"/>
+	                          	</p:menuitem>
+	                          	<p:menuitem value="Export Excel Current Page">
+	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData" pageOnly="true"/>
+	                          	</p:menuitem>
+	                          </p:menuButton>
+                          	 </div>
+                          </f:facet>
+                         
+                         <p:column headerText="#" width="20">
+		            		<p:outputLabel  value="#{pt.number}"/>
+		            	 </p:column>
+                         
+                         <p:column headerText="Map" width="20">
+                         	<p:commandButton icon="pi pi-map" actionListener="#{mapping.openSelectedBusinessInMap(pt)}"  update="gmap" onclick="PF('dlg').show();"/>
+                         </p:column>
+                         
+                         <p:column headerText="Store" width="20">
+                         	<p:commandButton icon="pi pi-user" actionListener="#{mapping.showStore(pt)}"  update="imgId1 imgId2" onclick="PF('picDialog').show();"/>
+                         </p:column>
+                         
+                         <p:column headerText="Date" width="50">
+		            		<p:outputLabel  value="#{pt.dateTrans}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Owner" width="100">
+		            		<p:outputLabel  value="#{pt.owner}"/>
+		            	 </p:column>
+		            	
+		            	 <p:column headerText="Business Name" width="150">
+		            		<p:outputLabel  value="#{pt.name}"/>
+		            	 </p:column>
+		            	  
+		            	 <p:column headerText="Adress" width="150">
+		            		<p:outputLabel  value="#{pt.address}"/>
+		            	 </p:column>
+		            	
+		            	 <p:column headerText="Permit" width="50">
+		            		<p:outputLabel  value="#{pt.hasPermit}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Rented/Owner/Amount" width="100">
+		            		<p:outputLabel  value="#{pt.rented}/#{pt.buildingOwnerNamer}/#{pt.amountRented}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Remarks" width="50">
+		            		<p:outputLabel  value="#{pt.remarks}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Map By" width="50">
+		            		<p:outputLabel  value="#{pt.mapBy}"/>
+		            	 </p:column>
+		            	 
+                         </p:dataTable>
+			
+			</p:tab>
+			
+			<p:tab title="Barangay">
+			
+			<p:barChart id="barangayDataId" model="#{mapping.barangayModel}" style="width: 100%; height: 500px;"/>
+			
+			</p:tab>
+			
+			<p:tab title="Permit">
+			
+			<p:barChart id="permitDataId" model="#{mapping.permitModel}" style="width: 100%; height: 500px;"/>
+			
+			</p:tab>
+			
+			<p:tab title="Rented">
+			
+			<p:barChart id="rentedDataId" model="#{mapping.rentedModel}" style="width: 100%; height: 500px;"/>
+			
+			</p:tab>
+			
+			<p:tab title="Combine Graph">
+				<p:barChart id="combineDataId" model="#{mapping.stackedBarModel}" style="width: 100%; height: 500px;"/>
+			</p:tab>
+			
+			<p:tab title="Barangay Info">
+				
+				<p:dataTable id="barDataInfo" value="#{mapping.dataInfos}" var="in" stickyHeader="false"
+							rows="20" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="20,40,80,100"
+                         scrollable="true" paginatorPosition="top" style="text-align: left">
+                         
+                         <f:facet name="{Exporters}">
+	                          <p:menuButton id="exInqiD" value="Exports" style="float: right">
+	                          	<p:menuitem value="Export Excel All Data">
+	                          		<p:dataExporter type="xlsxstream" target="barDataInfo" fileName="mappingDataInfo"/>
+	                          	</p:menuitem>
+	                          	<p:menuitem value="Export Excel Current Page">
+	                          		<p:dataExporter type="xlsxstream" target="barDataInfo" fileName="mappingDataInfo" pageOnly="true"/>
+	                          	</p:menuitem>
+	                          </p:menuButton>
+                          	 
+                          </f:facet>
+                         
+                         <p:column headerText="Name" width="100">
+            						<p:outputLabel value="#{in.barangay}"/>
+            			 </p:column>
+            			 
+            			 <p:column headerText="With Permit" width="70">
+            						<p:outputLabel value="#{in.countWithPermit}"/>
+            			 </p:column>
+            			 
+            			 <p:column headerText="No Permit" width="70">
+            						<p:outputLabel value="#{in.countNoPermit}"/>
+            			 </p:column>
+                         
+                         <p:column headerText="Total Business Map" width="70">
+            						<p:outputLabel value="#{in.count}"/>
+            			 </p:column>
+                         
+                </p:dataTable>
+				
+			</p:tab>
+			
+			</p:tabView>
+		    	
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:dialog id="picDialogId" widgetVar="picDialog" width="850" height="400" modal="true" position="center top" closeOnEscape="true">
+		
+					<p:panelGrid layout="grid" columns="2">
+						<p:graphicImage id="imgId1" name="/images/businessmap/#{mapping.selectedMapData.pictureOfOwner}" height="400" width="400"/>
+						<p:graphicImage id="imgId2" name="/images/businessmap/#{mapping.selectedMapData.pictureOfBusiness}" height="400" width="400"/>
+					</p:panelGrid>
+					
+		</p:dialog>
+	
+	<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+	
+		<p:dialog id="gmapDialog" widgetVar="dlg" width="800" height="600" modal="true" position="center top">
+		
+		    <p:gmap id="gmap" center="#{mapping.centerMap}" widgetVar="myMap" zoom="15" type="HYBRID" style="width:100%;height:100%" model="#{mapping.allBusiness}">
+		    	
+		    	<p:ajax event="overlaySelect" listener="#{mapping.onMarkerSelect}"/>
+		    	<p:gmapInfoWindow id="infoWindow">
+                <p:outputPanel style="text-align: center; display: block; margin: auto">
+
+                    <p:graphicImage name="/images/businessmap/#{mapping.marker.data}" height="600" width="600"/>
+                    <br/>
+                    
+                    <p:panelGrid layout="grid" columns="1" style="text-align: left">
+                    	<p:outputLabel value="Business Name: #{mapping.selectedMapData.name}" />
+                    	<p:outputLabel value="Line of Business: #{mapping.selectedMapData.lineOfBusiness}" />
+                    	<p:outputLabel value="Owner: #{mapping.selectedMapData.owner}" />
+                    	<p:outputLabel value="Business Permit: #{mapping.selectedMapData.hasPermit}" />
+                    	<p:outputLabel value="Address: #{mapping.selectedMapData.address}" />
+                    	<p:outputLabel value="Rented: #{mapping.selectedMapData.rented}" rendered="#{mapping.selectedMapData.rented.equals('Yes')}"/>
+                    	<p:outputLabel value="Building Owner: #{mapping.selectedMapData.buildingOwnerNamer}" rendered="#{mapping.selectedMapData.rented.equals('Yes')}"/>
+                    	<p:outputLabel value="Amount rent: #{mapping.selectedMapData.amountRented}" rendered="#{mapping.selectedMapData.rented.equals('Yes')}"/>
+                    	<p:outputLabel value="Remarks: #{mapping.selectedMapData.remarks}" />
+                    </p:panelGrid>
+				
+                </p:outputPanel>
+            </p:gmapInfoWindow>
+		    </p:gmap>
+		    
+		</p:dialog>
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

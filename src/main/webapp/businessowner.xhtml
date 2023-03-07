@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    xmlns:pe="http://primefaces.org/ui/extensions"  
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Business Owner</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+            <h:outputScript name="zxing/zxing.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+	
+	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-6">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			<div class="ui-inputgroup" style="float:left">
+			    			<p:commandButton id="openCam" value="Scan QR"  onclick="PF('dlgCam').show(1000);" icon="pi pi-qrcode" title="Click this button to start scanning qr code"/>
+			    		</div>
+		    		</div>
+		    		<div class="col-12">
+		    			<div class="ui-inputgroup" style="float:right">
+	    					<p:commandButton id="idNew" value="New" update=":formId:usercusId, :formId:pictureId" actionListener="#{businessOwnerBean.clearFields}"  icon="pi pi-file-o" title="Click this button to start new information"/>
+	    					<p:commandButton id="idClear" value="Clear" update="pictureId usercusId" icon="pi pi-trash" actionListener="#{businessOwnerBean.closePopup}" title="Click this button to clear information"/>
+							<p:commandButton id="idSave" value="Save" update="cusId usercusId pictureId msg"  icon="pi pi-save" title="Click this button to save your changes" actionListener="#{businessOwnerBean.save}">
+	        					<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+	        				</p:commandButton>
+    					</div>	
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panelGrid id="pictureId" columns="3" cellpadding="0" layout="grid">
+							
+							<h:outputLabel id="photo">
+        						<p:graphicImage name="images/photocam/#{businessOwnerBean.photoId}.jpg" rendered="#{not empty businessOwnerBean.photoId}" style="width: 100px; height: 100px"/>
+        					</h:outputLabel>
+        		
+		        			<p:fileUpload listener="#{businessOwnerBean.fileUploadListener}"
+				                    			mode="advanced" auto="true" sizeLimit="50000000" label="Upload Picture"
+				                    			update="photo" dragDropSupport="true"
+				                    			allowTypes="/(\.|\/)(gif|jpeg|JPEG||JPG|jpg|png|PNG)$/" />
+				                    			
+				                    			
+				             <pe:qrCode id="qrCodeElem" 
+						           renderMethod="#{businessOwnerBean.renderMethod}" 
+						           renderMode="#{businessOwnerBean.mode}" 
+						           text="#{businessOwnerBean.text}"
+						           label="#{businessOwnerBean.label}"
+						           size="#{businessOwnerBean.size}"                 
+						           fillColor="#{businessOwnerBean.fillColor}"
+						           fontName="Ubuntu"
+						           fontColor="#01A9DB"
+						           ecLevel="H"                   
+						           radius="0.5"/>       			
+		        			
+							</p:panelGrid>
+		    		</div>
+		    		<div class="col-12">
+		    			
+		    			<p:panelGrid id="usercusId" columns="4" layout="grid">
+				
+						<p:outputLabel for="d1" value="Date:"/>
+						<p:inputText id="d1" value="#{businessOwnerBean.dateregistered}" readonly="true" style="width: 11em;"/>
+						
+						<p:outputLabel for="d2" value="Card Number:"/>
+						<p:inputText id="d2" value="#{businessOwnerBean.cardnumber}" readonly="true" style="width: 11em;"/>
+						
+						<p:outputLabel for="idqr" value="QRCode"/>
+		        		<p:inputText id="idqr" value="#{businessOwnerBean.qrCode}"  style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="idNat" value="PSA ID"/>
+		        		<p:inputText id="idNat" value="#{businessOwnerBean.nationalId}"  style="width: 11em;"/>
+								
+						<p:outputLabel for="d3" value="First Name(Company Name):"/>
+		        		<p:autoComplete id="d3" value="#{businessOwnerBean.firstname}" placeholder="First Name(Company Name)" completeMethod="#{businessOwnerBean.autoFirst}" effect="fade" style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="d4" value="Middle Name(add (.) for company):"/>
+		        		<p:autoComplete id="d4" value="#{businessOwnerBean.middlename}" placeholder="Middle Name" completeMethod="#{businessOwnerBean.autoMiddle}" effect="fade" style="width: 11em;}"/>
+		        		
+		        		
+		        		<p:outputLabel for="d5" value="Last Name(add (.) for company):"/>
+		        		<p:autoComplete id="d5" value="#{businessOwnerBean.lastname}" placeholder="Last Name" completeMethod="#{businessOwnerBean.autoLast}" effect="fade" style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="d6" value="Civil Status:"/>
+		            	<p:selectOneMenu id="d6" value="#{businessOwnerBean.clivilId}" style="width: 11em;" title="Click this to select Civil Status" filterMatchMode="contains" filter="true">
+		                		<f:selectItems value="#{businessOwnerBean.civils}"/>
+		            	</p:selectOneMenu>
+		        		
+		        		<p:outputLabel for="d7" id="birthId" value="Birtdate:"/>
+		        		<p:calendar id="d7" value="#{businessOwnerBean.birthdate}" pattern="yyyy-MM-dd" effect="slideDown" style="width: 11em;" title="Click this calendar to define person's birthdate">
+		        			<f:ajax event="change" listener="#{businessOwnerBean.calculateAge}" render="idAge"/>
+		        		</p:calendar>
+		        		
+		        		<p:outputLabel for="idAge" value="Age:"/>
+		        		<p:inputNumber id="idAge" value="#{businessOwnerBean.age}" inputStyle="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="idplace" value="Born Place:"/>
+		        		<p:inputText id="idplace" value="#{businessOwnerBean.bornplace}"  style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="idw" value="Weight:"/>
+		        		<p:inputText id="idw" value="#{businessOwnerBean.weight}"  style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="idh" value="Height:"/>
+		        		<p:inputText id="idh" value="#{businessOwnerBean.height}"  style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="idwork" value="Work:"/>
+		        		<p:inputText id="idwork" value="#{businessOwnerBean.work}"  style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="idCit" value="Citizenship:"/>
+		        		<p:inputText id="idCit" value="#{businessOwnerBean.citizenship}"  style="width: 11em;"/>
+		        		
+		        		
+		        		<p:outputLabel for="d8" value="Gender: "/>
+		            	<p:selectOneMenu id="d8" value="#{businessOwnerBean.genderId}" style="width: 11em;" title="Click this to define gender">
+		                	<f:selectItems value="#{businessOwnerBean.genderList}"/>
+		            	</p:selectOneMenu>
+		        		
+		        		
+		        		
+		        		<p:outputLabel for="d9" value="Province Name:"/>
+			 			<p:outputLabel id="d9" value="#{businessOwnerBean.provinceSelected.name}">
+			 			<p:commandButton update=":formId:provData" icon="pi pi-search" title="Click this button to select Province name" actionListener="#{businessOwnerBean.loadProvince}" onclick="PF('multiDialogProvince').show();"/>
+			 			</p:outputLabel>
+		        		
+		        		<p:outputLabel for="d10" value="Contact No:"/>
+		        		<p:inputText id="d10" value="#{businessOwnerBean.contactno}" placeholder="+63900 0000 000" style="width: 11em;"/>
+		        		
+		        		<p:outputLabel for="d11" value="Municipality Name:"/>
+			 			<p:outputLabel id="d11" value="#{businessOwnerBean.municipalSelected.name}" >
+			 			<p:commandButton update=":formId:munData" icon="pi pi-search" title="Click this button to select Municipality name" actionListener="#{businessOwnerBean.loadMunicipal}" onclick="PF('multiDialogMunicipality').show();"/>
+			 			</p:outputLabel>
+		        		
+		        		<p:outputLabel for="d12" value="Contact Person:"/>
+		        		<p:outputLabel id="d12">
+		            	<p:outputLabel id="emerId" value="#{businessOwnerBean.emergencyContactPersonName}" readonly="true"/>
+		            	<p:commandButton update="ownerId" icon="pi pi-search" actionListener="#{businessOwnerBean.loadContactPerson}" title="Click this button to select Contact Person name" onclick="PF('multiDialogContact').show()"/>
+		            	<p:commandButton update="emerId,relId,msg"  icon="pi pi-trash" title="Click this button to remove the attached contact person for this citizen" actionListener="#{businessOwnerBean.removeEmergencyPerson}">
+        				<p:confirm header="Confirmation" message="Are you sure you want to removed contact person for this citizen?." icon="ui-icon-alert" />
+        		</p:commandButton>
+		            	</p:outputLabel>
+		        		
+		        		<p:outputLabel for="d13" value="Barangay Name:"/>
+			 			<p:outputLabel id="d13" value="#{businessOwnerBean.barangaySelected.name}">
+			 			<p:commandButton update=":formId:barData tb" icon="pi pi-search" title="Click this button to select Barangay name" actionListener="#{businessOwnerBean.loadBarangay}" onclick="PF('multiDialogBarangay').show();"/>
+			 			</p:outputLabel>
+		        		 
+						 <p:outputLabel for="relId" value="Relationship: "/>
+		            		<p:selectOneMenu id="relId" value="#{businessOwnerBean.relationshipId}" style="width: 11em;" title="Click this to define relationship" filterMatchMode="contains" filter="true">
+		                		<f:selectItems value="#{businessOwnerBean.relationships}"/>
+		            		</p:selectOneMenu>
+						
+		            	<p:outputLabel for="d14" value="Purok Name:"/>
+			 			<p:outputLabel id="d14" value="#{businessOwnerBean.purokSelected.purokName}">
+			 			<p:commandButton update=":formId:purData" icon="pi pi-search" title="Click this button to select Purok/Zone/Sitio name" actionListener="#{businessOwnerBean.loadPurok}" onclick="PF('multiDialogPurok').show();"/>
+			 			</p:outputLabel>
+			 			
+			 			<p:outputLabel/>
+			 			<p:outputLabel/>
+            		   	
+    			 	</p:panelGrid> 
+		    			
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-6">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<p:toolbar id="tb">
+			    		<f:facet name="left">
+			        		<div class="ui-inputgroup">
+					<p:inputText value="#{businessOwnerBean.searchCustomer}" placeholder="Search..." style="width: 20em">
+	    					<f:ajax event="keyup" listener="#{businessOwnerBean.init}" render="cusId usercusId pictureId"/>
+	    			</p:inputText>
+	    			<p:commandButton id="idFind" tabindex="1" update="cusId usercusId pictureId" icon="fa fa-search" actionListener="#{businessOwnerBean.init}"/>
+	    			<p:commandButton id="idLoadAll" update="cusId usercusId pictureId tb" value="Load All" icon="fa fa-search" actionListener="#{businessOwnerBean.loadAll}"/>
+					<p:selectBooleanCheckbox value="#{businessOwnerBean.male}">
+						<f:ajax event="change" render="cusId" listener="#{businessOwnerBean.loadFilter}"/>
+					</p:selectBooleanCheckbox>
+	    			<p:outputLabel value="Male:"/>
+					<p:selectBooleanCheckbox value="#{businessOwnerBean.female}">
+						<f:ajax event="change" render="cusId" listener="#{businessOwnerBean.loadFilter}"/>
+					</p:selectBooleanCheckbox>
+	    			 <p:outputLabel value="Female:"/>
+					<p:selectBooleanCheckbox value="#{businessOwnerBean.filteredBarangay}">
+						<f:ajax event="change" render="cusId" listener="#{businessOwnerBean.loadFilter}"/>
+					</p:selectBooleanCheckbox>
+					 <p:outputLabel value="#{businessOwnerBean.barangaySelected.name} Only:"/>
+	    			 <p:selectOneMenu value="#{businessOwnerBean.purokId}" style="color: black; width: 15em;">
+			            	<f:selectItems value="#{businessOwnerBean.purokList}"/>
+			            	<f:ajax event="change" render="cusId" listener="#{businessOwnerBean.loadFilter}"/>
+			        </p:selectOneMenu>
+    			</div>
+			        	</f:facet>
+			    		<f:facet name="right"/>
+				</p:toolbar>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+	    			<p:dataTable id="cusId" value="#{businessOwnerBean.customers}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" lazy="false"
+                         >
+                         	
+		                         	<f:facet name="{Exporters}">
+		                         			
+		                         			<p:commandButton id="toggler" type="button" value="Columns" style="float:right;" icon="pi pi-list" title="Click this button to hide and unhide columns"/>
+											<p:columnToggler datasource="cusId" trigger="toggler" />
+		                         			
+		            						<h:commandLink title="Export Citizen Record in excel format">
+		                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+		                							<p:dataExporter type="xls" target="cusId" fileName="CitizenRecord" options="#{exporter.excelOpt}"/>
+		            						</h:commandLink>
+		            						<h:commandLink title="Export Citizen Record in pdf format">
+		                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+		                							<p:dataExporter type="pdf" target="cusId" fileName="CitizenRecord" preProcessor="#{exporter.preProcessPDF}" options="#{exporter.pdfOpt}"/>
+		            						</h:commandLink>
+		            				</f:facet>
+		                         	
+		                         	
+		                         	
+		          					<p:column headerText="[*]" width="40" exportable="false">
+		            					<p:commandButton update="cusId usercusId msg" icon="pi pi-trash" title="Click this button to delete this data" actionListener="#{businessOwnerBean.deleteRow(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Edit" width="40" exportable="false">
+		            					<p:commandButton icon="pi pi-pencil" title="Click this button to see the additional information" update="usercusId pictureId qrCodeElem" actionListener="#{businessOwnerBean.clickItem(rpt)}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="BID" width="100" sortable="false" sortBy="#{rpt.cardno}">
+		            						<p:outputLabel  value="#{rpt.cardno}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Registered" width="100" sortable="false" sortBy="#{rpt.dateregistered}">
+		            						<p:outputLabel  value="#{rpt.dateregistered}"/>
+		            				</p:column>
+		            				
+		                         	<p:column headerText="Name" width="120" sortable="false" sortBy="#{rpt.fullname}">
+		            						<p:outputLabel  value="#{rpt.fullname}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Gender" width="50" sortable="false" sortBy="#{rpt.genderName}">
+		            						<p:outputLabel  value="#{rpt.genderName}"/>
+		            				</p:column> 
+		            				
+		            				<p:column headerText="Address" width="300" sortable="false" sortBy="#{rpt.completeAddress}">
+		            						<p:outputLabel  value="#{rpt.completeAddress}"/>
+		            				</p:column>
+		            				
+							</p:dataTable>
+	    			
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<p:dialog header="Name List" responsive="true" showEffect="clip" hideEffect="clip" position="center top" modal="false" widgetVar="multiDialogContact" Height="500" width="700" closable="false">
+		<p:toolbar id="tbTax">
+    		<f:facet name="left">
+        		<p:inputText id="idSearchTax" value="#{businessOwnerBean.searchEmergencyPerson}" placeholder="Search Name">
+    					<f:ajax event="keyup" listener="#{businessOwnerBean.loadContactPerson}" render="ownerId"/>
+    			</p:inputText>
+    		</f:facet>
+    			
+    		<f:facet name="right">
+    			<p:commandButton  value="Close"  title="Click this button to close the dialog" onclick="PF('multiDialogContact').hide();"/>
+    		</f:facet>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="ownerId" value="#{businessOwnerBean.contactPersons}" var="own" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false"
+                         >
+                         
+                         <p:column headerText="Action" width="30">
+                         	<p:commandButton icon="pi pi-thumbs-up" title="Click this button to select this person" update="emerId" actionListener="#{businessOwnerBean.clickContact(own)}" oncomplete="PF('multiDialogContact').hide()"/>
+                         </p:column>
+                         <p:column headerText="Name" width="120">
+            						<p:outputLabel  value="#{own.fullname}"/>
+            			</p:column>
+                         
+         </p:dataTable>                
+		
+</p:dialog>
+	
+	<p:dialog header="Province" responsive="true" position="center top" showEffect="clip" hideEffect="clip" modal="false" widgetVar="multiDialogProvince" Height="500" width="700">
+		<p:toolbar id="tbProvince">
+    		<f:facet name="left">
+        		<p:inputText value="#{businessOwnerBean.searchProvince}" placeholder="Search..." style="width: 30em">
+    					<f:ajax event="keyup" listener="#{businessOwnerBean.loadProvince}" render="provData"/>
+    			</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			
+    		</f:facet>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="provData" value="#{businessOwnerBean.provinces}" var="rg" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false"
+                         >
+                         
+                         <p:column headerText="Action" width="30">
+                         	<p:commandButton icon="pi pi-thumbs-up" title="Click this button to select this Province" update=":formId:usercusId" actionListener="#{businessOwnerBean.clickItemPopup(rg)}"  oncomplete="PF('multiDialogProvince').hide()"/>
+                         </p:column>
+                         
+                         <p:column headerText="Province Name" width="120">
+            						<p:outputLabel  value="#{rg.name}"/>
+            				</p:column>
+                         
+         </p:dataTable>                
+		
+	</p:dialog>	
+	
+	<p:dialog header="Municipality" responsive="true" position="center top" showEffect="clip" hideEffect="clip" modal="false" widgetVar="multiDialogMunicipality" Height="500" width="700">
+		<p:toolbar id="tbMunicipal">
+    		<f:facet name="left">
+        		<p:inputText value="#{businessOwnerBean.searchMunicipal}" placeholder="Search..." style="width: 30em">
+    					<f:ajax event="keyup" listener="#{businessOwnerBean.loadMunicipal}" render="munData"/>
+    			</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			
+    		</f:facet>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="munData" value="#{businessOwnerBean.municipals}" var="rg" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false"
+                         >
+                         
+                         <p:column headerText="Action" width="30">
+                        	<p:commandButton icon="pi pi-thumbs-up" title="Click this button to select this Municipality" update=":formId:usercusId" actionListener="#{businessOwnerBean.clickItemPopup(rg)}"  oncomplete="PF('multiDialogMunicipality').hide()"/> 
+                         </p:column>
+                         
+                         <p:column headerText="Municipality Name" width="120">
+            						<p:outputLabel  value="#{rg.name}"/>
+            			</p:column>
+                         
+         </p:dataTable>                
+		
+	</p:dialog>	
+	
+	<p:dialog header="Barangay" responsive="true" position="center top" showEffect="clip" hideEffect="clip" modal="false" widgetVar="multiDialogBarangay" Height="500" width="700">
+		<p:toolbar id="tbBarangay">
+    		<f:facet name="left">
+        		<p:inputText value="#{businessOwnerBean.searchBarangay}" placeholder="Search..." style="width: 30em">
+    					<f:ajax event="keyup" listener="#{businessOwnerBean.loadBarangay}" render="barData"/>
+    			</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			
+    		</f:facet>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="barData" value="#{businessOwnerBean.barangays}" var="rg" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false"
+                         >
+                         <p:column headerText="Action" width="30">
+                         	<p:commandButton icon="pi pi-thumbs-up" title="Click this button to select this Barangay" update=":formId:usercusId tb" actionListener="#{businessOwnerBean.clickItemPopup(rg)}"  oncomplete="PF('multiDialogBarangay').hide()"/>
+                         </p:column>
+                         <p:column headerText="Barangay Name" width="120">
+            						<p:outputLabel  value="#{rg.name}" />
+            				</p:column>
+                         
+         </p:dataTable>                
+		
+	</p:dialog>	
+	
+	<p:dialog responsive="true" header="Purok" position="center top" showEffect="clip" hideEffect="clip" modal="false" widgetVar="multiDialogPurok" Height="500" width="700">
+		<p:toolbar id="tbPurok">
+    		<f:facet name="left">
+        		<p:inputText value="#{businessOwnerBean.searchPurok}" placeholder="Search..." style="width: 30em">
+    					<f:ajax event="keyup" listener="#{businessOwnerBean.loadPurok}" render="purData"/>
+    			</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			
+    		</f:facet>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="purData" value="#{businessOwnerBean.puroks}" var="rg" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false"
+                         >
+                         
+                         <p:column headerText="Action" width="30">
+                         	<p:commandButton icon="pi pi-thumbs-up" title="Click this button to select this Purok/Zone/Sitio" update=":formId:usercusId" actionListener="#{businessOwnerBean.clickItemPopup(rg)}"  oncomplete="PF('multiDialogPurok').hide()"/>
+                         </p:column>
+                         
+                         <p:column headerText="Barangay Name" width="120">
+            						<p:outputLabel  value="#{rg.purokName}" />
+            				</p:column>
+                         
+         </p:dataTable>                
+		
+	</p:dialog>	
+	
+	
+	<p:dialog widgetVar="dlgCam" visible="false" fitViewport="true" position="center center" modal="true" draggable="false" closable="false" closeOnEscape="false" resizable="false" showHeader="false" >
+		
+		
+		<p:panelGrid columns="1" layout="grid">
+	        <p:commandButton value="Close Camera" id="resetButton" oncomplete="PF('dlgCam').hide()"/>
+        </p:panelGrid>
+		
+		<p:separator/>
+		<label>Change video source:</label>
+        <select id="sourceSelect" style="max-width:400px"/>
+		<div id="sourceSelectPanel" style="display:none">
+		
+			<p:panelGrid columns="1" layout="grid">
+		
+				<video id="video" width="700" height="500" style="border: 1px solid gray"/>
+		
+				
+        
+			</p:panelGrid>
+		</div>
+		
+	</p:dialog>
+	
+	<p:remoteCommand name="loadResult"
+                      action="#{businessOwnerBean.findQRCode}" update="usercusId pictureId qrCodeElem msg"
+                      />
+	<h:outputScript>
+	
+	window.addEventListener('load', function () {
+      let selectedDeviceId;
+      const codeReader = new ZXing.BrowserMultiFormatReader()
+      console.log('ZXing code reader initialized')
+      codeReader.listVideoInputDevices()
+        .then((videoInputDevices) => {
+          const sourceSelect = document.getElementById('sourceSelect')
+          selectedDeviceId = videoInputDevices[0].deviceId
+          if (videoInputDevices.length >= 1) {
+            videoInputDevices.forEach((element) => {
+              const sourceOption = document.createElement('option')
+              sourceOption.text = element.label
+              sourceOption.value = element.deviceId
+              sourceSelect.appendChild(sourceOption)
+            })
+
+            sourceSelect.onchange = () => {
+              selectedDeviceId = sourceSelect.value;
+            };
+
+            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+            sourceSelectPanel.style.display = 'block'
+          }
+
+          document.getElementById('openCam').addEventListener('click', () => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                console.log(result)
+                
+                
+                loadResult([{
+			        name: 'qrcode',
+			        value: result.text
+			      }]);
+                
+              }
+              
+            })
+            console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+          })
+			
+			document.getElementById('resetButton').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+
+			document.getElementById('openCam').addEventListener('click', () => {
+	            codeReader.reset()
+	            document.getElementById('result').textContent = '';
+	            console.log('Reset.')
+	          })	
+			
+			document.getElementById('idNew').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('idClear').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('idSave').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+		
+			
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    })
+	
+	</h:outputScript>
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menulic.xhtml" />	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

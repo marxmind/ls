@@ -1,0 +1,66 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:my="jakarta.faces.component"
+    >
+ 
+    <ui:composition>
+    
+    <p:dialog widgetVar="dlgBizLookup" fitViewport="true" position="center top" header="Business Lookup" closable="true" modal="true" closeOnEscape="true">
+    		<p:card style="width: 120em">
+    		<p:toolbar id="tbBizLookup">
+    		<f:facet name="left">
+    			<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+    			<p:inputText value="#{bizLookupBean.searchName}" placeholder="Search..." style="width: 25em">
+    				<p:ajax event="keyup" listener="#{bizLookupBean.loadSearch}" update="bizDataId" delay="800"/>
+    			</p:inputText>
+    			</span>
+    		</f:facet>
+    		<f:facet name="right"/>
+			</p:toolbar> 
+    		
+    		<p:dataTable id="bizDataId" value="#{bizLookupBean.pmts}" var="ct" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" draggableColumns="true" draggableRows="true" paginatorPosition="top" lazy="false"
+                         >
+                         	
+            				<p:column headerText="Print" width="30" exportable="false">
+            						<p:commandLink title="Print in PDF" target="_blank" action="#{bizLookupBean.printPermit(ct)}" ajax="false" immediate="false" >
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+									</p:commandLink>
+            				</p:column>
+            				
+            				<p:column headerText="Control No" width="70" sortable="false" sortBy="#{ct.controlNo}">
+            						<p:outputLabel value="#{ct.controlNo}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Plate No" width="70" sortable="false" sortBy="#{ct.plateNo}">
+            						<p:outputLabel value="#{ct.plateNo}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Date Issued" width="70" sortable="false" sortBy="#{ct.dateTrans}">
+            						<p:outputLabel value="#{ct.dateTrans}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Owner" width="100" sortable="false" sortBy="#{ct.customer.fullname}">
+            						<p:outputLabel value="#{ct.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Business" width="120" sortable="false" sortBy="#{ct.businessName}">
+            						<p:outputLabel value="#{ct.businessName}"/>
+            				</p:column>
+            				
+            				
+            				
+						</p:dataTable>
+    			</p:card>
+    		</p:dialog>
+    
+    </ui:composition>
+ </html>

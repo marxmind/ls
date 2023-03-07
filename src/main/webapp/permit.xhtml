@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    xmlns:pe="http://primefaces.org/ui/extensions"  
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Permit Registration</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+            <h:outputScript name="zxing/zxing.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	
+		 <p:growl id="msg" showDetail="true" life="2000" />
+		 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    	 
+    	 <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    	</p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-7">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			<div class="ui-inputgroup">
+		    				<p:commandButton update="clearFldId pictureId orId bzId tb"  value="New" actionListener="#{businessPermitBean.clearNew}" icon="pi pi-file" title="Click this button to start new information"/>
+		    				<p:commandButton update="clearFldId pictureId orId bzId tb" value="Clear" icon="pi pi-trash" actionListener="#{businessPermitBean.clearNew}" title="Click this button to clear information"/>
+		    				<p:commandButton update="cusId clearFldId pictureId orId bzId tb cal1 cal2 searchId msg" value="Save"  icon="pi pi-save" title="Click this button to save your changes" actionListener="#{businessPermitBean.saveData}">
+		        				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+		        			</p:commandButton>
+		        			<p:commandButton type="Button" value="Check Control Number" icon="pi pi-sort-numeric-down" onclick="PF('dlgControl').show(1000)" update="dataCon" />
+		    		
+						</div>
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panelGrid id="pictureId" columns="1" layout="grid">
+						<h:outputLabel id="photo">
+		        			<p:graphicImage name="images/photocam/#{businessPermitBean.photoId}.jpg" rendered="#{not empty businessPermitBean.photoId}" style="width: 100px; height: 100px"/>
+		        			
+		        		</h:outputLabel>
+						</p:panelGrid>
+		    		</div>
+		    		<div class="col-12">
+		    			<p:dataTable id="bzId" value="#{businessPermitBean.business}" var="bz" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" lazy="false"
+                         paginatorPosition="top" paginatorAlwaysVisible="false"
+                         >
+                         	<p:column headerText="Select" width="20" exportable="false">
+            					<p:commandButton icon="pi pi-thumbs-up" title="Click this button to see the additional information" update="clearFldId" actionListener="#{businessPermitBean.clickItemBusiness(bz)}"/>
+            				</p:column>
+            				<p:column headerText="Business Name" width="200" sortable="false">
+            						<h:outputText  value="#{bz.businessName}"/>
+            				</p:column>
+            				
+     					</p:dataTable>
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panelGrid id="clearFldId" columns="4" layout="grid" style="text-align: left">
+						
+						<p:outputLabel value="Issued">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+								<p:calendar  value="#{businessPermitBean.issuedDate}"  required="true" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
+							</div>
+							</div>
+						</p:outputLabel>	
+							
+						<p:outputLabel value="Requestor">
+							<div class="ui-inputgroup">
+							<div class="p-field">
+			            	<p:outputLabel value="#{businessPermitBean.customerName}">
+			            	<p:commandButton style="width: 15em" update="idSearchTax ownerId" icon="pi pi-search" actionListener="#{businessPermitBean.loadTaxpayer}" onclick="PF('multiDialogOwner').show()"/>
+			            	</p:outputLabel>
+			            	</div>
+			            	</div>
+						</p:outputLabel>
+							
+		        		 <p:outputLabel value="Control No">
+		        		 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputText id="d0" value="#{businessPermitBean.controlNo}" style="width: 15em;"/>	
+		        			</div>
+		        			</div>
+		        		</p:outputLabel>
+		        			
+		        		 <p:outputLabel value="Plate No">
+		        		 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputText id="d00" value="#{businessPermitBean.plateNo}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>	
+						 	
+						 <p:outputLabel value="Issued On">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputText id="d000" value="#{businessPermitBean.issuedOn}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>		
+						 
+						 <p:outputLabel value="Valid Until">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputText id="d0000" value="#{businessPermitBean.validUntil}" style="width: 15em;"/>
+						 	</div>
+						 	</div>	
+		        		 </p:outputLabel>
+		        		 
+		        		 <p:outputLabel value="Type">
+		        		 	<div class="ui-inputgroup">
+							<div class="p-field">
+				        		 <p:selectOneMenu id="d1" value="#{businessPermitBean.typeId}" style="width: 15em;">
+				                	<f:selectItems value="#{businessPermitBean.types}"/>
+				            	</p:selectOneMenu>
+		            	 	</div>
+		            	 	</div>
+		            	 </p:outputLabel>
+		            	 	
+		        		 <p:outputLabel value="Memo">
+		        		 	<div class="ui-inputgroup">
+							<div class="p-field">
+				        		 <p:selectOneMenu id="d2" value="#{businessPermitBean.memoTypeId}" style="width: 15em;">
+				                	<f:selectItems value="#{businessPermitBean.memos}"/>
+				            	</p:selectOneMenu>
+		            		</div>
+		            		</div>
+		            	</p:outputLabel>
+		            	
+		        		 <p:outputLabel value="Business Name">
+		        		 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputTextarea id="d3" value="#{businessPermitBean.businessName}" style="width: 15em;"/>  	
+						 	</div>
+						 	</div>
+						 </p:outputLabel>
+						 
+						 <p:outputLabel value="Business Engaged">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputTextarea id="d4" value="#{businessPermitBean.businessEngage}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>
+						 	
+						 <p:outputLabel value="Address">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 	<p:inputTextarea id="d5" value="#{businessPermitBean.businessAddress}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>
+						 
+						 <p:outputLabel value="Barangay Located">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 	<p:autoComplete id="d6" value="#{businessPermitBean.barangay}" placeholder="Barangay" completeMethod="#{businessPermitBean.autoBarangay}" effect="fade" dropdownMode="true" inputStyle="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>
+						 	
+						 <p:outputLabel value="Capital/Gross">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 	<p:inputNumber id="d9" value="#{businessPermitBean.grossAmount}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>
+						 	
+						 <p:outputLabel value="Employee Details">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 	<p:inputText id="d10" value="#{businessPermitBean.employeeDtls}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>
+						 	
+						 <p:outputLabel value="OIC Licensing">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 	<p:inputText id="d7" value="#{businessPermitBean.oic}" style="width: 15em;"/>
+						 	</div>
+						 	</div>
+						 </p:outputLabel>	
+						 	
+						 <p:outputLabel value="Mayor">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 	<p:inputText id="d8" value="#{businessPermitBean.mayor}" style="width: 15em;"/>
+						 	</div>
+							</div>						 	
+						 </p:outputLabel>
+						 	
+		     		</p:panelGrid> 
+		    		</div>
+		    		
+		    		<div class="col-12">
+	    			
+						<p:dataTable id="orId" value="#{businessPermitBean.ors}" var="ct" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false"
+                         selection="#{businessPermitBean.orsSelected}" rowKey="#{ct.id}" draggableColumns="true" draggableRows="true" paginatorPosition="top" paginatorAlwaysVisible="false"
+                         >
+                         	
+            				<p:column selectionMode="multiple" headerText="Select" style="width:16px;text-align:center" exportable="false" />
+            				
+            				<p:column headerText="OR No" width="70" sortable="false">
+            						<h:outputText  value="#{ct.orNumber}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Date Issued" width="70" sortable="false">
+            						<h:outputText  value="#{ct.dateTrans}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Amount" width="70" sortable="false">
+            						<h:outputText  value="#{ct.amount}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Purpose" width="70" sortable="false">
+            						<h:outputText  value="#{ct.purpose}"/>
+            				</p:column>
+            				
+     					</p:dataTable>  
+
+	    			</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-5">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<p:toolbar id="tb">
+			    		<f:facet name="left">
+			    			<div class="ui-inputgroup">
+			    			<span class="ui-input-icon-left">
+			    			<i class="pi pi-search" />
+			        		<p:inputText id="searchId" value="#{businessPermitBean.searchName}" placeholder="Search..." style="width: 20em">
+			    					<f:ajax event="keyup" listener="#{businessPermitBean.loadSearch}" render="clearFldId pictureId cusId"/>
+			    			</p:inputText>
+			    			</span>
+							<p:calendar id="cal1" value="#{businessPermitBean.calendarFrom}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 8em"/>
+			    			<p:calendar id="cal2" value="#{businessPermitBean.calendarTo}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 8em"/>
+							
+							<p:selectOneMenu value="#{businessPermitBean.businessStatusId}" style="width: 10em;">
+				                	<f:selectItems value="#{businessPermitBean.businessStatus}"/>
+				            </p:selectOneMenu>
+				            	
+							<p:commandButton update="clearFldId pictureId cusId" icon="pi pi-search" actionListener="#{businessPermitBean.loadSearch}"/>
+							</div>
+			        	</f:facet>
+			    		<f:facet name="right">
+						</f:facet>
+				</p:toolbar>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+	    			<p:dataTable id="cusId" value="#{businessPermitBean.pmts}" var="ct" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" lazy="false" draggableColumns="false" draggableRows="false" paginatorPosition="top"
+                         >
+                         	
+                         	<f:facet name="{Exporters}">
+                         			
+            						<h:commandLink title="Export Clearance in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="cusId" fileName="Clearance" options="#{exporter.excelOpt}"/>
+            						</h:commandLink>
+            						<p:commandLink title="Export Clearnce in pdf format" target="_blank" actionListener="#{businessPermitBean.printAll}" ajax="false" immediate="false">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            						</p:commandLink>
+            				</f:facet>
+                         	
+                     
+          					<p:column headerText="[*]" width="30" exportable="false">
+            					<p:commandButton update="clearFldId pictureId cusId orId msg" icon="pi pi-trash"  actionListener="#{businessPermitBean.deleteRow(ct)}" title="Click this button to delete">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            				</p:column>
+            				
+            				<p:column headerText="Print" width="30" exportable="false">
+            						<p:commandLink title="Print in PDF" target="_blank" action="#{businessPermitBean.printPermit(ct)}" ajax="false" immediate="false" >
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+									</p:commandLink>
+            				</p:column>
+            				
+            				<p:column headerText="Edit" width="30" exportable="false">
+            					<p:commandButton icon="pi pi-pencil" update="clearFldId pictureId orId bzId" actionListener="#{businessPermitBean.clickItem(ct)}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Control No" width="70">
+            						<p:outputLabel value="#{ct.controlNo}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Plate No" width="70">
+            						<p:outputLabel value="#{ct.plateNo}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Date Issued" width="70">
+            						<p:outputLabel value="#{ct.dateTrans}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Owner" width="100">
+            						<p:outputLabel value="#{ct.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Business" width="120">
+            						<p:outputLabel value="#{ct.businessName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="#Emp" width="70">
+            						<p:outputLabel value="#{ct.empdtls}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Type" width="70">
+            						<p:outputLabel value="#{ct.type}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Memo" width="70">
+            						<p:outputLabel value="#{ct.memoType}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Line of Business" width="100">
+            						<p:outputLabel value="#{ct.businessEngage}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Capital" width="100" >
+            						<p:outputLabel value="#{ct.capital}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Gross" width="100" >
+            						<p:outputLabel value="#{ct.gross}"/>
+            				</p:column>
+            				
+						</p:dataTable>
+	    			
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	<p:dialog header="Requestor" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" position="center top" modal="false" widgetVar="multiDialogOwner" Height="500" width="500" closable="false">
+		<p:toolbar id="tbTax">
+    		<f:facet name="left">
+        		<p:inputText id="idSearchTax" value="#{businessPermitBean.searchTaxpayer}" placeholder="Search Name" >
+    					<p:ajax event="keyup" listener="#{businessPermitBean.loadTaxpayer}" update="ownerId clearFldId pictureId orId bzId idSearchTax"/>
+    			</p:inputText>
+    		</f:facet>
+    			
+    		<f:facet name="right">
+    			<p:commandButton  value="Close" icon="ui-icon-closethick"  style="width: 10em;" onclick="PF('multiDialogOwner').hide();" title="Click this button to hide this dialog"/>
+    		</f:facet>
+		</p:toolbar>
+		
+		
+		<p:dataTable id="ownerId" value="#{businessPermitBean.taxpayers}" var="own" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" lazy="false"
+                         >
+                         
+                         <p:column headerText="Action" width="20">
+                         	<p:commandButton icon="pi pi-thumbs-up" title="Click this button to select Requestor name"  update="clearFldId pictureId orId bzId" actionListener="#{businessPermitBean.clickItemOwner(own)}" oncomplete="PF('multiDialogOwner').hide()"/>
+                         </p:column>
+                         
+                         <p:column headerText="Requestor Name" width="120">
+            				<h:outputText  value="#{own.fullname}"/>
+            			</p:column>
+                         
+         </p:dataTable>                
+		
+		</p:dialog>
+		
+		<ui:include src="businessgraph.xhtml" />
+		<p:commandButton title="Graph" icon="pi pi-chart-pie" id="graphBiz" actionListener="#{businessGraphBean.loadGraph}" update="tbBizGraph" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+		
+		<p:dialog header="Control No Series" showEffect="clip" hideEffect="clip" position="right top" modal="false" widgetVar="dlgControl" Height="500" width="900" closable="true" closeOnEscape="true">
+				
+				<p:toolbar id="tbSer">
+		    		<f:facet name="left"/>
+		    		<f:facet name="right">
+		    			<p:calendar  value="#{businessPermitBean.calendarFromCon}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 8em"/>
+			    	<p:calendar  value="#{businessPermitBean.calendarToCon}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 8em"/>
+			    	<p:selectBooleanCheckbox value="#{businessPermitBean.checkBoxSeries}" itemLabel="Only not Found Series"/>
+			    	<p:commandButton update="dataCon" icon="fa fa-search" actionListener="#{businessPermitBean.checkControlSeries}"/>
+		    		</f:facet>
+				</p:toolbar>
+				
+				<p:dataTable id="dataCon" value="#{businessPermitBean.seriesData}" var="rt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorAlwaysVisible="false" paginatorPosition="top" lazy="false"
+                         >
+                         
+                        <p:column headerText="Date" width="70">
+            				<p:outputLabel  value="#{rt.dateTrans}" style="#{rt.style}"/>
+            			</p:column>
+            			
+            			<p:column headerText="Control No" width="100">
+            				<p:outputLabel  value="#{rt.controlNo}" style="#{rt.style}"/>
+            			</p:column>
+            			
+            			<p:column headerText="Business Name" width="150">
+            				<p:outputLabel  value="#{rt.businessName}" style="#{rt.style}"/>
+            			</p:column>
+            			
+            			<p:column headerText="Owner" width="150">
+            				<p:outputLabel  value="#{rt.customer.fullname}" style="#{rt.style}"/>
+            			</p:column>
+                         
+                  </p:dataTable>       
+		</p:dialog>
+		
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menulic.xhtml" />
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

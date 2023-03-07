@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>General Collection</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+            <h:outputScript name="zxing/zxing.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+<script type="text/javascript">
+    function handleDrop(event, ui) {
+        var droppedOrder = ui.draggable;
+ 
+        droppedOrder.fadeOut('fast');
+    }
+</script>
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" showDetail="true" life="2000" />
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+ 	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+	
+	<div style="bottom: 0px;left: 0px;float:right; position: fixed;z-index: 1500">
+		 <p:outputLabel id="idMode" value="#{oRListingBean.modeName}"/>
+		 <p:toggleSwitch value="#{oRListingBean.collectorsMode}" label="#{oRListingBean.modeName}" onIcon="pi pi-times" offIcon="pi pi-check">
+        	<p:ajax listener="#{oRListingBean.modeMsg}" update="idMode msg"/>
+		</p:toggleSwitch>
+	</div>
+    
+	
+    
+    <script>
+    	
+    function showDrop(){
+    	$('#dropId').show(1000);
+    	$('#mainId').hide(1000);
+    }
+    function hideDrop(){
+    	$('#dropId').hide(1000);
+    	$('#mainId').show(1000);
+    }
+    
+    </script>
+    
+    <div class="col-12" id="dropId" style="display: none" >
+    	
+    	
+    	<p:toolbar id="tbDetailsSelected">
+    		<f:facet name="left">
+    				
+    		</f:facet>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">
+    				<p:commandButton id="totalSelectedId" type="button" value="#{oRListingBean.totalSelectedAmount}"  style="color: red; font-weight: bold; font-size: 1em; text-align:right" />
+		    		<p:selectOneMenu id="rptId" value="#{oRListingBean.orsReportsId}" style="text-align: right">
+								<f:selectItems value="#{oRListingBean.orsReports}"/>
+								<p:ajax event="change" listener="#{oRListingBean.loadSelectedGroupRpt('PARTIAL')}" update="selectedCarsTable" />
+					</p:selectOneMenu>
+					<p:commandButton value="Load All" update="selectedCarsTable" actionListener="#{oRListingBean.loadSelectedGroupRpt('FULL')}"/>
+    			</div>
+    		</f:facet>
+			</p:toolbar>
+    	
+		<p:fieldset id="selectedCars" style="margin-top:5px" legend="Selected Forms">
+						
+				        <p:outputPanel id="dropArea" >
+				            <h:outputText value="!!!Drop Forms here!!!" rendered="#{empty oRListingBean.selectedCollection}" style="font-size:100px;" />
+				            <p:dataTable id="selectedCarsTable" var="fd" value="#{oRListingBean.selectedCollection}" rendered="#{not empty oRListingBean.selectedCollection}"
+				            rows="10" paginator="true" paginatorPosition="top" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				            >
+				            
+				            	<f:facet name="{Exporters}">
+            						<h:commandLink title="Export Report in excel format">
+                						    <p:graphicImage name="img/xls.jpg" width="24" height="24"/>
+                							<p:dataExporter type="xls" target="selectedCarsTable" fileName="GeneralCollectionReportsExtracted" />
+            						</h:commandLink>
+            						<h:commandLink title="Summary with details reports" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.printFinal('CURRENT')}">
+                						    <p:graphicImage name="img/pdf.jpg" width="24" height="24"/>
+            						</h:commandLink>
+            						<h:commandLink title="Summary Only" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.printSelected('CURRENT')}">
+                						    <p:graphicImage name="img/pdf.jpg" width="24" height="24"/>
+            						</h:commandLink>
+            					</f:facet>
+				            
+				            
+				                <p:column headerText="Sub" width="15">
+				                	<p:commandButton icon="fa fa-trash" actionListener="#{oRListingBean.commandActionDelete(fd)}" update="selectedCarsTable totalSelectedId"/>
+				                </p:column>
+				                <p:column headerText="Form" width="50">
+				                    <h:outputText value="#{fd.formName}"/>
+				                </p:column>
+				 
+				                <p:column headerText="OR Number" width="50">
+				                    <h:outputText value="#{fd.orNumber}"/>
+				                </p:column>
+				 
+				 				<p:column headerText="Name" width="100">
+				                    <h:outputText value="#{fd.customer.fullname}"/>
+				                </p:column>
+				 				
+				                <p:column headerText="Amount" width="50">
+				                    <h:outputText value="#{fd.amount}">
+				                    	<f:convertNumber currencySymbol="" type="currency"/>
+				                    </h:outputText>
+				                </p:column> 
+				            </p:dataTable>
+				            
+				        </p:outputPanel>
+				        
+				    </p:fieldset>
+    	
+    </div>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    <div class="col-4" id="mainId">
+		    		<p:panelGrid id="fldId" columns="2" layout="grid">
+					<p:selectOneMenu value="#{oRListingBean.selectOrTypeId}"  filter="true" filterMatchMode="contains" styleClass="js-tilt" style="width: 15em">
+					      			<f:selectItems value="#{oRListingBean.selectOrTypes}"/>
+					       			<f:ajax event="change" listener="#{oRListingBean.selectedOR}" render="oridd idPayd idSearchPname dataSelectedId fldId fldId2 totalId cid"/>
+		      				</p:selectOneMenu>
+					<p:calendar value="#{oRListingBean.dateTrans}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
+					<p:selectOneMenu id="frmstat" value="#{oRListingBean.statusId}" style="width: 15em">
+						<f:selectItems value="#{oRListingBean.status}"/>
+					</p:selectOneMenu>
+					<p:selectOneMenu id="frmId" value="#{oRListingBean.formTypeId}" style="width: 15em" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{oRListingBean.formTypes}"/>
+						<p:ajax event="change" listener="#{oRListingBean.updateORNumber}" update="oridd idPayd idSearchPname dataSelectedId totalId cid fldId fldId2"/>
+					</p:selectOneMenu>
+					<p:selectOneMenu id="cid" value="#{oRListingBean.collectorId}"  filterMatchMode="contains" filter="true" style="width: 15em">
+								<f:selectItems value="#{oRListingBean.collectors}"/>
+								<p:ajax event="change" listener="#{oRListingBean.updateORNumber}" update="oridd idPayd idSearchPname"/>
+					</p:selectOneMenu>
+					
+					<p:autoComplete id="idPayd" placeholder="Lastname, Firstname Middlename"  value="#{oRListingBean.payorName}" completeMethod="#{oRListingBean.payorNameSuggested}"  queryDelay="800" effect="fade" maxResults="10" inputStyle="width:15em">
+						<p:ajax event="change" update="fldId2 dataSelectedId totalId" listener="#{oRListingBean.supplyCustomerInfo}" />
+					</p:autoComplete>
+					
+					<p:inputText id="oridd" value="#{oRListingBean.orNumber}" placeholder="OR No/CTC No" style="width: 15em;"/>
+					
+					<p:inputText placeholder="Address" value="#{oRListingBean.address}" style="width: 15em"/>
+					
+				</p:panelGrid>
+				<p:panelGrid id="fldNoteId" columns="1" layout="grid">
+					<p:inputTextarea value="#{oRListingBean.notes}" cols="70" rows="1" placeholder="You can add remarks here except ctc and corporation"/>
+				</p:panelGrid>
+				
+				<div id="ctid" style="display: none">
+					<p:panelGrid id="fldId2" columns="2" layout="grid">
+					
+					<p:selectOneMenu id="genId" value="#{oRListingBean.genderId}" style="width: 15em" disabled="#{oRListingBean.enableBirthday}">
+						<f:selectItems value="#{oRListingBean.genders}"/>
+					</p:selectOneMenu>
+					
+					
+					<p:calendar id="idBirth" value="#{oRListingBean.birthdate}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em" disabled="#{oRListingBean.enableBirthday}"/>
+					
+					
+					<p:inputText id="idPlaceBirth" value="#{oRListingBean.placeOfBirth}" placeholder="Place Of Birth/Organization" style="width: 15em"/>
+					
+					
+					<p:inputText value="#{oRListingBean.tinNo}" placeholder="TIN NO 000-000-000-00000" style="width: 15em"/>
+					
+					<p:inputText value="#{oRListingBean.hieghtDateReg}" placeholder="Height/Date Reg of Company" style="width: 15em"/>
+					<p:inputText value="#{oRListingBean.weight}" placeholder="Weight" style="width: 15em" disabled="#{oRListingBean.enableBirthday}"/>
+					
+					<p:inputText value="#{oRListingBean.customerAddress}" placeholder="Company Address" style="width: 15em"/>
+					<p:inputText value="#{oRListingBean.citizenshipOrganization}" placeholder="Citizenship/Kind of Organization" style="width: 15em"/>
+					
+					<p:selectOneMenu id="civilId" value="#{oRListingBean.civilStatusId}" style="width: 15em" disabled="#{oRListingBean.enableBirthday}">
+						<f:selectItems value="#{oRListingBean.civilStatus}"/>
+					</p:selectOneMenu>
+					<p:inputText value="#{oRListingBean.professionBusinessNature}" placeholder="Profession/Business Nature" style="width: 15em"/>
+					
+					
+					<p:outputLabel value="Basic Tax(5/500)"/>
+					<p:inputNumber value="#{oRListingBean.amount1}" inputStyle="width: 15em" readonly="true"/>
+					
+					<p:outputLabel>
+					<div class="ui-inputgroup">
+					<div class="p-field">
+					<small class="p-d-block" style="text-align: left">Gross receipt or earning from business</small>
+					<p:inputNumber value="#{oRListingBean.monthlyIncome}" placeholder="Monthly Rate" inputStyle="width: 7.5em">
+						<p:ajax event="keyup" listener="#{oRListingBean.calculateGrossRptax}" update="grossId idBGross idTotal idInterest idGrand dataSelectedId totalId"/>
+					</p:inputNumber>
+					
+					<p:inputNumber id="idBGross" value="#{oRListingBean.label2}" readonly="true" placeholder="Business/RPTax" inputStyle="width: 7.5em"/>
+					</div>
+					</div>
+					</p:outputLabel>
+					
+					<p:outputLabel>
+					<div class="ui-inputgroup">
+					<div class="p-field">
+					<small class="p-d-block" style="text-align: left">Gross/1,000.00</small>
+					<p:inputNumber id="grossId" value="#{oRListingBean.amount2}" inputStyle="width: 15em">
+						<p:ajax event="change" listener="#{oRListingBean.calculateCedula}" update="idTotal idInterest idGrand dataSelectedId totalId"/>
+					</p:inputNumber>
+					</div>
+					</div>
+					</p:outputLabel>
+					
+					<p:outputLabel>
+					<div class="ui-inputgroup">
+					<div class="p-field">
+					<small class="p-d-block" style="text-align: left">Salaries or earning from profession</small>
+					<p:inputNumber value="#{oRListingBean.monthlySal}" placeholder="Monthly Rate" inputStyle="width: 7.5em">
+						<p:ajax event="keyup" listener="#{oRListingBean.calculateSalariesGross}" update="salGrossId idSal idTotal idInterest idGrand dataSelectedId totalId"/>
+					</p:inputNumber>
+					<p:inputNumber id="idSal" value="#{oRListingBean.label3}" readonly="true" placeholder="Salaries/Gross Receipts" inputStyle="width: 7.5em"/>
+					</div>
+					</div>
+					</p:outputLabel>
+					
+					<p:outputLabel>
+					<div class="ui-inputgroup">
+					<div class="p-field">
+					<small class="p-d-block" style="text-align: left">Gross/1,000.00</small>
+					<p:inputNumber id="salGrossId" value="#{oRListingBean.amount3}" inputStyle="width: 15em">
+						<p:ajax event="change" listener="#{oRListingBean.calculateCedula}" update="idTotal idInterest idGrand dataSelectedId totalId"/>
+					</p:inputNumber>
+					</div>
+					</div>
+					</p:outputLabel>
+					
+					<p:outputLabel>
+					<div class="ui-inputgroup">
+					<div class="p-field">
+					<small class="p-d-block" style="text-align: left">Income from real property</small>
+					<p:inputNumber value="#{oRListingBean.monthlyTax}" placeholder="Monthly Rate" inputStyle="width: 7.5em">
+						<p:ajax event="keyup" listener="#{oRListingBean.calculateTaxGross}" update="taxId idTaxYear idTotal idInterest idGrand dataSelectedId totalId"/>
+					</p:inputNumber>
+					<p:inputNumber id="idTaxYear" value="#{oRListingBean.label4}" readonly="true" placeholder="Income from RPT TAX/CTC" inputStyle="width: 7.5em"/>
+					</div>
+					</div>
+					</p:outputLabel>
+					
+					<p:outputLabel>
+					<div class="ui-inputgroup">
+					<div class="p-field">
+					<small class="p-d-block" style="text-align: left">Gross/1,000.00</small>
+					<p:inputNumber id="taxId" value="#{oRListingBean.amount4}" inputStyle="width: 15em">
+						<p:ajax event="change" listener="#{oRListingBean.calculateCedula}" update="idTotal idInterest idGrand dataSelectedId totalId"/>
+					</p:inputNumber>
+					</div>
+					</div>
+					</p:outputLabel>
+					
+					<p:outputLabel  value="Total"/>
+					<p:inputNumber id="idTotal" value="#{oRListingBean.amount5}" inputStyle="width: 15em" readonly="true"/>
+					
+					<p:outputLabel  value="Interest"/>
+					<p:inputNumber id="idInterest" value="#{oRListingBean.amount6}" inputStyle="width: 15em" readonly="true"/>
+					
+					<p:outputLabel  value="Total Paid"/>
+					<p:inputNumber id="idGrand" value="#{oRListingBean.amount7}" inputStyle="width: 15em" readonly="true"/>
+					
+					</p:panelGrid>
+				</div>
+					
+					
+				   <p:dataTable id="dataSelectedId" value="#{oRListingBean.namesDataSelected}" var="rs" stickyHeader="false"
+							rows="100" paginator="false" style="#{skin.table}"
+							editable="true" editMode="cell" rowKey="#{rs.id}"
+							>
+                         	
+                         	<p:ajax event="cellEdit"  listener="#{oRListingBean.onCellEditSelected}" update="frmId totalId fldId2 dataId dataOrId" />
+                         	
+                         	<p:column headerText="" width="10" exportable="false">
+            					<p:commandButton  icon="pi pi-trash" actionListener="#{oRListingBean.paynameDelete(rs)}" update="dataSelectedId dataOrId dtlsId totalId msg">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert"/>
+            					</p:commandButton>
+            				</p:column>
+            				<p:column headerText="" width="10" exportable="false">
+								<p:commandButton icon="pi pi-pencil" update="dataId idSearchPname dataSugId" actionListener="#{oRListingBean.editPay(rs)}" oncomplete="PF('selectDialog').show();"/>
+							</p:column>
+            				<p:column headerText="Name" width="100" style="text-align: left">
+            						<p:outputLabel value="#{rs.name}"/>
+            				</p:column>
+            				<p:column headerText="Amount" width="50" style="text-align: right">
+            						<p:cellEditor>
+					              	  <f:facet name="output">
+					              	  	<h:outputText value="#{rs.amount}">
+					              	  		<f:convertNumber currencySymbol="" type="currency"/>
+					              	  	</h:outputText>
+					              	  </f:facet>
+					                  <f:facet name="input">
+					                  	<p:inputNumber  value="#{rs.amount}"/>
+					                  </f:facet>
+					               </p:cellEditor>
+            				</p:column>
+            				
+            		</p:dataTable>
+					<p:toolbar id="tbTotal">
+						<f:facet name="left">
+							<p:outputLabel id="totalId"  value="Php#{oRListingBean.totalAmount}" style="color: red; font-weight: bold; font-size: 2em"/>
+						</f:facet>
+						<f:facet name="right"/>
+					</p:toolbar>
+	    	</div><!-- Left -->
+	    	
+	    	<div class="col-8">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<p:spacer/>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			<div class="ui-inputgroup" style="float:left">
+                		
+			    			<span class="ui-input-icon-left">
+			    				<i class="pi pi-search" />
+				    			<p:inputText id="searchid" value="#{oRListingBean.searchName}" placeholder="Search Name..." style="width: 60.2em">
+				    				<p:ajax event="keyup" listener="#{oRListingBean.load}" update="dataOrId dtlsId" delay="800"/>
+				    			</p:inputText>
+			    			</span>
+			    			<p:inputText value="#{oRListingBean.limitData}" placeholder="provide limit in number" style="width: 5em"/>
+			    			<p:selectBooleanButton id="filId" value="#{oRListingBean.filtered}" onLabel="Not Filtered - DESC"
+							offLabel="Filtered - ASC" onIcon="ui-icon-check" offIcon="ui-icon-close" >
+								<p:ajax event="change" listener="#{oRListingBean.load}" update="dataOrId dtlsId"/>
+							</p:selectBooleanButton>
+							<p:commandButton value="Reload Data" actionListener="#{oRListingBean.load}" update="dataOrId dtlsId dataOrSelectionId" style="float: right" />
+                	</div>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			<div class="ui-inputgroup" style="float:left">
+                    		<p:selectOneMenu id="frmstatS" value="#{oRListingBean.statusSearchId}" style="width: 10em">
+								<f:selectItems value="#{oRListingBean.statusSearch}"/>
+							</p:selectOneMenu>
+			    			<p:selectOneMenu id="sid" value="#{oRListingBean.sortId}" style="width: 10em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{oRListingBean.sorts}"/>
+							</p:selectOneMenu>
+			    			<p:selectOneMenu id="scid" value="#{oRListingBean.collectorSearchId}" style="width: 15em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{oRListingBean.collectorsSearch}"/>
+							</p:selectOneMenu>
+			    			<p:selectOneMenu id="mId" value="#{oRListingBean.monthId}" style="width: 8em">
+								<f:selectItems value="#{oRListingBean.months}"/>
+							</p:selectOneMenu>
+							<p:selectOneMenu id="yId" value="#{oRListingBean.yearId}" style="width: 8em">
+								<f:selectItems value="#{oRListingBean.years}"/>
+							</p:selectOneMenu>
+							<p:selectOneMenu id="fId" value="#{oRListingBean.formTypeSearchId}" style="width: 8em">
+								<f:selectItems value="#{oRListingBean.formTypeSearch}"/>
+							</p:selectOneMenu>
+			    			<p:selectOneMenu id="pId" value="#{oRListingBean.paymentId}" style="width: 8em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{oRListingBean.paymentTypes}"/>
+							</p:selectOneMenu>
+							<p:selectOneMenu id="frmDep" value="#{oRListingBean.depId}" style="width: 15em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{oRListingBean.departments}"/>
+							</p:selectOneMenu>
+							<p:selectOneMenu id="rptGroupCombId" value="#{oRListingBean.rptsCombId}" style="width: 15em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{oRListingBean.rptsCombos}"/>
+							</p:selectOneMenu>
+								
+                    	</div>
+	    		</div>
+	    		
+	    		<div class="col-12">
+	    			
+	    			<p:tabView prependId="false" cache="true">
+				
+					<p:ajax event="tabChange" listener="#{oRListingBean.onChange}" update="dataOrId dtlsId dataOrSelectionId dropArea selectedCarsTable totalSelectedId rptId idDrop"/>
+					
+					<p:tab title="Reports Viewing">
+					
+						
+					
+						<p:dataTable id="dataOrId" value="#{oRListingBean.ors}" var="ors" stickyHeader="false"
+							rows="10" rowKey="#{ors.id}" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false"  paginatorPosition="top" paginatorAlwaysVisible="false" reflow="true" lazy="false"
+							>
+							
+							<p:column headerText="" width="5" exportable="false">
+								<p:rowToggler/>
+							</p:column>
+							
+							<p:column headerText="" width="10" exportable="false">
+								<p:commandButton icon="pi pi-clone" title="Duplicate this transaction" update="dataOrId dataSelectedId fldId fldId2 totalId fldNoteId" actionListener="#{oRListingBean.clickItemCopy(ors)}"/>
+							</p:column>
+							
+							<p:column headerText="" width="10" exportable="false">
+								<p:commandButton icon="pi pi-pencil" title="Edit" update="dataOrId dataSelectedId fldId fldId2 totalId fldNoteId msg" actionListener="#{oRListingBean.clickItem(ors)}"/>
+							</p:column>
+							
+							<p:column headerText="" width="10" exportable="false">
+            					<p:commandButton icon="pi pi-trash" title="Delete" actionListener="#{oRListingBean.deleteRow(ors)}" update="dataOrId dataSelectedId fldId msg">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            					 
+            				</p:column>
+							
+							<p:column headerText="" width="10" exportable="false">
+            				 	<p:commandLink title="Print OR in PDF" target="_blank" action="#{oRListingBean.printOR(ors)}" ajax="false" immediate="false" disabled="#{ors.status==5? true : false}">
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+								</p:commandLink>
+							</p:column>
+							
+                         	<p:column headerText="Date" width="50">
+            						<p:outputLabel value="#{ors.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ors.statusName}"/>
+            				</p:column>
+            				<p:column headerText="Collector" width="100" style="text-align: left">
+            						<p:outputLabel value="#{ors.collector.name}"/>
+            				</p:column>
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ors.formName}"/>
+            				</p:column>
+            				<p:column headerText="OR No." width="30" style="text-align: left">
+            						<p:outputLabel value="#{ors.orNumber}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Name" width="150" style="text-align: left">
+            						<p:outputLabel value="#{ors.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Amount" width="50" style="text-align: right">
+            						<p:outputLabel value="#{ors.amount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				
+            				<p:rowExpansion>
+								
+								<p:dataTable value="#{ors.orNameList}" var="sc" stickyHeader="false"
+									rows="100" paginator="false" >
+		                         	
+		            				<p:column headerText="Name" width="100" style="text-align: left">
+		            						<p:outputLabel value="#{sc.paymentName.name}"/>
+		            				</p:column>
+		            				<p:column headerText="Amount" width="50" style="text-align: right">
+		            						<p:outputLabel value="#{sc.amount}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+            					</p:dataTable>
+								
+							</p:rowExpansion>
+            				
+            				<p:columnGroup type="footer">
+            					<p:row>
+            						<p:column colspan="10" style="text-align:right; font-size: 2em" footerText="Totals:"/>
+            						<p:column footerText="#{oRListingBean.totalCollection}" style="text-align:left; font-size: 2em"/>
+            					</p:row>
+            				</p:columnGroup>
+            				
+            		</p:dataTable>
+            		
+            		
+            		
+					</p:tab>
+					<p:tab title="Details/Extract">
+						<p:dataTable id="dtlsId" value="#{oRListingBean.dtls}" var="dt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>
+							
+							<f:facet name="{Exporters}">
+            						<h:commandLink title="Export Report in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="dtlsId" fileName="GeneralCollectionReportsExtracted" />
+            						</h:commandLink>
+            						<h:commandLink title="Summary with details reports" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.print}">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            						</h:commandLink>
+            						<h:commandLink title="Summary Only" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.printSummaryOnly}">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            						</h:commandLink>
+            				</f:facet>
+            				
+            				<p:column headerText="Date" width="70">
+            						<p:outputLabel value="#{dt.f1}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="70">
+            						<p:outputLabel value="#{dt.f8}"/>
+            				</p:column>
+            				<p:column headerText="Collector" width="100">
+            						<p:outputLabel value="#{dt.f7}"/>
+            				</p:column>
+            				<p:column headerText="OR No." width="70">
+            						<p:outputLabel value="#{dt.f2}"/>
+            				</p:column>
+            				<p:column headerText="Payor" width="100">
+            						<p:outputLabel value="#{dt.f3}"/>
+            				</p:column>
+            				<p:column headerText="Form" width="70">
+            						<p:outputLabel value="#{dt.f4}"/>
+            				</p:column>
+            				<p:column headerText="Description" width="100">
+            						<p:outputLabel value="#{dt.f5}"/>
+            				</p:column>
+            				<p:column headerText="Amount" width="70">
+            						<p:outputLabel value="#{dt.f6}"/>
+            				</p:column>
+            				
+            			</p:dataTable>	
+					</p:tab>
+					
+					<p:tab title="Selection Reports">
+						
+						<p:fieldset id="availableCarsField" legend="Selection Forms">
+						
+						
+						<p:dataTable id="dataOrSelectionId" value="#{oRListingBean.selections}" var="ox" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+						
+							<p:column style="width:20px">
+			                    <h:outputText id="dragIcon" styleClass="ui-icon pi pi-plus"/>
+			                    <p:draggable for="dragIcon" revert="true" helper="clone"/>
+			                </p:column>
+						
+							<p:column headerText="Date" width="70">
+            						<p:outputLabel value="#{ox.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ox.statusName}"/>
+            				</p:column>
+            				<p:column headerText="Collector" width="150" style="text-align: left">
+            						<p:outputLabel value="#{ox.collector.name}"/>
+            				</p:column>
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ox.formName}"/>
+            				</p:column>
+            				<p:column headerText="OR No." width="50" style="text-align: left">
+            						<p:outputLabel value="#{ox.orNumber}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Name" width="200" style="text-align: left">
+            						<p:outputLabel value="#{ox.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Amount" width="70" style="text-align: right">
+            						<p:outputLabel value="#{ox.amount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+						
+						
+						</p:dataTable>
+					
+					</p:fieldset>
+						
+					</p:tab>
+					
+				</p:tabView>
+	    			
+	    		</div>
+	    		
+	    		
+	    		
+	    		</div><!-- Grid end -->
+	    		
+	    	</div><!-- Right -->
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:dialog position="center top" widgetVar="selectDialog" modal="false" draggable="true" closable="false" resizable="false" fitViewport="true" responsive="true" showHeader="false"  closeOnEscape="true">
+    				<p:card style="width: 100em">
+    				<p:toolbar id="tbAdd">
+			    		<f:facet name="left">
+			    			<div class="ui-inputgroup" style="float:left">
+			    				<span class="ui-input-icon-left">
+			    				<i class="pi pi-search" />
+			    			   <p:inputText id="idSearchPname" value="#{oRListingBean.searchPayName}" placeholder="Search..." style="width: 30em">
+			    			   		<p:ajax event="keyup" listener="#{oRListingBean.loadPaymentNames}" update="dataId" delay="800"/>
+			    			   </p:inputText>
+			    			   </span>
+			    			</div>
+			    		</f:facet>	   
+			    		<f:facet name="right">
+			    			<p:commandButton value="Close" onclick="PF('selectDialog').hide();"/>
+			    		</f:facet>
+					</p:toolbar>
+					
+					<p:outputLabel value="Recently Selected" />
+					<p:dataGrid id="dataSugId" value="#{oRListingBean.suggestedData}" var="sug" stickyHeader="false"
+							paginator="false" rows="10" columns="5">
+                         	
+            				<p:column headerText="Suggested" width="40">
+            						<p:commandButton value="#{sug.name} Php#{sug.amount}" style="width: 180px" actionListener="#{oRListingBean.addSuggested(sug)}" update="dataId dataSelectedId totalId"/>
+            				</p:column>
+            		</p:dataGrid>
+            		
+            		<br/>
+            		
+            		<p:outputLabel value="Group Tax Particulars" />
+            		<p:dataGrid id="dataGroupId" value="#{oRListingBean.groups}" var="tx" stickyHeader="false"
+							paginator="true" paginatorAlwaysVisible="false" paginatorPosition="top" rows="10" columns="5">
+                         	
+            				<p:column headerText="Suggested" width="50">
+            						<p:commandButton value="#{tx.name}" style="width: 180px" actionListener="#{oRListingBean.loadPaymentDetails(tx)}" update="dataId dataSelectedId totalId" oncomplete="PF('selectDialog').hide();"/>
+            				</p:column>
+            		</p:dataGrid>
+            		
+					<p:outputLabel value="Selection" />
+    				<p:dataTable id="dataId" value="#{oRListingBean.namesData}" var="rpt" stickyHeader="false" 
+							rows="100" paginator="false"
+							editable="true" editMode="cell" rowKey="#{rpt.id}" 
+                         >
+                         	
+                         	<p:ajax event="cellEdit"  listener="#{oRListingBean.onCellEdit}" update="dataId dataSelectedId totalId" />
+                         	
+                         	<p:column width="10">
+            			 			<p:commandButton actionListener="#{oRListingBean.addNamePayment(rpt)}" icon="pi pi-thumbs-up" update="dataId dataSelectedId totalId" />
+            				</p:column>
+                         	
+            				<p:column width="100">
+            			 			<p:outputLabel value="#{rpt.name}"/>
+            				</p:column>
+            				<p:column width="50">
+            						<p:cellEditor>
+					              	  <f:facet name="output">
+					              	  	<h:outputText value="#{rpt.amount}" />
+					              	  </f:facet>
+					                  <f:facet name="input">
+					                  	<p:inputNumber  value="#{rpt.amount}"/>
+					                  </f:facet>
+					               </p:cellEditor>
+            				</p:column>
+            		</p:dataTable>
+            		
+            		</p:card>
+	</p:dialog>
+	
+	
+	<p:dialog position="center top" widgetVar="msgDialog" modal="false" draggable="false" closable="true" resizable="false" showHeader="true" width="500" height="800" closeOnEscape="true">
+    	<p:toolbar id="tbMsg">
+			    		<f:facet name="left">
+			    			   <p:commandButton value="Retrieve New Info" actionListener="#{oRListingBean.loadContent}" update="idContentAnalys"/>
+			    			   <h:commandLink title="Export Report in pdf format" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.printSummary}">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            					</h:commandLink>
+			    		</f:facet>	   
+			    		<f:facet name="right">
+			    			<p:commandButton value="Close" onclick="PF('msgDialog').hide();"/>
+			    		</f:facet>
+					</p:toolbar>
+					<p:textEditor id="idContentAnalys" toolbarVisible="false" widgetVar="msgComposeText" value="#{oRListingBean.textContent}" readonly="true"/>
+	</p:dialog>
+	
+	<h:outputScript>
+		window.onload = function(){
+			
+		}
+		
+		function showOtherButton() {
+			$("#otherButtonId").show(1000);
+			hideSettingButton();
+		}
+		function hideOtherButton() {
+			$("#otherButtonId").hide();
+			showSettingButton();
+		}
+		
+		function showSettingButton() {
+			$("#settingId").show(1000);
+		}
+		function hideSettingButton() {
+			$("#settingId").hide();
+		}
+		
+	</h:outputScript>
+	
+	<div id="settingId" style="display: block">
+	<p:commandButton title="Settings" icon="pi pi-slack" id="taxSettings" onclick="showOtherButton();" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 50px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	</div>
+	
+	<div id="otherButtonId" style="display: none">
+	<p:commandButton title="Settings" icon="pi pi-slack" id="taxSettings2" onclick="hideOtherButton();" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 50px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>	
+			
+	<p:commandButton widgetVar="widTaxCode" title="Particular Settings" icon="pi pi-book" id="taxButton" actionListener="#{paymentTaxCodeBean.loadTaxCode}" oncomplete="PF('dlgTaxCode').show(1000);" update="dataTax"  style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 250px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:commandButton widgetVar="widSync" title="Sync" icon="pi pi-sync" id="syncButton" actionListener="#{oRListingBean.runUpdate}" update="dataSendOr dataFetch msg"  style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 280px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:commandButton widgetVar="widSend" title="Send" update="dataSendOr"  icon="pi pi-send" actionListener="#{sendOrServerBean.loadFiles}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 310px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	
+	</div>
+	<p:commandButton widgetVar="widCamera" title="Open Camera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();"  style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 400px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:commandButton title="Particular Name Lookup" icon="pi pi-search-plus" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId dataGroupId" oncomplete="PF('selectDialog').show();" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 430px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:commandButton title="Click to save" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 460px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; ">
+			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-exclamation-triangle" />
+	</p:commandButton>
+	
+		
+	<p:commandButton title="Click to Clear" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 80px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; ">
+			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to clear this fields?" icon="ui-icon-alert" />
+	</p:commandButton>
+	
+	
+	
+	 <p:dialog widgetVar="dlgCam" visible="false" fitViewport="true" position="center center" modal="true" draggable="false" closable="false" closeOnEscape="true" resizable="false" showHeader="false" >
+		
+		
+		<p:panelGrid columns="1" layout="grid">
+	        <p:commandButton value="Close Camera" icon="pi pi-times-circle" id="resetButton" oncomplete="PF('dlgCam').hide()"/>
+        </p:panelGrid>
+		
+		<p:separator/>
+		<label>Change video source:</label>
+        <select id="sourceSelect" style="max-width:400px"/>
+		<div id="sourceSelectPanel" style="display:none">
+		
+			<p:panelGrid columns="1" layout="grid">
+		
+				<video id="video" width="700" height="500" style="border: 1px solid gray"/>
+		
+				
+        
+			</p:panelGrid>
+		</div>
+		
+	</p:dialog>
+	
+	
+	<p:remoteCommand name="loadResult"
+                      action="#{oRListingBean.findQRCode}" update="idCitSel msg"
+                      />
+	<h:outputScript>
+	
+	window.addEventListener('load', function () {
+      let selectedDeviceId;
+      const codeReader = new ZXing.BrowserMultiFormatReader()
+      console.log('ZXing code reader initialized')
+      codeReader.listVideoInputDevices()
+        .then((videoInputDevices) => {
+          const sourceSelect = document.getElementById('sourceSelect')
+          selectedDeviceId = videoInputDevices[0].deviceId
+          if (videoInputDevices.length >= 1) {
+            videoInputDevices.forEach((element) => {
+              const sourceOption = document.createElement('option')
+              sourceOption.text = element.label
+              sourceOption.value = element.deviceId
+              sourceSelect.appendChild(sourceOption)
+            })
+
+            sourceSelect.onchange = () => {
+              selectedDeviceId = sourceSelect.value;
+            };
+
+            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+            sourceSelectPanel.style.display = 'block'
+          }
+
+          document.getElementById('startButton').addEventListener('click', () => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                console.log(result)
+                
+                
+                loadResult([{
+			        name: 'qrcode',
+			        value: result.text
+			      }]);
+                
+              }
+              
+            })
+            console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+          })
+
+          document.getElementById('resetButton').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('resetButton2').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('resetButton3').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('resetButton4').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('resetButton5').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+
+			document.getElementById('resetButton6').addEventListener('click', () => {
+	            codeReader.reset()
+	            document.getElementById('result').textContent = '';
+	            console.log('Reset.')
+	          })	
+			
+			
+		document.getElementById('resetButton7').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })	
+			
+			document.getElementById('resetButton8').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+          
+          document.getElementById('resetButton9').addEventListener('click', () => {
+            codeReader.reset()
+            document.getElementById('result').textContent = '';
+            console.log('Reset.')
+          })
+			
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    })
+	
+	</h:outputScript>
+	
+	
+	<p:dialog widgetVar="dlgSelection" position="center center" modal="true" draggable="false" closable="false" closeOnEscape="true" resizable="false" showHeader="false" width="600" height="500" >
+		
+		<p:panelGrid columns="2" layout="grid">
+	        <p:commandButton value="Close Selection" id="resetButton2" oncomplete="PF('dlgSelection').hide()"/>
+	        <p:commandButton value="Rescan QR" onclick="PF('dlgCam').show();PF('dlgSelection').hide();" />
+        </p:panelGrid>
+		
+		<p:panelGrid columns="1" layout="grid">
+		<p:outputLabel value="Please select below selection" />
+	    <p:outputLabel id="idCitSel" value="#{oRListingBean.fullnameQR}" style="font-size: 3em"/>
+		<p:commandButton id="resetButton3" value="Individual Cedula" actionListener="#{oRListingBean.acceptSelection('individual')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		<p:commandButton id="resetButton4"  value="Corporation Cedula" actionListener="#{oRListingBean.acceptSelection('corporation')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		<p:commandButton id="resetButton5" value="Form 51" actionListener="#{oRListingBean.acceptSelection('51')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		<p:commandButton id="resetButton6" value="Form 52" actionListener="#{oRListingBean.acceptSelection('52')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		<p:commandButton id="resetButton7" value="Form 53" actionListener="#{oRListingBean.acceptSelection('53')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		<p:commandButton id="resetButton8" value="Form 54" actionListener="#{oRListingBean.acceptSelection('54')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		<p:commandButton id="resetButton9" value="Form 56" actionListener="#{oRListingBean.acceptSelection('56')}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId"/>
+		
+		</p:panelGrid>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgAllOrs" position="center top" losable="false" closeOnEscape="true" resizable="false" showHeader="true" width="1200" height="900" closable="true">
+		
+		
+		<p:tabView prependId="false">
+            <p:tab title="Official Reciept">
+            
+		<span class="ui-input-icon-left">
+			    <i class="pi pi-search" />
+				<p:inputText id="searchOrid" value="#{oRListingBean.searchNameAll}" placeholder="Search Name..." style="width: 25em">
+				    <p:ajax event="keyup" listener="#{oRListingBean.loadAllOrs}" update="dataOrAllId" delay="900"/>
+				</p:inputText>
+		</span>
+		
+		<p:dataTable id="dataOrAllId" value="#{oRListingBean.orsAll}" var="ors" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="false" rowKey="#{ors.id}" lazy="false"
+							>
+							
+							<p:column headerText="" width="5" exportable="false">
+								<p:rowToggler/>
+							</p:column>
+							
+							<p:column headerText="" width="10" exportable="false">
+            				 	<p:commandLink title="Print OR in PDF" target="_blank" action="#{oRListingBean.printOR(ors)}" ajax="false" immediate="false" >
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+								</p:commandLink>
+							</p:column>
+							
+                         	<p:column headerText="Date" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ors.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ors.statusName}"/>
+            				</p:column>
+            				<p:column headerText="Collector" width="100" style="text-align: left">
+            						<p:outputLabel value="#{ors.collector.name}"/>
+            				</p:column>
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ors.formName}"/>
+            				</p:column>
+            				<p:column headerText="OR No." width="30" style="text-align: left">
+            						<p:outputLabel value="#{ors.orNumber}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Name" width="200" style="text-align: left">
+            						<p:outputLabel value="#{ors.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Amount" width="50" style="text-align: right">
+            						<p:outputLabel value="#{ors.amount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				
+            				<p:rowExpansion>
+								
+								<p:dataTable value="#{ors.orNameList}" var="sc" stickyHeader="false"
+									rows="100" paginator="false" lazy="false">
+		                         	
+		            				<p:column headerText="Name" width="100">
+		            						<p:outputLabel value="#{sc.paymentName.name}"/>
+		            				</p:column>
+		            				<p:column headerText="Amount" width="50">
+		            						<p:outputLabel value="#{sc.amount}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+            					</p:dataTable>
+								
+							</p:rowExpansion>
+            				
+            				<p:columnGroup type="footer">
+            					<p:row >
+            						<p:column colspan="8" style="text-align:right;" footerText="Totals:"/>
+            						<p:column footerText="Php#{oRListingBean.totalCollectionAll}" />
+            					</p:row>
+            				</p:columnGroup>
+            				
+            		</p:dataTable>
+            		
+					</p:tab>
+				
+					<p:tab title="Daily Report">
+            		
+            			
+            			<span class="ui-input-icon-left">
+            					<div class="ui-inputgroup">
+								<p:inputText id="searchRpt" value="#{oRListingBean.searchParam}" placeholder="Search..." style="width: 25em"/>
+								<p:datePicker id="rangeORDate" selectionMode="range" value="#{oRListingBean.rangeDate}" readonlyInput="true" inputStyle="width: 15em"/>
+								<p:selectOneMenu value="#{oRListingBean.formIdRpt}" style="width: 15em;">
+				                	<f:selectItems value="#{oRListingBean.formsRpt}"/>
+				            	</p:selectOneMenu>
+								<p:commandButton update="dataRptId" icon="fa fa-search" value="With Date" actionListener="#{oRListingBean.loadAllRpt}"/>
+								<p:commandButton update="dataRptId" icon="fa fa-search" value="No Date" actionListener="#{oRListingBean.noFileterSearch}"/>
+								</div>
+						</span>
+            			
+            			
+            			<p:dataTable id="dataRptId" value="#{oRListingBean.orRpts}" var="rt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} "
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false"  paginatorPosition="top" paginatorAlwaysVisible="true" 
+							>
+							
+							<f:facet name="{Exporters}">
+								<p:outputLabel value=" Total Collection: #{oRListingBean.totalCollectionToday}" style="font-weight: bold; font-size: 2em; color: red; float: left"/>
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined" style="float: right">
+				                    <p:dataExporter type="xls" target="dataRptId" fileName="listData"/>
+				                </p:commandButton>
+							</f:facet>
+							
+                         	<p:column headerText="Date" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rt.dateTrans}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rt.formName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Series" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rt.orNumber}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Collector" width="100" style="text-align: left" exportable="false">
+            						<p:outputLabel value="#{rt.collector.name}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Tax Payer Name" width="150" style="text-align: left">
+            						<p:outputLabel value="#{rt.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Amount" width="50" style="text-align: right">
+            						<p:outputLabel value="#{rt.amount}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rt.status==5? 'Cancelled' : 'Issued'}"/>
+            				</p:column>
+            				
+            			</p:dataTable>	
+            			
+            			
+            			
+            			
+            			
+					</p:tab>
+            		
+				</p:tabView>
+	</p:dialog>
+	
+		
+	 
+<ui:include src="loader.xhtml" />
+<ui:include src="menu.xhtml" />
+<ui:include src="sendingor.xhtml" />
+<ui:include src="sync.xhtml" />	
+<ui:include src="taxcode.xhtml" />	
+
+
+
+<p:commandButton title="Tax Ordinance" icon="pi pi-book" id="taxRevenue" actionListener="#{articleBean.openRevenue}" update="dataRevenue tabRevenue dataRev" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+<ui:include src="article.xhtml" />	
+
+<p:commandButton title="Fish Cage Billing" icon="pi pi-file" id="fishBill" actionListener="#{fishcageBillingBean.openBilling}" update="dataFishBill" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 40px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+<ui:include src="fishcagebill.xhtml" />	
+
+<p:commandButton title="Business Lookup" icon="pi pi-credit-card" id="bizNess" actionListener="#{bizLookupBean.openLookup}" update="bizDataId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 72px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+<ui:include src="bizlookup.xhtml" />
+
+<p:commandButton title="Official Receipt" icon="pi pi-euro" oncomplete="PF('dlgAllOrs').show(1000);" actionListener="#{oRListingBean.loadAllOrs}" update="dataOrAllId rangeORDate" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 104px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>			
+<p:commandButton title="Graph" icon="pi pi-chart-pie"  actionListener="#{graphCollectionBean.loadGraph}" update="graphId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 135px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+<ui:include src="graphcol.xhtml" />
+
+<p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="dataOrSelectionId" onDrop="handleDrop" id="idDrop" >
+        <p:ajax listener="#{oRListingBean.onORDrop}" update="dropArea dataOrSelectionId selectedCarsTable totalSelectedId msg" />
+</p:droppable>
+
+
+<p:commandButton title="Reports" icon="pi pi-briefcase"  actionListener="#{oRListingBean.loadFinalSelectedRpt}" update="dataOrFinalId totalSelectedFinalId rptFinalId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 167px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+<p:dialog widgetVar="dlgFinalRpt" position="top center" width="900" height="600" header="Reports Selected" closeOnEscape="true">
+		
+		
+		<p:toolbar id="tbDetailsFinal">
+    		<f:facet name="left">
+    				<div class="ui-inputgroup">
+	    				<p:selectOneMenu id="rptFinalId" value="#{oRListingBean.reportId}" style="text-align: right">
+							<f:selectItems value="#{oRListingBean.reports}"/>
+							<p:ajax event="change" listener="#{oRListingBean.loadFinalGroupRpt}" update="dataOrFinalId totalSelectedFinalId" />
+						</p:selectOneMenu>
+    				</div>
+    		</f:facet>
+    		<f:facet name="right">
+    			<div class="ui-inputgroup">
+    				<p:commandButton id="totalSelectedFinalId" type="button" value="#{oRListingBean.selectedFinalAmount}"  style="color: red; font-weight: bold; font-size: 1em; text-align:right" />
+    			</div>
+    		</f:facet>
+			</p:toolbar>
+		
+		<p:dataTable id="dataOrFinalId" value="#{oRListingBean.finalRpts}" var="ot" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true"
+							>	             
+							
+							<f:facet name="{Exporters}">
+							
+									<h:commandLink title="Summary with details reports" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.printFinal('DIRECT')}">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            						</h:commandLink>
+									
+            						<h:commandLink title="Export Report in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="dataOrFinalId" fileName="GeneralCollectionReportsExtracted" />
+            						</h:commandLink>
+            						
+            						<h:commandLink title="Summary Only" target="_blank" ajax="false" immediate="false"  actionListener="#{oRListingBean.printSelected('DIRECT')}">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+            						</h:commandLink>
+            				</f:facet>
+							
+							<p:column headerText="Date" width="70">
+            						<p:outputLabel value="#{ot.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ot.statusName}"/>
+            				</p:column>
+            				<p:column headerText="Collector" width="150" style="text-align: left">
+            						<p:outputLabel value="#{ot.collector.name}"/>
+            				</p:column>
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{ors.formName}"/>
+            				</p:column>
+            				<p:column headerText="OR No." width="50" style="text-align: left">
+            						<p:outputLabel value="#{ot.orNumber}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Name" width="200" style="text-align: left">
+            						<p:outputLabel value="#{ot.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Amount" width="70" style="text-align: right">
+            						<p:outputLabel value="#{ot.amount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+						
+						
+						</p:dataTable>
+
+</p:dialog>
+<h:outputStylesheet>
+	.queueing{
+		-moz-border-radius: 100px;
+		-webkit-border-radius: 100px;
+		border-radius: 100px;
+		height: 70px;
+		width: 700px;
+		top: 0px;
+		right: 400px;
+		float:right; 
+		position: fixed;
+		z-index: 1500;
+		font-size: 70% ! important;
+		font-weight: bold ! important;  
+		text-transform: none ! important; 
+	}
+</h:outputStylesheet>
+
+<p:panel header="Queueing" styleClass="queueing" toggleableHeader="true" toggleable="true" collapsed="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panelWgr">
+        <p class="m-0">
+        	<div class="ui-inputgroup">
+        		<p:commandButton icon="fa fa-search"/>
+        		<p:inputText value="#{oRListingBean.queYear}" style="width: 4em" placeholder="0000">
+        			<p:ajax event="keyup" listener="#{oRListingBean.loadClient}" update="queDataId"/>
+        		</p:inputText>
+        		<p:inputText value="#{oRListingBean.queMonth}" style="width: 3em" placeholder="00">
+        			<p:ajax event="keyup" listener="#{oRListingBean.loadClient}" update="queDataId"/>
+        		</p:inputText>
+        		<p:inputText value="#{oRListingBean.queDay}" style="width: 3em" placeholder="00">
+        			<p:ajax event="keyup" listener="#{oRListingBean.loadClient}" update="queDataId"/>
+        		</p:inputText>
+        		<p:inputText value="#{oRListingBean.queSequence}" style="width: 4em" placeholder="0000">
+        			<p:ajax event="keyup" listener="#{oRListingBean.loadClient}" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId"/>
+        		</p:inputText>
+        	</div>
+        	
+        	
+            <p:dataTable id="queDataId" value="#{oRListingBean.clients}" var="cli" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" style="#{skin.table}" paginatorPosition="top" paginatorAlwaysVisible="false"
+							>
+							
+            				<p:column headerText="" width="10" exportable="false">
+            						<p:commandButton icon="fa fa-arrow-circle-down" oncomplete="PF('panelWgr').toggle()" actionListener="#{oRListingBean.popUpRemarks(cli)}" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId remarkId noteToColId"/>
+            				</p:column>
+            				
+            				<p:column headerText="" width="10" exportable="false">
+            					<p:commandButton  icon="fa fa-trash" actionListener="#{oRListingBean.deleteQueue(cli)}" update="queDataId msg">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert"/>
+            					</p:commandButton>
+            				</p:column>
+            				
+							<p:column headerText="Queue" width="10" style="text-align: left">
+            						<p:outputLabel value="#{cli.transNo.split('-')[3]}"/>
+            				</p:column>
+							<p:column headerText="Name" width="150" style="text-align: left">
+            						<p:outputLabel value="#{cli.firstName} #{cli.lastName}"/>
+            				</p:column>
+            				<p:column headerText="Request" width="150" style="text-align: left">
+            						<p:outputLabel value="#{cli.transactionName}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{cli.clientStatus}"/>
+            				</p:column>
+			</p:dataTable>				
+        </p>
+    </p:panel>
+    
+    <p:dialog closable="false" showHeader="true" header="Note to collector" widgetVar="dlgPopNotes" width="400" height="200" position="top center">
+    	<p:panelGrid columns="1" layout="grid">
+    	<p:outputLabel id="remarkId" value="#{oRListingBean.clientTmpSelected.remarks}" style="color: red; font-weight: bold; font-size: 2em"/>
+    	<p:outputLabel id="noteToColId" value="Would you like to issue an official reciept for #{oRListingBean.clientTmpSelected.firstName} #{oRListingBean.clientTmpSelected.lastName}?" />
+    	</p:panelGrid>
+    	
+    	<f:facet name="footer">
+    	
+    	<p:commandButton value="Close for no action" onclick="PF('dlgPopNotes').hide(1000)" />
+    	<p:commandButton value="Reject" update="remarkId queDataId msg" actionListener="#{oRListingBean.cancelRequest}" style="width: 10em">
+			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to reject this request?" icon="pi pi-exclamation-triangle" />
+		</p:commandButton>
+		<p:commandButton value="Proceed for OR" actionListener="#{oRListingBean.proceedOR}" style="width: 10em" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId"/>
+    	
+    	</f:facet>
+    </p:dialog>
+	
+	<p:commandButton type="button" title="Check Series" icon="pi pi-sort-numeric-up" onclick="PF('dlgCheckSeries').show(1000)" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 198px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Series Checking" widgetVar="dlgCheckSeries" width="800" height="500" position="center">
+		<div class="ui-inputgroup">
+		<p:inputText value="#{oRListingBean.checkSeriesForm}" placeholder="00000000-00000000" />
+		<p:commandButton icon="pi pi-search" update="dataSeriedId" actionListener="#{oRListingBean.checkSeries}"/>
+		</div>
+		
+		<p:dataTable id="dataSeriedId" value="#{oRListingBean.orsSeries}" var="st" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+							<f:facet name="{Exporters}">
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+				                    <p:dataExporter type="xls" target="dataSeriedId" fileName="series"/>
+				                </p:commandButton>
+            				</f:facet>
+							<p:column headerText="OR No." width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.orNumber}"/>
+            				</p:column>
+							<p:column headerText="Date" width="70">
+            						<p:outputLabel value="#{st.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.statusName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.formName}"/>
+            				</p:column>
+            				
+            				
+						</p:dataTable>
+		
+	</p:dialog>
+	
+	<p:commandButton title="Duplicate Series" icon="pi pi-clone" actionListener="#{oRListingBean.viewDuplicate}" update="dataDupId msg" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 229px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Duplicate OR" widgetVar="dlgDuplicateSeries" width="1000" height="550" position="center">
+		
+		<p:dataTable id="dataDupId" value="#{oRListingBean.orsDuplicate}" var="st" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+							<f:facet name="{Exporters}">
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+				                    <p:dataExporter type="xls" target="dataDupId" fileName="duplicate"/>
+				                </p:commandButton>
+            				</f:facet>
+            				 <p:column headerText="Delete" width="15">
+				                	<p:commandButton icon="pi pi-trash" actionListener="#{oRListingBean.deleteDuplicate(st)}" update="dataDupId msg"/>
+				                </p:column>
+							<p:column headerText="OR No." width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.orNumber}"/>
+            				</p:column>
+							<p:column headerText="Date" width="50">
+            						<p:outputLabel value="#{st.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Customer" width="120">
+            						<p:outputLabel value="#{st.customer.fullname}"/>
+            				</p:column>
+            				<p:column headerText="Amount" width="50">
+				                    <h:outputText value="#{st.amount}">
+				                    	<f:convertNumber currencySymbol="" type="currency"/>
+				                    </h:outputText>
+				            </p:column> 
+            				<p:column headerText="Collector" width="120">
+            						<p:outputLabel value="#{st.collector.name}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.statusName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Form" width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.formName}"/>
+            				</p:column>
+            				
+            				
+						</p:dataTable>
+		
+	</p:dialog>	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
