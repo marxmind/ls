@@ -143,6 +143,15 @@ public class OrBean implements Serializable{
 		if(getOrNumber()==null || getOrNumber().isEmpty()){
 			isOk = false;
 			Application.addMessage(3, "Error", "Please provide Or Number");
+		}else {
+			
+			try {
+				Integer.valueOf(getOrNumber());
+			}catch(NumberFormatException ex){
+				isOk = false;
+				Application.addMessage(3, "Error", "Please check your number it contain non numeric number");
+			}
+			
 		}
 		
 		if(getAmount()<=0){
@@ -173,7 +182,7 @@ public class OrBean implements Serializable{
 			
 			or.setStatus(getStatId());
 			or.setDateTrans(DateUtils.convertDate(getIssuedDate(), DateFormat.YYYY_MM_DD()));
-			or.setOrNumber(getOrNumber());
+			or.setOrNumber(getOrNumber().trim());
 			or.setAmount(getAmount());
 			or.setAddress(getIssuedAddress());
 			or.setCustomer(getCustomerSelected());
