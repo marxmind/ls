@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Client Transactions</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+            <h:outputScript name="zxing/zxing.js" target="head"/>
+    </f:facet>
+    
+<style>
+    .label {
+        width: 20%;
+        padding: 4px;
+    }
+
+    .value {
+        width: 80%;
+        padding: 4px;
+    }
+
+    .grid {
+        width: 100%;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .outputLabel {
+        font-weight: bold;
+        font-size: 30px;
+    }
+
+    .grid {
+        width: 40%;
+        padding: 4px;
+    }
+    
+     .ui-selectonemenu .ui-selectonemenu-label {
+          font-size: 20px;
+          font-weight: bold;
+          width: 30em;
+    }
+    
+    .ui-selectonemenu .ui-selectonemenu-items {
+    	font-size: 20px;
+        font-weight: bold;
+    }
+            
+    .ui-outputlabel{
+    	font-size: 30px;
+        font-weight: bold;
+        width: 20em;
+    }
+    
+    .ui-button .ui-button-text{
+    	font-size: 20px;
+        font-weight: bold;
+        width: 10em;
+    }
+    
+    
+</style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+		
+		
+		<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    	</p:confirmPopup>
+ 		
+ 		<p:idleMonitor timeout="600000">
+            <p:ajax event="idle" listener="#{client.onIdle}" update="wizardId"/>
+        </p:idleMonitor>
+ 	
+		<p:growl id="growl" showDetail="true" life="2000"/>
+    	 	 
+	
+	<div id="customerId" style="display: block">
+		<p:wizard id="wizardId" flowListener="#{client.onFlowProcess}" widgetVar="wizId">
+			<p:tab id="transaction" title="Type of Transaction">
+				<p:panel header="Personal Details">
+                    <p:messages/>
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                    <p:outputLabel value="Select Your Request: "/>
+                    <div class="ui-inputgroup">
+					<p:selectOneMenu id="idSelection" value="#{client.client.transType}" filter="true" filterMatchMode="contains" >
+						<f:selectItems value="#{client.transTypes}"/>
+						<p:ajax event="change" listener="#{client.checkTransaction}" update="bizNameId bizNameInId idFirst idPayd"/>
+					</p:selectOneMenu>
+					<p:commandButton widgetVar="widCamera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();"/>
+					</div>
+					<h:outputText value="Skip to last: "/>
+	                <h:selectBooleanCheckbox value="#{client.skip}"/>
+	                </h:panelGrid>
+	              </p:panel>
+			</p:tab>
+            <p:tab id="personal" title="Personal">
+                <p:panel header="Personal Details">
+                    <p:messages/>
+                     <div class="col-12 md:col-4">
+               			 <div class="ui-inputgroup">
+                    		<p:commandButton icon="fa fa-search" styleClass="ui-button-primary"/>
+	                    	<p:autoComplete id="idPayd" placeholder="#{client.searchPlaceholder}"  value="#{client.payorName}" completeMethod="#{client.payorNameSuggested}"  queryDelay="800" effect="fade" maxResults="10" inputStyle="width:30em;font-size: 20px;font-weight: bold;">
+								<p:ajax event="change" update="infoPer additionPersonal idSecond idFirst" listener="#{client.supplyCustomerInfo}" />
+							</p:autoComplete>
+							
+							</div>
+							
+						</div>
+                   
+                    <h:panelGrid id="infoPer" columns="2" columnClasses="label, value">
+                    	
+                    	<p:outputLabel id="bizNameId" value="Business Name: *" style="font-size: 20px;font-weight: bold;" rendered="#{client.businessRequest}"/>
+                        <p:inputText id="bizNameInId" value="#{client.client.businessName}" placeholder="Business Name" label="Business Name" style="width: 20em;font-size: 20px;font-weight: bold;" rendered="#{client.businessRequest}"/>
+					
+                    	
+                        <p:outputLabel value="First Name: *" style="font-size: 20px;font-weight: bold;"/>
+                        <p:inputText value="#{client.client.firstName}" placeholder="First Name" label="Firstname" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+						
+						<p:outputLabel value="Middle Name: *" style="font-size: 20px;font-weight: bold;"/>
+                        <p:inputText value="#{client.client.middleName}" placeholder="Middle Name" label="Middlename" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+						
+                        <p:outputLabel value="Last Name: *" style="font-size: 20px;font-weight: bold;"/>
+                        <p:inputText value="#{client.client.lastName}" placeholder="Last Name" label="Lastname" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+						
+						<p:outputLabel value="Gender: " style="font-size: 20px;font-weight: bold;"/>
+						<p:selectOneMenu id="idGender" value="#{client.client.gender}" style="width: 36em"  filter="true" filterMatchMode="contains">
+							<f:selectItems value="#{client.genders}"/>
+						</p:selectOneMenu>
+						
+						<p:outputLabel value="Civil Status: " style="font-size: 20px;font-weight: bold;"/>
+						<p:selectOneMenu id="idCivil" value="#{client.client.civilStatus}" style="width: 36em" filter="true" filterMatchMode="contains">
+							<f:selectItems value="#{client.civils}"/>
+						</p:selectOneMenu>
+				
+                        <p:outputLabel value="Birthday: " style="font-size: 20px;font-weight: bold;"/>
+                        <p:calendar value="#{client.client.birthdayTmp}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 20em;font-size: 20px;font-weight: bold;"/>
+                        
+						<p:outputLabel value="Current Address: *" style="font-size: 20px;font-weight: bold;"/>
+                        <p:inputText value="#{client.client.address}"  label="Current Address" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                        
+                        <p:outputLabel value="Contact Number:" style="font-size: 20px;font-weight: bold;"/>
+                        <p:inputText value="#{client.client.contactNumber}" placeholder="09175121252" label="Contact No" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                        
+                        <p:outputLabel value="Skip to last: " style="font-size: 20px;font-weight: bold;"/>
+                        <h:selectBooleanCheckbox value="#{client.skip}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+             <p:tab id="additionPersonal" title="Additional Personal">
+             	
+             	<p:panel header="Remarks Details" id="idFirst" rendered="#{!client.include}">
+	             	<h:panelGrid  columns="2" columnClasses="label, value">
+	             	<p:outputLabel value="Remarks:" style="font-size: 20px;font-weight: bold;"/>
+	                	<p:inputTextarea value="#{client.client.remarks}" placeholder="Add your remarks here if needed"  style="width: 20em;font-size: 20px;font-weight: bold;"/>
+	             	</h:panelGrid>
+             	</p:panel>
+             	
+                <p:panel header="Additional Personal Details" rendered="#{client.include}">
+                	<p:messages/>
+                    <h:panelGrid id="idSecond" columns="2" columnClasses="label, value">
+                    
+                    
+                    <p:outputLabel value="Birth Place: *"/>
+                    <p:inputText value="#{client.client.birthPlace}" placeholder="Birth Place"  label="Birth Place" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                    
+                    <p:outputLabel value="TIN NO: "/>
+                    <p:inputText value="#{client.client.tinNo}" placeholder="000-000-000-000" label="TIN No" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                        
+                    <p:outputLabel value="Height: *"/>
+                    <p:inputText value="#{client.client.height}" placeholder="0" label="Height" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                        
+                    <p:outputLabel value="Weight: *"/>
+                    <p:inputText value="#{client.client.weight}" placeholder="0kg" label="Weight" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                    
+                    <p:outputLabel value="Company Name: *"/>
+                    <p:inputText value="#{client.client.companyName}" placeholder="Name of company if available" label="Company Name" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                    
+                    <p:outputLabel value="Nationality: *"/>
+                    <p:inputText value="#{client.client.nationality}" placeholder="Provide nationality" label="Nationality" style="width: 20em;font-size: 20px;font-weight: bold;"/>
+                    
+                    <p:outputLabel value="Profession: *"/>
+                    <p:selectOneMenu id="idProf" value="#{client.client.profession}" style="width: 36em" filter="true" filterMatchMode="contains" >
+							<f:selectItems value="#{client.professions}"/>
+					</p:selectOneMenu>
+                    
+                    <p:outputLabel value="Daily/Monthly Salary: *"/>
+                    <p:inputNumber value="#{client.client.monthlySalary}" placeholder="00.00" label="Monthly Salary" inputStyle="width: 20em;font-size: 20px;font-weight: bold;"/>
+                    
+                    <p:outputLabel value="Skip to last: "/>
+                    <h:selectBooleanCheckbox value="#{client.skip}"/>
+                    </h:panelGrid>
+                </p:panel>
+                <p:outputLabel value="Please click next" style="font-size: 20px" rendered="#{!client.include}"/>
+            </p:tab>
+            
+            <p:tab id="confirm" title="Confirmation">
+                <p:panel header="Summary - Please check your details">
+                    <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                    	<h:panelGrid columns="3" columnClasses="grid,grid,grid">
+                    		
+                    		<p:outputLabel value="Request for: ">
+                    		<p:outputLabel value="#{client.client.transactionName}" style="font-size: 2em"/>
+                            </p:outputLabel>
+                            
+                            <p:outputLabel value="Business Name: " rendered="#{client.businessRequest}">
+                        	<p:outputLabel   value="#{client.client.businessName}" style="font-size: 2em;" rendered="#{client.businessRequest}"/>
+                            </p:outputLabel>
+                            
+                            <p:outputLabel value="Client Name: ">
+                            <p:outputLabel value="#{client.client.lastName}, #{client.client.firstName} #{client.client.middleName}" style="font-size: 2em"/>
+                            </p:outputLabel>
+                            
+                            <p:outputLabel value="Gender: ">
+							<p:outputLabel value="#{client.client.genderName}" style="font-size: 2em"/>
+                            </p:outputLabel>
+							
+							<p:outputLabel value="Civil Status: ">
+							<p:outputLabel value="#{client.client.civilStatusName}" style="font-size: 2em"/>
+                            </p:outputLabel>
+							
+							<p:outputLabel value="Birthday: ">
+                            <p:outputLabel value="#{client.client.birthday}" style="font-size: 2em"/>
+                            </p:outputLabel>
+                        	
+                        	<p:outputLabel value="Birth Place: " rendered="#{client.include}">
+                            <p:outputLabel value="#{client.client.birthPlace}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="TIN No: " rendered="#{client.include}">
+		                    <p:outputLabel value="#{client.client.tinNo}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="Height: " rendered="#{client.include}">    
+		                    <p:outputLabel value="#{client.client.height}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="Weight: " rendered="#{client.include}">
+		                    <p:outputLabel value="#{client.client.weight}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="Company Name: " rendered="#{client.include}">
+		                    <p:outputLabel value="#{client.client.companyName}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="Nationality: " rendered="#{client.include}">
+		                    <p:outputLabel value="#{client.client.nationality}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="Profession: " rendered="#{client.include}">
+		                    <p:outputLabel value="#{client.professionName}"  style="font-size: 2em"/>
+		                    </p:outputLabel>
+		                    
+		                    <p:outputLabel value="Monthly Salary: " rendered="#{client.include}">
+		                    <p:outputLabel value="#{client.client.monthlySalary}" style="font-size: 2em; color: red; font-weight: bold"><f:convertNumber currencySymbol="" type="currency"/></p:outputLabel>
+		                    </p:outputLabel>
+		                    
+                        </h:panelGrid>                        
+                    </h:panelGrid>
+					
+                    <p:commandButton id="idSubmit" value="Submit" title="Click to save" update="growl imgId idName tranId"  icon="fa fa-floppy-o" actionListener="#{client.save}" process="@this">
+							<p:confirm type="popup" header="Confirmation" message="Are you sure you want to submit this data?" icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+					<br/><br/><br/>
+                </p:panel>
+            </p:tab>
+            
+         </p:wizard>
+         <br/><br/>
+         <p:commandButton id="idReset" value="Reset" actionListener="#{client.clear}" update="wizardId" oncomplete="PF('wizId').loadStep('transaction', false);"/>
+		</div>
+				
+		<h:outputStylesheet>
+		
+			.clinetCard {
+			  /* Add shadows to create the "card" effect */
+			  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			  transition: 0.3s;
+			}
+			
+			/* On mouse-over, add a deeper shadow */
+			.clinetCard:hover {
+			  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
+			
+			/* Add some padding inside the card container */
+			.container {
+			  padding: 2px 16px;
+			}
+								
+		</h:outputStylesheet>
+							
+							
+		<div id="numberOutId" style="display: none">
+		
+			<div class="clinetCard">
+			  <p:graphicImage id="imgId" name="images/client/#{client.client.genderName}.png" style="width: 200px; height: 200px"/>
+			  <div class="container">
+			    <h4><b><p:outputLabel id="idName" value="#{client.client.firstName} #{client.client.lastName}" style="font-size: 50px"/></b></h4>
+			    <p><p:outputLabel id="tranId" value="Your transaction no is #{client.client.transNo.split('-')[3]}. Please present this to the collector" style="color: red;font-size: 30px;font-weight: bold"/></p>
+			  </div>
+			</div>
+			<p:commandButton value="Return" onclick="displayWizard();PF('wizId').loadStep('transaction', false)" actionListener="#{client.clear}" update="wizardId"/>
+		</div>					
+		
+		<h:outputScript>
+			
+			function displayTrans(){
+				$("#numberOutId").show(1000);
+				$("#customerId").hide(1000);
+			}
+			function displayWizard(){
+				$("#numberOutId").hide(1000);
+				$("#customerId").show(1000);
+			}
+			
+			
+		</h:outputScript>
+		
+		
+		
+	<p:dialog widgetVar="dlgCam" visible="false" fitViewport="true" position="center center" modal="true" draggable="false" closable="false" closeOnEscape="false" resizable="false" showHeader="false" >	
+		<p:panelGrid columns="1" layout="grid">
+	        <p:commandButton value="Close Camera" id="resetButton" oncomplete="PF('dlgCam').hide()"/>
+        </p:panelGrid>
+		
+		<p:separator/>
+		<label>Change video source:</label>
+        <select id="sourceSelect" style="max-width:400px"/>
+		<div id="sourceSelectPanel" style="display:none">
+			<p:panelGrid columns="1" layout="grid">
+				<video id="video" width="700" height="500" style="border: 1px solid gray"/>
+			</p:panelGrid>
+		</div>
+	</p:dialog>
+	
+	<p:remoteCommand name="loadResult"
+                      action="#{client.findQRCode}" update="idPayd infoPer additionPersonal idSecond idFirst growl"
+                      />
+		
+	<h:outputScript>
+	
+	window.addEventListener('load', function () {
+	  let selectedDeviceId;
+      const codeReader = new ZXing.BrowserMultiFormatReader()
+      console.log('ZXing code reader initialized')
+      codeReader.listVideoInputDevices()
+        .then((videoInputDevices) => {
+          const sourceSelect = document.getElementById('sourceSelect')
+          selectedDeviceId = videoInputDevices[0].deviceId
+          if (videoInputDevices.length >= 1) {
+            videoInputDevices.forEach((element) => {
+              const sourceOption = document.createElement('option')
+              sourceOption.text = element.label
+              sourceOption.value = element.deviceId
+              sourceSelect.appendChild(sourceOption)
+            })
+
+            sourceSelect.onchange = () => {
+              selectedDeviceId = sourceSelect.value;
+            };
+
+            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
+            sourceSelectPanel.style.display = 'block'
+          }
+		
+		
+          document.getElementById('startButton').addEventListener('click', () => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+              if (result) {
+                console.log(result)
+                
+                
+                loadResult([{
+			        name: 'qrcode',
+			        value: result.text
+			      }]);
+                
+              }
+              
+            })
+            console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
+          })
+          
+			 document.getElementById('resetButton').addEventListener('click', () => {
+	            codeReader.reset()
+	            document.getElementById('result').textContent = '';
+	            console.log('Reset.')
+	          })
+	          
+	          document.getElementById('idSubmit').addEventListener('click', () => {
+	            codeReader.reset()
+	            document.getElementById('result').textContent = '';
+	            console.log('Reset.')
+	          })
+			
+			document.getElementById('idReset').addEventListener('click', () => {
+	            codeReader.reset()
+	            document.getElementById('result').textContent = '';
+	            console.log('Reset.')
+	          })
+			
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+        
+    })
+		
+		</h:outputScript>
+	
+		<ui:include src="loader.xhtml" />
+		
+		<p:dialog header="Queueing" styleClass="queueing" toggleableHeader="true" width="700" height="500" toggleable="true" position="top" collapsed="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panelWgr">
+			
+			
+					<div class="ui-inputgroup">
+						
+			        	<p:inputText id="searchId" value="#{client.searchName}" placeholder="Search..." style="width: 20em">
+			    					<f:ajax event="keyup" listener="#{client.loadClient}" render="queDataId"/>
+			    		</p:inputText>	
+		        		<p:inputText value="#{client.queYear}" style="width: 4em" placeholder="0000">
+		        			<p:ajax event="keyup" listener="#{client.loadClient}" update="queDataId"/>
+		        		</p:inputText>
+		        		<p:inputText value="#{client.queMonth}" style="width: 3em" placeholder="00">
+		        			<p:ajax event="keyup" listener="#{client.loadClient}" update="queDataId"/>
+		        		</p:inputText>
+		        		<p:inputText value="#{client.queDay}" style="width: 3em" placeholder="00">
+		        			<p:ajax event="keyup" listener="#{client.loadClient}" update="queDataId"/>
+		        		</p:inputText>
+		        		<p:inputText value="#{client.queSequence}" style="width: 4em" placeholder="0000">
+		        			<p:ajax event="keyup" listener="#{client.loadClient}" update="queDataId"/>
+		        		</p:inputText>
+        			</div>
+			    	
+			 
+			
+			<p:dataTable id="queDataId" value="#{client.clients}" var="cli" stickyHeader="false" 
+			rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" lazy="false"
+                         scrollable="true" style="text-align: left" reflow="true" paginatorPosition="top" paginatorAlwaysVisible="false">
+                         
+                         	<p:column headerText="Queue" width="10" style="text-align: left">
+            						<p:outputLabel value="#{cli.transNo.split('-')[3]}"/>
+            				</p:column>
+							<p:column headerText="Name" width="150" style="text-align: left">
+            						<p:outputLabel value="#{cli.firstName} #{cli.lastName}"/>
+            				</p:column>
+            				<p:column headerText="Request" width="150" style="text-align: left">
+            						<p:outputLabel value="#{cli.transactionName}"/>
+            				</p:column>
+            				<p:column headerText="Status" width="50" style="text-align: left">
+            						<p:outputLabel value="#{cli.clientStatus}"/>
+            				</p:column>
+                        	<p:column headerText="Collector" width="50" style="text-align: left">
+            						<p:outputLabel value="#{cli.collectorName}"/>
+            				</p:column>
+                         
+           </p:dataTable>
+		</p:dialog>
+		
+		
+		
+		<p:commandButton title="Client Queue" icon="pi pi-user-plus" id="queuID" actionListener="#{client.loadClient}" update="queDataId" oncomplete="PF('panelWgr').show(1000)" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 20px;right: 50px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+</h:form>	
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -16,13 +16,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -65,11 +63,53 @@ public class Chequedtls {
 	private String signatoryName1;
 	private String signatoryName2;
 	
-	private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
-	private static String grandTotal;
+	private Offices office;
+	private Mooe moe;
 	
 	private String statusName;
 	private int fundTypeId;
+	
+	public static boolean checkIfCheckNumberExist(String checkNo) {
+			Connection conn = null;
+			ResultSet rs = null;
+			PreparedStatement ps = null;
+			try{
+			conn = BankChequeDatabaseConnect.getConnection();
+			ps = conn.prepareStatement("SELECT cheque_no FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND cheque_no='"+ checkNo +"'");
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				System.out.println("Existing check number: " + rs.getString("cheque_no"));
+				return false;
+			}
+			rs.close();
+			ps.close();
+			BankChequeDatabaseConnect.close(conn);
+			}catch(SQLException sl){sl.getMessage();}
+			return true;
+	}
+	
+	public static double mooeUsed(long officeId, long mooeId, int year) {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String fromDate=year+"-01-01",toDate=year+"-12-31";
+		try{
+		conn = BankChequeDatabaseConnect.getConnection();
+		ps = conn.prepareStatement("SELECT sum(cheque_amount) as amount FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND offid="+officeId + " AND moid="+ mooeId + " AND (date_disbursement>='"+fromDate+"' AND date_disbursement<='"+toDate+"')");
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			return rs.getDouble("amount");
+		}
+		rs.close();
+		ps.close();
+		BankChequeDatabaseConnect.close(conn);
+		}catch(SQLException sl){sl.getMessage();}
+		return 0;
+	}
 	
 	public static String formatAmount(String amount){
 		double money = Double.valueOf(amount);
@@ -105,6 +145,78 @@ public class Chequedtls {
 		}catch(SQLException sl){sl.getMessage();}
 		
 		return mapData;
+	}
+	/**
+	 * 
+	 * Revised code for fast retrieval
+	 */
+	public static Object[] retrieveData(String sql, String[] params){
+		Object[] obj = new Object[2];
+		List<Chequedtls> chks = new ArrayList<Chequedtls>();
+		double totalAmount = 0d;
+		String sqlTmp = "SELECT * FROM tbl_chequedtls WHERE isactive=1 ";
+		
+		sql = sqlTmp + sql;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = BankChequeDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		System.out.println("CHECK SQL " + ps.toString());
+		
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			if(rs.getInt("chkstatus")==1) {//record only received check
+				totalAmount += rs.getDouble("cheque_amount");
+			}
+			Chequedtls chk = Chequedtls.builder()
+					.cheque_id(rs.getLong("cheque_id"))
+					.accntNumber(rs.getString("accnt_no"))
+					.fundTypeId(Integer.valueOf(rs.getString("accnt_no")))
+					.checkNo(rs.getString("cheque_no"))
+					.accntName(rs.getString("accnt_name"))
+					.bankName(rs.getString("bank_name"))
+					.date_disbursement(rs.getString("date_disbursement"))
+					.amount(rs.getDouble("cheque_amount"))
+					.payToTheOrderOf(rs.getString("pay_to_the_order_of"))
+					.amountInWOrds(rs.getString("amount_in_words"))
+					.processBy(rs.getString("proc_by"))
+					.date_created(rs.getString("date_created"))
+					.date_edited(rs.getString("date_edited"))
+					.signatory1(rs.getInt("sig1_id"))
+					.signatory2(rs.getInt("sig2_id"))
+					.isActive(rs.getInt("isactive"))
+					.status(rs.getInt("chkstatus"))
+					.remarks(rs.getString("chkremarks"))
+					.hasAdvice(rs.getInt("hasadvice"))
+					.office(Offices.builder().id(rs.getLong("offid")).build())
+					.moe(Mooe.builder().id(rs.getLong("moid")).build())
+					.build();
+			chks.add(chk);
+		}
+		
+		rs.close();
+		ps.close();
+		BankChequeDatabaseConnect.close(conn);
+		}catch(SQLException sl){sl.getMessage();}
+		
+		obj[0] = totalAmount;
+		obj[1] = chks;
+		
+		return obj;
 	}
 	
 	
@@ -155,6 +267,8 @@ public class Chequedtls {
 			try{chk.setAccntName(rs.getString("bank_account_name"));}catch(NullPointerException e){}
 			try{chk.setStatusName(rs.getInt("chkstatus")==1? "FOR ADVICE" : "CANCELLED");}catch(NullPointerException e){}
 			try{chk.setFundTypeId(rs.getInt("bank_id"));}catch(NullPointerException e){}
+			chk.setOffice(Offices.builder().id(rs.getLong("offid")).build());
+			chk.setMoe(Mooe.builder().id(rs.getLong("moid")).build());
 			
 			cList.add(chk);
 		}
@@ -218,7 +332,8 @@ public class Chequedtls {
 			try{chk.setSignatoryName2(rs.getString("sig2_id"));}catch(NullPointerException e){}
 			try{chk.setStatusName(rs.getInt("chkstatus")==1? "FOR ADVICE" : "CANCELLED");}catch(NullPointerException e){}
 			try{chk.setFundTypeId(rs.getInt("bank_id"));}catch(NullPointerException e){}
-			
+			chk.setOffice(Offices.builder().id(rs.getLong("offid")).build());
+			chk.setMoe(Mooe.builder().id(rs.getLong("moid")).build());
 			cList.add(chk);
 		}
 		rs.close();
@@ -271,7 +386,8 @@ public class Chequedtls {
 			try{chk.setRemarks(rs.getString("chkremarks"));}catch(NullPointerException e){}
 			try{chk.setHasAdvice(rs.getInt("hasadvice"));}catch(NullPointerException e){}
 			int sig1=0,sig2=0;
-			
+			chk.setOffice(Offices.builder().id(rs.getLong("offid")).build());
+			chk.setMoe(Mooe.builder().id(rs.getLong("moid")).build());
 			
 			try{
 				sig1=rs.getInt("sig1_id");
@@ -429,8 +545,10 @@ public class Chequedtls {
 				+ "isactive,"
 				+ "chkstatus,"
 				+ "chkremarks,"
-				+ "hasadvice) " 
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "hasadvice,"
+				+ "offid,"
+				+ "moid) " 
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -438,30 +556,33 @@ public class Chequedtls {
 		conn = BankChequeDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
 		long id =1;
+		int cnt=1;
 		if("1".equalsIgnoreCase(type)){
-			ps.setLong(1, id);
+			ps.setLong(cnt++, id);
 			chk.setCheque_id(id);
 		}else if("3".equalsIgnoreCase(type)){
 			id=getLatestId()+1;
-			ps.setLong(1, id);
+			ps.setLong(cnt++, id);
 			chk.setCheque_id(id);
 		}
-		ps.setString(2, chk.getAccntNumber());
-		ps.setString(3, chk.getCheckNo());
-		ps.setString(4, chk.getAccntName());
-		ps.setString(5, chk.getBankName());
-		ps.setString(6, chk.getDate_disbursement());
-		ps.setDouble(7, chk.getAmount());
-		ps.setString(8, chk.getPayToTheOrderOf());
-		ps.setString(9, chk.getAmountInWOrds());
-		ps.setString(10, chk.getProcessBy());
-		ps.setInt(11, chk.getSignatory1());
-		ps.setInt(12, chk.getSignatory2());
-		ps.setTimestamp(13, Timestamp.valueOf(chk.getDate_edited()));
-		ps.setInt(14, chk.getIsActive());
-		ps.setInt(15, chk.getStatus());
-		ps.setString(16, chk.getRemarks());
-		ps.setInt(17, chk.getHasAdvice());
+		ps.setString(cnt++, chk.getAccntNumber());
+		ps.setString(cnt++, chk.getCheckNo());
+		ps.setString(cnt++, chk.getAccntName());
+		ps.setString(cnt++, chk.getBankName());
+		ps.setString(cnt++, chk.getDate_disbursement());
+		ps.setDouble(cnt++, chk.getAmount());
+		ps.setString(cnt++, chk.getPayToTheOrderOf());
+		ps.setString(cnt++, chk.getAmountInWOrds());
+		ps.setString(cnt++, chk.getProcessBy());
+		ps.setInt(cnt++, chk.getSignatory1());
+		ps.setInt(cnt++, chk.getSignatory2());
+		ps.setTimestamp(cnt++, Timestamp.valueOf(chk.getDate_edited()));
+		ps.setInt(cnt++, chk.getIsActive());
+		ps.setInt(cnt++, chk.getStatus());
+		ps.setString(cnt++, chk.getRemarks());
+		ps.setInt(cnt++, chk.getHasAdvice());
+		ps.setLong(cnt++, chk.getOffice().getId());
+		ps.setLong(cnt++, chk.getMoe().getId());
 		ps.execute();
 		ps.close();
 		BankChequeDatabaseConnect.close(conn);
@@ -489,8 +610,10 @@ public class Chequedtls {
 				+ "isactive,"
 				+ "chkstatus,"
 				+ "chkremarks,"
-				+ "hasadvice) " 
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "hasadvice,"
+				+ "offid,"
+				+ "moid) " 
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -498,30 +621,33 @@ public class Chequedtls {
 		conn = BankChequeDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
 		long id =1;
+		int cnt = 1;
 		if("1".equalsIgnoreCase(type)){
-			ps.setLong(1, id);
+			ps.setLong(cnt++, id);
 			setCheque_id(id);
 		}else if("3".equalsIgnoreCase(type)){
 			id=getLatestId()+1;
-			ps.setLong(1, id);
+			ps.setLong(cnt++, id);
 			setCheque_id(id);
 		}
-		ps.setString(2, getAccntNumber());
-		ps.setString(3, getCheckNo());
-		ps.setString(4, getAccntName());
-		ps.setString(5, getBankName());
-		ps.setString(6, getDate_disbursement());
-		ps.setDouble(7, getAmount());
-		ps.setString(8, getPayToTheOrderOf());
-		ps.setString(9, getAmountInWOrds());
-		ps.setString(10, getProcessBy());
-		ps.setInt(11, getSignatory1());
-		ps.setInt(12, getSignatory2());
-		ps.setTimestamp(13, Timestamp.valueOf(getDate_edited()));
-		ps.setInt(14, getIsActive());
-		ps.setInt(15, getStatus());
-		ps.setString(16, getRemarks());
-		ps.setInt(17, hasAdvice);
+		ps.setString(cnt++, getAccntNumber());
+		ps.setString(cnt++, getCheckNo());
+		ps.setString(cnt++, getAccntName());
+		ps.setString(cnt++, getBankName());
+		ps.setString(cnt++, getDate_disbursement());
+		ps.setDouble(cnt++, getAmount());
+		ps.setString(cnt++, getPayToTheOrderOf());
+		ps.setString(cnt++, getAmountInWOrds());
+		ps.setString(cnt++, getProcessBy());
+		ps.setInt(cnt++, getSignatory1());
+		ps.setInt(cnt++, getSignatory2());
+		ps.setTimestamp(cnt++, Timestamp.valueOf(getDate_edited()));
+		ps.setInt(cnt++, getIsActive());
+		ps.setInt(cnt++, getStatus());
+		ps.setString(cnt++, getRemarks());
+		ps.setInt(cnt++, hasAdvice);
+		ps.setLong(cnt++, getOffice().getId());
+		ps.setLong(cnt++, getMoe().getId());
 		ps.execute();
 		ps.close();
 		BankChequeDatabaseConnect.close(conn);
@@ -545,7 +671,9 @@ public class Chequedtls {
 				+ "sig2_id=?,"
 				+ "chkstatus=?,"
 				+ "chkremarks=?,"
-				+ "hasadvice=? " 
+				+ "hasadvice=?,"
+				+ "offid=?,"
+				+ "moid=? " 
 				+ " WHERE cheque_id=?";
 		
 		PreparedStatement ps = null;
@@ -553,22 +681,24 @@ public class Chequedtls {
 		try{
 		conn = BankChequeDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
-		
-		ps.setString(1, chk.getAccntNumber());
-		ps.setString(2, chk.getCheckNo());
-		ps.setString(3, chk.getAccntName());
-		ps.setString(4, chk.getBankName());
-		ps.setString(5, chk.getDate_disbursement());
-		ps.setDouble(6, chk.getAmount());
-		ps.setString(7, chk.getPayToTheOrderOf());
-		ps.setString(8, chk.getAmountInWOrds());
-		ps.setString(9, chk.getProcessBy());
-		ps.setInt(10, chk.getSignatory1());
-		ps.setInt(11, chk.getSignatory2());
-		ps.setInt(12, chk.getStatus());
-		ps.setString(13, chk.getRemarks());
-		ps.setInt(14, chk.getHasAdvice());
-		ps.setLong(15, chk.getCheque_id());
+		int cnt=1;
+		ps.setString(cnt++, chk.getAccntNumber());
+		ps.setString(cnt++, chk.getCheckNo());
+		ps.setString(cnt++, chk.getAccntName());
+		ps.setString(cnt++, chk.getBankName());
+		ps.setString(cnt++, chk.getDate_disbursement());
+		ps.setDouble(cnt++, chk.getAmount());
+		ps.setString(cnt++, chk.getPayToTheOrderOf());
+		ps.setString(cnt++, chk.getAmountInWOrds());
+		ps.setString(cnt++, chk.getProcessBy());
+		ps.setInt(cnt++, chk.getSignatory1());
+		ps.setInt(cnt++, chk.getSignatory2());
+		ps.setInt(cnt++, chk.getStatus());
+		ps.setString(cnt++, chk.getRemarks());
+		ps.setInt(cnt++, chk.getHasAdvice());
+		ps.setLong(cnt++, chk.getOffice().getId());
+		ps.setLong(cnt++, chk.getMoe().getId());
+		ps.setLong(cnt++, chk.getCheque_id());
 		
 		ps.executeUpdate();
 		ps.close();
@@ -594,7 +724,9 @@ public class Chequedtls {
 				+ "sig2_id=?,"
 				+ "chkstatus=?,"
 				+ "chkremarks=?,"
-				+ "hasadvice=? " 
+				+ "hasadvice=?,"
+				+ "offid=?,"
+				+ "moid=? "  
 				+ " WHERE cheque_id=?";
 		
 		PreparedStatement ps = null;
@@ -602,22 +734,24 @@ public class Chequedtls {
 		try{
 		conn = BankChequeDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
-		
-		ps.setString(1, getAccntNumber());
-		ps.setString(2, getCheckNo());
-		ps.setString(3, getAccntName());
-		ps.setString(4, getBankName());
-		ps.setString(5, getDate_disbursement());
-		ps.setDouble(6, getAmount());
-		ps.setString(7, getPayToTheOrderOf());
-		ps.setString(8, getAmountInWOrds());
-		ps.setString(9, getProcessBy());
-		ps.setInt(10, getSignatory1());
-		ps.setInt(11, getSignatory2());
-		ps.setInt(12, getStatus());
-		ps.setString(13, getRemarks());
-		ps.setInt(14, getHasAdvice());
-		ps.setLong(15, getCheque_id());
+		int cnt=1;
+		ps.setString(cnt++, getAccntNumber());
+		ps.setString(cnt++, getCheckNo());
+		ps.setString(cnt++, getAccntName());
+		ps.setString(cnt++, getBankName());
+		ps.setString(cnt++, getDate_disbursement());
+		ps.setDouble(cnt++, getAmount());
+		ps.setString(cnt++, getPayToTheOrderOf());
+		ps.setString(cnt++, getAmountInWOrds());
+		ps.setString(cnt++, getProcessBy());
+		ps.setInt(cnt++, getSignatory1());
+		ps.setInt(cnt++, getSignatory2());
+		ps.setInt(cnt++, getStatus());
+		ps.setString(cnt++, getRemarks());
+		ps.setInt(cnt++, getHasAdvice());
+		ps.setLong(cnt++, getOffice().getId());
+		ps.setLong(cnt++, getMoe().getId());
+		ps.setLong(cnt++, getCheque_id());
 		
 		ps.executeUpdate();
 		ps.close();
@@ -840,5 +974,5 @@ public class Chequedtls {
 	    }
 }
 
-
+	
 }

@@ -185,7 +185,7 @@
 	    						
 	    						<div class="ui-inputgroup">
 		                    		<p:commandButton id="findId" update="dataChkId"  icon="pi pi-search" actionListener="#{checkBean.find}"/>
-		                    		<p:autoComplete minQueryLength="5" placeholder="Search..." value="#{checkBean.searchPayTo}" completeMethod="#{checkBean.autoPayToName}" effect="fade" maxResults="10">
+		                    			<p:autoComplete minQueryLength="5" placeholder="Search..." value="#{checkBean.searchPayTo}" completeMethod="#{checkBean.autoPayToName}" effect="fade" maxResults="10">
 		    								<f:ajax event="change" listener="#{checkBean.find}" render="dataChkId"/>
 		    							</p:autoComplete>
 				        				<p:datePicker id="range" selectionMode="range" value="#{checkBean.rangeDate}" readonlyInput="true" inputStyle="width: 15em"/>

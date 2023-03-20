@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="water_rental_certificate" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15ef2226-ab30-4d40-a13b-e761d1675b3c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="PARAM_SURVEY_NO" class="java.lang.String"/>
+	<parameter name="PARAM_OWNER_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_TENANT_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_CAGE_LOCATION" class="java.lang.String"/>
+	<parameter name="PARAM_DATE_ISSUED_BILL" class="java.lang.String"/>
+	<parameter name="PARAM_OR_NUMBER" class="java.lang.String"/>
+	<parameter name="PARAM_TOTAL_STOCK" class="java.lang.String"/>
+	<parameter name="PARAM_ANNUAL_PROD" class="java.lang.String"/>
+	<parameter name="PARAM_CAGE_MODULE" class="java.lang.String"/>
+	<parameter name="PARAM_NON_FUNCTIONAL" class="java.lang.String"/>
+	<parameter name="PARAM_FUNCTIONAL" class="java.lang.String"/>
+	<parameter name="PARAM_NO_CAGES" class="java.lang.String"/>
+	<parameter name="PARAM_CAGE_LENTH" class="java.lang.String"/>
+	<parameter name="PARAM_WATER_AREA" class="java.lang.String"/>
+	<parameter name="PARAM_CELLPHONE_NO" class="java.lang.String"/>
+	<parameter name="PARAM_NON_MOTORIZED" class="java.lang.String"/>
+	<parameter name="PARAM_MOTORIZED" class="java.lang.String"/>
+	<parameter name="PARAM_LOGO_LAKESEBU" class="java.io.InputStream"/>
+	<parameter name="PARAM_SEALTRANSPARENT" class="java.io.InputStream"/>
+	<parameter name="PARAM_OPERATE_YEAR" class="java.lang.String"/>
+	<parameter name="PARAM_COORDINATOR" class="java.lang.String"/>
+	<parameter name="PARAM_ZONING_OFFICER" class="java.lang.String"/>
+	<parameter name="PARAM_MAYOR" class="java.lang.String"/>
+	<parameter name="PARAM_DA_HEAD" class="java.lang.String"/>
+	<parameter name="PARAM_BIRTH_DATE" class="java.lang.String"/>
+	<parameter name="PARAM_SIGNATURE" class="java.lang.String"/>
+	<parameter name="PARAM_BACKGROUND" class="java.io.InputStream"/>
+	<parameter name="PARAM_TREASURER" class="java.lang.String"/>
+	<parameter name="PARAM_VERIFIEDBY" class="java.lang.String"/>
+	<parameter name="PARAM_DA_LOGO" class="java.io.InputStream"/>
+	<parameter name="PARAM_TOTAL" class="java.lang.String"/>
+	<parameter name="PARAM_BILL_NO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="f1" class="java.lang.String"/>
+	<field name="f2" class="java.lang.String"/>
+	<field name="f3" class="java.lang.String"/>
+	<field name="f4" class="java.lang.String"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="2" width="561" height="800" uuid="cb377a28-4599-4543-8fca-67a9d4058469"/>
+				<imageExpression><![CDATA[$P{PARAM_BACKGROUND}]]></imageExpression>
+			</image>
+			<image scaleImage="RetainShape" onErrorType="Blank">
+				<reportElement x="123" y="229" width="340" height="370" uuid="8d7730d5-ff34-491a-9f50-52a41092559b">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{PARAM_SEALTRANSPARENT}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="378" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="38" width="550" height="16" uuid="c156d803-2ae6-4240-9482-918eed533a02">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Republic of the Philippines]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="550" height="16" uuid="3ec52910-80c5-418c-b130-b23d2fe6af05">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Province of South Cotabato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="550" height="16" uuid="c9c0c356-faa0-4560-be95-01e2a3806a45">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Municipality of Lake Sebu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="91" width="550" height="16" uuid="a5b8fb6f-50f1-4229-a338-efba7d792f9c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFFICE OF THE MUNICIPAL TREASURER]]></text>
+			</staticText>
+			<image scaleImage="RealSize" onErrorType="Blank">
+				<reportElement x="431" y="40" width="78" height="75" uuid="dc839721-a836-40c5-b35d-3e5c691bfe6d"/>
+				<imageExpression><![CDATA[$P{PARAM_LOGO_LAKESEBU}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="133" width="555" height="23" uuid="80facebb-7f89-4ff1-96b2-02dbcd83eb00">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LAKE WATER RENTAL BILLING STATEMENT]]></text>
+			</staticText>
+			<image scaleImage="RealSize" onErrorType="Blank">
+				<reportElement x="48" y="38" width="78" height="75" uuid="b749ab42-28e8-4e94-84c2-92384a50b5ea"/>
+				<imageExpression><![CDATA[$P{PARAM_DA_LOGO}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="316" y="158" width="214" height="14" uuid="e25d1697-bc8f-4778-bd87-5bdf72a2566c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_DATE_ISSUED_BILL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="225" width="130" height="16" uuid="9cd1f975-26a7-4dc0-80c8-a7b2a01eff25">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Water Survey Number:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="241" width="130" height="16" uuid="fcd3568c-ac1f-4d15-ba50-6fe0a84dd15b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name of Owner:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="257" width="130" height="16" uuid="80b9ff03-8213-4d48-a822-a5203e9432da">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date of Birth:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="273" width="178" height="16" uuid="3163d0d9-87d9-476e-80e1-4e160213cfcb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fisherfolk/Co-Partner operators:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="305" width="178" height="16" uuid="ffa1aeba-54ce-4967-98f1-bd2d651caa23">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cage location/Sitio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="321" width="178" height="16" uuid="06add0e5-4b06-472f-b5c1-13dbc6fe7f61">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Number of motorized boat:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="337" width="178" height="16" uuid="98fdd6f9-1521-484e-9327-5e34ddd0fb0e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Number of non-motorized boat:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="353" width="178" height="16" uuid="d012a94c-4334-4112-b09e-25d6f6c3174b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cellphone #:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="257" width="102" height="16" uuid="6ecd858b-4555-4d24-b66a-b58f2adb0471">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total water area:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="273" width="102" height="16" uuid="40c2be35-3124-4ad3-abc6-ab5c708ac801">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cage Length:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="289" width="62" height="13" uuid="619da8ea-3099-49b5-8e48-a2c1eed26add">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. of Cages]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="289" width="50" height="13" uuid="650f7f5a-2373-4a82-a95d-4e8b0fe92092"/>
+				<box padding="1"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Functional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="289" width="61" height="13" uuid="544b912d-c026-4951-aeee-d005d416818d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Non-Functional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="321" width="119" height="16" uuid="220e0d02-7d91-44b1-ac4b-7b752bd18042">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Size of cage/module:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="337" width="119" height="16" uuid="62b1da79-88d9-4243-8e0f-a6dd060f8a7f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Annual Production:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="353" width="119" height="16" uuid="cdafe321-a66a-4192-b75a-c7627db66387">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total No. of Stock:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="152" y="225" width="318" height="16" uuid="5f4ff253-da5b-456d-bea7-8ae4ca51f92c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_SURVEY_NO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="150" y="241" width="383" height="16" uuid="514f0599-e9ec-4d5f-8792-dad2c25a288a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_OWNER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="150" y="257" width="119" height="16" uuid="104397cd-f29a-449b-b2d5-6dbb2c91b0ec">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BIRTH_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="289" width="349" height="16" uuid="20f71a60-01ca-498e-b701-9b8435cbe5de">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TENANT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="305" width="171" height="16" uuid="f5ef5421-ac15-49d7-8cf7-95b0754cf5ac">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CAGE_LOCATION}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="321" width="171" height="16" uuid="23c1cef4-6d99-4cfe-806d-d4e82ed4318d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_MOTORIZED}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="337" width="171" height="16" uuid="0fba4e70-ca0c-46f2-964b-16ae2876902e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NON_MOTORIZED}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="353" width="171" height="16" uuid="ca498536-b105-40db-81e1-0411f428d49c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CELLPHONE_NO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="474" y="257" width="59" height="16" uuid="b414e523-60bc-4bda-bde1-ff49831cfb78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_WATER_AREA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="474" y="273" width="59" height="16" uuid="2e5eac16-bc61-49c4-a3ab-8a33e14207fe">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CAGE_LENTH}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="372" y="302" width="50" height="19" uuid="0c4f484e-d00c-42d3-8d5b-a0ff7359093e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NO_CAGES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="422" y="302" width="50" height="19" uuid="5addaacf-bfa1-4dec-92fc-a214905db203">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_FUNCTIONAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="472" y="302" width="61" height="19" uuid="d8bdabc8-15c5-45e5-8d15-fb58ef272f00">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_FUNCTIONAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="321" width="41" height="16" uuid="297bd288-5a78-42db-89a0-61d977cc37f3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CAGE_MODULE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="337" width="41" height="16" uuid="219d72df-5d72-47d9-a633-462f22df2fe9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_ANNUAL_PROD}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="353" width="41" height="16" uuid="53ee8f60-1d37-4f9f-aea1-97b538eccd11">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL_STOCK}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="180" width="65" height="16" uuid="33703f81-83c0-4dad-811d-65e8b173bf7e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Billing No:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="85" y="180" width="194" height="16" uuid="42d5165f-8859-4e86-8b96-55cf6ec0a809">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BILL_NO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="20" y="0" width="310" height="18" uuid="fbc5b8a7-3b77-44ba-a0b0-02ebde405bc8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Regulatory Fees]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="202" height="18" uuid="4df415bf-35e2-4a07-b0b5-493353f4bb33">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="0" width="310" height="16" uuid="a8b5169b-62e4-46ce-b268-1a2a7f3e0b55">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="0" width="202" height="16" uuid="0d71cbab-0523-4d79-812b-4fee2f018ed5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="154" splitType="Stretch">
+			<staticText>
+				<reportElement x="273" y="63" width="130" height="16" uuid="1dcb0dae-86e9-451c-80c1-a46206cf4175">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Noted by:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="80" width="200" height="16" uuid="6035590d-8ae8-439c-a9b2-36ee5901823d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="393" y="96" width="123" height="16" uuid="9ba637d8-6012-4326-8f1c-ea101d215044">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Municipal Treasurer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="62" width="130" height="16" uuid="5fe590f9-f7c3-4ed2-b1e4-49be7b8dacc8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Prepared by:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="96" width="123" height="16" uuid="de1be440-7dbc-42d1-88cc-4463e4d92f38">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Business Clerk]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="80" width="190" height="16" uuid="577007ca-1bd7-4d55-99a5-7a880bdaed9e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_VERIFIEDBY}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="232" y="3" width="298" height="16" uuid="296d3139-1b0a-4dda-9f84-27e085da6a68">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="3" width="123" height="16" uuid="3f5a5e2d-30a1-425c-865e-7871e77d297b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="20" y="0" width="511" height="1" uuid="fcfb2845-f682-4b7e-86ea-3b8a2175d040"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

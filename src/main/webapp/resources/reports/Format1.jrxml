@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-02-22T16:20:45 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BankChequeReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26f6e74a-6eea-4bd5-be9b-03541016d06b">
+	<parameter name="PARAM_AMOUNT" class="java.lang.String"/>
+	<parameter name="PARAM_AMOUNT_INWORDS" class="java.lang.String"/>
+	<parameter name="PARAM_ACCOUNT_NUMBER" class="java.lang.String"/>
+	<parameter name="PARAM_CHECK_NUMBER" class="java.lang.String"/>
+	<parameter name="PARAM_DATE_DISBURSEMENT" class="java.lang.String"/>
+	<parameter name="PARAM_BANK_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_ACCOUNT_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_PAYTOORDEROF" class="java.lang.String"/>
+	<parameter name="PARAM_SIGNATORY1" class="java.lang.String"/>
+	<parameter name="PARAM_SIGNATORY2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="127" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="300" y="51" width="482" height="23" uuid="e271ad79-4de3-4e44-a36a-c0917de37177"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_AMOUNT_INWORDS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00¤;#,##0.00- ¤" isBlankWhenNull="true">
+				<reportElement x="684" y="30" width="94" height="17" uuid="c0e0a0bb-4bc7-4bd6-82f2-32aec1f6ab33"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="32" width="370" height="17" uuid="73f6ea04-0d27-4437-b0d5-75aea78e6574"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_PAYTOORDEROF}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="510" y="110" width="131" height="12" uuid="cbe286c6-91d3-4f64-9d25-2619d1b1041a"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_SIGNATORY1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="651" y="110" width="150" height="14" uuid="75372838-78f4-4307-8697-f972800b74a4"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_SIGNATORY2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="473" y="6" width="161" height="14" uuid="0751b2fd-9ea2-4a8a-992c-d599ad44973c"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CHECK_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement x="666" y="8" width="134" height="14" uuid="a4dae420-d75c-409c-9979-a9f75d239093"/>
+				<textElement>
+					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_DATE_DISBURSEMENT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

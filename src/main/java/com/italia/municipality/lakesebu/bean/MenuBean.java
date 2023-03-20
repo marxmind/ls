@@ -178,7 +178,7 @@ public class MenuBean implements Serializable{
 	}
 	
 	public String writing(){
-		return "check.xhtml";
+		return "chk.xhtml";
 	}
 	
 	public String funds(){

@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
@@ -30,13 +32,54 @@ import lombok.ToString;
 @ToString
 public class Offices {
 
-	private int id;
+	private long id;
 	private String code;
 	private String name;
 	private String abr;
 	private String headOfOffice;
 	private int departmentId;
 	private int isActive;
+	
+	public static Map<Long, Offices> retrieveAll(){
+		Map<Long, Offices> offices = new LinkedHashMap<Long, Offices>();
+		
+		String sql = "SELECT * FROM offices WHERE isactiveoff=1 ORDER BY name";
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		System.out.println("offices SQL " + ps.toString());
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			Offices off = Offices.builder()
+					.id(rs.getInt("offid"))
+					.name(rs.getString("name"))
+					.code(rs.getString("code"))
+					.headOfOffice(rs.getString("headname"))
+					.abr(rs.getString("abrname"))
+					.isActive(rs.getInt("isactiveoff"))
+					.departmentId(rs.getInt("departmentid"))
+					.build();
+			
+			offices.put(off.getId(), off);
+
+		}
+		
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		
+		}catch(Exception e){e.getMessage();}
+		
+		return offices;
+	}
 	
 	public static List<Offices> retrieve(String sql, String[] params){
 		List<Offices> offcs = new ArrayList<Offices>();
@@ -142,7 +185,7 @@ public class Offices {
 		try{
 		conn = WebTISDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
-		int id =1;
+		long id =1;
 		int cnt = 1;
 		LogU.add("===========================START=========================");
 		LogU.add("inserting data into table offices");
@@ -209,7 +252,7 @@ public class Offices {
 		ps.setString(cnt++, st.getHeadOfOffice());
 		ps.setString(cnt++, st.getAbr());
 		ps.setInt(cnt++, st.getDepartmentId());
-		ps.setInt(cnt++, st.getId());
+		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getName());
 		LogU.add(st.getCode());
@@ -231,8 +274,8 @@ public class Offices {
 		return st;
 	}
 	
-	public static int getLatestId(){
-		int id =0;
+	public static long getLatestId(){
+		long id =0;
 		Connection conn = null;
 		PreparedStatement prep = null;
 		ResultSet rs = null;
@@ -257,7 +300,7 @@ public class Offices {
 		return id;
 	}
 	
-	public static int getInfo(int id){
+	public static long getInfo(long id){
 		boolean isNotNull=false;
 		int result =0;
 		//id no data retrieve.

@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 
@@ -34,6 +36,8 @@ public class Signatories {
 	private String name;
 	private String position;
 	private int isOfficial;
+	private int isActive;
+	private int primary;
 	
 	
 	public static List<Signatories> retrieve(String sql, String[] params){
@@ -61,12 +65,92 @@ public class Signatories {
 		
 		while(rs.next()){
 			
-			Signatories sig = new Signatories();
-			try{sig.setId(rs.getInt("sigid"));}catch(NullPointerException e){}
-			try{sig.setName(rs.getString("signame"));}catch(NullPointerException e){}
-			try{sig.setPosition(rs.getString("sigposition"));}catch(NullPointerException e){}
-			try{sig.setIsOfficial(rs.getInt("isofficial"));}catch(NullPointerException e){}
-			sigs.add(sig);
+			Signatories sg = Signatories.builder()
+					.id(rs.getInt("sigid"))
+					.name(rs.getString("signame"))
+					.position(rs.getString("sigposition"))
+					.isOfficial(rs.getInt("isofficial"))
+					.primary(rs.getInt("primaryper"))
+					.isActive(rs.getInt("isactivesig"))
+					.build();
+			
+			sigs.add(sg);
+			
+		}
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException sl){}
+		
+		return sigs;
+	}
+	
+	public static Map<String, Signatories> retrieveSig(String sql, String[] params){
+		Map<String, Signatories> sigs = new LinkedHashMap<String, Signatories>();
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		//System.out.println("SQL " + ps.toString());
+		
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			Signatories sg = Signatories.builder()
+					.id(rs.getInt("sigid"))
+					.name(rs.getString("signame"))
+					.position(rs.getString("sigposition"))
+					.isOfficial(rs.getInt("isofficial"))
+					.isActive(rs.getInt("isactivesig"))
+					.build();
+			sigs.put(sg.getId()+"", sg);
+			
+		}
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException sl){}
+		
+		return sigs;
+	}
+	
+	public static Map<Integer, Signatories> retrieveAll(){
+		Map<Integer, Signatories> sigs = new LinkedHashMap<Integer, Signatories>();
+		String sql = "SELECT * FROM signatory WHERE isactivesig=1 ";
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			Signatories sg = Signatories.builder()
+					.id(rs.getInt("sigid"))
+					.name(rs.getString("signame"))
+					.position(rs.getString("sigposition"))
+					.isOfficial(rs.getInt("isofficial"))
+					.primary(rs.getInt("primaryper"))
+					.isActive(rs.getInt("isactivesig"))
+					.build();
+			sigs.put(sg.getId(), sg);
 			
 		}
 		rs.close();
@@ -78,7 +162,7 @@ public class Signatories {
 	}
 	
 	public static Signatories retrieve(int id){
-		Signatories sig = new Signatories();
+		Signatories sg = new Signatories();
 		
 		String sql = "SELECT * FROM signatory WHERE sigid=" + id;
 		
@@ -93,11 +177,14 @@ public class Signatories {
 		
 		while(rs.next()){
 			
-			
-			try{sig.setId(rs.getInt("sigid"));}catch(NullPointerException e){}
-			try{sig.setName(rs.getString("signame"));}catch(NullPointerException e){}
-			try{sig.setPosition(rs.getString("sigposition"));}catch(NullPointerException e){}
-			try{sig.setIsOfficial(rs.getInt("isofficial"));}catch(NullPointerException e){}
+					sg = Signatories.builder()
+					.id(rs.getInt("sigid"))
+					.name(rs.getString("signame"))
+					.position(rs.getString("sigposition"))
+					.isOfficial(rs.getInt("isofficial"))
+					.primary(rs.getInt("primaryper"))
+					.isActive(rs.getInt("isactivesig"))
+					.build();
 			
 		}
 		rs.close();
@@ -105,7 +192,7 @@ public class Signatories {
 		WebTISDatabaseConnect.close(conn);
 		}catch(SQLException sl){}
 		
-		return sig;
+		return sg;
 	}
 	
 }

@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="funds" pageWidth="612" pageHeight="936" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f3ee26d4-874a-4861-b9ee-2f2416b2c180">
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<parameter name="PARAM_PRINTED_DATE" class="java.lang.String"/>
+	<parameter name="PARAM_RANGE_DATE" class="java.lang.String"/>
+	<parameter name="PARAM_ACCOUNT_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_SUB_TOTAL" class="java.lang.String"/>
+	<parameter name="PARAM_RECEIVEDBY" class="java.lang.String"/>
+	<parameter name="PARAM_REPORT_TITLE" class="java.lang.String"/>
+	<parameter name="PARAM_LOGO_TRANS" class="java.io.InputStream"/>
+	<parameter name="PARAM_LOGO" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="f1" class="java.lang.String"/>
+	<field name="f2" class="java.lang.String"/>
+	<field name="f3" class="java.lang.String"/>
+	<field name="f4" class="java.lang.String"/>
+	<field name="f5" class="java.lang.String"/>
+	<field name="f6" class="java.lang.String"/>
+	<field name="f7" class="java.lang.String"/>
+	<field name="f8" class="java.lang.String"/>
+	<field name="f9" class="java.lang.String"/>
+	<field name="f10" class="java.lang.String"/>
+	<field name="f11" class="java.lang.String"/>
+	<field name="f12" class="java.lang.String"/>
+	<field name="f13" class="java.lang.String"/>
+	<field name="f14" class="java.lang.String"/>
+	<field name="f15" class="java.lang.String"/>
+	<field name="f16" class="java.lang.String"/>
+	<field name="f17" class="java.lang.String"/>
+	<field name="f18" class="java.lang.String"/>
+	<field name="f19" class="java.lang.String"/>
+	<field name="f20" class="java.lang.String"/>
+	<background>
+		<band height="800" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="RetainShape" isUsingCache="true" onErrorType="Blank">
+				<reportElement x="110" y="210" width="340" height="370" uuid="96f2c189-4fa2-4ded-ad73-82f5a6d22676">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{PARAM_LOGO_TRANS}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="128" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="500" y="97" width="54" height="15" uuid="5a7d30af-9f39-4d95-b821-1c119aae5791"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="130" y="96" width="308" height="16" uuid="04334cf2-3df5-475e-927a-ff95c7bd903d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_ACCOUNT_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="455" y="81" width="100" height="16" uuid="ed39e304-699d-4afe-96bf-b17d3b59f432"/>
+				<text><![CDATA[Report No._______]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="97" width="54" height="16" uuid="c5b94296-c1fe-4fc7-8d43-4bec25cf0397"/>
+				<text><![CDATA[Sheet No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="96" width="124" height="16" uuid="201e1104-b7d2-4f60-a453-519f28b3fe62"/>
+				<text><![CDATA[Bank Name/Account No.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="128" y="112" width="311" height="1" uuid="77cb1d2b-94f2-4d14-8369-efae969bb6ff"/>
+			</line>
+			<line>
+				<reportElement x="0" y="79" width="1" height="49" uuid="bbb096e1-57a1-46dd-8bc4-eaada46d29aa"/>
+			</line>
+			<line>
+				<reportElement x="571" y="79" width="1" height="49" uuid="3312e535-1689-4152-9d4e-1fe70c24ea3f"/>
+			</line>
+			<line>
+				<reportElement x="503" y="112" width="39" height="1" uuid="23bf9699-879a-4bec-a0e8-bf389e1e6e30"/>
+			</line>
+			<staticText>
+				<reportElement x="200" y="28" width="158" height="16" uuid="49f0fa82-630c-4a24-b648-96a3f494d1ff"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPALITY OF LAKE SEBU]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="205" y="59" width="150" height="14" uuid="4a924582-f9eb-4e02-b37f-119413f44f26"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RANGE_DATE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="127" y="0" width="306" height="22" uuid="ebf2c89d-f3a7-4c55-bc3d-2c6e681c1601"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_REPORT_TITLE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="130" y="42" width="310" height="1" uuid="4977f598-559f-4b19-9a04-17890da05a11"/>
+			</line>
+			<line>
+				<reportElement x="129" y="71" width="310" height="1" uuid="3d47a364-e946-4f5b-823b-94fac8d112d2"/>
+			</line>
+			<staticText>
+				<reportElement x="261" y="42" width="30" height="14" uuid="2e9bc1b7-7dfd-4cd0-83f7-29a7e8b6458f"/>
+				<text><![CDATA[LGU]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="571" height="1" uuid="17f1f635-b5d7-4666-b825-d05af6a77afd"/>
+			</line>
+			<line>
+				<reportElement x="571" y="0" width="1" height="80" uuid="9a361ad7-e603-449b-849e-87873dd85fc4"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="80" uuid="1b94a0c3-b89c-43c1-b664-5d0e9cd04603"/>
+			</line>
+			<image scaleImage="RealSize" onErrorType="Blank">
+				<reportElement x="452" y="3" width="81" height="70" uuid="edd3a66d-3dd9-48f2-a37b-eaf329e06cd0"/>
+				<imageExpression><![CDATA[$P{PARAM_LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="100" height="19" uuid="1bfaf1f4-392e-40f3-90db-43042e078517"/>
+				<box padding="5" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CHECK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="19" width="50" height="19" uuid="693dd4b1-0fae-49b7-8946-1c8982ff7a06"/>
+				<box padding="0" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="19" width="50" height="19" uuid="47214226-0d32-486e-be0d-b5609b8e2dfe"/>
+				<box padding="5" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="0" width="70" height="38" uuid="c119c57e-a7d8-4852-81ae-8a740b4ab268"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DV No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="0" width="76" height="38" uuid="c57076a0-b7da-446d-93a7-38e5b013c246"/>
+				<box padding="5" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="171" y="0" width="42" height="38" uuid="f8cae0b9-37eb-485c-91be-71bb7c8351be"/>
+				<box padding="5" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Center]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="0" width="140" height="38" uuid="5eec75ff-1af0-4b0e-9b70-716693f81179"/>
+				<box padding="5" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nature of Payment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="0" width="142" height="38" uuid="51c2596b-022f-4ab0-a52c-d045d4108dad"/>
+				<box padding="5" topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Payee]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="50" height="13" uuid="6add4bcc-0fec-49c0-b290-7b83ccaeba26">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="0" leftPadding="2">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="51" y="0" width="50" height="13" uuid="4e189d76-838f-4182-82a5-78684ec491a0"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="101" y="0" width="70" height="13" uuid="1c6d5402-250b-4a1c-bf37-da2557f70615"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="171" y="0" width="42" height="13" uuid="482115c0-5371-4674-8939-3a504c4d0a9c"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="355" y="0" width="140" height="13" uuid="8a494118-92a5-489d-9dc1-d36bd4ac3cf4"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="495" y="0" width="76" height="13" uuid="9fa65146-75c5-4152-95f9-4523fcee72bf"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="213" y="0" width="142" height="13" uuid="ac66665c-a00a-4cfc-b9fd-988b92cfb564"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.2"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f5}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="169" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$F{f20}.equals("show")]]></printWhenExpression>
+			<staticText>
+				<reportElement x="1" y="55" width="340" height="58" uuid="e0a3ba2a-109f-45fc-8d9d-1313d8a46749"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[      I CERTIFY that the report issued in 1 sheet is full true and correct statement of all checks released by me in payment for obligation of the Municipality of Lake Sebu for the period stated and shown in the attached disbursement voucher.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="408" y="91" width="135" height="1" uuid="3fad7ef8-2bde-47d7-9682-18dae5a52c12"/>
+			</line>
+			<line>
+				<reportElement x="34" y="148" width="135" height="1" uuid="ca7a210a-6af5-4d78-ae29-45f3c942e284"/>
+			</line>
+			<staticText>
+				<reportElement x="401" y="92" width="147" height="16" uuid="d4a386cf-6c12-444b-b228-857b861e9b3f"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Signature Over Printed Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="135" width="124" height="16" uuid="962ede1d-c705-48fb-bfe4-f0c9f77962c5"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FERDINAND L. LOPEZ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="149" width="124" height="16" uuid="48e85bb9-54fd-480f-b9b1-569ec0137798"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Municipal Treasurer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="29" width="66" height="18" uuid="72b796a9-96b7-461c-bd35-29b2baa3baf2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Received By:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="401" y="78" width="146" height="13" uuid="370ebd79-b906-4350-8842-cdb179979ba8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RECEIVEDBY}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="213" y="137" width="140" height="13" uuid="1a36f639-9987-4312-a86b-858df3b2c937">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_PRINTED_DATE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="214" y="149" width="135" height="1" uuid="5f7b30df-ee87-413b-bc4e-60db5bcb0d79"/>
+			</line>
+			<staticText>
+				<reportElement x="220" y="150" width="124" height="16" uuid="1d385f8a-b337-410f-8b5e-98b19711e0cc"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="401" y="149" width="135" height="1" uuid="334c732b-9fba-4d39-a578-88471bfc35e1"/>
+			</line>
+			<staticText>
+				<reportElement x="407" y="150" width="124" height="16" uuid="e2756ad7-3040-408e-8328-c6baabcd3929"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="29" width="120" height="16" uuid="e83d5465-9662-4d2b-a906-f1811a9b595b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[C E R T I F I C A T I O N]]></text>
+			</staticText>
+			<line>
+				<reportElement x="571" y="17" width="1" height="151" uuid="4f72b295-85b7-40a8-832c-27b4a8582e47">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="18" width="1" height="151" uuid="0ba701c3-2382-4f76-b886-a08a4dbcdd8e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="0" y="168" width="572" height="1" uuid="4d71f9a4-41d7-4ae1-8127-e55bf7580dcf"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="1" width="495" height="16" uuid="9f5392e3-bbae-4fcb-97ba-2771970cdc9e"/>
+				<box padding="1">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="495" y="1" width="76" height="16" uuid="a533cc21-4949-4aa8-873d-445ff652a287"/>
+				<box padding="1">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_SUB_TOTAL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="379" y="17" width="1" height="151" uuid="33392942-a1ad-47ea-8665-236267e56515">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="194" y="68" width="15" height="1" uuid="4dc311b9-e766-4c10-8a18-eb22b4de59e4"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="14" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField evaluationTime="Report">
+				<reportElement x="270" y="1" width="160" height="13" uuid="c0da3fc0-c4d7-4465-92c1-9af5ed4f4394">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="1" width="151" height="13" uuid="0e0e1e74-4e83-4f77-bf47-a105ddcd7f0f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="1" width="100" height="13" uuid="12c21be7-514c-4c8b-a88f-96798ab82d8f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MarxMind IT Solutions]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="169" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="1" y="55" width="340" height="58" uuid="b1897009-b930-4dfb-a775-6c92f8c4f75e"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[      I CERTIFY that the report issued in 1 sheet is full true and correct statement of all checks released by me in payment for obligation of the Municipality of Lake Sebu for the period stated and shown in the attached disbursement voucher.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="408" y="91" width="135" height="1" uuid="d1985a08-814d-489b-8421-49ec1162fe93"/>
+			</line>
+			<line>
+				<reportElement x="34" y="148" width="135" height="1" uuid="f6e1218a-0816-43a6-8715-b192b68d3876"/>
+			</line>
+			<staticText>
+				<reportElement x="401" y="92" width="147" height="16" uuid="224c93ad-67ed-4888-9096-a0aa74bb3ecb"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Signature Over Printed Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="135" width="124" height="16" uuid="9ff7f17f-a55a-469f-9772-179ca764e6b8"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FERDINAND L. LOPEZ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="149" width="124" height="16" uuid="37e0e1d9-107d-4789-a5bb-3a7dd170e828"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Municipal Treasurer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="29" width="66" height="18" uuid="b9285c19-42bd-4564-9414-fec8800701a6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Received By:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="401" y="78" width="146" height="13" uuid="598bf42c-4b84-48c7-8f16-f8b99be28a17">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RECEIVEDBY}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="213" y="137" width="140" height="13" uuid="0bf39ca4-fdfa-4b86-be56-4b01b73208f7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_PRINTED_DATE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="214" y="149" width="135" height="1" uuid="43208045-61c2-4d7c-9ff8-1bb426f4db2d"/>
+			</line>
+			<staticText>
+				<reportElement x="220" y="150" width="124" height="16" uuid="4e44bee5-ac2d-4e28-918c-2700e979abf8"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="401" y="149" width="135" height="1" uuid="b7584447-194a-4561-aba7-1759c1f57d5d"/>
+			</line>
+			<staticText>
+				<reportElement x="407" y="150" width="124" height="16" uuid="7e44d35f-c02c-4733-921f-5bdf4b377ca3"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="29" width="120" height="16" uuid="0cadd86b-1b08-42f1-b576-b53db5fdd3c7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[C E R T I F I C A T I O N]]></text>
+			</staticText>
+			<line>
+				<reportElement x="571" y="17" width="1" height="151" uuid="f93de3fc-221d-4790-91bc-2df5598fece6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="18" width="1" height="151" uuid="22c0e7f2-f00e-4a36-b4c6-9ba4f413c1d5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="0" y="168" width="572" height="1" uuid="50c2d15e-2ef3-4480-872f-22f79919dbe7"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="1" width="495" height="16" uuid="22352ebe-6051-4ccd-a5a6-002f24d8b0ef"/>
+				<box padding="1">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="495" y="1" width="76" height="16" uuid="81dfcb2e-c548-4eba-8cd2-43c3dec427c3"/>
+				<box padding="1">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_SUB_TOTAL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="379" y="17" width="1" height="151" uuid="47e842ab-b872-49b8-b1cb-526f423d096b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="194" y="68" width="15" height="1" uuid="ffb44c4b-2237-4620-91c1-71d7e466efff"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -70,4 +70,8 @@ public class GlobalVar {
 	public static final String BUSINESS_MAP_IMG = PRIMARY_DRIVE + SEP + APP_NAME + SEP + "license" + SEP + "map" +SEP;
 	public static final String RIS_SLIP_RPT = "ris";
 	public static final String WATER_RENTAL_REG = "water_rental_reg";
+	public static final String CHECK_XML_FOLDER=PRIMARY_DRIVE + SEP + APP_NAME + SEP + "check_xml" + SEP;
+	public static final String CHECK_XML=CHECK_XML_FOLDER+SEP+"xml"+SEP;
+	public static final String CHECK_XML_ERROR=CHECK_XML_FOLDER+SEP+"error"+SEP;
+	public static final String CHECK_XML_UNPROCCESSED=CHECK_XML_FOLDER+SEP+"unproccessed"+SEP;
 }

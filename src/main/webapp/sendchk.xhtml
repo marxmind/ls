@@ -1,0 +1,45 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+    <ui:composition>
+    
+    	<script>
+				function showProgress() {
+					$("#onId").show();
+				}
+				function hideProgress() {
+					$("#onId").hide();
+				}
+			</script>
+    		<p:growl id="msgUpload" showDetail="true" life="2000" />
+    		<p:dialog widgetVar="dlgCheques" width="700" height="700" header="Sync to server" closable="true" modal="true" closeOnEscape="true">
+    		<div id="onId" style="display:none">
+    		<p:progressBar id="progressBarIndeterminate" style="height:6px" mode="indeterminate"/>
+    		</div>
+    		<p:toolbar id="tbForm">
+    		<f:facet name="left"/>
+    		<f:facet name="right">
+    			<p:commandButton title="Reload" icon="fa fa-compass" id="syncUp" value="Reload" actionListener="#{sendchk.loadFiles}" update="dataSendOr"/>
+    			<p:commandButton update="dataSendOr msgUpload" value="Upload" icon="fa fa-upload" actionListener="#{sendchk.upload}" onclick="showProgress()" oncomplete="hideProgress()"/>
+    		</f:facet>
+			</p:toolbar> 
+					
+    				 <p:dataTable id="dataSendOr" value="#{sendchk.data}" var="rr" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" paginatorAlwaysVisible="false"
+                         paginatorPosition="top" reflow="true" emptyMessage="No file/s to be sent to server">
+                         
+                         <p:column headerText="File Name" width="100">
+								<p:outputLabel value="#{rr.f1}"/>
+						 </p:column>
+                         
+                     </p:dataTable>
+    		</p:dialog>
+    
+    </ui:composition>
+</html>

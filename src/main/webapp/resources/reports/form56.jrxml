@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testting" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba26a43a-24d7-4429-9240-a0ac2c73b7f6">
+	<parameter name="PARAM_TITLE" class="java.lang.String"/>
+	<parameter name="PARAM_DATE" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="PARAM_GRAND_TOTAL" class="java.lang.String"/>
+	<parameter name="PARAM_DATE_RANGE" class="java.lang.String"/>
+	<parameter name="PARAM_BALANCE" class="java.lang.String"/>
+	<parameter name="PARAM_RECEIVE_FROM" class="java.lang.String"/>
+	<parameter name="PARAM_AMOUNT_WORDS" class="java.lang.String"/>
+	<parameter name="PARAM_YEAR" class="java.lang.String"/>
+	<parameter name="PARAM_MONTH" class="java.lang.String"/>
+	<parameter name="PARAM_CHECK_NO" class="java.lang.String"/>
+	<parameter name="PARAM_CHECK_MONTH" class="java.lang.String"/>
+	<parameter name="PARAM_CHECK_YEAR" class="java.lang.String"/>
+	<parameter name="PARAM_SIG1" class="java.lang.String"/>
+	<parameter name="PARAM_SIG2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="f1" class="java.lang.String"/>
+	<field name="f2" class="java.lang.String"/>
+	<field name="f3" class="java.lang.String"/>
+	<field name="f4" class="java.lang.String"/>
+	<field name="f5" class="java.lang.String"/>
+	<field name="f6" class="java.lang.String"/>
+	<field name="f7" class="java.lang.String"/>
+	<field name="f8" class="java.lang.String"/>
+	<field name="f9" class="java.lang.String"/>
+	<field name="f10" class="java.lang.String"/>
+	<field name="f11" class="java.lang.String"/>
+	<field name="f12" class="java.lang.String"/>
+	<field name="f13" class="java.lang.String"/>
+	<field name="f14" class="java.lang.String"/>
+	<field name="f15" class="java.lang.String"/>
+	<field name="f16" class="java.lang.String"/>
+	<field name="f17" class="java.lang.String"/>
+	<field name="f18" class="java.lang.String"/>
+	<field name="f19" class="java.lang.String"/>
+	<field name="f20" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement x="162" y="-19" width="48" height="19" forecolor="#050505" uuid="6bc3533d-f23c-4c13-9826-0d9ac538b8da"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="10"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="658" y="-15" width="100" height="15" uuid="c10cdc9d-47e0-4bde-a77d-7e02aa05d01e"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_MONTH}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="776" y="-13" width="40" height="10" uuid="5fb1f860-49b6-473a-8c18-42e571a38654"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_YEAR}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="741" y="-2" width="77" height="20" uuid="e8ce3434-1056-4a46-83cb-6755a0d0a564"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_GRAND_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="549" y="1" width="166" height="19" uuid="21911317-ca49-4029-9dd9-505abd0df35b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_AMOUNT_WORDS}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="291" y="1" width="209" height="17" uuid="ec942f23-3a63-4dca-9785-cf9ce95b9708"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RECEIVE_FROM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="10" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="220" y="1" width="56" height="18" uuid="93f2c8af-c418-48e6-8427-fc98dc25eba1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="82" y="1" width="134" height="18" uuid="5bae2918-33a2-45e9-a333-4a94a44a46fe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="277" y="1" width="61" height="18" uuid="c9c16ac0-3176-48da-8cba-9adcd518f72a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="342" y="1" width="47" height="18" uuid="ff927460-3ab7-4daa-9542-2225d47d450c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="420" y="1" width="53" height="18" uuid="b8945dd7-5c03-4d56-ad45-d347033098d5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f6}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="389" y="1" width="71" height="18" uuid="fad8593a-1d81-4856-a7ab-998054e4616f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f5}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="570" y="1" width="85" height="18" uuid="dce9dfee-0db7-4399-bc56-b1184b0561b4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f9}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="655" y="1" width="48" height="18" uuid="ab5a5cb6-fbb1-4bb9-a2e6-bd8f1305c3cd"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f10}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="473" y="1" width="53" height="18" uuid="da4708f2-b1ce-4705-9b70-46411272f379"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f7}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="526" y="1" width="44" height="18" uuid="f4edbd87-dbb6-4e60-8b82-d0e1f2a2b294"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f8}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="703" y="1" width="46" height="18" uuid="492fb538-aa88-4482-ae5b-fd68121957f4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f11}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="749" y="1" width="50" height="18" uuid="f15a46c4-cde0-452d-9e76-859547a5890c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{f12}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="8" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="65">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="399" y="-10" width="73" height="18" uuid="4332a443-251f-4d66-9338-848c06e1a344"/>
+				<textFieldExpression><![CDATA[$P{PARAM_CHECK_NO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="532" y="-9" width="43" height="18" uuid="a988b20d-fa70-45c1-8926-4363f58812e2"/>
+				<textFieldExpression><![CDATA[$P{PARAM_CHECK_MONTH}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="589" y="-9" width="30" height="20" uuid="22204204-f706-4033-a333-fd60652a2d05"/>
+				<textFieldExpression><![CDATA[$P{PARAM_CHECK_YEAR}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="580" y="-2" width="205" height="20" uuid="06c88f09-e8b4-4be3-8f0c-7e3ea988da63"/>
+				<textElement textAlignment="Right">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_GRAND_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="403" y="32" width="195" height="24" forecolor="#050505" uuid="85d9af39-7a3e-418e-86b7-f5601c289ecc"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<text><![CDATA[ALVIM M. BATOL, CPA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="609" y="33" width="195" height="24" forecolor="#050505" uuid="20933652-28e9-4745-94e5-aae5f5ade9f0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

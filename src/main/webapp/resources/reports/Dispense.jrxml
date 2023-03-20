@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2017-11-17T20:50:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testting" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba26a43a-24d7-4429-9240-a0ac2c73b7f6">
+	<parameter name="PARAM_TITLE" class="java.lang.String"/>
+	<parameter name="PARAM_DATE" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="PARAM_GRAND_TOTAL" class="java.lang.String"/>
+	<parameter name="PARAM_DATE_RANGE" class="java.lang.String"/>
+	<parameter name="PARAM_BALANCE" class="java.lang.String"/>
+	<parameter name="PARAM_TOTAL_DISPENSE" class="java.lang.String"/>
+	<parameter name="PARAM_PREPAREDBY" class="java.lang.String"/>
+	<parameter name="PARAM_LOGO" class="java.io.InputStream"/>
+	<parameter name="PARAM_LOGO_TRANS" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.String"/>
+	<field name="accntNumber" class="java.lang.String"/>
+	<field name="checkNo" class="java.lang.String"/>
+	<field name="date_disbursement" class="java.lang.String"/>
+	<field name="bankName" class="java.lang.String"/>
+	<field name="accntName" class="java.lang.String"/>
+	<field name="amount" class="java.lang.String"/>
+	<field name="payToTheOrderOf" class="java.lang.String"/>
+	<field name="amountInWOrds" class="java.lang.String"/>
+	<field name="signatory1" class="java.lang.String"/>
+	<field name="signatory2" class="java.lang.String"/>
+	<field name="processBy" class="java.lang.String"/>
+	<field name="date_edited" class="java.lang.String"/>
+	<field name="date_created" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="remarks" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="211" y="1" width="337" height="29" forecolor="#080706" uuid="6bc3533d-f23c-4c13-9826-0d9ac538b8da"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Black" size="20"/>
+				</textElement>
+				<text><![CDATA[CHECK ISSUED REPORT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="22" width="199" height="23" uuid="8f47d6e3-a1f9-41db-8927-a39924738932"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Municipality of Lake Sebu]]></text>
+			</staticText>
+			<image>
+				<reportElement x="160" y="-17" width="89" height="80" uuid="7920d5ef-d2eb-40a2-9e8d-4883c84f2072">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{PARAM_LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="300" y="3" width="162" height="13" uuid="77c54fc2-556d-47a0-a150-3a3aad78bebf"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{PARAM_DATE_RANGE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="630" y="3" width="170" height="13" uuid="dd0edb34-e25d-4159-bf50-edf5757a96ba"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="3" y="1" width="290" height="17" uuid="51fa0e51-e205-487c-a9b2-da7736509713"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_PREPAREDBY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="90" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="6c86a71b-7bf7-4755-9517-835e3fbbe319"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Accnt. No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="70" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="021b20b9-4567-4fed-8ffa-881db2c5d053"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Check No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="231" y="0" width="89" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="158151ab-1834-4be5-8a4b-994af530925d"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Accnt. Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="0" width="80" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="24524349-1772-4de5-8ff9-fdfcf4c54fb9"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank Branch]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="531" y="0" width="104" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="a6dd6c9a-1ae1-4c5b-85e2-0b871742fd98"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Disbursement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="710" y="0" width="90" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="a87ccfae-b1e2-4dc9-b6c2-9fc2ec0a7305"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="0" width="130" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="6995ae05-3fc8-48b0-a728-108970f77608"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pay To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="70" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="3a0f5f07-2d88-439c-892d-03fd080e1d59"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="0" width="74" height="39" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="8296de41-bec9-4eeb-8344-31a06aea42c1"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial Black" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="90" height="20" uuid="f54147f8-27aa-46ae-b8a0-28c663274579"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{accntNumber}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="70" height="20" uuid="f1a6ab35-5515-4c6c-b6c7-6fa39450992b"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{checkNo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="231" y="0" width="89" height="20" uuid="2bf205ea-9284-416b-b963-b0784bf0f216"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{accntName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="321" y="0" width="80" height="20" uuid="bb3a53e0-54a6-4519-93b2-1596c57becb2"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="531" y="-1" width="104" height="20" uuid="6651f2fd-ce8d-414f-b98c-700f0efb25eb"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{date_disbursement}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="710" y="-1" width="90" height="20" uuid="22d54464-10da-4318-baa1-a91f5efcc9d2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="401" y="0" width="130" height="20" uuid="3e031f28-a0f3-4315-8544-2aed6b558a07"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{payToTheOrderOf}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="1" width="70" height="19" uuid="a12750cd-183b-4851-a304-baff0caba83c"/>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="635" y="-1" width="74" height="20" uuid="d2e1fc15-d9f0-42d5-986e-c09d1f04559e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="3" width="217" height="15" forecolor="#60E0FC" uuid="aa8754b7-59c7-4111-a5c6-08f70584e47e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MD MARXMIND IT SOLUTIONS]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="306" y="3" width="100" height="13" uuid="8782f746-c381-4fbe-b52a-99ea877eb559"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="406" y="3" width="100" height="13" uuid="13247f95-496e-441a-b52b-31880c931043"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="65">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="590" y="11" width="210" height="16" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="0dac1224-296b-443f-8d1b-3dd0e0e9f323"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_GRAND_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="114" y="25" width="466" height="18" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="c13a4692-6d68-4fb4-abc6-2a8e4346aef9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL_DISPENSE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="114" y="46" width="466" height="18" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="d30a56f0-117e-43ac-85f3-16454101fa42"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BALANCE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="800" height="1" uuid="88d32495-a87e-4ef4-b84b-f675919329ce"/>
+			</line>
+			<staticText>
+				<reportElement x="330" y="1" width="100" height="29" forecolor="#0A0A08" backcolor="#0D0D0B" uuid="b78e57dd-087d-4d9d-a73d-a00a1ccd75c1"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Summary]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

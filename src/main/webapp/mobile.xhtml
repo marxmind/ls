@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Mobile Portal</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<p:growl id="msg" life="2000" />
+	
+	<p:growl id="alertId" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    	 	 
+	
+	<div class="card">
+    
+	    <p:tabView prependId="false">
+            <p:tab title="Graph Collections">
+            	
+            		
+		    			<div class="ui-inputgroup">
+		    			<p:selectCheckboxMenu id="grapYearId" value="#{mobileBean.selectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true">
+							<f:selectItems value="#{mobileBean.years}" />
+						</p:selectCheckboxMenu>
+					
+						<p:selectCheckboxMenu id="grapCollectorId" value="#{mobileBean.selectedCollector}" label="Select Collector" updateLabel="true" filterMatchMode="contains" filter="true">
+							<f:selectItems value="#{mobileBean.collectors}" />
+						</p:selectCheckboxMenu>
+						<p:commandButton icon="pi pi-search" update="graphId graphBardId graphBardId graphId" actionListener="#{mobileBean.selectedGraph}"/>
+		    			</div>
+            	
+            	<p:tabView prependId="false">
+            	
+            	<p:ajax event="tabChange" listener="#{mobileBean.onChange}" update="graphId graphBardId graphBardId graphId"/>
+            	
+            	<p:tab title="Line">
+            	
+            		<div class="ui-fluid">
+		        	
+		    		
+		    		
+		    		
+		    		
+		
+					
+					 <p:lineChart id="graphId" model="#{mobileBean.lineModel}"/>
+					
+		        
+		        </div>
+            	
+            	</p:tab>
+            	<p:tab title="Bar">
+            		
+            		<p:barChart id="graphBardId" model="#{mobileBean.barModel2}" style="width: 100%; height: 500px;"/>
+            	
+            	</p:tab>
+            	</p:tabView>
+            
+		        
+        </p:tab>
+        <p:tab title="Forms Collections">
+       	
+       		
+       			<div class="ui-inputgroup">
+       				<p:inputText value="#{stocksBean.searchSeries}" placeholder="Search start or ending series of stab" >
+    				<p:ajax event="keyup" listener="#{stocksBean.loadIssuedForm}" update="formsDataId" delay="800"/>
+    			</p:inputText>
+       			
+       				<p:selectOneMenu id="colIdx" value="#{stocksBean.collectorId}" maxlength="10" autoWidth="true">
+						<f:selectItems value="#{stocksBean.collectors}"/>
+						<p:ajax event="change" listener="#{stocksBean.loadIssuedForm}" update="formsDataId"/>
+					</p:selectOneMenu>
+       			
+       				<p:selectOneMenu id="fundIdx" value="#{stocksBean.fundId}">
+						<f:selectItems value="#{stocksBean.funds}"/>
+						<p:ajax event="change" listener="#{stocksBean.loadIssuedForm}" update="formsDataId"/>
+					</p:selectOneMenu>
+       			</div>
+       		
+        	
+    		<p:dataTable id="formsDataId" value="#{stocksBean.forms}" var="fm" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true"
+                         lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+                         			<p:menuButton value="Exports" style="float: left">
+										<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-exce">
+											<p:dataExporter type="xls" target="formsDataId" fileName="formsData"/> 
+										</p:menuitem>
+										<p:menuitem value="Export PDF" ajax="false" immediate="true" icon="pi pi-file-pdf">
+											<p:dataExporter type="pdf" target="formsDataId" fileName="formsData"/> 
+										</p:menuitem>
+									</p:menuButton> 
+            			 </f:facet>	
+                         
+                         <p:column headerText="Issued Date" width="100">
+            						<p:outputLabel value="#{fm.f6}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Accountable" width="100">
+            						<p:outputLabel value="#{fm.f1}"/>
+            		     </p:column>
+                         <p:column headerText="Forms" width="50">
+            						<p:outputLabel value="#{fm.f2}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Beginning" width="50">
+            						<p:outputLabel value="#{fm.f3}"/>
+            		     </p:column>
+            		     <p:column headerText="Ending" width="50">
+            						<p:outputLabel value="#{fm.f4}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Pieces" width="50">
+            						<p:outputLabel value="#{fm.f5}"/>
+            		     </p:column>
+                         
+            </p:dataTable>      		
+        	</p:tab>
+        	<p:tab title="Per Account Collection">
+        		
+        		<div class="ui-inputgroup">
+    			
+    			<p:selectCheckboxMenu id="grapAccountYearId" value="#{mobileBean.accountSelectedYear}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" >
+					<f:selectItems value="#{mobileBean.accountYears}" />
+				</p:selectCheckboxMenu>
+				<p:selectCheckboxMenu id="grapAccountId" value="#{mobileBean.accountSelected}" label="Select Account" updateLabel="true" filterMatchMode="contains" filter="true" >
+					<f:selectItems value="#{mobileBean.accounts}" />
+				</p:selectCheckboxMenu>
+				
+				<p:commandButton icon="pi pi-search" update="graphAccBardId" actionListener="#{mobileBean.reportAcc}"/>
+				
+    			</div>
+    			
+    			<p:barChart id="graphAccBardId" model="#{mobileBean.barModel3}" style="width: 100%; height: 500px;"/>
+        		
+        	</p:tab>
+        </p:tabView>
+        
+    </div>
+	
+	<p:ajaxStatus widgetVar="loadWidget" styleClass="ui-noborder" onstart="showLoading();" onsuccess="hideLoading();" /> 
+			<div id="loader" style="display: none;position: fixed; bottom: 300px; right: 600px; z-index: 9999999999;">
+				<p:graphicImage name="/gif/loading.gif" style="width: 10em;height: 10em"/>
+			</div>		
+		
+		<script>
+			function showLoading() {
+				$("#loader").show();
+			}
+			function hideLoading() {
+				$("#loader").hide();
+			}
+		</script>
+	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,5 +1,8 @@
 package com.italia.municipality.lakesebu.utils;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 /**
  * 
  * @author mark italia
@@ -55,6 +58,12 @@ public class StringUtils {
 		}catch(Exception e) {}
 		
 		return str;
+	}
+	
+	public static String convertToUTF8(String raw){
+		ByteBuffer buffer = StandardCharsets.UTF_8.encode(raw); 
+		String utf8EncodedString = StandardCharsets.UTF_8.decode(buffer).toString();
+		return utf8EncodedString;
 	}
 	
 	public static void main(String[] args) {

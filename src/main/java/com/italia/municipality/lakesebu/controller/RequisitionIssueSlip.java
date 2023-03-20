@@ -442,7 +442,7 @@ public class RequisitionIssueSlip {
 		ps.setString(cnt++, st.getPurspose());
 		ps.setInt(cnt++, st.getIsActive());
 		ps.setInt(cnt++, st.getDivision().getId());
-		ps.setInt(cnt++, st.getOffice().getId());
+		ps.setLong(cnt++, st.getOffice().getId());
 		ps.setInt(cnt++, st.getCollector().getId());
 		ps.setInt(cnt++, st.getFundId());
 		
@@ -517,7 +517,7 @@ public class RequisitionIssueSlip {
 		ps.setString(cnt++, st.getIssuedPosition());
 		ps.setString(cnt++, st.getPurspose());
 		ps.setInt(cnt++, st.getDivision().getId());
-		ps.setInt(cnt++, st.getOffice().getId());
+		ps.setLong(cnt++, st.getOffice().getId());
 		ps.setInt(cnt++, st.getCollector().getId());
 		ps.setInt(cnt++, st.getFundId());
 		ps.setLong(cnt++, st.getId());

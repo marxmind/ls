@@ -502,10 +502,10 @@ public class OrlistingXML {
 				int count=0;
 				//System.out.println("Check count : " + count);
 				try{xml.setReg(node.selectSingleNode("reg").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
-				try{xml.setFirstName(convert(node.selectSingleNode("firstname").getText(),false));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
-				try{xml.setMiddleName(convert(node.selectSingleNode("middlename").getText(),false));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
-				try{xml.setLastName(convert(node.selectSingleNode("lastname").getText(),false));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
-				try{xml.setFullName(convert(node.selectSingleNode("fullname").getText(),false));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
+				try{xml.setFirstName(StringUtils.convertToUTF8(node.selectSingleNode("firstname").getText()));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
+				try{xml.setMiddleName(StringUtils.convertToUTF8(node.selectSingleNode("middlename").getText()));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
+				try{xml.setLastName(StringUtils.convertToUTF8(node.selectSingleNode("lastname").getText()));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
+				try{xml.setFullName(StringUtils.convertToUTF8(node.selectSingleNode("fullname").getText()));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				try{xml.setBirthDate(node.selectSingleNode("birthdate").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				try{xml.setCivilStatus(node.selectSingleNode("civilstatus").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				try{xml.setUserId(node.selectSingleNode("userid").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
@@ -516,7 +516,7 @@ public class OrlistingXML {
 				try{xml.setOrStatus(node.selectSingleNode("status").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				try{xml.setCollectorId(node.selectSingleNode("collectorid").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				try{xml.setIsActive(node.selectSingleNode("isactive").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
-				try{xml.setFormInfo(convert(node.selectSingleNode("forminfo").getText(),false));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
+				try{xml.setFormInfo(StringUtils.convertToUTF8(node.selectSingleNode("forminfo").getText()));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				
 				List<PaymentName> pynames = new ArrayList<PaymentName>();
 				List<Node> dtls = document.selectNodes("/orlisting/details/payname");
@@ -564,10 +564,10 @@ public class OrlistingXML {
 			
 			//customer info
 			sb.append("<reg>"+ DateUtils.getCurrentDateYYYYMMDD() +"</reg>");sb.append("\n");
-			sb.append("<firstname>"+ convert(cus.getFirstname(),true) +"</firstname>");sb.append("\n");
-			sb.append("<middlename>"+ convert(cus.getMiddlename(),true) +"</middlename>");sb.append("\n");
-			sb.append("<lastname>"+ convert(cus.getLastname(),true) +"</lastname>");sb.append("\n");
-			sb.append("<fullname>"+ convert(cus.getFullname().trim(),true) +"</fullname>");sb.append("\n");
+			sb.append("<firstname>"+ StringUtils.convertToUTF8(cus.getFirstname()) +"</firstname>");sb.append("\n");
+			sb.append("<middlename>"+ StringUtils.convertToUTF8(cus.getMiddlename()) +"</middlename>");sb.append("\n");
+			sb.append("<lastname>"+ StringUtils.convertToUTF8(cus.getLastname()) +"</lastname>");sb.append("\n");
+			sb.append("<fullname>"+ StringUtils.convertToUTF8(cus.getFullname().trim()) +"</fullname>");sb.append("\n");
 			sb.append("<birthdate>"+ cus.getBirthdate() +"</birthdate>");sb.append("\n");
 			sb.append("<civilstatus>"+ cus.getCivilStatus() +"</civilstatus>");sb.append("\n");
 			//user
@@ -584,9 +584,9 @@ public class OrlistingXML {
 			
 			
 			if(ors.getForminfo()!=null && !ors.getForminfo().isEmpty() && ors.getForminfo().contains("<->")) {
-				sb.append("<forminfo>"+ convert(ors.getForminfo().replace("<->", "@"),true) +"</forminfo>");sb.append("\n");
+				sb.append("<forminfo>"+ StringUtils.convertToUTF8(ors.getForminfo().replace("<->", "@")) +"</forminfo>");sb.append("\n");
 			}else {
-				sb.append("<forminfo>"+ convert(ors.getForminfo(),true) +"</forminfo>");sb.append("\n");
+				sb.append("<forminfo>"+ StringUtils.convertToUTF8(ors.getForminfo()) +"</forminfo>");sb.append("\n");
 			}
 			
 			//details

@@ -180,7 +180,7 @@
 					</p:autoComplete>
 					
 					<p:inputText id="oridd" value="#{oRListingBean.orNumber}" placeholder="OR No/CTC No" style="width: 15em;"/>
-					
+						
 					<p:inputText placeholder="Address" value="#{oRListingBean.address}" style="width: 15em"/>
 					
 				</p:panelGrid>
@@ -213,8 +213,11 @@
 					<p:selectOneMenu id="civilId" value="#{oRListingBean.civilStatusId}" style="width: 15em" disabled="#{oRListingBean.enableBirthday}">
 						<f:selectItems value="#{oRListingBean.civilStatus}"/>
 					</p:selectOneMenu>
-					<p:inputText value="#{oRListingBean.professionBusinessNature}" placeholder="Profession/Business Nature" style="width: 15em"/>
 					
+					<p:autoComplete id="acSimple" value="#{oRListingBean.professionBusinessNature}" placeholder="Profession/Business Nature" inputStyle="width: 15em"
+                                completeMethod="#{oRListingBean.suggestedProfession}" scrollHeight="250">
+                                <p:ajax event="itemSelect" listener="#{oRListingBean.calcProfession}" update="salGrossId grossId idBGross idTotal idInterest idGrand dataSelectedId totalId"/>
+                    </p:autoComplete>            
 					
 					<p:outputLabel value="Basic Tax(5/500)"/>
 					<p:inputNumber value="#{oRListingBean.amount1}" inputStyle="width: 15em" readonly="true"/>
@@ -223,11 +226,13 @@
 					<div class="ui-inputgroup">
 					<div class="p-field">
 					<small class="p-d-block" style="text-align: left">Gross receipt or earning from business</small>
+					<div class="ui-inputgroup">
 					<p:inputNumber value="#{oRListingBean.monthlyIncome}" placeholder="Monthly Rate" inputStyle="width: 7.5em">
 						<p:ajax event="keyup" listener="#{oRListingBean.calculateGrossRptax}" update="grossId idBGross idTotal idInterest idGrand dataSelectedId totalId"/>
 					</p:inputNumber>
 					
 					<p:inputNumber id="idBGross" value="#{oRListingBean.label2}" readonly="true" placeholder="Business/RPTax" inputStyle="width: 7.5em"/>
+					</div>
 					</div>
 					</div>
 					</p:outputLabel>
@@ -246,11 +251,13 @@
 					<p:outputLabel>
 					<div class="ui-inputgroup">
 					<div class="p-field">
-					<small class="p-d-block" style="text-align: left">Salaries or earning from profession</small>
+					<small class="p-d-block" style="text-align: left">Salaries or earning from profession fees</small>
+					<div class="ui-inputgroup">
 					<p:inputNumber value="#{oRListingBean.monthlySal}" placeholder="Monthly Rate" inputStyle="width: 7.5em">
 						<p:ajax event="keyup" listener="#{oRListingBean.calculateSalariesGross}" update="salGrossId idSal idTotal idInterest idGrand dataSelectedId totalId"/>
 					</p:inputNumber>
 					<p:inputNumber id="idSal" value="#{oRListingBean.label3}" readonly="true" placeholder="Salaries/Gross Receipts" inputStyle="width: 7.5em"/>
+					</div>
 					</div>
 					</div>
 					</p:outputLabel>
@@ -269,11 +276,13 @@
 					<p:outputLabel>
 					<div class="ui-inputgroup">
 					<div class="p-field">
-					<small class="p-d-block" style="text-align: left">Income from real property</small>
+					<small class="p-d-block" style="text-align: left">Income from real property land tax fees</small>
+					<div class="ui-inputgroup">
 					<p:inputNumber value="#{oRListingBean.monthlyTax}" placeholder="Monthly Rate" inputStyle="width: 7.5em">
 						<p:ajax event="keyup" listener="#{oRListingBean.calculateTaxGross}" update="taxId idTaxYear idTotal idInterest idGrand dataSelectedId totalId"/>
 					</p:inputNumber>
 					<p:inputNumber id="idTaxYear" value="#{oRListingBean.label4}" readonly="true" placeholder="Income from RPT TAX/CTC" inputStyle="width: 7.5em"/>
+					</div>
 					</div>
 					</div>
 					</p:outputLabel>
@@ -295,7 +304,7 @@
 					<p:outputLabel  value="Interest"/>
 					<p:inputNumber id="idInterest" value="#{oRListingBean.amount6}" inputStyle="width: 15em" readonly="true"/>
 					
-					<p:outputLabel  value="Total Paid"/>
+					<p:outputLabel  value="Grand Total"/>
 					<p:inputNumber id="idGrand" value="#{oRListingBean.amount7}" inputStyle="width: 15em" readonly="true"/>
 					
 					</p:panelGrid>
@@ -1163,10 +1172,10 @@
 	}
 </h:outputStylesheet>
 
-<p:panel header="Queueing" styleClass="queueing" toggleableHeader="true" toggleable="true" collapsed="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panelWgr">
+<p:panel header="Queueing" styleClass="queueing" toggleableHeader="true" closeTitle="Open Queue Transactions"  toggleable="true" collapsed="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panelWgr">
         <p class="m-0">
         	<div class="ui-inputgroup">
-        		<p:commandButton icon="fa fa-search"/>
+        		<p:commandButton icon="pi pi-search"/>
         		<p:inputText value="#{oRListingBean.queYear}" style="width: 4em" placeholder="0000">
         			<p:ajax event="keyup" listener="#{oRListingBean.loadClient}" update="queDataId"/>
         		</p:inputText>
@@ -1185,15 +1194,15 @@
             <p:dataTable id="queDataId" value="#{oRListingBean.clients}" var="cli" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="false" style="#{skin.table}" paginatorPosition="top" paginatorAlwaysVisible="false"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="false"
 							>
 							
             				<p:column headerText="" width="10" exportable="false">
-            						<p:commandButton icon="fa fa-arrow-circle-down" oncomplete="PF('panelWgr').toggle()" actionListener="#{oRListingBean.popUpRemarks(cli)}" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId remarkId noteToColId"/>
+            						<p:commandButton icon="pi pi-cloud-download" oncomplete="PF('panelWgr').toggle()" actionListener="#{oRListingBean.popUpRemarks(cli)}" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId remarkId noteToColId"/>
             				</p:column>
             				
             				<p:column headerText="" width="10" exportable="false">
-            					<p:commandButton  icon="fa fa-trash" actionListener="#{oRListingBean.deleteQueue(cli)}" update="queDataId msg">
+            					<p:commandButton  icon="pi pi-trash" actionListener="#{oRListingBean.deleteQueue(cli)}" update="queDataId msg">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert"/>
             					</p:commandButton>
             				</p:column>

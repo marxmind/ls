@@ -263,6 +263,7 @@ public class ORListingBean implements Serializable{
 	@Setter @Getter private List<ORListing> orsDuplicate;
 	@Setter @Getter private String orNumberRedColor="";
 	@Setter @Getter private List<Date> rangeDate;
+	@Setter @Getter private String[] proffesionsList;
 	
 	public void validateSeries() {
 		boolean isExist = ORListing.isExistingSeries(getCollectorId(), getOrNumber(), getFormTypeId());
@@ -356,7 +357,7 @@ public class ORListingBean implements Serializable{
 		
 		
 		loadClient();
-		
+		proffesionsList = Words.getTagName("profession-list").split(",");
 	}
 	
 	public void updateInfo() {
@@ -4237,8 +4238,6 @@ private void close(Closeable resource) {
 				calculateSalariesGross();
 			}
 			
-			
-			
 		}else {
 			setFormTypeId(FormType.AF_51.getId());
 			
@@ -4266,6 +4265,8 @@ private void close(Closeable resource) {
 		c.save();
 		setClientSelected(c);
 	}
+	
+	
 	
 	private void chargingForOR(Client c) {
 		namesDataSelected = new ArrayList<>();
@@ -4894,4 +4895,38 @@ private void close(Closeable resource) {
 		
 	}
 	
+	public List<String> suggestedProfession(String param){
+		List<String> val = new ArrayList<>();
+		for(String prof : proffesionsList) {
+			if(prof.trim().toLowerCase().contains(param.trim().toLowerCase())) {
+				val.add(prof.split("-")[1]);
+			}
+		}
+		
+		return val;
+	}
+	public void calcProfession() {
+		System.out.println("Calculate now....");
+		String val="1";
+		for(String prof : proffesionsList) {
+			if(prof.trim().toLowerCase().contains(professionBusinessNature.trim().toLowerCase())) {
+				val=prof.split("-")[0];
+			}
+		}
+		int type = Integer.valueOf(val);
+		if(type==0) {//senior citizen
+			setAmount3(0);
+			calculateCedula();
+		}else if(type<=4 || type==25) {//daily income person
+			if(genderId==1) {setAmount3(40);}else {setAmount3(30);}
+			calculateCedula();
+		}else if(type==5 || type==6) {//businessman
+			/*
+			 * setMonthlyIncome(c.getMonthlySalary()); calculateGrossRptax();
+			 */
+		}else {
+			//setMonthlySal(c.getMonthlySalary());
+			//calculateSalariesGross();
+		}
+	}
 }

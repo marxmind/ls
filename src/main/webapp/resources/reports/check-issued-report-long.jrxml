@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cash-disbursement" pageWidth="612" pageHeight="936" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b5323e18-c4bc-4e6f-9d19-7e07069f21ae">
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<parameter name="PARAM_DATE" class="java.lang.String"/>
+	<parameter name="PARAM_DISBURSING_POSITION" class="java.lang.String"/>
+	<parameter name="PARAM_DISBURSING_OFFICER" class="java.lang.String"/>
+	<parameter name="PARAM_SHEET_NO" class="java.lang.String"/>
+	<parameter name="PARAM_REPORT_NO" class="java.lang.String"/>
+	<parameter name="PARAM_FUND_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_LGU_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_SUB_TITLE" class="java.lang.String"/>
+	<parameter name="PARAM_SHEET_TOTAL" class="java.lang.String"/>
+	<parameter name="PARAM_TITLE" class="java.lang.String"/>
+	<parameter name="PARAM_CHECK_NOS" class="java.lang.String"/>
+	<parameter name="PARAM_RECEIVED_POSITION" class="java.lang.String"/>
+	<parameter name="PARAM_RECEIVED_BY" class="java.lang.String"/>
+	<parameter name="PARAM_BANK_ACCOUNT" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="f8" class="java.lang.String"/>
+	<field name="f7" class="java.lang.String"/>
+	<field name="f6" class="java.lang.String"/>
+	<field name="f5" class="java.lang.String"/>
+	<field name="f4" class="java.lang.String"/>
+	<field name="f3" class="java.lang.String"/>
+	<field name="f2" class="java.lang.String"/>
+	<field name="f1" class="java.lang.String"/>
+	<field name="visible" class="java.lang.String"/>
+	<field name="f10" class="java.lang.String"/>
+	<field name="f9" class="java.lang.String"/>
+	<variable name="lastCheckNo" class="java.lang.String" resetType="Page">
+		<variableExpression><![CDATA[$F{f9}]]></variableExpression>
+	</variable>
+	<variable name="firstCheckNo" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[$F{f9}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="98" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="580" height="98" uuid="27de357f-98d9-416a-8b2b-6a97252f1b72"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="32" y="52" width="200" height="13" uuid="6e41ab0e-00f6-4e5d-99f6-e2239dce6f12">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_LGU_NAME}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="32" y="66" width="200" height="13" uuid="a6734dcd-094a-4082-ba01-f6a001ed956a"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_FUND_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="52" width="30" height="14" uuid="47de6a70-49fe-4ced-bfd1-7eb1b7269429"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LGU:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="66" width="30" height="14" uuid="0c6e5848-3292-4f3f-b7f0-ce3d9c7bc7a8"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fund:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="462" y="53" width="58" height="14" uuid="63f41e54-be13-41b5-8f6c-cfda06ca3d05"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Report No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="462" y="67" width="58" height="14" uuid="4ec53ba6-5515-4f23-a968-6304f061fce7"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sheet No.:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="520" y="53" width="58" height="13" uuid="e59740fd-a1b9-42cd-9b22-dd200d3cfbf2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_REPORT_NO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="32" y="65" width="200" height="1" uuid="d16ab6f3-5d77-4699-ab08-ca371e6cc38b"/>
+			</line>
+			<line>
+				<reportElement x="32" y="79" width="200" height="1" uuid="4bbf2c6b-d057-45d8-868b-e6d81448b4c5"/>
+			</line>
+			<line>
+				<reportElement x="518" y="65" width="60" height="1" uuid="064f63bf-d9d6-4503-9225-f40b92babc12"/>
+			</line>
+			<line>
+				<reportElement x="518" y="79" width="60" height="1" uuid="4bbbfb04-428b-4bf8-a93e-cc8b4dbad337"/>
+			</line>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="0" y="14" width="580" height="16" uuid="56ed8795-535b-4915-a969-e590db93ac9f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TITLE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="280" y="30" width="120" height="13" uuid="74551cf9-0169-4cb1-8cb0-3aaa360724e9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_SUB_TITLE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="280" height="14" uuid="10839534-f34c-4960-ae27-28a816345e84"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Period Covered:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="280" y="42" width="101" height="1" uuid="1366be3f-5032-4501-8974-65ab9456ace9"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="79" width="130" height="14" uuid="961d2b42-443e-41c8-928f-dfb241727407"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bank Name/Account No.:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="123" y="79" width="200" height="13" uuid="ad2ac91e-18d9-4c6e-b058-dff3ab617896"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BANK_ACCOUNT}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="122" y="91" width="200" height="1" uuid="eb106b22-ce60-4a23-8bc8-b9d2bd7cbc91"/>
+			</line>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="520" y="66" width="58" height="13" uuid="986213a9-7e1a-4ba4-a228-25bc33a5bfd0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_SHEET_NO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="13" uuid="9901c549-366f-47d6-b35f-6dcf409eddfb"/>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="0" width="72" height="13" uuid="670f1551-cce1-41a8-80aa-9cf0a657b4f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DV/Payroll No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="50" height="13" uuid="d9df74db-8cfa-4fd5-9257-c1dd5d526112"/>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CAFOA No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="190" height="13" uuid="863ebd17-273a-469b-8471-8ca47878e947"/>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Payee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="116" height="13" uuid="9e8bb14f-4e23-4ea7-a9e8-5a773fd7eed0"/>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nature of Payment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="516" y="0" width="64" height="13" uuid="0dc237e0-4022-41b7-af2e-a9a6a7ee53fc"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="2">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="48" height="13" uuid="f77db398-57eb-4dcd-90c4-9c37c909ed0c"/>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial No.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="516" height="13" uuid="52e429bf-6c07-4033-b8aa-20233436ee1f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<printWhenExpression><![CDATA[$F{f7}.equalsIgnoreCase( "Sub-Total Carried Forward" ) || $F{f7}.equalsIgnoreCase( "Total" )]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f7}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="40" height="13" uuid="1e47f4e4-000f-4175-992d-3837d5dfbfa9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="88" y="0" width="72" height="13" uuid="359d61c0-ae32-48f9-ad08-c3c5e9a15819">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="50" height="13" uuid="316596aa-1229-49e7-8fe9-0434fcfef299">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="210" y="0" width="190" height="13" uuid="20062cec-5a42-4ccd-a4ee-02865bbcc4c6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f4}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="116" height="13" uuid="6edb2340-f27e-4909-9ebb-43c30b68a789">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f5}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="516" y="0" width="64" height="13" uuid="eb555917-2022-415b-8882-42948af1409e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="2">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f6}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="48" height="13" uuid="795b5fa5-4be3-4def-a143-bc044cc55df0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{visible}.equalsIgnoreCase( "show" )]]></printWhenExpression>
+				</reportElement>
+				<box padding="1">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f9}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="516" y="0" width="64" height="13" uuid="3e616e19-5f41-467d-9e0d-0922c8813686">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e027a2d7-ed90-45be-9d0c-e9ccce3570fe"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{f7}.equalsIgnoreCase( "Sub-Total Carried Forward" ) || $F{f7}.equalsIgnoreCase( "Total" )]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="2">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{f8}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="160" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<rectangle>
+				<reportElement x="0" y="0" width="400" height="160" uuid="d09dddcd-783e-41a7-a690-09d2bde23115"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="400" y="0" width="180" height="160" uuid="a3cc2852-27b8-441c-ac0e-793120ce4732"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="3" width="400" height="14" uuid="40210e09-1d4f-424a-b3e8-566d7a07fa41"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICATION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="21" width="301" height="14" uuid="a31d4a45-7317-4d4d-ae6c-856bf8bb5bf0"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[I hereby certify on my official oath that this Report of Check Issued in]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="71" y="101" width="240" height="17" uuid="94095559-983e-4b4b-8018-2fe3c57553c8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_DISBURSING_OFFICER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="313" y="34" width="23" height="1" uuid="aa53eb19-8336-49ac-b5a0-e7f765f9cf72"/>
+			</line>
+			<staticText>
+				<reportElement x="336" y="21" width="61" height="14" uuid="ed34f04c-c883-45b9-a645-e760b09386e4"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[sheet(s) is a]]></text>
+			</staticText>
+			<line>
+				<reportElement x="15" y="116" width="364" height="1" uuid="4ef6d5ab-8a11-458b-9f92-91784476ff11"/>
+			</line>
+			<textField textAdjust="ScaleFont" evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="10" y="131" width="240" height="17" uuid="58e4ee17-4dba-459a-a1dc-67d0fad84e55">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_DISBURSING_POSITION}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="29" y="147" width="200" height="1" uuid="ec00cd3a-d0c2-40e6-81c9-14aaba15ccce"/>
+			</line>
+			<staticText>
+				<reportElement x="15" y="116" width="364" height="14" uuid="8762dc06-84fa-4609-878b-03aeea6df110"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Name and Signature of the Treasurer/Cashier/Disbursing Officer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="146" width="240" height="14" uuid="4b5bd203-9d36-42ca-b434-132ae7c5d812"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Official Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="36" width="396" height="14" uuid="16a44feb-5927-4b31-b565-ffd925b9a1dd"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[full, true and correct statement of all checks issued by me during the period stated above]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="50" width="97" height="14" uuid="12214f4f-dd16-4f39-a14d-36f7416b71a1"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[for which Check Nos.]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="263" y="133" width="108" height="17" uuid="cd28ca6c-385f-4343-9bb4-6b835cef33e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="265" y="146" width="108" height="14" uuid="9e7001c2-9311-4456-bb7f-286ea3a4d772"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="268" y="147" width="100" height="1" uuid="1d961677-9ca9-4b44-9e13-140bbfbec670"/>
+			</line>
+			<staticText>
+				<reportElement x="321" y="21" width="20" height="13" uuid="a25c7da9-e5bf-4cae-9afb-f9fb848581d2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="99" y="50" width="120" height="13" uuid="c0ee9f89-6093-4310-a341-b0b3ca8c48a3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CHECK_NOS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="219" y="50" width="180" height="14" uuid="7253ad19-4309-46f8-88b0-fc9dc72faa0c"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[inclusive, were actually issued by me in]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="63" width="394" height="14" uuid="fa604839-13d6-4cff-b562-f50184f77cce"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[payment for obligations shown in the attached disbursement vouchers/payroll.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="40" width="70" height="14" uuid="006f02be-b06d-4b41-9bfa-a7e8cb147a74"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Received by:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="410" y="101" width="160" height="17" uuid="8bba9d41-4143-464d-a0e2-f91b289ced24">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RECEIVED_BY}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="410" y="116" width="159" height="1" uuid="e0e30782-99c0-4bca-b218-f9bba12557f9"/>
+			</line>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="410" y="117" width="160" height="17" uuid="f64f6cc3-949a-49d5-adb8-a06afa3fb3e0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RECEIVED_POSITION}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="437" y="146" width="100" height="1" uuid="a2cc36ee-5efc-49e7-9b43-c692a5d9ebb6"/>
+			</line>
+			<staticText>
+				<reportElement x="434" y="145" width="108" height="14" uuid="eb9152ce-5f9f-4265-a897-5d8f5b4cd8c0"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="99" y="63" width="120" height="1" uuid="65ea61fc-e4f8-4aab-b68c-ac5bb11dd8e5"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

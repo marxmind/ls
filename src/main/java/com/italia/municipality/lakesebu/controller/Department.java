@@ -28,6 +28,11 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
+/*
+ * 
+ * Please use offices for the future
+ *
+ */
 public class Department {
 
 	private int depid;
@@ -93,7 +98,9 @@ public class Department {
 		rs.close();
 		ps.close();
 		WebTISDatabaseConnect.close(conn);
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		return deps;
 	}

@@ -93,7 +93,7 @@ public class StocksBean implements Serializable{
 	//////////////////////////////////////////////////CREATE REQUISITION//////////////////////////////////////////
 	@Getter @Setter private RequisitionIssueSlip slip;
 	@Getter @Setter private List<Stocks> stockSelected;
-	@Getter @Setter private Map<Integer, Offices> mapDepCode;
+	@Getter @Setter private Map<Long, Offices> mapDepCode;
 	@Getter @Setter private Map<Integer, Offices> mapDeps;
 	@Getter @Setter private int tabSelected;
 	@Getter @Setter private List<RequisitionIssueSlip> slips;
@@ -729,7 +729,7 @@ public class StocksBean implements Serializable{
 			 divs.add(new SelectItem(d.getId(), d.getName()));
 		 }
 		 List deps = new ArrayList<>();
-		 mapDepCode = new LinkedHashMap<Integer, Offices>();
+		 mapDepCode = new LinkedHashMap<Long, Offices>();
 		 mapDeps = new LinkedHashMap<Integer, Offices>();
 		 boolean found=false;
 		 String codeDefault="";

@@ -31,7 +31,7 @@ public class AuthorizationFilter implements Filter{
 			HttpSession session = reqt.getSession(false);
 			
 			String reqURI = reqt.getRequestURI();
-			if(reqURI.indexOf("/portal.xhtml")>=0 || reqURI.indexOf("/login.xhtml")>=0 || reqURI.indexOf("/sample.xhtml")>=0
+			if(reqURI.indexOf("/portal.xhtml")>=0 || reqURI.indexOf("/login.xhtml")>=0 || reqURI.indexOf("/chk.xhtml")>=0
 					|| reqURI.indexOf("/loginda.xhtml")>=0 
 					|| reqURI.indexOf("/loginlic.xhtml")>=0
 					|| reqURI.indexOf("/logingso.xhtml")>=0

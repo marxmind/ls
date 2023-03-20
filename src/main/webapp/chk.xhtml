@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Check Writing</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	<p:growl id="msg" showDetail="true" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+ 	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-4">
+		    		<div class="grid">
+		    		
+		    		<div class="col-12">
+		    			<p:toolbar>
+		    				<p:toolbarGroup>
+		    					  
+                				<p:commandButton value="New" actionListener="#{chk.createNew}" update="idPanel" icon="pi pi-file"/>
+                			</p:toolbarGroup>
+                			<p:toolbarGroup align="right">
+                				<div class="ui-inputgroup ui-noborder">
+                				<p:commandButton value="Save" title="Save" icon="pi pi-save" actionListener="#{chk.save}" update="dataChkId idPanel idSearch msg">
+                					<p:confirm header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert"/>
+                				</p:commandButton>
+                				<p:commandButton value="MOOE" title="MOOE" icon="pi pi-money-bill" actionListener="#{moe.showMoe}" update="idPanelMooe dataId"/>
+                				<p:commandButton value="Budget Monitoring" title="Budget Monitoring" icon="pi pi-money-bill" actionListener="#{chk.budgetMonitoring}" update="dataBudgetId budSeachId" oncomplete="PF('dlgBudget').show(1000)"/>
+                				<p:commandButton value="Send To Server"  title="Send" update="dataSendOr"  icon="pi pi-send" actionListener="#{sendchk.loadFiles}"/>
+                				</div>
+                			</p:toolbarGroup>	
+		    			</p:toolbar>
+		    		</div>
+		    		<div class="col-12">
+		    			<p:panel id="idPanel" header="Fill-in the details of the check" style="margin-bottom:10px;">
+		    				<h:panelGrid columns="4" cellpadding="5">
+		    					
+		    					<p:outputLabel for="dateId" value="Date"/>
+	            				<p:datePicker id="dateId" value="#{chk.dateTime}" pattern="yyyy-MM-dd" inputStyle="width:15em"/>
+		    					
+		    					<p:outputLabel for="fundId" value="Fund"/>
+				                <p:selectOneMenu id="fundId" value="#{chk.fundId}" style="width:15em">
+				                    <p:ajax listener="#{chk.onFundChange}" update="seriesId"/>
+				                    <f:selectItems value="#{chk.funds}"/>
+				                </p:selectOneMenu>
+				                
+				                <p:outputLabel value="Office"/>
+								<p:selectOneMenu id="officeId" value="#{chk.officeId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItem itemLabel="Select..."/>
+					            		<f:selectItems value="#{chk.offices}"/>
+					            		<p:ajax event="change" listener="#{chk.loadMooeForOffice}" update="moId" />
+					            </p:selectOneMenu>
+					            
+					            <p:outputLabel value="MOOE"/>
+								<p:selectOneMenu id="moId" value="#{chk.mooeId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItems value="#{chk.mooes}"/>
+					            </p:selectOneMenu>
+				                
+		    				</h:panelGrid>
+		    				<h:panelGrid columns="1" cellpadding="5">
+							    <p:inputText id="seriesId" value="#{chk.checkSeriesNo}" placeholder="Input check number here" 
+								style="width: 20em;font-weight: bold; align-text: left;font-size: 2em;border-bottom: 3px solid black;border-top:none; border-left:none; border-right:none;"/>
+		    				</h:panelGrid>
+		    				<h:panelGrid columns="1" cellpadding="5">
+			    				<p:inputTextarea id="idpayto" completeMethod="#{chk.completeBankCheckPayTo}" rows="1" cols="2" value="#{chk.payTo}" placeholder="Pay To The Order Of" queryDelay="750" minQueryLength="4"
+			            		 style="width: 20em;font-weight: bold; align-text: left;font-size: 2em;border-bottom: 3px solid black;border-top:none; border-left:none; border-right:none;">
+						   </p:inputTextarea>
+						   </h:panelGrid>
+						   
+						   <h:panelGrid columns="1" cellpadding="5">
+						   		<p:inputText id="amntId" value="#{chk.inputAmount}" placeholder="000,000,000.00" style="font-weight: bold; width:20em;font-size: 2em;border-bottom: 3px solid black;border-top:none; border-left:none; border-right:none;">
+									<p:ajax  event="keyup" update="inwordsId" listener="#{chk.generateWords}"/>
+								</p:inputText>
+						   </h:panelGrid>
+						   
+						   <h:panelGrid columns="1" cellpadding="5">
+						   	<p:outputLabel id="inwordsId" value="#{chk.words}" style="font-size: 1em; color: red; font-weight:  bold"/>
+						   </h:panelGrid>
+						   
+						   <h:panelGrid columns="1" cellpadding="5">
+						   		<p:selectOneMenu value="#{chk.statusId}"  style="width: 20em;font-weight: bold; align-text: left;font-size: 2em;border-bottom: 3px solid black;border-top:none; border-left:none; border-right:none;">
+									<f:selectItems value="#{chk.statusList}"/>
+									<p:ajax event="change" listener="#{chk.assignRemarks}" update="idRemarks"/>
+						    	</p:selectOneMenu>
+						   		<p:inputText id="idRemarks" value="#{chk.remarks}" placeholder="REMARKS"  style="width: 20em;font-weight: bold; align-text: left;font-size: 2em;border-bottom: 3px solid black;border-top:none; border-left:none; border-right:none;"/>
+						    </h:panelGrid>
+						   
+						   <h:panelGrid columns="4" cellpadding="5">
+							    <p:outputLabel value="Treasurer"/>
+				            	<p:selectOneMenu value="#{chk.treasPersonnelId}" style="width: 15em" filter="true" filterMatchMode="contains"> 
+											<f:selectItems value="#{chk.treasurerPersonnels}"/>
+								</p:selectOneMenu>
+								
+								<p:outputLabel value="Official"/>
+				            	<p:selectOneMenu value="#{chk.officialId}" style="width: 15em" filter="true" filterMatchMode="contains"> 
+											<f:selectItems value="#{chk.officials}"/>
+								</p:selectOneMenu>
+							</h:panelGrid>
+							
+							
+							
+						    
+						   
+		    			</p:panel>
+		    		</div>
+		    		
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-8">
+	    		
+	    		<div class="grid">
+	    		
+	    		<div class="col-12">
+	    			<p:panel id="idSearch" header="Use these fields for searching..." style="margin-bottom:10px;">
+	    			<div class="ui-inputgroup">
+	    				<p:autoComplete minQueryLength="5" placeholder="Search..." value="#{chk.searchPayTo}" completeMethod="#{chk.autoPayToName}" effect="fade" maxResults="10">
+		    					<p:ajax event="change" listener="#{chk.search}" update="dataChkId"/>
+		    			</p:autoComplete>
+			            <p:selectOneMenu value="#{chk.searchFundId}"  filter="true" filterMatchMode="contains">
+							<f:selectItems value="#{chk.searchFunds}"/>
+						</p:selectOneMenu>
+						<p:selectBooleanCheckbox value="#{chk.includeDate}" itemLabel="Include Date">
+							<p:ajax update="date1 date2"/>
+						</p:selectBooleanCheckbox>
+						<p:datePicker id="date1" value="#{chk.dateFrom}" disabled="#{!chk.includeDate}" pattern="yyyy-MM-dd"/>
+						<p:datePicker id="date2" value="#{chk.dateTo}" disabled="#{!chk.includeDate}"  pattern="yyyy-MM-dd"/>
+						
+						<p:commandButton value="Search" update="dataChkId"  icon="pi pi-search" actionListener="#{chk.search}"/>
+			         </div>
+			         <p:separator/>
+			         <div class="ui-inputgroup">
+	    							<p:selectOneMenu value="#{chk.year}"  filter="true" filterMatchMode="contains">
+										<f:selectItems value="#{chk.years}"/>
+									</p:selectOneMenu>
+			                    	<p:commandButton value="JAN" actionListener="#{chk.monthQuery('JANUARY')}" update="dataChkId"/>
+									<p:commandButton value="FEB" actionListener="#{chk.monthQuery('FEBRUARY')}" update="dataChkId"/>
+									<p:commandButton value="MAR" actionListener="#{chk.monthQuery('MARCH')}" update="dataChkId"/>
+									<p:commandButton value="APR" actionListener="#{chk.monthQuery('APRIL')}" update="dataChkId"/>
+									<p:commandButton value="MAY" actionListener="#{chk.monthQuery('MAY')}" update="dataChkId"/>
+									<p:commandButton value="JUN" actionListener="#{chk.monthQuery('JUNE')}" update="dataChkId"/>
+									<p:commandButton value="JUL" actionListener="#{chk.monthQuery('JULY')}" update="dataChkId"/>
+									<p:commandButton value="AUG" actionListener="#{chk.monthQuery('AUGUST')}" update="dataChkId"/>
+									<p:commandButton value="SEP" actionListener="#{chk.monthQuery('SEPTEMBER')}" update="dataChkId"/>
+									<p:commandButton value="OCT" actionListener="#{chk.monthQuery('OCTOBER')}" update="dataChkId"/>
+									<p:commandButton value="NOV" actionListener="#{chk.monthQuery('NOVEMBER')}" update="dataChkId"/>
+									<p:commandButton value="DEC" actionListener="#{chk.monthQuery('DECEMBER')}" update="dataChkId"/>
+			                    </div>
+			         </p:panel>
+	    		</div>
+	    		
+	    		
+	    		
+	    		<div class="col-12">
+	    			<p:dataTable id="dataChkId" value="#{chk.cheques}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100" resizableColumns="true"
+                         scrollable="true"  style="text-align: left" paginatorPosition="top" resizeMode="expand" reflow="true"
+                         selection="#{chk.selectedChecks}" rowKey="#{rpt.cheque_id}"
+                         >
+                         
+		                         	<f:facet name="{Exporters}">
+		                         			
+		                         			<div class="ui-inputgroup" style="float: right">	
+		            						<h:commandLink title="Export BankCheuqe Report in excel format">
+		            								<i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+		                							<p:dataExporter type="xls" target="dataChkId" fileName="DispenseCheques" />
+		            						</h:commandLink>
+		            						<h:commandLink title="Export BankCheuqe Report in pdf format" target="_blank" ajax="false" immediate="false"  actionListener="#{checkBean.printReportAll}">
+		                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+		            						</h:commandLink>
+		            						
+		            						</div>
+		            						<p:commandButton icon="pi pi-print" value="Print Voucher" actionListener="#{chk.loadSelectedCheck}" update="adviceData msg" style="float: left"/>
+		            				</f:facet>			
+		                         	
+		                         	<p:column headerText="Edit" width="10" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="idPanel" actionListener="#{chk.clickItem(rpt)}"/>
+									</p:column>
+		                         	
+		                         	<p:column headerText="[*]" width="10" exportable="false">
+		            					<p:commandButton update="dataChkId msg" icon="pi pi-trash" actionListener="#{chk.deleteRow(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		                         	
+		                         	<p:column headerText="PDF" width="10" exportable="false">
+		            				 	<p:commandLink title="Print BankCheuqe in PDF" target="_blank" action="#{chk.printReportIndividual(rpt)}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+										</p:commandLink>
+										
+									</p:column>
+									
+									<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+		                         	
+									<p:column headerText="Check No" width="40">
+		            						<p:outputLabel value="#{rpt.checkNo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Account" width="70" resizable="true" >
+		            						<p:outputLabel value="#{rpt.accntName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Pay To" width="70" resizable="true" >
+		            						<p:outputLabel  value="#{rpt.payToTheOrderOf}"/>
+		            				</p:column>
+		            				
+		            				<p:column width="50">
+		            					<f:facet name="header">Amount</f:facet>
+		            						<p:outputLabel  value="#{rpt.amount}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            					<f:facet name="footer"><p:outputLabel value="#{chk.grandTotal}"/></f:facet>	
+		            				</p:column>
+		            				
+		            				
+		            				<p:column headerText="Date" width="20" resizable="true">
+		            						<p:outputLabel value="#{rpt.date_disbursement}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Status" width="40" resizable="true">
+		            						<p:outputLabel value="#{rpt.status==1? 'Posted':'Cancelled'}"/>
+		            				</p:column>
+		            				
+							</p:dataTable>
+	    		</div>
+	    		
+	    		</div>
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:dialog closable="true" closeOnEscape="true" maximizable="true" showHeader="true" header="Budget Monitoring" widgetVar="dlgBudget" width="1000" height="500" position="center top">
+				
+					<p:toolbar id="budSeachId">
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+									<p:selectOneMenu value="#{chk.offBudId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItems value="#{chk.offBuds}"/>
+					            		<p:ajax event="change" listener="#{chk.budgetMonitoring}" update="dataBudgetId budTotalId" />
+					            	</p:selectOneMenu>
+					            	<p:selectOneMenu value="#{chk.fundBudgetId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItems value="#{chk.fundBudgets}"/>
+					            		<p:ajax event="change" listener="#{chk.budgetMonitoring}" update="dataBudgetId budTotalId" />
+					            	</p:selectOneMenu>
+								</div>
+                			</p:toolbarGroup>
+                			<p:toolbarGroup align="right">
+                				<div class="ui-inputgroup ui-noborder">
+                					<p:outputLabel id="budTotalId" value="Total Budget Used: #{chk.totalBudgetRelease}" style="color: red; font-weight: bold; font-size: 2em"/>
+                				</div>
+                			</p:toolbarGroup>	
+		    			</p:toolbar>
+				
+				<p:dataTable id="dataBudgetId" value="#{chk.budgets}" var="rt" stickyHeader="false" 
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+							<f:facet name="{Exporters}">
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+				                    <p:dataExporter type="xls" target="dataBudgetId" fileName="series"/>
+				                </p:commandButton>
+            				</f:facet>
+            				
+							<p:column headerText="Office" width="200" style="text-align: left">
+            						<p:outputLabel value="#{rt.officeName}"/>
+            				</p:column>
+							<p:column headerText="Mooe" width="150">
+            						<p:outputLabel value="#{rt.mooeName}"/>
+            				</p:column>
+            				<p:column headerText="Code" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rt.mooeCode}"/>
+            				</p:column>
+            				<p:column headerText="Allotment" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.mooeBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Remaining" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.remainingBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Used" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.usedBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Date" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.dateCheck}"/>
+            				</p:column>
+            				<p:column headerText="Fund" width="100" style="text-align: left">
+            						<p:outputLabel value="#{rt.fundName}"/>
+            				</p:column>
+            				<p:column headerText="Check No" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.checkNumber}"/>
+            				</p:column>
+            				<p:column headerText="Pay To" width="200" style="text-align: left">
+            						<p:outputLabel value="#{rt.paymentName}"/>
+            				</p:column>
+            				<p:column headerText="Amount" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.checkAmount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+						</p:dataTable>		
+	
+	</p:dialog>
+	
+	<p:dialog closable="false" closeOnEscape="true" showHeader="true" header="MOOE" widgetVar="dlgMooe" width="1000" height="500" position="center top">
+		
+		
+						<p:toolbar>
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+									<p:inputText value="#{moe.searchParam}" placeholder="Search...">
+										<p:ajax event="keyup" listener="#{moe.load}" delay="800" update="dataId"/>
+									</p:inputText>
+									<p:commandButton icon="pi pi-search" update="dataId" actionListener="#{moe.load}"/>
+								</div>
+                			</p:toolbarGroup>
+                			<p:toolbarGroup align="right">
+                				<div class="ui-inputgroup ui-noborder">
+                				<p:commandButton value="Save" title="Save" icon="pi pi-save" actionListener="#{moe.save}" update="msg idPanelMooe dataId">
+                					<p:confirm header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert"/>
+                				</p:commandButton>
+                				<p:commandButton value="Close" icon="pi pi-times" actionListener="#{chk.refresh}" update="idPanel" oncomplete="PF('dlgMooe').hide()"/>              				
+                				</div>
+                			</p:toolbarGroup>	
+		    			</p:toolbar>
+		
+		<p:panel id="idPanelMooe" header="Fill-in the details of the mooe" style="margin-bottom:10px;">
+		    				<h:panelGrid columns="4" cellpadding="5">
+		    				
+		    				<p:outputLabel value="Date"/>
+	            			<p:datePicker  value="#{moe.selectedData.tmpDateTrans}" pattern="yyyy-MM-dd" inputStyle="width:15em"/>
+		    				
+		    				<p:outputLabel value="Fund for Office"/>
+							<p:selectOneMenu value="#{moe.offId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItems value="#{moe.offices}"/>
+					       </p:selectOneMenu>
+		    				
+		    				<p:outputLabel value="Expense Code"/>
+		    				<p:inputText value="#{moe.selectedData.code}" placeholder="000" style="width: 15em"/>
+		    				
+		    				<p:outputLabel value="Expense Description"/>
+		    				<p:inputText value="#{moe.selectedData.description}" style="width: 15em"/>
+		    				
+		    				<p:outputLabel value="Budget Allotment"/>
+		    				<p:inputNumber value="#{moe.selectedData.budgetAmount}" inputStyle="width: 15em"/>
+		    				
+		    				<p:outputLabel value="Budget Year"/>
+		    				<p:inputNumber value="#{moe.selectedData.yearBudget}" inputStyle="width: 15em"/>
+		    				
+		    				</h:panelGrid>
+		</p:panel>    				
+		
+		<p:dataTable id="dataId" value="#{moe.mooes}" var="st" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+							<f:facet name="{Exporters}">
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+				                    <p:dataExporter type="xls" target="dataId" fileName="series"/>
+				                </p:commandButton>
+            				</f:facet>
+            				<p:column headerText="[*]" width="20" exportable="false">
+		            					<p:commandButton update="idPanelMooe dataId" icon="pi pi-trash" actionListener="#{moe.delete(st)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+            				<p:column headerText="Edit" width="20" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="idPanelMooe" actionListener="#{moe.clickItem(st)}"/>
+							</p:column>
+							<p:column headerText="Code" width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.code}"/>
+            				</p:column>
+							<p:column headerText="Date" width="70">
+            						<p:outputLabel value="#{st.dateTrans}"/>
+            				</p:column>
+            				<p:column headerText="Office" width="150" style="text-align: left">
+            						<p:outputLabel value="#{st.offices.name}"/>
+            				</p:column>
+            				<p:column headerText="Description" width="150" style="text-align: left">
+            						<p:outputLabel value="#{st.description}"/>
+            				</p:column>
+            				<p:column headerText="Budget" width="100" style="text-align: left">
+            						<p:outputLabel value="#{st.budgetAmount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Year" width="50" style="text-align: left">
+            						<p:outputLabel value="#{st.yearBudget}"/>
+            				</p:column>
+						</p:dataTable>
+		
+	</p:dialog>
+	
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="List of check to print" widgetVar="dlgCheckSelected" width="1000" height="500" position="center top">
+		
+		<p:dataTable id="adviceData" value="#{chk.selectedChecks}" var="rt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+									<f:facet name="{Exporters}">
+										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+						                    <p:dataExporter type="xls" target="adviceData" fileName="series"/>
+						                </p:commandButton>
+						                <h:commandLink title="Print issued Check" actionListener="#{chk.printVoucherCheck}" target="_blank" >
+					                		<i class="pi pi-print" style="font-size: 2rem;float: right"></i>
+					            		</h:commandLink>
+		            				</f:facet>
+		            				<p:column headerText="[*]" width="20" exportable="false">
+				            					<p:commandButton update="adviceData" icon="pi pi-trash" actionListener="#{chk.deleteCheckSelected(rt)}">
+				            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+				            					</p:commandButton>
+				            		</p:column>
+            						<p:column headerText="Check No" width="40">
+		            						<p:outputLabel value="#{rt.checkNo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Account" width="70" resizable="true" >
+		            						<p:outputLabel value="#{rt.accntName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Pay To" width="70" resizable="true" >
+		            						<p:outputLabel  value="#{rt.payToTheOrderOf}"/>
+		            				</p:column>
+		            				
+		            				<p:column width="50">
+		            						<p:outputLabel  value="#{rt.amount}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+		            				
+		            				
+		            				<p:column headerText="Date" width="20" resizable="true">
+		            						<p:outputLabel value="#{rt.date_disbursement}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Status" width="40" resizable="true">
+		            						<p:outputLabel value="#{rt.status==1? 'Posted':'Cancelled'}"/>
+		            				</p:column>
+						</p:dataTable>
+	
+	</p:dialog>
+	
+	
+	
+	<ui:include src="sendchk.xhtml" />
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" />	
+</h:form>
+</h:body>
+</html>	

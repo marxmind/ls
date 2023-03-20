@@ -1,0 +1,2867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rcd" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26e068af-d628-4cb1-a9f8-d0c0204ec0af">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="PARAM_TOTAL" class="java.lang.String"/>
+	<parameter name="PARAM_COLLECTOR_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_RPT_GROUP" class="java.lang.String"/>
+	<parameter name="PARAM_T13" class="java.lang.String"/>
+	<parameter name="PARAM_T12" class="java.lang.String"/>
+	<parameter name="PARAM_T11" class="java.lang.String"/>
+	<parameter name="PARAM_T10" class="java.lang.String"/>
+	<parameter name="PARAM_T9" class="java.lang.String"/>
+	<parameter name="PARAM_T8" class="java.lang.String"/>
+	<parameter name="PARAM_T7" class="java.lang.String"/>
+	<parameter name="PARAM_T6" class="java.lang.String"/>
+	<parameter name="PARAM_T5" class="java.lang.String"/>
+	<parameter name="PARAM_T4" class="java.lang.String"/>
+	<parameter name="PARAM_T3" class="java.lang.String"/>
+	<parameter name="PARAM_T2" class="java.lang.String"/>
+	<parameter name="PARAM_T1" class="java.lang.String"/>
+	<parameter name="PARAM_FROM1" class="java.lang.String"/>
+	<parameter name="PARAM_FROM2" class="java.lang.String"/>
+	<parameter name="PARAM_FROM3" class="java.lang.String"/>
+	<parameter name="PARAM_FROM4" class="java.lang.String"/>
+	<parameter name="PARAM_FROM5" class="java.lang.String"/>
+	<parameter name="PARAM_FROM6" class="java.lang.String"/>
+	<parameter name="PARAM_FROM7" class="java.lang.String"/>
+	<parameter name="PARAM_FROM8" class="java.lang.String"/>
+	<parameter name="PARAM_FROM9" class="java.lang.String"/>
+	<parameter name="PARAM_FROM10" class="java.lang.String"/>
+	<parameter name="PARAM_FROM11" class="java.lang.String"/>
+	<parameter name="PARAM_FROM12" class="java.lang.String"/>
+	<parameter name="PARAM_FROM13" class="java.lang.String"/>
+	<parameter name="PARAM_TO1" class="java.lang.String"/>
+	<parameter name="PARAM_TO2" class="java.lang.String"/>
+	<parameter name="PARAM_TO3" class="java.lang.String"/>
+	<parameter name="PARAM_TO4" class="java.lang.String"/>
+	<parameter name="PARAM_TO5" class="java.lang.String"/>
+	<parameter name="PARAM_TO6" class="java.lang.String"/>
+	<parameter name="PARAM_TO7" class="java.lang.String"/>
+	<parameter name="PARAM_TO8" class="java.lang.String"/>
+	<parameter name="PARAM_TO9" class="java.lang.String"/>
+	<parameter name="PARAM_TO10" class="java.lang.String"/>
+	<parameter name="PARAM_TO11" class="java.lang.String"/>
+	<parameter name="PARAM_TO12" class="java.lang.String"/>
+	<parameter name="PARAM_TO13" class="java.lang.String"/>
+	<parameter name="PARAM_A1" class="java.lang.String"/>
+	<parameter name="PARAM_A2" class="java.lang.String"/>
+	<parameter name="PARAM_A3" class="java.lang.String"/>
+	<parameter name="PARAM_A4" class="java.lang.String"/>
+	<parameter name="PARAM_A5" class="java.lang.String"/>
+	<parameter name="PARAM_A6" class="java.lang.String"/>
+	<parameter name="PARAM_A7" class="java.lang.String"/>
+	<parameter name="PARAM_A8" class="java.lang.String"/>
+	<parameter name="PARAM_A9" class="java.lang.String"/>
+	<parameter name="PARAM_A10" class="java.lang.String"/>
+	<parameter name="PARAM_A11" class="java.lang.String"/>
+	<parameter name="PARAM_A12" class="java.lang.String"/>
+	<parameter name="PARAM_A13" class="java.lang.String"/>
+	<parameter name="PARAM_F1" class="java.lang.String"/>
+	<parameter name="PARAM_F2" class="java.lang.String"/>
+	<parameter name="PARAM_F3" class="java.lang.String"/>
+	<parameter name="PARAM_F4" class="java.lang.String"/>
+	<parameter name="PARAM_F5" class="java.lang.String"/>
+	<parameter name="PARAM_F6" class="java.lang.String"/>
+	<parameter name="PARAM_F7" class="java.lang.String"/>
+	<parameter name="PARAM_F8" class="java.lang.String"/>
+	<parameter name="PARAM_F9" class="java.lang.String"/>
+	<parameter name="PARAM_F10" class="java.lang.String"/>
+	<parameter name="PARAM_F11" class="java.lang.String"/>
+	<parameter name="PARAM_F12" class="java.lang.String"/>
+	<parameter name="PARAM_F13" class="java.lang.String"/>
+	<parameter name="PARAM_BQ1" class="java.lang.String"/>
+	<parameter name="PARAM_BQ2" class="java.lang.String"/>
+	<parameter name="PARAM_BQ3" class="java.lang.String"/>
+	<parameter name="PARAM_BQ4" class="java.lang.String"/>
+	<parameter name="PARAM_BQ5" class="java.lang.String"/>
+	<parameter name="PARAM_BQ6" class="java.lang.String"/>
+	<parameter name="PARAM_BQ7" class="java.lang.String"/>
+	<parameter name="PARAM_BQ8" class="java.lang.String"/>
+	<parameter name="PARAM_BQ9" class="java.lang.String"/>
+	<parameter name="PARAM_BQ10" class="java.lang.String"/>
+	<parameter name="PARAM_BQ11" class="java.lang.String"/>
+	<parameter name="PARAM_BQ12" class="java.lang.String"/>
+	<parameter name="PARAM_BQ13" class="java.lang.String"/>
+	<parameter name="PARAM_BF1" class="java.lang.String"/>
+	<parameter name="PARAM_BF2" class="java.lang.String"/>
+	<parameter name="PARAM_BF3" class="java.lang.String"/>
+	<parameter name="PARAM_BF4" class="java.lang.String"/>
+	<parameter name="PARAM_BF5" class="java.lang.String"/>
+	<parameter name="PARAM_BF6" class="java.lang.String"/>
+	<parameter name="PARAM_BF7" class="java.lang.String"/>
+	<parameter name="PARAM_BF8" class="java.lang.String"/>
+	<parameter name="PARAM_BF9" class="java.lang.String"/>
+	<parameter name="PARAM_BF10" class="java.lang.String"/>
+	<parameter name="PARAM_BF11" class="java.lang.String"/>
+	<parameter name="PARAM_BF12" class="java.lang.String"/>
+	<parameter name="PARAM_BF13" class="java.lang.String"/>
+	<parameter name="PARAM_BT1" class="java.lang.String"/>
+	<parameter name="PARAM_BT2" class="java.lang.String"/>
+	<parameter name="PARAM_BT3" class="java.lang.String"/>
+	<parameter name="PARAM_BT4" class="java.lang.String"/>
+	<parameter name="PARAM_BT5" class="java.lang.String"/>
+	<parameter name="PARAM_BT6" class="java.lang.String"/>
+	<parameter name="PARAM_BT7" class="java.lang.String"/>
+	<parameter name="PARAM_BT8" class="java.lang.String"/>
+	<parameter name="PARAM_BT9" class="java.lang.String"/>
+	<parameter name="PARAM_BT10" class="java.lang.String"/>
+	<parameter name="PARAM_BT11" class="java.lang.String"/>
+	<parameter name="PARAM_BT12" class="java.lang.String"/>
+	<parameter name="PARAM_BT13" class="java.lang.String"/>
+	<parameter name="PARAM_RQ1" class="java.lang.String"/>
+	<parameter name="PARAM_RQ2" class="java.lang.String"/>
+	<parameter name="PARAM_RQ3" class="java.lang.String"/>
+	<parameter name="PARAM_RQ4" class="java.lang.String"/>
+	<parameter name="PARAM_RQ5" class="java.lang.String"/>
+	<parameter name="PARAM_RQ6" class="java.lang.String"/>
+	<parameter name="PARAM_RQ7" class="java.lang.String"/>
+	<parameter name="PARAM_RQ8" class="java.lang.String"/>
+	<parameter name="PARAM_RQ9" class="java.lang.String"/>
+	<parameter name="PARAM_RQ10" class="java.lang.String"/>
+	<parameter name="PARAM_RQ11" class="java.lang.String"/>
+	<parameter name="PARAM_RQ12" class="java.lang.String"/>
+	<parameter name="PARAM_RQ13" class="java.lang.String"/>
+	<parameter name="PARAM_RF1" class="java.lang.String"/>
+	<parameter name="PARAM_RF2" class="java.lang.String"/>
+	<parameter name="PARAM_RF3" class="java.lang.String"/>
+	<parameter name="PARAM_RF4" class="java.lang.String"/>
+	<parameter name="PARAM_RF5" class="java.lang.String"/>
+	<parameter name="PARAM_RF6" class="java.lang.String"/>
+	<parameter name="PARAM_RF7" class="java.lang.String"/>
+	<parameter name="PARAM_RF8" class="java.lang.String"/>
+	<parameter name="PARAM_RF9" class="java.lang.String"/>
+	<parameter name="PARAM_RF10" class="java.lang.String"/>
+	<parameter name="PARAM_RF11" class="java.lang.String"/>
+	<parameter name="PARAM_RF12" class="java.lang.String"/>
+	<parameter name="PARAM_RF13" class="java.lang.String"/>
+	<parameter name="PARAM_RT1" class="java.lang.String"/>
+	<parameter name="PARAM_RT2" class="java.lang.String"/>
+	<parameter name="PARAM_RT3" class="java.lang.String"/>
+	<parameter name="PARAM_RT4" class="java.lang.String"/>
+	<parameter name="PARAM_RT5" class="java.lang.String"/>
+	<parameter name="PARAM_RT6" class="java.lang.String"/>
+	<parameter name="PARAM_RT7" class="java.lang.String"/>
+	<parameter name="PARAM_RT8" class="java.lang.String"/>
+	<parameter name="PARAM_RT9" class="java.lang.String"/>
+	<parameter name="PARAM_RT10" class="java.lang.String"/>
+	<parameter name="PARAM_RT11" class="java.lang.String"/>
+	<parameter name="PARAM_RT12" class="java.lang.String"/>
+	<parameter name="PARAM_RT13" class="java.lang.String"/>
+	<parameter name="PARAM_IQ1" class="java.lang.String"/>
+	<parameter name="PARAM_IQ2" class="java.lang.String"/>
+	<parameter name="PARAM_IQ3" class="java.lang.String"/>
+	<parameter name="PARAM_IQ4" class="java.lang.String"/>
+	<parameter name="PARAM_IQ5" class="java.lang.String"/>
+	<parameter name="PARAM_IQ6" class="java.lang.String"/>
+	<parameter name="PARAM_IQ7" class="java.lang.String"/>
+	<parameter name="PARAM_IQ8" class="java.lang.String"/>
+	<parameter name="PARAM_IQ9" class="java.lang.String"/>
+	<parameter name="PARAM_IQ10" class="java.lang.String"/>
+	<parameter name="PARAM_IQ11" class="java.lang.String"/>
+	<parameter name="PARAM_IQ12" class="java.lang.String"/>
+	<parameter name="PARAM_IQ13" class="java.lang.String"/>
+	<parameter name="PARAM_IF1" class="java.lang.String"/>
+	<parameter name="PARAM_IF2" class="java.lang.String"/>
+	<parameter name="PARAM_IF3" class="java.lang.String"/>
+	<parameter name="PARAM_IF4" class="java.lang.String"/>
+	<parameter name="PARAM_IF5" class="java.lang.String"/>
+	<parameter name="PARAM_IF6" class="java.lang.String"/>
+	<parameter name="PARAM_IF7" class="java.lang.String"/>
+	<parameter name="PARAM_IF8" class="java.lang.String"/>
+	<parameter name="PARAM_IF9" class="java.lang.String"/>
+	<parameter name="PARAM_IF10" class="java.lang.String"/>
+	<parameter name="PARAM_IF11" class="java.lang.String"/>
+	<parameter name="PARAM_IF12" class="java.lang.String"/>
+	<parameter name="PARAM_IF13" class="java.lang.String"/>
+	<parameter name="PARAM_IT1" class="java.lang.String"/>
+	<parameter name="PARAM_IT2" class="java.lang.String"/>
+	<parameter name="PARAM_IT3" class="java.lang.String"/>
+	<parameter name="PARAM_IT4" class="java.lang.String"/>
+	<parameter name="PARAM_IT5" class="java.lang.String"/>
+	<parameter name="PARAM_IT6" class="java.lang.String"/>
+	<parameter name="PARAM_IT7" class="java.lang.String"/>
+	<parameter name="PARAM_IT8" class="java.lang.String"/>
+	<parameter name="PARAM_IT9" class="java.lang.String"/>
+	<parameter name="PARAM_IT10" class="java.lang.String"/>
+	<parameter name="PARAM_IT11" class="java.lang.String"/>
+	<parameter name="PARAM_IT12" class="java.lang.String"/>
+	<parameter name="PARAM_IT13" class="java.lang.String"/>
+	<parameter name="PARAM_EQ1" class="java.lang.String"/>
+	<parameter name="PARAM_EQ2" class="java.lang.String"/>
+	<parameter name="PARAM_EQ3" class="java.lang.String"/>
+	<parameter name="PARAM_EQ4" class="java.lang.String"/>
+	<parameter name="PARAM_EQ5" class="java.lang.String"/>
+	<parameter name="PARAM_EQ6" class="java.lang.String"/>
+	<parameter name="PARAM_EQ7" class="java.lang.String"/>
+	<parameter name="PARAM_EQ8" class="java.lang.String"/>
+	<parameter name="PARAM_EQ9" class="java.lang.String"/>
+	<parameter name="PARAM_EQ10" class="java.lang.String"/>
+	<parameter name="PARAM_EQ11" class="java.lang.String"/>
+	<parameter name="PARAM_EQ12" class="java.lang.String"/>
+	<parameter name="PARAM_EQ13" class="java.lang.String"/>
+	<parameter name="PARAM_EF1" class="java.lang.String"/>
+	<parameter name="PARAM_EF2" class="java.lang.String"/>
+	<parameter name="PARAM_EF3" class="java.lang.String"/>
+	<parameter name="PARAM_EF4" class="java.lang.String"/>
+	<parameter name="PARAM_EF5" class="java.lang.String"/>
+	<parameter name="PARAM_EF6" class="java.lang.String"/>
+	<parameter name="PARAM_EF7" class="java.lang.String"/>
+	<parameter name="PARAM_EF8" class="java.lang.String"/>
+	<parameter name="PARAM_EF9" class="java.lang.String"/>
+	<parameter name="PARAM_EF10" class="java.lang.String"/>
+	<parameter name="PARAM_EF11" class="java.lang.String"/>
+	<parameter name="PARAM_EF12" class="java.lang.String"/>
+	<parameter name="PARAM_EF13" class="java.lang.String"/>
+	<parameter name="PARAM_ET1" class="java.lang.String"/>
+	<parameter name="PARAM_ET2" class="java.lang.String"/>
+	<parameter name="PARAM_ET3" class="java.lang.String"/>
+	<parameter name="PARAM_ET4" class="java.lang.String"/>
+	<parameter name="PARAM_ET5" class="java.lang.String"/>
+	<parameter name="PARAM_ET6" class="java.lang.String"/>
+	<parameter name="PARAM_ET7" class="java.lang.String"/>
+	<parameter name="PARAM_ET8" class="java.lang.String"/>
+	<parameter name="PARAM_ET9" class="java.lang.String"/>
+	<parameter name="PARAM_ET10" class="java.lang.String"/>
+	<parameter name="PARAM_ET11" class="java.lang.String"/>
+	<parameter name="PARAM_ET12" class="java.lang.String"/>
+	<parameter name="PARAM_ET13" class="java.lang.String"/>
+	<parameter name="PARAM_LOGO_LAKESEBU" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="580" height="18" uuid="9e5fa17c-313c-483d-841f-571284d1118c"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORT OF COLLECTIONS AND DEPOSIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="580" height="18" uuid="54d88659-2d6f-44fc-a297-7b71834fa603"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Municipality of Lake Sebu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="37" width="160" height="18" uuid="58575155-49b5-43fb-928a-829528629169"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LGU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="51" width="34" height="16" uuid="16c06acb-6358-4fda-80d6-ae07b7a2443c"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fund:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="51" width="144" height="16" uuid="2c7182da-8008-45fe-bd1b-f0edee1561e5"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[GENERAL FUND]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="67" width="178" height="16" uuid="5128e3f1-fc0b-4f43-b92a-f859b938ea1e"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Name of Accountable Officer:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="182" y="67" width="210" height="16" uuid="c73c2e38-2428-43fc-a9f9-4c393bbfb064"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_COLLECTOR_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="83" width="166" height="16" uuid="66331546-59e6-4c7a-9145-27132b4765fb"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[A. COLLECTIONS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="99" width="152" height="16" uuid="45375b45-42b2-48be-b024-419d60e8c52d"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1. For Collectors]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="426" y="60" width="150" height="16" uuid="e8acdf82-caeb-47b8-9780-ed4b30ded8c3"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="366" y="90" width="210" height="16" uuid="f65c92cf-7778-4c31-94ff-1c7775fe82b1"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RPT_GROUP}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="581" height="1" uuid="28d7c12f-b35d-4b6d-89b3-536c6fcae1d6"/>
+			</line>
+			<line>
+				<reportElement x="0" y="1" width="1" height="113" uuid="442823cc-4ec8-4065-9d79-9928b5bb89f8"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="580" y="0" width="1" height="113" uuid="51882e3c-4d2d-4158-aafd-0c5d7a5cbe66"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="829" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="285" height="30" uuid="541b44f6-adf2-44e2-af5c-f2bd64bdb7ad"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Type of Form & Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="0" width="294" height="15" uuid="e9a1e6a1-0cc6-49ea-bfb1-a7980687e26e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Official Receipt/Serial Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="15" width="98" height="15" uuid="bc30f218-7cf5-4449-8c6a-8970234c4f31"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="15" width="98" height="15" uuid="0976305b-73d0-453d-8b3f-91676a0005a8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="15" width="98" height="15" uuid="ae2e0f3e-ab03-40cf-9dbd-e84667c10638"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="284" width="136" height="15" uuid="f1e5389b-82cd-4f74-9f32-fe3e26d324b7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Issued]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="314" width="24" height="15" uuid="2a31f36f-77e2-4adb-8b82-62187efd713e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="299" width="136" height="15" uuid="6fff1309-5683-4ed1-ba61-801d4a41ad6e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Inclusive Serial Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="314" width="56" height="15" uuid="c40ca940-e90d-4ca0-a369-612dbae19e46"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="284" width="136" height="15" uuid="2c1c6def-74a5-4eb6-a0df-0f23db031fe8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Ending Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="314" width="56" height="15" uuid="f4af7361-aa27-40e2-a751-1319c9985630"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="299" width="136" height="15" uuid="6a6ad92d-a12e-4b64-9c56-8268058da2dc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Inclusive Serial Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="314" width="24" height="15" uuid="e61d6efc-d096-4f9c-9406-1aa8468ad0b2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="314" width="56" height="15" uuid="cc4cff56-cbad-4f2b-9207-5c1b3c762394"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="314" width="56" height="15" uuid="565d0eee-a90a-4b50-bcbc-1d2d35f6c6bc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="284" width="136" height="15" uuid="220eb032-0095-4b53-9d2d-f966b970bab2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="299" width="136" height="15" uuid="86c6ec3e-df8f-4fd7-aa4f-d3366eca18ab"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Inclusive Serial Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="314" width="24" height="15" uuid="bc338f61-56bb-46fd-81da-20996d883995"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="314" width="56" height="15" uuid="40af2e18-c200-4b57-9b63-06b6071fe87d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="314" width="56" height="15" uuid="f289913a-e109-4bc6-9e69-61973e5bfbef"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="284" width="136" height="15" uuid="30fdc87c-edfa-4f6e-82a4-0fe703a4b568"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Beginning Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="299" width="136" height="15" uuid="e2b347e9-0787-41fe-a4da-0b299ae3fd98"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Inclusive Serial Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="314" width="24" height="15" uuid="b3d1df58-4831-4d61-9cc0-af981aaf7b88"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="314" width="56" height="15" uuid="cf8a42a6-3b48-4b96-abd6-050cb2e6bec0"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="314" width="56" height="15" uuid="54952800-9a50-4089-aaf5-58f207fd0174"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="284" width="35" height="45" uuid="638ced5f-23df-4a86-9c83-12cbd78258d9"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Name of Form & Number]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="30" width="285" height="15" uuid="d13ce8fa-7f44-40fd-93fb-ecca7a6cea3e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="45" width="285" height="15" uuid="87c32a73-c561-4390-9830-924fcf340464"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="60" width="285" height="15" uuid="b8090e84-0670-4eb3-9056-1d72cb2d1fae"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="75" width="285" height="15" uuid="8d717d37-4d11-4741-ab79-83759ed7f85b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="90" width="285" height="15" uuid="d863fb6a-8e28-4fea-8731-eac2a89b62db"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="105" width="285" height="15" uuid="308071d6-0e4b-4d59-a379-01c063941728"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="120" width="285" height="15" uuid="2c434a2a-b668-4a2e-bd60-23ce558e7c7c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="135" width="285" height="15" uuid="59b9986c-0c91-47fd-b753-714396b92af9"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="150" width="285" height="15" uuid="ed48967a-e04f-4621-8e9e-9650cbf2a460"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="165" width="285" height="15" uuid="38313258-3475-4868-83f6-ad1554bd4f7d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="180" width="285" height="15" uuid="f3ef4e0c-bcaf-4e03-9046-31700e588a89"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="195" width="285" height="15" uuid="78a611b1-4bd2-48a4-9d86-29fc4fe92dbc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="210" width="285" height="15" uuid="79577b50-03b9-4c29-b31c-1f2a490f62b4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_T13}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="225" width="285" height="15" uuid="bd6e6847-4073-46c3-abc5-03035b5733cc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="225" width="196" height="15" uuid="1b3f627d-f959-441d-af26-e7311ab1d35b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="225" width="98" height="15" uuid="da38406f-946b-4b7d-875d-2947e894729c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="30" width="98" height="15" uuid="475e3e56-3ad7-4eb7-9ec1-46ebb0307470"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="45" width="98" height="15" uuid="d64bd93a-8a0f-4439-8134-c3010a4b4c97"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="60" width="98" height="15" uuid="2f6337d0-2532-42bf-89df-0fe8e0b92c5d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="75" width="98" height="15" uuid="4ae570e0-6a04-4e17-a5a2-39b554e4800c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="90" width="98" height="15" uuid="5e227126-6676-4c4a-97c0-343e6b7f3359"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="105" width="98" height="15" uuid="bbba1d4f-78ba-4174-a9ae-84fc9878b809"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="120" width="98" height="15" uuid="a5628f23-559b-454c-8d8d-bf7278fb5c39"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="135" width="98" height="15" uuid="7325d27e-6ab1-4c10-90f7-964146962ec5"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="150" width="98" height="15" uuid="7448857d-1069-4c10-95b3-954c910d9c9b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="165" width="98" height="15" uuid="a5fbd159-f547-47ca-a151-f26b890dc5df"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="180" width="98" height="15" uuid="57962399-ce6d-4d59-aebb-1180de44789c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="195" width="98" height="15" uuid="6fc22050-ae2d-4519-988c-6601a034a998"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="286" y="210" width="98" height="15" uuid="d779af19-4963-4479-8987-10c80995966c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_FROM13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="30" width="98" height="15" uuid="db7b63bf-6679-47cc-bb4e-70b9f52d6cc2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="45" width="98" height="15" uuid="cb0339e0-7ccb-4dbe-85d6-eb2d8f7ff16e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="60" width="98" height="15" uuid="bd747033-b23a-4966-8f5b-218aef4d811e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="75" width="98" height="15" uuid="1d096acc-ddaa-4f2f-addd-0ef639973ba7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="90" width="98" height="15" uuid="32c3dcc2-c170-493c-8ed9-97d9f746c381"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="105" width="98" height="15" uuid="b0e9337a-780b-4c47-913e-3da02b2a2bf4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="120" width="98" height="15" uuid="73f046d5-f8cc-4d1e-b783-6d4683315353"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="135" width="98" height="15" uuid="3fb412f1-2505-4452-9a75-5c01fa622ede"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="150" width="98" height="15" uuid="379e057e-cd80-4d97-8990-d842cf431c93"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="165" width="98" height="15" uuid="0c705eda-b62d-40fc-8079-203fd9dc682f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="180" width="98" height="15" uuid="1c913533-ca08-4296-9e72-c117974fd095"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="195" width="98" height="15" uuid="1ed36705-593b-4359-9d33-aea832b80bc4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="384" y="210" width="98" height="15" uuid="dcaa093c-733c-42a9-94ce-e7171434d7f7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_TO13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="30" width="98" height="15" uuid="19a790b5-96c2-4e9d-98e0-b6d62d86d2c6"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="45" width="98" height="15" uuid="a0820182-77fb-4829-a86b-cfb011a4b430"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="75" width="98" height="15" uuid="4cbc1895-5a9e-464e-aa0e-090251b22252"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="60" width="98" height="15" uuid="6fd5ac0b-8cbe-4c84-ba95-5c2cb5a59ad1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="90" width="98" height="15" uuid="c6742147-d024-49f6-bb63-6b5ff8754cdc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="105" width="98" height="15" uuid="f319c3d4-f061-449b-802b-5124c43022ad"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="120" width="98" height="15" uuid="f1dd1934-81c3-4ac0-9dfa-6fcee2c231f0"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="135" width="98" height="15" uuid="7afb67fd-e9cd-4f08-b499-d972e1df5019"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="150" width="98" height="15" uuid="53ce4199-9636-4ba3-ba03-3e65c8b9ab9e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="165" width="98" height="15" uuid="772bfd8e-74db-436b-a806-82a857d143dc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="180" width="98" height="15" uuid="261c3709-c08c-4c05-887a-3b5437b2ee47"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="195" width="98" height="15" uuid="e6224dc1-0ad2-4526-b258-5b00a2e0250d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="482" y="210" width="98" height="15" uuid="0c9fe6a8-908e-48fe-adf9-a78859ac05c3"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_A13}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="384" y="255" width="191" height="14" uuid="a3fadf95-885c-4036-9c86-619a21bb188d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[FERDINAND L. LOPEZ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="269" width="191" height="14" uuid="7daf5fec-f406-4472-a863-f5e23b1e0d7b"/>
+				<textElement textAlignment="Center">
+					<font isBold="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Municipal Treasurer]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="329" width="35" height="15" uuid="e2d1443e-c6b4-44e7-aec9-040e75723008"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="344" width="35" height="15" uuid="533ff7df-bb81-44ae-952d-89b703577d54"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="359" width="35" height="15" uuid="1b6c5ec6-2a13-4210-9326-ecca9661c6ad"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="374" width="35" height="15" uuid="b6576f0e-c03a-4080-8ac9-d7e6d6ded780"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="389" width="35" height="15" uuid="3ecc9cb1-0d3a-437e-ac12-bf2d0659f338"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="404" width="35" height="15" uuid="3a1e702e-d0ec-41b0-b12f-e1f4ab33a903"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="419" width="35" height="15" uuid="1aebaa62-df7e-4caf-9764-5d23f83ef495"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="434" width="35" height="15" uuid="cb935c4b-593b-4ea8-8359-7f1223cec0da"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="449" width="35" height="15" uuid="47460be0-c6d4-4f04-af63-2de49b5be01e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="464" width="35" height="15" uuid="1b712a1f-f5b5-4a08-848b-6c5bfaae1aaa"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="479" width="35" height="15" uuid="1bb101b4-8b20-4884-a009-787e5fc761a1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="494" width="35" height="15" uuid="51274b06-f22c-4c72-9d1f-d74df5407b68"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1" y="509" width="35" height="15" uuid="4cc3ee4f-ace1-4402-a1a9-61bb55b3f901"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_F13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="329" width="24" height="15" uuid="3b719e75-df37-471b-a958-a42fa6743921"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="344" width="24" height="15" uuid="ae83c1ba-6ac6-4d9b-bfd3-45df25b97633"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="359" width="24" height="15" uuid="56798cbe-5eb8-454b-98e5-4c052b73f6d9"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="374" width="24" height="15" uuid="3014b60c-1acd-4e99-9024-c2232a9c57ef"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="389" width="24" height="15" uuid="eea076b1-6c5e-473a-94c4-3c64e0b46bd6"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="434" width="24" height="15" uuid="ce0f5c50-9659-48da-bd6d-b331ea8ff22f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="404" width="24" height="15" uuid="92ada153-bfba-4d86-bbce-65347fbaacd8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="419" width="24" height="15" uuid="8631e3c5-304f-4208-b14c-45a857f7ea1d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="494" width="24" height="15" uuid="b9a6be1e-f8ba-463a-a0a8-84f9869cb382"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="449" width="24" height="15" uuid="f2c1cda1-d630-41b5-95f1-c253c922205d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="464" width="24" height="15" uuid="5240a77b-886d-434d-b5ba-cf8e4a77fffd"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="479" width="24" height="15" uuid="99adffa6-cb05-45a9-a7da-8519eb04fef4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="36" y="509" width="24" height="15" uuid="f36c6c3f-12af-4531-8454-6f25fc634138"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BQ13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="329" width="56" height="15" uuid="408100a5-61e6-4d11-8efb-c998a05fa1c1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="344" width="56" height="15" uuid="5a66222c-bc8e-4c15-894f-d34c9c63a220"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="359" width="56" height="15" uuid="0440eb01-b49b-4357-a3cc-de11b30ff8c8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="374" width="56" height="15" uuid="2a2d6aa5-5c06-4201-8984-fea1b000188e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="389" width="56" height="15" uuid="76ebd44c-8c05-4a14-be0c-c1f7ffb26ba7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="404" width="56" height="15" uuid="f35b9a29-b3f2-4069-a550-36eac4fcf4b8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="419" width="56" height="15" uuid="4653569a-be43-4fc6-8bf0-cb7ae798eb0d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="434" width="56" height="15" uuid="e1c2d77a-a99a-4c59-8ffe-726e116f2cbe"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="449" width="56" height="15" uuid="60cc1b6c-71c8-49ac-933b-e5e7af320248"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="464" width="56" height="15" uuid="a44c9ad6-99e7-409b-889a-a879a428320d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="479" width="56" height="15" uuid="2d64e26e-62cb-4402-98b6-a6df32236665"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="494" width="56" height="15" uuid="a589ec5c-f430-4b06-8985-0cf9b6412b8a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="60" y="509" width="56" height="15" uuid="12dbc3c0-18d6-425b-8d4c-d4f82f87afd1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BF13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="329" width="56" height="15" uuid="c873dc44-e8e4-47d5-9e7c-cdef4d5f73f5"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="344" width="56" height="15" uuid="a2400208-30e3-466e-9bba-a1686339c198"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="374" width="56" height="15" uuid="fb8332bd-3035-44f9-a910-9c688acc0cb4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="359" width="56" height="15" uuid="2777fe7b-ba30-43c8-8842-4889413c1639"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="389" width="56" height="15" uuid="32c0a37b-78ba-4ef0-8e98-d2c44d55a6c5"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="404" width="56" height="15" uuid="93424630-5afa-4018-a0e1-21ceacf077a7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="419" width="56" height="15" uuid="8622c709-79a6-4bfa-ab53-1339b482df6f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="434" width="56" height="15" uuid="d648a8d1-0946-4e4c-8cd5-b55693e7f2a2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="449" width="56" height="15" uuid="ebea6e71-4abf-48cf-a573-26c5fba5fed4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="464" width="56" height="15" uuid="25adf433-e46b-4253-99fd-de08de882527"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="479" width="56" height="15" uuid="835af7c0-e6b1-4caf-b01f-499c69deba87"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="494" width="56" height="15" uuid="ec78b9b5-2166-4643-98fc-3b198cb132b5"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="116" y="509" width="56" height="15" uuid="b230a1fb-de56-48d8-8512-4f0a30257fd7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_BT13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="329" width="24" height="15" uuid="fdff95b7-8822-47a8-a712-91139bd4f23e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="344" width="24" height="15" uuid="29ff31d6-eecc-498e-9b15-61e0b0948ebe"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="359" width="24" height="15" uuid="f3ff36f7-ec4c-4d8e-a6c4-73eec41e57f6"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="374" width="24" height="15" uuid="0185e1b2-0b75-4f9d-8404-0c0cad9b1baa"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="389" width="24" height="15" uuid="6a27b056-5443-4b29-b9a7-9a74b2c93cd0"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="404" width="24" height="15" uuid="3d094041-55ed-4b3f-b653-faaf3897fbc2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="419" width="24" height="15" uuid="efa7f86a-95ae-49a5-8f18-fc2191647ec5"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="434" width="24" height="15" uuid="93cc2188-a443-4da4-88a4-1d76ad1bad8f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="449" width="24" height="15" uuid="c1796bee-b74c-496a-a6e4-ff148c74fd5b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="464" width="24" height="15" uuid="1c9e7e25-c27f-409f-ac13-e75092bbbabf"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="479" width="24" height="15" uuid="c09cc236-f6ad-45a3-a849-78345a52ba3d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="494" width="24" height="15" uuid="122b060c-8234-4179-b604-ea81b76fdf30"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="172" y="509" width="24" height="15" uuid="ec4712c0-3620-4778-b1f3-d9056a70903b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RQ13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="329" width="56" height="15" uuid="42725460-1103-43b1-8bc2-7baf0177143a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="344" width="56" height="15" uuid="ec1e4688-d1f0-4b34-b384-e41a046fd45e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="359" width="56" height="15" uuid="f7836bbb-0080-4ac7-a21c-525436937aa0"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="374" width="56" height="15" uuid="028eb4f8-700e-47ba-a211-0485284fee69"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="389" width="56" height="15" uuid="806f09f4-fa53-4746-b166-408347e0105f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="404" width="56" height="15" uuid="815fd89a-6286-4b9c-ab38-c532067e92c4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="419" width="56" height="15" uuid="049342bf-ed87-40a3-8fe8-3c7dadb455ae"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="434" width="56" height="15" uuid="2d084beb-1da1-4cf0-922f-7dd36679a07d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="449" width="56" height="15" uuid="e87818ac-39c5-40e4-b81f-44bcf2a4f646"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="464" width="56" height="15" uuid="26fb2e6a-c85a-4226-9bb1-36954020ee54"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="479" width="56" height="15" uuid="4b22815c-10b0-446b-a5ca-654f14a4deaf"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="494" width="56" height="15" uuid="db044a76-d41a-4aaa-94dc-0150b5800644"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="196" y="509" width="56" height="15" uuid="2e8344ec-90b6-4489-ba88-5f446515e645"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RF13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="329" width="56" height="15" uuid="248ffdf7-d6c1-47fe-a847-3986ad122972"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="344" width="56" height="15" uuid="81d4b9ac-1dfe-4769-a091-a9b4d5b89436"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="359" width="56" height="15" uuid="041e6f23-6f92-4939-81c1-056a0bd9e46f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="374" width="56" height="15" uuid="e886a8f7-81c1-4d2d-9eb5-29f7ab7ad151"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="389" width="56" height="15" uuid="4a0c65f5-abd8-48b7-9d20-2865b8f74578"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="404" width="56" height="15" uuid="daea29c6-d3d8-450c-9192-b96584b9004a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="419" width="56" height="15" uuid="af138ba8-fb2f-4bb5-a664-881325996de9"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="434" width="56" height="15" uuid="2c71ce97-fb72-4369-a334-dbee4ab0b9b8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="449" width="56" height="15" uuid="ee3f99a0-cb4b-4a73-863c-8547f8a66f18"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="464" width="56" height="15" uuid="3a816d94-322d-4b88-83a7-70795c91ff0a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="479" width="56" height="15" uuid="a0c86be8-6edb-445d-b922-0453baf32f36"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="494" width="56" height="15" uuid="f1fde8e0-a34d-4792-850f-d5255ec93f7c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="252" y="509" width="56" height="15" uuid="8de9130e-eb59-4ee5-8b66-bc8a85c8e048"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_RT13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="329" width="24" height="15" uuid="4bcf3759-87c2-4a3e-aea5-75fb40f07d65"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="344" width="24" height="15" uuid="988e5c4f-9158-443a-999a-e38b933e6b71"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="359" width="24" height="15" uuid="1550c4eb-d84b-41b0-8d1e-e8c26810ddcd"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="374" width="24" height="15" uuid="3a5e8557-b210-473b-9f0c-fa11a449554a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="389" width="24" height="15" uuid="eeed5e6a-6903-428b-a6e0-ac2908da0627"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="404" width="24" height="15" uuid="e2cb7530-1dc5-4d18-88e7-4cdd2a8f29e5"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="419" width="24" height="15" uuid="60b9c8bb-1ceb-4ed2-b26e-c1b796d865d4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="434" width="24" height="15" uuid="1a623596-693b-455b-81c6-dc1586616a95"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="449" width="24" height="15" uuid="ec7831f5-3787-458e-91e6-c296095a832c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="464" width="24" height="15" uuid="5b34e4b6-9e74-4063-a73a-8456fe4d42e8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="479" width="24" height="15" uuid="7ca66678-6fe0-4e4e-8083-28ea04be7529"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="494" width="24" height="15" uuid="c0db691c-b3f3-4ff2-ac5d-7e70653eb3b1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="308" y="509" width="24" height="15" uuid="8f2fba9b-8b39-4802-b236-be463f219a92"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IQ13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="329" width="56" height="15" uuid="49593245-4a08-4eb6-b08a-349acac81490"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="344" width="56" height="15" uuid="b5de4278-790d-4239-ab46-a8990ac10875"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="359" width="56" height="15" uuid="166ece61-4b89-4e4f-a531-3beb9be97908"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="374" width="56" height="15" uuid="9b7fca1a-8eec-46a3-ab26-21c5b4e41a50"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="389" width="56" height="15" uuid="61baa1b1-ed00-4e14-bc20-6c4158eb04aa"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="404" width="56" height="15" uuid="b0ecbdf5-f9d2-4047-b6c0-f611cc617704"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="419" width="56" height="15" uuid="8f8df92c-c086-4a99-810e-cfd86e65fed2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="434" width="56" height="15" uuid="13f6f624-cbdf-4962-bdda-0afa0ee03abe"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="449" width="56" height="15" uuid="644fa6be-d56e-4380-b405-3f7dd086e33d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="464" width="56" height="15" uuid="bf969558-ff38-4950-a7fb-aecabdb3960c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="479" width="56" height="15" uuid="9b3c67ac-6dc8-47e3-a9fc-4fb86e47d94c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="494" width="56" height="15" uuid="7d9d7884-62ff-489b-82ef-90ce8a3bcebc"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="332" y="509" width="56" height="15" uuid="4be0efc4-3eb6-410a-af43-86e2140d5bdb"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IF13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="329" width="56" height="15" uuid="ae4c56d4-114b-49cb-bf77-d37e19d5d6d7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="344" width="56" height="15" uuid="caf16a74-3bb4-4304-bc60-611ce778fe5f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="359" width="56" height="15" uuid="88402f34-07d6-4f54-8f64-3cb78d68ad15"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="374" width="56" height="15" uuid="0aed170f-49e7-4353-bc1e-5c7abeb9e8bf"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="389" width="56" height="15" uuid="0fb0d80e-e0b3-44a5-96cc-692dfb72b5f8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="404" width="56" height="15" uuid="8488b778-4d86-4ed8-89ac-fd7d60802abb"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="419" width="56" height="15" uuid="81e35c2f-5e7e-4f99-9316-d3ee191d2d71"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="434" width="56" height="15" uuid="cf62ebd1-d044-4055-80ef-d8a4404b792a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="449" width="56" height="15" uuid="ddb91499-0bd5-48ae-a6d1-8de8ff49b938"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="464" width="56" height="15" uuid="d732a40d-277b-4427-afa7-85dd0b42d65a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="479" width="56" height="15" uuid="b0b98310-5cf1-4a8d-a4e5-b5f0167d3d47"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="494" width="56" height="15" uuid="be4184b6-30c4-4c2f-b0cc-808d2609217f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="388" y="509" width="56" height="15" uuid="e2f7f8df-b917-43d8-a3e3-d64726a667ce"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_IT13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="329" width="24" height="15" uuid="e4073d8a-d912-445a-a13c-622cc26c8a8b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="344" width="24" height="15" uuid="272602ff-b9f8-41cb-b7eb-29c84d0bb884"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="359" width="24" height="15" uuid="0f96dbbe-31d8-493e-b2f8-eeb014e58ffe"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="374" width="24" height="15" uuid="eee5012e-56a2-40ea-8c74-b4cb0817550b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="389" width="24" height="15" uuid="0499e400-abdd-4283-ac87-08b82e48d423"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="434" width="24" height="15" uuid="67442e19-bd2e-4142-b78d-5c52e13a757b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="419" width="24" height="15" uuid="68c58c6e-f369-457c-a2d8-3ca59931ee14"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="404" width="24" height="15" uuid="3bcae1d4-8200-4217-9ea4-cbc3b410fbab"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="449" width="24" height="15" uuid="3ed290d9-7714-4050-8fb8-5757fce8636d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="494" width="24" height="15" uuid="13994e7c-1703-4a4d-a2f4-0ace5407cc05"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="479" width="24" height="15" uuid="52ca6757-1b63-413d-84c5-44c982f93988"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="464" width="24" height="15" uuid="56a720ca-a147-4dd3-8afb-397742b42293"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="444" y="509" width="24" height="15" uuid="fa536cb5-f6cf-4478-96f5-fa0d0ce4f0d1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EQ13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="329" width="56" height="15" uuid="6f0ad02e-8bc7-4b47-8c49-0c80d1aa4e39"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="344" width="56" height="15" uuid="32b62b32-f67f-4720-8024-c77c40004f9b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="359" width="56" height="15" uuid="e8c2f39f-43bd-4c60-af5f-8e09900c1472"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="374" width="56" height="15" uuid="14afcbd9-a80c-4524-9480-4985a60ac9c3"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="389" width="56" height="15" uuid="0be31c44-95d4-4dc8-b586-0b1ca263baba"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="404" width="56" height="15" uuid="78212d26-ccf1-4111-b64a-6788b7002c3b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="419" width="56" height="15" uuid="2885df3c-378b-4a25-9d92-79dfcd0ffebb"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="434" width="56" height="15" uuid="86263bb2-b19c-4ecf-9661-3cd63a0f88a8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="449" width="56" height="15" uuid="1fc90c8b-42bd-458b-a54f-f26d5369d72e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="464" width="56" height="15" uuid="b2e60f90-4b02-41b2-bbd7-d3d90a446835"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="479" width="56" height="15" uuid="d5bbd0b7-d876-4fdc-8e0d-02a28713d286"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="494" width="56" height="15" uuid="8c66f317-453d-466b-acc4-edff659d900d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="468" y="509" width="56" height="15" uuid="da09a0d8-cb8e-47ee-bbeb-773313147dc4"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_EF13}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="329" width="56" height="15" uuid="67995b1e-8c82-4b15-b90a-e2bd9f9e7c64"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="344" width="56" height="15" uuid="7e70ca7f-424a-4072-830f-57f21b7be2e8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="359" width="56" height="15" uuid="c6f04825-509b-484c-b26d-285cb36d4572"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="374" width="56" height="15" uuid="83e200bc-ed60-442d-8b33-09951e936fb3"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="389" width="56" height="15" uuid="ea250ef4-57ae-4ee0-92e3-366a51df862e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="404" width="56" height="15" uuid="81687c44-c963-4133-88e3-133184dd606d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="419" width="56" height="15" uuid="f104d617-3b22-4fbf-8053-e64431f6bba6"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="434" width="56" height="15" uuid="62856f40-01a9-4215-aee3-2e5911e7702d"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="449" width="56" height="15" uuid="a3a09bbb-c41a-4dee-9ea3-266bf614a2e9"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="464" width="56" height="15" uuid="0b334f58-57d8-418d-be2b-3c4b4f8b5b5a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="479" width="56" height="15" uuid="337309fc-3425-461a-a5c7-8d72618ef8a6"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET11}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="494" width="56" height="15" uuid="f644ef8c-34b5-439a-8c31-b91c0521eab8"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET12}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="524" y="509" width="56" height="15" uuid="c454a6cf-705e-4270-9c71-5cb2bf50de1b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PARAM_ET13}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="36" y="524" width="24" height="15" uuid="942722b5-4078-47f8-ba85-47e628874f87"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="524" width="56" height="15" uuid="f17ddc62-b2fd-402a-8c34-90ea3e5d4b1a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="524" width="56" height="15" uuid="505790f8-5e9e-4abc-bca6-fc429e0eae89"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="524" width="24" height="15" uuid="ca37bda0-43d2-4dfe-b7df-67a610db6a5a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="524" width="56" height="15" uuid="16d546a9-096b-4309-aa06-c928134fd83a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="524" width="56" height="15" uuid="305b9645-d07f-4102-be9c-dc26c05b2c81"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="524" width="24" height="15" uuid="0a47d40a-4e8c-44c0-bd2e-794fc02d8528"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="524" width="56" height="15" uuid="1483927b-c101-4a0d-b1cd-3e90391d547f"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="524" width="56" height="15" uuid="2db08576-e903-4cd3-b437-9e89f220a814"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="524" width="24" height="15" uuid="8dbe8baa-a7c5-46f2-a055-035ee0e4ed4a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="524" width="56" height="15" uuid="b18d469e-18b5-4ee5-962b-1cb5b2866aed"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="524" width="56" height="15" uuid="65fa118e-6140-49b5-92ed-33a9e0925bbd"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="524" width="35" height="15" uuid="d9c57369-8de0-44c7-bf5f-e53633f2593b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="539" width="35" height="15" uuid="4bab46ce-b981-4110-9ca9-0aab591656f7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="539" width="24" height="15" uuid="af4c1327-58ae-4601-a521-a3f30f0bca7e"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="539" width="56" height="15" uuid="46b2a293-807e-44cf-a81e-bab84f784704"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="539" width="56" height="15" uuid="77b757e3-934a-423c-815c-b919aea27d3b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="539" width="24" height="15" uuid="021e53a6-dc3b-4beb-86e2-49bd01680011"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="539" width="56" height="15" uuid="4d77a4de-102b-4b5c-a958-4fb47cdc7f98"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="539" width="56" height="15" uuid="2f462260-5a75-45e4-847f-b904989071be"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="539" width="24" height="15" uuid="04baa328-12c9-4590-8e13-bb3621d65156"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="539" width="56" height="15" uuid="ed92c4ad-0384-4dd5-a21d-a599e6006948"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="539" width="56" height="15" uuid="f8db1d91-b665-4e19-b886-665325f104b2"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="539" width="24" height="15" uuid="f4a04cf1-8500-4b5e-8d20-b2539a2bd286"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="539" width="56" height="15" uuid="d2aa9f31-43ad-43bc-9cf7-ce3d8f4d9ec7"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="539" width="56" height="15" uuid="7ba8d85d-80bb-419e-9afc-9f624d3bbaf1"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="554" width="307" height="15" uuid="702a5861-97f6-4750-bd8e-f427a629877c"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[D. SUMMARY OF COLLECTIONS AND REMITTANCES/DEPOSIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="554" width="272" height="15" uuid="da9c0bd7-1c8e-40c7-8f63-d8a48ddac89b"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[List of Checks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="569" width="136" height="15" uuid="93fd16aa-0bae-4b3a-890b-ded898329a8a"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Bank/Check No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="569" width="136" height="15" uuid="5c78e616-b5c3-44db-9736-d350e61e10ad"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Payee           Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="588" width="98" height="15" uuid="9cbcc208-0809-4616-80e7-cf6f11bda194"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Beginning Balances]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="604" width="98" height="15" uuid="f4e88ff6-888e-44d0-ba58-bfd46daba235"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Add:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="100" y="602" width="90" height="1" uuid="851c9cae-3319-44e2-b501-d611b3a0b302"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="204" y="650" width="98" height="15" uuid="0c5d6ff4-c974-4b61-83db-7668052270a9"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="204" y="619" width="98" height="15" uuid="a32fdb64-d6c4-4dd0-8680-094f2ed7ded5"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="619" width="98" height="15" uuid="bb4b5412-0ad0-4e03-ae38-b5ffa5094c64"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Total Collections]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="634" width="188" height="15" uuid="24e3ca8f-6bbd-4406-a940-2f78e6925b86"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Less: Remittance/Deposit to Cashier/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="650" width="162" height="15" uuid="7a87090a-00bd-423b-ad5a-b9b9cf3e387b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Treasurer/Depository Bank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="665" width="98" height="15" uuid="7f6c4908-4e32-46f4-b81e-00b95f3ca2b7"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="666" width="98" height="15" uuid="b6c17b91-62a1-4c54-af67-37b24b520e61"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="587" width="98" height="15" uuid="06515a5d-53a1-4ba1-bc04-4774eedcf476"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[0.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="584" width="136" height="97" uuid="bc68f17b-f505-4800-a3cb-76bcd74d0199"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="584" width="136" height="97" uuid="6a462330-7966-496d-9d59-94999551f7e0"/>
+				<box padding="1">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="681" width="272" height="15" uuid="a4a2a30e-3d33-46ed-8ccb-32609557a57f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[Note: Use additional sheet if necessary]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="697" width="260" height="14" uuid="522c5f31-5b82-4282-ba0c-6b71de51745b"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[VERIFICATION ACKNOWLEDGEMENT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="714" width="264" height="28" uuid="0117e5ff-2567-49d3-943f-e46c748d65e3"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[I hereby certify that the foregoing report of collections has been verified and acknowledge receipt of]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="755" width="118" height="16" uuid="d72dc518-2e14-46a3-99e9-50411317792f"/>
+				<box topPadding="0" leftPadding="1" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[HENRY E. MAGBANUA]]></text>
+			</staticText>
+			<textField pattern="M/d/yy">
+				<reportElement x="482" y="753" width="90" height="16" uuid="ab223bbf-d1ee-4834-901b-729812eb4edd"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="772" width="118" height="15" uuid="532d2a8c-e7dd-4e6f-9ffc-60fe0f8a9fe4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Name and Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="308" y="788" width="118" height="15" uuid="c4fff1b3-124d-4b6a-97d3-bd43f053337d"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Liquidating Officer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="771" width="88" height="15" uuid="9bf0dabb-fc1c-474d-bb87-8a41e6380641"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="698" width="260" height="13" uuid="4b48bab9-5d15-4d75-a740-a7ceef61da62"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[CERTIFICATION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="714" width="264" height="38" uuid="b7259498-389c-4cb6-bb0f-91478d5eed9e"/>
+				<box padding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[I hereby certify that the foregoing report of collections and deposits and accountability for accountable forms is true and correct.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="5" y="759" width="210" height="15" uuid="4a088a66-de6d-45b6-a9fa-d53e3213d8d0"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_COLLECTOR_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="53" y="775" width="118" height="15" uuid="7ac2a09f-98bc-47a4-afa8-ddb95e5d527d"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Name and Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="790" width="118" height="15" uuid="af0f45d1-3446-4d76-939b-0e8fcfcf40a4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Liquidating Officer]]></text>
+			</staticText>
+			<textField pattern="M/d/yy">
+				<reportElement x="212" y="758" width="90" height="16" uuid="cda35122-7579-4d0b-af12-3ef4b488af35"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="212" y="776" width="88" height="15" uuid="6431cc90-30bc-41b2-a473-b608854eae04"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="698" width="577" height="1" uuid="5222bdda-07c3-4617-8cc6-d962b3016b1a"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="308" y="699" width="1" height="105" uuid="d46e5702-8dc6-453a-b1d4-85edb8e4d73a"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="803" width="581" height="1" uuid="bf08d418-3aca-4a88-9337-a57f80c0d772"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="803" uuid="ec7fa9cf-b0a7-4603-b639-d7d2d0eceaa6"/>
+			</line>
+			<line>
+				<reportElement x="580" y="0" width="1" height="803" uuid="30cf15d4-76cc-4e6c-917f-850e4a5c0e86"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

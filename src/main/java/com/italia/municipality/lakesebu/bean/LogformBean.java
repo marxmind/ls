@@ -449,8 +449,12 @@ public class LogformBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		maps = new HashMap<String, CollectionInfo>();//Collections.synchronizedMap(new HashMap<String, CollectionInfo>());
-		infos = new ArrayList<CollectionInfo>();//Collections.synchronizedList(new ArrayList<CollectionInfo>());
+		selectedCollection = new ArrayList<CollectionInfo>();
+		collectotData = new HashMap<Integer, Collector>();
+		newForms = new ArrayList<CollectionInfo>();
+		mapIssued = new HashMap<Long, CollectionInfo>();
+		maps = new HashMap<String, CollectionInfo>();
+		infos = new ArrayList<CollectionInfo>();
 		
 		if(!alreadyRetrieve) {
 			issuedCollectorId = Login.getUserLogin().getCollectorId();

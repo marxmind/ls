@@ -48,15 +48,15 @@ import com.italia.municipality.lakesebu.controller.NumberToWords;
 import com.italia.municipality.lakesebu.controller.PrintFormat;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.controller.ReportFields;
-import com.italia.municipality.lakesebu.controller.Signatory;
+import com.italia.municipality.lakesebu.controller.Signatories;
 import com.italia.municipality.lakesebu.controller.Voucher;
-import com.italia.municipality.lakesebu.dao.Chequedtls;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.BudgetType;
 import com.italia.municipality.lakesebu.enm.GraphColor;
 import com.italia.municipality.lakesebu.enm.GraphColorWithBorder;
 import com.italia.municipality.lakesebu.enm.TransactionType;
+import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
@@ -81,6 +81,12 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+/**
+ * 
+ * Please check the new implementation in chk.xhtml and ChkBean.java
+ *
+ */
+@Deprecated
 @Named
 @ViewScoped
 public class CheckBean implements Serializable{
@@ -100,7 +106,6 @@ public class CheckBean implements Serializable{
 	private String inputAmount;
 	private String words;
 	private Date dateTime;
-	private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
 	private final Path PATH_APP = Paths.get("");
 	private String sig1Label;
 	private String sig2Label;
@@ -109,7 +114,7 @@ public class CheckBean implements Serializable{
 	private List accountNameList;
 	private Map<Integer,BankAccounts> accounts;
 	private String userNotification="";
-	private List<Chequedtls> chequedtls;
+	//private List<Chequedtls> chequedtls;
 	private String printFormat;
 	private List formatPrint;
 	private Map<Integer,PrintFormat> mapprint;
@@ -396,17 +401,17 @@ public class CheckBean implements Serializable{
 	     try{
 	    	 
 	    	 // Open file.
-	            input = new BufferedInputStream(new FileInputStream(file), DEFAULT_BUFFER_SIZE);
+	            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
 
 	            // Init servlet response.
 	            response.reset();
 	            response.setHeader("Content-Type", "application/pdf");
 	            response.setHeader("Content-Length", String.valueOf(file.length()));
 	            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
-	            output = new BufferedOutputStream(response.getOutputStream(), DEFAULT_BUFFER_SIZE);
+	            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
 
 	            // Write file contents to response.
-	            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+	            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
 	            int length;
 	            while ((length = input.read(buffer)) > 0) {
 	                output.write(buffer, 0, length);
@@ -662,7 +667,7 @@ public class CheckBean implements Serializable{
 	public void setPrintFormat(String printFormat) {
 		this.printFormat = printFormat;
 	}
-	
+	/*
 	public List<Chequedtls> getChequedtls() {
 		
 		
@@ -693,10 +698,11 @@ public class CheckBean implements Serializable{
 		}
 		
 		return chequedtls;
-	}
+	}*/
+	/*
 	public void setChequedtls(List<Chequedtls> chequedtls) {
 		this.chequedtls = chequedtls;
-	}
+	}*/
 	public String getUserNotification() {
 		return userNotification;
 	}
@@ -1406,15 +1412,15 @@ public class CheckBean implements Serializable{
 		return sig2Label;
 	}
 	
-	private Map<String,Signatory> signatories = new HashMap<String,Signatory>();
+	private Map<String,Signatories> signatories = new HashMap<String,Signatories>();
 	
 	
 	public void getSignatories(){
-		signatories = new HashMap<String,Signatory>();
+		signatories = new HashMap<String,Signatories>();
 		
-		String sql = "SELECT * FROM tbl_signatory";
+		String sql = "SELECT * FROM signatory";
 		String params[] = new String[0];
-		signatories = Signatory.retrieveSig(sql, params);	
+		signatories = Signatories.retrieveSig(sql, params);	
 	}
 	public void processAccnt(AjaxBehaviorEvent e){
 		try{
@@ -1538,11 +1544,11 @@ public class CheckBean implements Serializable{
 	public List getData(){
 		data = new ArrayList<>();
 		
-		Signatory sig = new Signatory();
+		Signatories sig = new Signatories();
 		sig = signatories.get("1");
-		data.add(new SelectItem(sig.getSigId(),sig.getSigName()));
+		data.add(new SelectItem(sig.getId()+"",sig.getName()));
 		sig = signatories.get("2");
-		data.add(new SelectItem(sig.getSigId(),sig.getSigName()));
+		data.add(new SelectItem(sig.getId()+"",sig.getName()));
 		
 		
 		
@@ -1555,11 +1561,11 @@ public class CheckBean implements Serializable{
 	public List getData1(){
 		data1= new ArrayList<>();
 		
-		Signatory sig = new Signatory();
+		Signatories sig = new Signatories();
 		sig = signatories.get("3");
-		data1.add(new SelectItem(sig.getSigId(),sig.getSigName()));
+		data1.add(new SelectItem(sig.getId()+"",sig.getName()));
 		sig = signatories.get("4");
-		data1.add(new SelectItem(sig.getSigId(),sig.getSigName()));
+		data1.add(new SelectItem(sig.getId()+"",sig.getName()));
 		
 		
 		
@@ -2083,18 +2089,18 @@ public class CheckBean implements Serializable{
 	     try{
 	    	 
 	    	 // Open file.
-	            input = new BufferedInputStream(new FileInputStream(file), DEFAULT_BUFFER_SIZE);
+	            input = new BufferedInputStream(new FileInputStream(file),GlobalVar.DEFAULT_BUFFER_SIZE);
 
 	            // Init servlet response.
 	            response.reset();
-	            response.setBufferSize(DEFAULT_BUFFER_SIZE);
+	            response.setBufferSize(GlobalVar.DEFAULT_BUFFER_SIZE);
 	            response.setHeader("Content-Type", "application/pdf");
 	            response.setHeader("Content-Length", String.valueOf(file.length()));
 	            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
-	            output = new BufferedOutputStream(response.getOutputStream(), DEFAULT_BUFFER_SIZE);
+	            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
 	            
 	            // Write file contents to response.
-	            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+	            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
 	            int length;
 	            while ((length = input.read(buffer)) > 0) {
 	                output.write(buffer, 0, length);
@@ -2158,10 +2164,10 @@ public class CheckBean implements Serializable{
 			reportFields.setPayToTheOrderOf(getBankCheckPayTo());
 			reportFields.setAmountInWOrds(getNumberInToWords());
 			reportFields.setDate_disbursement(DateUtils.convertDate(getDateTime(),"yyyy-MM-dd"));
-			Signatory sig = signatories.get(_sig1);
-			reportFields.setSignatory1(sig.getSigName());
+			Signatories sig = signatories.get(_sig1);
+			reportFields.setSignatory1(sig.getName());
 					  sig = signatories.get(_sig2);
-			reportFields.setSignatory2(sig.getSigName());			
+			reportFields.setSignatory2(sig.getName());			
 			
 		compileReport(reportFields);	
 			
@@ -2176,17 +2182,17 @@ public class CheckBean implements Serializable{
 	     try{
 	    	 
 	    	 // Open file.
-	            input = new BufferedInputStream(new FileInputStream(file), DEFAULT_BUFFER_SIZE);
+	            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
 
 	            // Init servlet response.
 	            response.reset();
 	            response.setHeader("Content-Type", "application/pdf");
 	            response.setHeader("Content-Length", String.valueOf(file.length()));
 	            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
-	            output = new BufferedOutputStream(response.getOutputStream(), DEFAULT_BUFFER_SIZE);
+	            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
 
 	            // Write file contents to response.
-	            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+	            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
 	            int length;
 	            while ((length = input.read(buffer)) > 0) {
 	                output.write(buffer, 0, length);
