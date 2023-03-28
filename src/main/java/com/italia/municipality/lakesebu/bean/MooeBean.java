@@ -2,6 +2,7 @@ package com.italia.municipality.lakesebu.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,8 +29,7 @@ public class MooeBean implements Serializable {/**
 	
 	private Mooe selectedData;
 	private List offices;
-	private int offId;
-	private Map<Integer, Offices> officesData;
+	private Map<Long, Offices> officesData;
 	private List<Mooe> mooes;
 	private String searchParam;
 	
@@ -76,9 +76,17 @@ public class MooeBean implements Serializable {/**
 		if(isOk) {
 			Mooe moe = getSelectedData();
 			moe.setDateTrans(DateUtils.convertDate(moe.getTmpDateTrans(), "yyyy-MM-dd"));
-			moe.save();
-			clear();
-			load();
+			Offices office = getOfficesData().get(moe.getOffices().getId());
+			moe =  Mooe.save(moe);
+			selectedData = Mooe.builder().tmpDateTrans(new Date()).yearBudget(DateUtils.getCurrentYear()).isActive(1).offices(office).build();
+			//load();
+			if(mooes!=null && mooes.size()==1) {
+				mooes=new ArrayList<Mooe>();
+			}	
+			moe.setOffices(office);
+			mooes.add(moe);
+			Collections.reverse(mooes);
+			
 			Application.addMessage(1, "Success", "Successfully saved");
 		}
 	}
@@ -91,11 +99,11 @@ public class MooeBean implements Serializable {/**
 	
 	public void clear() {
 		
-		officesData=new LinkedHashMap<Integer, Offices>();
-		offId=1;
+		officesData=new LinkedHashMap<Long, Offices>();
 		offices = new ArrayList<>();
 		 for(Offices o : Offices.retrieve(" ORDER BY name", new String[0])) {
 			 offices.add(new SelectItem(o.getId(), o.getName()));
+			 officesData.put(o.getId(), o);
 		 }
 		
 		selectedData = Mooe.builder().tmpDateTrans(new Date()).yearBudget(DateUtils.getCurrentYear()).isActive(1).offices(Offices.builder().id(1).build()).build();

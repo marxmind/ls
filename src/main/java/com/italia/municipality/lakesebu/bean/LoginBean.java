@@ -392,9 +392,9 @@ private void logUserOut(){
 
 	public List getThemes() {
 		themes = new ArrayList<>();
-		themes.add(new SelectItem("arya", "ARYA"));
-		themes.add(new SelectItem("saga", "SAGA"));
-		themes.add(new SelectItem("vela", "VELA"));
+		themes.add(new SelectItem("arya", "ARYA(Ligh Black)"));
+		themes.add(new SelectItem("saga", "SAGA(White)"));
+		themes.add(new SelectItem("vela", "VELA(Black)"));
 		return themes;
 	}
 

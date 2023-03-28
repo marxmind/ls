@@ -115,7 +115,12 @@ public class ChkBean implements Serializable{
 	private int offBudId;
 	private List offBuds;
 	private List<Chequedtls> selectedChecks;
-	
+	private List<Reports> fundData;
+	private List<Reports> fundOfficeData;
+	private int yearBudId;
+	private List yearBuds;
+	private int yearOfficeBudId;
+	private List yearOfficeBuds;
 	public void clickItem(Chequedtls chk) {
 		setSelectedData(chk);
 		setDateTime(DateUtils.convertDateString(chk.getDate_disbursement(), "yyyy-MM-dd"));
@@ -201,8 +206,14 @@ public class ChkBean implements Serializable{
 		
 		year=DateUtils.getCurrentYear();//current year
 		years = new ArrayList<>();
+		yearBuds = new ArrayList<>();
+		yearOfficeBuds = new ArrayList<>();
+		yearBudId = DateUtils.getCurrentYear();
+		yearOfficeBudId = yearBudId;
 		for(int y=2016; y<=year; y++) {
 			years.add(new SelectItem(y, y+""));
+			yearBuds.add(new SelectItem(y, y+""));
+			yearOfficeBuds.add(new SelectItem(y, y+""));
 		}
 		search();
 	}
@@ -305,7 +316,12 @@ public class ChkBean implements Serializable{
 				dateTo = year + "-12-31";
 				break;
 		}
-		String sql = " AND (date_disbursement>='"+ dateFrom +"' AND date_disbursement<='"+ dateTo +"')";
+		
+		String sql = "";
+		if(getSearchFundId()>0) {
+			sql += " AND accnt_no='"+ getSearchFundId() +"'";
+		}
+		sql += " AND (date_disbursement>='"+ dateFrom +"' AND date_disbursement<='"+ dateTo +"') ORDER BY cheque_id DESC ";
 		Object[] obj = Chequedtls.retrieveData(sql, new String[0]);
 		setGrandTotal(Currency.formatAmount((Double)obj[0]));
 		setCheques((List<Chequedtls>)obj[1]);
@@ -700,6 +716,7 @@ public class ChkBean implements Serializable{
 			bud1.setId(officeId);
 			bud1.setOfficeName(ofis.get(officeId).getName());
 			
+			bud1.setMooeCode("");
 			bud1.setMooeName("");
 			bud1.setMooeBudget("");
 			bud1.setUsedBudget("");
@@ -720,6 +737,7 @@ public class ChkBean implements Serializable{
 				bud2.setId(officeId);
 				bud2.setOfficeName("");
 				
+				bud2.setMooeCode(mo.getCode());
 				bud2.setMooeName(mo.getDescription());
 				bud2.setMooeBudget(Currency.formatAmount(mo.getBudgetAmount()));
 				
@@ -735,6 +753,7 @@ public class ChkBean implements Serializable{
 					
 					bud3.setId(officeId);
 					bud3.setOfficeName("");
+					bud3.setMooeCode("");
 					bud3.setMooeName("");
 					bud3.setMooeBudget("");
 					bud3.setUsedBudget("");
@@ -787,12 +806,43 @@ public class ChkBean implements Serializable{
 		double total = 0d;
 		int year = Integer.valueOf(getSelectedChecks().get(0).getDate_disbursement().split("-")[0]);
 		Map<Long, Mooe> mapMooe = Mooe.retrieveDataAll(year);
-		for(Chequedtls c : getSelectedChecks()) {
+		List<Chequedtls> selectedData = getSelectedChecks();
+		//Collections.reverse(selectedData);
+		
+		int size = selectedData.size() - 1;
+		
+		for(int i = size; i>=0; i--) {
+			Chequedtls c = selectedData.get(i);
+			Reports rpt = new Reports();
+			rpt.setF1(c.getDate_disbursement());
+			rpt.setF2(c.getCheckNo());
+			//rpt.setF4(tran.getDepartmentCode());
+			String stat = c.getRemarks();
+			if("RECEIVED".equalsIgnoreCase(stat) || stat.isEmpty()) {
+				rpt.setF3("Posted Check");
+			}else {
+				rpt.setF3(c.getRemarks());
+			}
+			rpt.setF4(getOfficeData().get(c.getOffice().getId()).getName());
+			rpt.setF5(c.getPayToTheOrderOf());
+			rpt.setF6(mapMooe.get(c.getMoe().getId()).getDescription());
+			rpt.setF7(Currency.formatAmount(c.getAmount()));
+			reports.add(rpt);
+			total += c.getAmount();
+		}
+		/*
+		for(Chequedtls c : selectedData) {
 			
 			Reports rpt = new Reports();
 			rpt.setF1(c.getDate_disbursement());
 			rpt.setF2(c.getCheckNo());
 			//rpt.setF4(tran.getDepartmentCode());
+			String stat = c.getRemarks();
+			if("RECEIVED".equalsIgnoreCase(stat) || stat.isEmpty()) {
+				rpt.setF3("Posted Check");
+			}else {
+				rpt.setF3(c.getRemarks());
+			}
 			rpt.setF4(getOfficeData().get(c.getOffice().getId()).getName());
 			rpt.setF5(c.getPayToTheOrderOf());
 			rpt.setF6(mapMooe.get(c.getMoe().getId()).getDescription());
@@ -800,7 +850,7 @@ public class ChkBean implements Serializable{
 			reports.add(rpt);
 			total += c.getAmount();
 			
-		}
+		}*/
 		
 		//compiling report
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
@@ -809,6 +859,7 @@ public class ChkBean implements Serializable{
 		System.out.println("Report path " + REPORT_PATH + " name " + REPORT_NAME);
 		ReportCompiler compiler = new ReportCompiler();
 		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
+		
 		
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
   		HashMap param = new HashMap();
@@ -909,5 +960,38 @@ public class ChkBean implements Serializable{
 			offBuds.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			officeData.put(d.getId(), d);
 		}
+	}
+	public void fundSearch() {
+		PrimeFaces pf = PrimeFaces.current();
+		
+		fundData = new ArrayList<Reports>();
+		Map<String, Double> data = Chequedtls.retrieveFund(yearBudId);
+		double total = 0d;
+		for(String s : data.keySet()) {
+			double amount = Double.valueOf(data.get(s));
+			Reports r = Reports.builder().f1(s).f2(Currency.formatAmount(amount)).build();
+			fundData.add(r);
+			total += amount;
+		}
+		Reports r = Reports.builder().f1("Total").f2(Currency.formatAmount(total)).build();
+		fundData.add(r);
+		pf.executeScript("PF('dlgFund').show(1000)");
+	}
+	public void fundOfficeBudgetUsed() {
+		PrimeFaces pf = PrimeFaces.current();
+		
+		fundOfficeData = new ArrayList<Reports>();
+		Map<Long, Double> data = Chequedtls.retrievePerOffice(yearOfficeBudId);
+		double total = 0d;
+		for(long s : data.keySet()) {
+			Offices off = officeData.get(s);
+			double amount = Double.valueOf(data.get(s));
+			Reports r = Reports.builder().f1(off.getName()).f2(Currency.formatAmount(amount)).build();
+			fundOfficeData.add(r);
+			total += amount;
+		}
+		Reports r = Reports.builder().f1("Total").f2(Currency.formatAmount(total)).build();
+		fundOfficeData.add(r);
+		pf.executeScript("PF('dlgMooeOffice').show(1000)");
 	}
 }

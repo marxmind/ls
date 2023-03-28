@@ -210,7 +210,7 @@ public class Mooe {
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
-		
+		String desc = st.getDescription().trim().toUpperCase();
 		try{
 		conn = WebTISDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
@@ -231,7 +231,7 @@ public class Mooe {
 		
 		ps.setString(cnt++, st.getCode());
 		ps.setString(cnt++, st.getDateTrans());
-		ps.setString(cnt++, st.getDescription());
+		ps.setString(cnt++, desc);
 		ps.setDouble(cnt++, st.getBudgetAmount());
 		ps.setInt(cnt++, st.getIsActive());
 		ps.setLong(cnt++, st.getOffices().getId());
@@ -239,7 +239,7 @@ public class Mooe {
 		
 		LogU.add(st.getCode());
 		LogU.add(st.getDateTrans());
-		LogU.add(st.getDescription());
+		LogU.add(desc);
 		LogU.add(st.getBudgetAmount());
 		LogU.add(st.getIsActive());
 		LogU.add(st.getOffices().getId());
@@ -255,6 +255,7 @@ public class Mooe {
 			LogU.add("error inserting data to mooe : " + s.getMessage());
 		}
 		LogU.add("===========================END=========================");
+		st.setDescription(desc);
 		return st;
 	}
 	
@@ -270,7 +271,7 @@ public class Mooe {
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
-		
+		String desc = st.getDescription().trim().toUpperCase();
 		try{
 		conn = WebTISDatabaseConnect.getConnection();
 		ps = conn.prepareStatement(sql);
@@ -280,7 +281,7 @@ public class Mooe {
 		
 		ps.setString(cnt++, st.getCode());
 		ps.setString(cnt++, st.getDateTrans());
-		ps.setString(cnt++, st.getDescription());
+		ps.setString(cnt++, desc);
 		ps.setDouble(cnt++, st.getBudgetAmount());
 		ps.setLong(cnt++, st.getOffices().getId());
 		ps.setInt(cnt++, st.getYearBudget());
@@ -288,7 +289,7 @@ public class Mooe {
 		
 		LogU.add(st.getCode());
 		LogU.add(st.getDateTrans());
-		LogU.add(st.getDescription());
+		LogU.add(desc);
 		LogU.add(st.getBudgetAmount());
 		LogU.add(st.getOffices().getId());
 		LogU.add(st.getYearBudget());
@@ -304,6 +305,7 @@ public class Mooe {
 			LogU.add("error updating data to mooe : " + s.getMessage());
 		}
 		LogU.add("===========================END=========================");
+		st.setDescription(desc);
 		return st;
 	}
 	

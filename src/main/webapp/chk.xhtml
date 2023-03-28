@@ -199,7 +199,7 @@
 	    		<div class="col-12">
 	    			<p:dataTable id="dataChkId" value="#{chk.cheques}" var="rpt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,20,50,100" resizableColumns="true"
+                         rowsPerPageTemplate="5,10,15,20,50,100,500,1000" resizableColumns="true"
                          scrollable="true"  style="text-align: left" paginatorPosition="top" resizeMode="expand" reflow="true"
                          selection="#{chk.selectedChecks}" rowKey="#{rpt.cheque_id}"
                          >
@@ -216,7 +216,11 @@
 		            						</h:commandLink>
 		            						
 		            						</div>
+		            						<div class="ui-inputgroup">
 		            						<p:commandButton icon="pi pi-print" value="Print Voucher" actionListener="#{chk.loadSelectedCheck}" update="adviceData msg" style="float: left"/>
+		            						<p:commandButton icon="pi pi-money" value="View Fund Used" actionListener="#{chk.fundSearch}" update="fundData" style="float: left"/>
+		            						<p:commandButton icon="pi pi-money" value="View Office Used" actionListener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData" style="float: left"/>
+		            						</div>
 		            				</f:facet>			
 		                         	
 		                         	<p:column headerText="Edit" width="10" exportable="false">
@@ -231,9 +235,8 @@
 		                         	
 		                         	<p:column headerText="PDF" width="10" exportable="false">
 		            				 	<p:commandLink title="Print BankCheuqe in PDF" target="_blank" action="#{chk.printReportIndividual(rpt)}" ajax="false" immediate="false" >
-		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left;#{rpt.style}"></i>
 										</p:commandLink>
-										
 									</p:column>
 									
 									<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
@@ -282,11 +285,11 @@
 					<p:toolbar id="budSeachId">
 		    				<p:toolbarGroup>
                 				<div class="ui-inputgroup">
-									<p:selectOneMenu value="#{chk.offBudId}" style="width: 15em" filter="true" filterMatchMode="contains">
+									<p:selectOneMenu value="#{chk.offBudId}" style="width: 25em" filter="true" filterMatchMode="contains">
 					            		<f:selectItems value="#{chk.offBuds}"/>
 					            		<p:ajax event="change" listener="#{chk.budgetMonitoring}" update="dataBudgetId budTotalId" />
 					            	</p:selectOneMenu>
-					            	<p:selectOneMenu value="#{chk.fundBudgetId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            	<p:selectOneMenu value="#{chk.fundBudgetId}" style="width: 25em" filter="true" filterMatchMode="contains">
 					            		<f:selectItems value="#{chk.fundBudgets}"/>
 					            		<p:ajax event="change" listener="#{chk.budgetMonitoring}" update="dataBudgetId budTotalId" />
 					            	</p:selectOneMenu>
@@ -385,7 +388,7 @@
 	            			<p:datePicker  value="#{moe.selectedData.tmpDateTrans}" pattern="yyyy-MM-dd" inputStyle="width:15em"/>
 		    				
 		    				<p:outputLabel value="Fund for Office"/>
-							<p:selectOneMenu value="#{moe.offId}" style="width: 15em" filter="true" filterMatchMode="contains">
+							<p:selectOneMenu value="#{moe.selectedData.offices.id}" style="width: 15em" filter="true" filterMatchMode="contains">
 					            		<f:selectItems value="#{moe.offices}"/>
 					       </p:selectOneMenu>
 		    				
@@ -498,7 +501,71 @@
 	
 	</p:dialog>
 	
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Fund" widgetVar="dlgFund" width="700" height="500" position="center top">
+		
+		<p:dataTable id="fundData" value="#{chk.fundData}" var="rt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+									<f:facet name="{Exporters}">
+										<p:selectOneMenu value="#{chk.yearBudId}" style="width:15em; float: left">
+						                    <p:ajax listener="#{chk.fundSearch}" update="fundData"/>
+						                	<f:selectItems value="#{chk.yearBuds}"/>
+						                </p:selectOneMenu>
+										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+						                    <p:dataExporter type="xls" target="fundData" fileName="series"/>
+						                </p:commandButton>
+				                	
+		            				</f:facet>
+		            				
+		            				<p:column headerText="Fund" width="100" resizable="true" >
+		            						<p:outputLabel value="#{rt.f1}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Amount Used" width="70" resizable="true" >
+		            						<p:outputLabel  value="#{rt.f2}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+		            				
+						</p:dataTable>
 	
+	</p:dialog>
+	
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="MOOE Per Office" widgetVar="dlgMooeOffice" width="700" height="500" position="center top">
+		
+		<p:dataTable id="fundOfficeData" value="#{chk.fundOfficeData}" var="rt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+									<f:facet name="{Exporters}">
+										<p:selectOneMenu value="#{chk.yearOfficeBudId}" style="width:15em; float: left">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData"/>
+						                	<f:selectItems value="#{chk.yearOfficeBuds}"/>
+						                </p:selectOneMenu>
+										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+						                    <p:dataExporter type="xls" target="fundOfficeData" fileName="series"/>
+						                </p:commandButton>
+				                	
+		            				</f:facet>
+		            				
+		            				<p:column headerText="Office/Department" width="100" resizable="true" >
+		            						<p:outputLabel value="#{rt.f1}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Amount Used" width="70" resizable="true" >
+		            						<p:outputLabel  value="#{rt.f2}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+		            				
+						</p:dataTable>
+	
+	</p:dialog>
 	
 	<ui:include src="sendchk.xhtml" />
 	<ui:include src="loader.xhtml" />

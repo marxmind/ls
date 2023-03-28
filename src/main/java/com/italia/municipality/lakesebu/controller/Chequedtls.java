@@ -69,6 +69,58 @@ public class Chequedtls {
 	private String statusName;
 	private int fundTypeId;
 	
+	private String style;
+	
+	public static Map<Long, Double> retrievePerOffice(int year){
+		Map<Long, Double> mapData = new LinkedHashMap<Long, Double>();
+		String fromDate=year +"-01-01";
+		String toDate=year +"-12-31";
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = BankChequeDatabaseConnect.getConnection();
+		ps = conn.prepareStatement("SELECT offid,sum(cheque_amount) as amount FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND (date_disbursement>='"+ fromDate +"' AND date_disbursement<='"+ toDate +"') GROUP BY offid");
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			mapData.put(rs.getLong("offid"), rs.getDouble("amount"));
+		}
+		rs.close();
+		ps.close();
+		BankChequeDatabaseConnect.close(conn);
+		}catch(SQLException sl){sl.getMessage();}
+		
+		
+		return mapData;
+	}
+	
+	public static Map<String, Double> retrieveFund(int year){
+		Map<String, Double> mapData = new LinkedHashMap<String, Double>();
+		String fromDate=year +"-01-01";
+		String toDate=year +"-12-31";
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = BankChequeDatabaseConnect.getConnection();
+		ps = conn.prepareStatement("SELECT accnt_name,bank_name,sum(cheque_amount) as amount FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND (date_disbursement>='"+ fromDate +"' AND date_disbursement<='"+ toDate +"') GROUP BY accnt_no");
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			mapData.put(rs.getString("accnt_name")+"-"+rs.getString("bank_name"), rs.getDouble("amount"));
+		}
+		rs.close();
+		ps.close();
+		BankChequeDatabaseConnect.close(conn);
+		}catch(SQLException sl){sl.getMessage();}
+		
+		
+		return mapData;
+	}
+	
 	public static boolean checkIfCheckNumberExist(String checkNo) {
 			Connection conn = null;
 			ResultSet rs = null;
@@ -204,6 +256,7 @@ public class Chequedtls {
 					.hasAdvice(rs.getInt("hasadvice"))
 					.office(Offices.builder().id(rs.getLong("offid")).build())
 					.moe(Mooe.builder().id(rs.getLong("moid")).build())
+					.style(rs.getLong("offid")==0? "color: red":"")
 					.build();
 			chks.add(chk);
 		}
