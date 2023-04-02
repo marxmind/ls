@@ -618,7 +618,7 @@ public class ORListingBean implements Serializable{
 		String sql = "";
 		String[] params = new String[0];
 		double amount = 0d;
-		ors = new ArrayList<ORListing>();//Collections.synchronizedList(new ArrayList<ORListing>());
+		ors = new ArrayList<ORListing>();
 		String monthFrom = "";
 		String monthTo = "";
 		
@@ -791,7 +791,6 @@ public class ORListingBean implements Serializable{
 			selectedItems();
 		}
 	}
-	
 	
 	private void detailsData() {
 		rpts = new ArrayList<Reports>();//Collections.synchronizedList(new ArrayList<Reports>());
@@ -1886,6 +1885,7 @@ public class ORListingBean implements Serializable{
 	
 	public void saveData() {
 		boolean isCashTicket=false;
+		boolean isOk = true;
 		com.italia.municipality.lakesebu.licensing.controller.Customer customer = selectedCustomer();
 		ORListing or = new ORListing();
 		
@@ -1893,10 +1893,15 @@ public class ORListingBean implements Serializable{
 			or = getOrRecordData();
 		}else {
 			or.setIsActive(1);
+			boolean isExist = ORListing.isExistingSeries(getCollectorId(), getOrNumber(), getFormTypeId());
+			if(isExist) {
+				isOk = false;
+				Application.addMessage(3, "Error", "This OR number is already recorded: "+ getOrNumber());
+			}
 		}
 		UserDtls user = Login.getUserLogin().getUserDtls();
 		
-		boolean isOk = true;
+		
 		if(getOrNumber()==null || getOrNumber().isEmpty()) {
 			isOk = false;
 			Application.addMessage(3, "Error", "Please provide official receipt");
@@ -1974,8 +1979,6 @@ public class ORListingBean implements Serializable{
 		}else {
 			customer.setUserDtls(user);
 		}
-		
-		
 		
 		if(isOk) {
 			

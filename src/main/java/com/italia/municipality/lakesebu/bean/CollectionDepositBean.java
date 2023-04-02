@@ -781,12 +781,13 @@ public class CollectionDepositBean implements Serializable {
 	        System.out.println("old Value: " + oldValue);
 	        System.out.println("new Value: " + newValue);
 	        
+	        
 	        int index = event.getRowIndex();
 	       // String column =  event.getColumn().getHeaderText();
 	        //System.out.println("getCashDvData(): " + getCashDvData());
 	        //System.out.println(getCashDvData().getRpts()!=null? getCashDvData().getRpts().size() : "No value");
 	        
-	        if(getCashDvData().getRpts()!=null && getCashDvData().getRpts().size()>0) {
+	        /*if(getCashDvData().getRpts()!=null && getCashDvData().getRpts().size()>0) {
 	        	System.out.println("pasokk......");
 	        	CollectionDeposit cz = getCashDvData().getRpts().get(index);
 	        	cz.setFundId(getCashDvData().getFundId());
@@ -803,10 +804,20 @@ public class CollectionDepositBean implements Serializable {
 	        		System.out.println("ssss....");
 	        	}
 	        	
-	        }
+	        }*/
 	        
 		 }catch(Exception e){
 			 e.printStackTrace();
 		 }  
 	 }
+	
+	public void saveItem(CollectionDeposit cd) {
+		CollectionDeposit cz = cd;
+    	cz.setFundId(getCashDvData().getFundId());
+    	cz.setIsActive(1);
+    	cz.setCollectionDepositReport(getCashDvData());
+		cd.save();
+		load();
+		Application.addMessage(1, "Success", "Successfully saved.");
+	}
 }

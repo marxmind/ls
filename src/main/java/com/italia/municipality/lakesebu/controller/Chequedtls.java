@@ -121,13 +121,19 @@ public class Chequedtls {
 		return mapData;
 	}
 	
-	public static boolean checkIfCheckNumberExist(String checkNo) {
+	/**
+	 * 
+	 * @param checkNo
+	 * @param accountNumber
+	 * @return false if exist
+	 */
+	public static boolean checkIfCheckNumberExist(String checkNo, String accountNumber) {
 			Connection conn = null;
 			ResultSet rs = null;
 			PreparedStatement ps = null;
 			try{
 			conn = BankChequeDatabaseConnect.getConnection();
-			ps = conn.prepareStatement("SELECT cheque_no FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND cheque_no='"+ checkNo +"'");
+			ps = conn.prepareStatement("SELECT cheque_no FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND cheque_no='"+ checkNo +"' AND accnt_no='"+ accountNumber +"'");
 			
 			rs = ps.executeQuery();
 			

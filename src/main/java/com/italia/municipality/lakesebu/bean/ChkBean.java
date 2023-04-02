@@ -331,12 +331,19 @@ public class ChkBean implements Serializable{
 	
 	public void save() {
 		boolean isOk = true;
+		String checkNo = getCheckSeriesNo();
 		Chequedtls check = new Chequedtls();
 		if(getSelectedData()!=null) {
 			check = getSelectedData();
 		}else {
 			check.setIsActive(1);
 			check.setDate_created(DateUtils.convertDate(getDateTime(), "yyyy-MM-dd"));
+			
+			if(!Chequedtls.checkIfCheckNumberExist(checkNo, getFundId()+"")) {
+				isOk = false;
+				Application.addMessage(3, "Error", "Check number already exist");
+			}
+			
 		}
 		if(getFundId()==0) {
 			isOk = false;
@@ -387,7 +394,7 @@ public class ChkBean implements Serializable{
 			Date date = new Date();
 			check.setDate_edited(dateFormat.format(date));
 			
-			check.setCheckNo(getCheckSeriesNo());
+			check.setCheckNo(checkNo);
 			check.setFundTypeId(getFundId());
 			check.setProcessBy(proc_by);
 			check.setSignatory1(getTreasPersonnelId());

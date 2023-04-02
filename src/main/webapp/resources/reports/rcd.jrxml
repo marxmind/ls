@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rcd" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26e068af-d628-4cb1-a9f8-d0c0204ec0af">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
@@ -2277,7 +2277,7 @@
 					<pen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Acting Asst. Mun. Treasurer/Liquidating Officer]]></text>
+				<text><![CDATA[Asst. Mun. Treasurer/Liquidating Officer]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="482" y="742" width="88" height="15" uuid="9bf0dabb-fc1c-474d-bb87-8a41e6380641"/>
@@ -2303,8 +2303,8 @@
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<text><![CDATA[I hereby certify that the foregoing report of collections and deposits and accountability for accountable forms is true and correct.]]></text>
 			</staticText>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="5" y="735" width="210" height="15" uuid="4a088a66-de6d-45b6-a9fa-d53e3213d8d0"/>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="5" y="735" width="234" height="15" uuid="4a088a66-de6d-45b6-a9fa-d53e3213d8d0"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true" isUnderline="true"/>
 				</textElement>
@@ -2360,7 +2360,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_VERIFIED_DATE}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
 				<reportElement x="311" y="733" width="219" height="15" uuid="0ecf7b11-5140-473d-b86e-17922f63a06e"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true" isUnderline="true"/>

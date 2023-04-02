@@ -112,7 +112,7 @@ public class ChequeXML {
 		    	
 		    	System.out.println("Check check no:"+xml.getCheckNumber() + " pay to: " + xml.getPayTo());
 		    	
-		    	if(xml!=null && Chequedtls.checkIfCheckNumberExist(xml.getCheckNumber())) {
+		    	if(xml!=null && Chequedtls.checkIfCheckNumberExist(xml.getCheckNumber(), xml.getAccountNumber())) {
 		    		
 		    		Chequedtls check = convertXMLThenSave(xml);
 		    		if(check!=null && check.getCheque_id()>0) {
