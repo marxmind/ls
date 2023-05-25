@@ -49,7 +49,7 @@ public class MooeBean implements Serializable {/**
 		mooes = new ArrayList<Mooe>();
 		String sql = "";
 		if(getSearchParam()!=null && !getSearchParam().isEmpty()) {
-			sql = " AND (ofs.name like '%"+ getSearchParam() +"%' OR moe.description like '%"+ getSearchParam() +"%' )";
+			sql = " AND (ofs.name like '%"+ getSearchParam() +"%' OR moe.description like '%"+ getSearchParam() +"%' OR moe.code like '%"+ getSearchParam() +"%' )";
 		}else {
 			sql = " AND moe.yearbudget= " + DateUtils.getCurrentYear();
 		}

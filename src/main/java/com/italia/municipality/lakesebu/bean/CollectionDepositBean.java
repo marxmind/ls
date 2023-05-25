@@ -774,15 +774,15 @@ public class CollectionDepositBean implements Serializable {
 	}
 	
 	public void onCellEdit(CellEditEvent event) {
-		 try{
-	        Object oldValue = event.getOldValue();
-	        Object newValue = event.getNewValue();
+		 //try{
+	       // Object oldValue = event.getOldValue();
+	        //Object newValue = event.getNewValue();
 	        
-	        System.out.println("old Value: " + oldValue);
-	        System.out.println("new Value: " + newValue);
+	        //System.out.println("old Value: " + oldValue);
+	        //System.out.println("new Value: " + newValue);
 	        
 	        
-	        int index = event.getRowIndex();
+	        //int index = event.getRowIndex();
 	       // String column =  event.getColumn().getHeaderText();
 	        //System.out.println("getCashDvData(): " + getCashDvData());
 	        //System.out.println(getCashDvData().getRpts()!=null? getCashDvData().getRpts().size() : "No value");
@@ -806,18 +806,18 @@ public class CollectionDepositBean implements Serializable {
 	        	
 	        }*/
 	        
-		 }catch(Exception e){
-			 e.printStackTrace();
-		 }  
+		 //}catch(Exception e){
+			// e.printStackTrace();
+		 //}  
 	 }
 	
-	public void saveItem(CollectionDeposit cd) {
-		CollectionDeposit cz = cd;
+	public void saveItem(CollectionDeposit cz) {
     	cz.setFundId(getCashDvData().getFundId());
     	cz.setIsActive(1);
     	cz.setCollectionDepositReport(getCashDvData());
-		cd.save();
+		cz.save();
 		load();
+		clickItemRpt(getCashDvData());
 		Application.addMessage(1, "Success", "Successfully saved.");
 	}
 }

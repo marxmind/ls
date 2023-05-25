@@ -1,0 +1,25 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+    <ui:composition>
+    	
+    		
+    		<p:dialog widgetVar="dlgUpload" width="300" height="100" header="Upload Data to Server" closable="true" modal="true" closeOnEscape="true">
+				<div class="card">
+					  <p:fileUpload mode="advanced" auto="true" dragDropSupport="true" 
+                      multiple="false"
+                      sizeLimit="10485760" allowTypes="/(\.|\/)(zip)$/"
+                      invalidSizeMessage="Maximum file size allowed is 10 MB"
+                      invalidFileMessage="only zip file is allowed"
+                      update="msg"
+                      listener="#{backup.handleFileUpload}"/>
+				</div>
+    		</p:dialog>
+    		
+    </ui:composition>
+ </html>

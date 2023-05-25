@@ -74,4 +74,6 @@ public class GlobalVar {
 	public static final String CHECK_XML=CHECK_XML_FOLDER+SEP+"xml"+SEP;
 	public static final String CHECK_XML_ERROR=CHECK_XML_FOLDER+SEP+"error"+SEP;
 	public static final String CHECK_XML_UNPROCCESSED=CHECK_XML_FOLDER+SEP+"unproccessed"+SEP;
+	public static final String BACKUP_DATA_FOLDER=PRIMARY_DRIVE + SEP + APP_NAME + SEP + "app_data_backup" + SEP;
+	public static final String BACKUP_ZIP_FILE_NAME="data_backup";
 }

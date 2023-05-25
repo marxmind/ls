@@ -39,11 +39,16 @@ public class BusinessMapping {
 	private String buildingOwnerNamer;
 	private double amountRented;
 	private String mapBy;
+	private int year;
 	
 	private int count;
 	private int countWithPermit;
 	private int countNoPermit;
 	private String address;
+	
+	public static BusinessMapping mapData(long id) {
+		return retrieve(" AND bzid="+id, new String[0]).get(0);
+	}
 	
 	public static List<BusinessMapping> retrieve(String sql, String[] params){
 		List<BusinessMapping> trans = new ArrayList<BusinessMapping>();
@@ -105,6 +110,7 @@ public class BusinessMapping {
 					.amountRented(rs.getDouble("rentamount"))
 					.mapBy(rs.getString("mapby"))
 					.address(address)
+					.year(rs.getInt("yearmap"))
 					.build();
 			
 			trans.add(mk);

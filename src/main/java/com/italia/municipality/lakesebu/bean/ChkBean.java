@@ -85,6 +85,7 @@ public class ChkBean implements Serializable{
 	private List offices;
 	private Map<Long, Offices> officeData;
 	private List mooes;
+	private Map<Long, String> mapMooeForOffice;
 	private long mooeId;
 	//private Map<Long, Mooe> mooeMap;
 	private int treasPersonnelId;
@@ -121,6 +122,15 @@ public class ChkBean implements Serializable{
 	private List yearBuds;
 	private int yearOfficeBudId;
 	private List yearOfficeBuds;
+	private String[] alertBudgetMsg;
+	private int yearDataClick;
+	
+	private long officeHisId;
+	private List officesHis;
+	private int yearHisId;
+	private List yearsHIs;
+	private List<OfficeBudget> budgetsHis;
+	
 	public void clickItem(Chequedtls chk) {
 		setSelectedData(chk);
 		setDateTime(DateUtils.convertDateString(chk.getDate_disbursement(), "yyyy-MM-dd"));
@@ -128,6 +138,7 @@ public class ChkBean implements Serializable{
 		setOfficeId(chk.getOffice().getId());
 		System.out.println("Office Id: " + chk.getOffice().getId());
 		setMooeId(chk.getMoe().getId());
+		setYearDataClick(Integer.valueOf(chk.getDate_disbursement().split("-")[0]));
 		loadMooeForOffice();
 		setCheckSeriesNo(chk.getCheckNo());
 		setPayTo(chk.getPayToTheOrderOf());
@@ -147,14 +158,17 @@ public class ChkBean implements Serializable{
 		setIncludeDate(true);//default set to true
 		Date dateSource = DateUtils.getDateToday();
 		selectedChecks = new ArrayList<Chequedtls>();
+		yearDataClick=DateUtils.getCurrentYear();
 		dateTime = dateSource;
 		dateFrom = dateSource;
 		dateTo = dateSource;
 		offices = new ArrayList<>();
+		officesHis = new ArrayList<>();
 		searchFunds = new ArrayList<>();
 		funds = new ArrayList<>();
 		mooes = new ArrayList<>();
 		officeId=0;//office
+		officeHisId=0;
 		fundId=2;//General Fund
 		fundBudgetId=2;//General Fund
 		fundBudgets = new ArrayList<>();
@@ -173,6 +187,7 @@ public class ChkBean implements Serializable{
 		officeData = new LinkedHashMap<Long, Offices>();
 		for(Offices d : Offices.retrieve(" ORDER BY name", new String[0])) {
 			offices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
+			officesHis.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			offBuds.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			officeData.put(d.getId(), d);
 		}
@@ -205,13 +220,16 @@ public class ChkBean implements Serializable{
 		
 		
 		year=DateUtils.getCurrentYear();//current year
+		yearHisId=year;
 		years = new ArrayList<>();
+		yearsHIs = new ArrayList<>();
 		yearBuds = new ArrayList<>();
 		yearOfficeBuds = new ArrayList<>();
 		yearBudId = DateUtils.getCurrentYear();
 		yearOfficeBudId = yearBudId;
 		for(int y=2016; y<=year; y++) {
 			years.add(new SelectItem(y, y+""));
+			yearsHIs.add(new SelectItem(y, y+""));
 			yearBuds.add(new SelectItem(y, y+""));
 			yearOfficeBuds.add(new SelectItem(y, y+""));
 		}
@@ -219,14 +237,84 @@ public class ChkBean implements Serializable{
 	}
 	
 	public void loadMooeForOffice() {
-		mooes = new ArrayList<>();
-		List<Mooe> moes = Mooe.retrieve(" AND ofs.offid="+getOfficeId(), new String[0]);
+			int year = getYearDataClick();
+			System.out.println("year selected: " + year);
+			mooes = new ArrayList<>();
+			mapMooeForOffice = new LinkedHashMap<Long, String>();
+			List<Mooe> moes = Mooe.retrieve(" AND ofs.offid="+getOfficeId() + " AND moe.yearbudget=" + year, new String[0]);
+			for(Mooe mo : moes) {
+				double usedAmount = Chequedtls.mooeUsed(mo.getOffices().getId(), mo.getId(), year);
+				String budget=Currency.formatAmount(mo.getBudgetAmount());
+				String usedAm=Currency.formatAmount(usedAmount);
+				mooes.add(new SelectItem(mo.getId(),mo.getCode() + "-" + mo.getDescription() + " (BUDGET:"+ budget +" USED:"+usedAm+")"));
+				mapMooeForOffice.put(mo.getId(),budget+":"+usedAm+":"+mo.getDescription());
+			}
+			if(moes!=null && moes.size()==0) {mooes.add(new SelectItem(0,"No Assigned MOOE (0.00)"));}
+	}
+	
+	public void loadMooeForOfficeHis() {
+		budgetsHis = new ArrayList<OfficeBudget>();
+		List<Mooe> moes = Mooe.retrieve(" AND ofs.offid="+getOfficeHisId() + " AND moe.yearbudget=" + getYearHisId(), new String[0]);
 		for(Mooe mo : moes) {
-			double amount = Chequedtls.mooeUsed(mo.getOffices().getId(), mo.getId(), DateUtils.getCurrentYear());
-			mooes.add(new SelectItem(mo.getId(),mo.getDescription() + " (BUDGET:"+ Currency.formatAmount(mo.getBudgetAmount()) +" REM:"+Currency.formatAmount(amount)+")"));
-			//mooeMap.put(mo.getId(), mo);
+			double usedAmount = Chequedtls.mooeUsed(mo.getOffices().getId(), mo.getId(), getYearHisId());
+			String budget=Currency.formatAmount(mo.getBudgetAmount());
+			String usedAm=Currency.formatAmount(usedAmount);
+			double remaining = mo.getBudgetAmount() - usedAmount;
+			OfficeBudget bud = OfficeBudget.builder()
+					.mooeCode(mo.getCode())
+					.officeName(mo.getOffices().getName())
+					.mooeName(mo.getDescription())
+					.mooeBudget(budget)
+					.usedBudget(usedAm)
+					.remainingBudget(Currency.formatAmount(remaining))
+					.build();
+			budgetsHis.add(bud);
 		}
-		if(moes!=null && moes.size()==0) {mooes.add(new SelectItem(0,"No Assigned MOOE (0.00)"));}
+		
+	}
+	
+	public void selectedMooeChecker() {
+		if(mapMooeForOffice!=null) {
+			String[] alert = new String[4];
+			alert[0]="";
+			alert[1]="";
+			alert[2]="";
+			alert[3]="";
+			if(mapMooeForOffice.containsKey(getMooeId())) {
+				String[] val = mapMooeForOffice.get(getMooeId()).split(":");
+				double budget=Double.valueOf(val[0].replace(",", ""));
+				double used=Double.valueOf(val[1].replace(",", ""));
+				double remaining = budget - used;
+				PrimeFaces pf = PrimeFaces.current();
+				if(remaining<=0) {
+					alert[0]="Budget: " + val[0];
+					alert[1]="Used:" + val[1];
+					alert[2]="You don't have remaining budget for this MOOE("+ val[2] +")";
+					alert[3]="Remaining: " + Currency.formatAmount(remaining);
+					setAlertBudgetMsg(alert);
+					pf.executeScript("PF('dlgAlertBudget').show(1000)");;
+				}else {
+					if(remaining>=1000 && remaining <=2000) {
+						alert[0]="Budget: " + val[0];
+						alert[1]="Used:" + val[1];
+						alert[2]="Please check below remaining budget for this MOOE("+ val[2] +")";
+						alert[3]="Remaining: " + Currency.formatAmount(remaining);
+						setAlertBudgetMsg(alert);
+						pf.executeScript("PF('dlgAlertBudget').show(1000)");
+					}else if(remaining>=10000 && remaining <=20000) {
+						alert[0]="Budget: " + val[0];
+						alert[1]="Used:" + val[1];
+						alert[2]="Please check below remaining budget for this MOOE("+ val[2] +")";
+						alert[3]="Remaining: " + Currency.formatAmount(remaining);
+						setAlertBudgetMsg(alert);
+						pf.executeScript("PF('dlgAlertBudget').show(1000)");
+					}else {
+						pf.executeScript("PF('dlgAlertBudget').hide(1000)");
+					}
+				}
+				setAlertBudgetMsg(alert);
+			}
+		}
 	}
 	
 	public void search() {
@@ -460,6 +548,7 @@ public class ChkBean implements Serializable{
 	
 	public void clearAll() {
 		setSelectedData(null);
+		yearDataClick=DateUtils.getCurrentYear();
 		dateTime = DateUtils.getDateToday();
 		//setCheckSeriesNo(null);
 		loadNewCheckNo();//increment new check number
@@ -563,7 +652,8 @@ public class ChkBean implements Serializable{
 	public void printReportIndividual(Chequedtls chk) {
 		String date = chk.getDate_disbursement();
 		String tmpDate = date;
-		chk.setDate_disbursement(convertDateToMonthDayYear(date));
+		//chk.setDate_disbursement(convertDateToMonthDayYear(date));
+		chk.setDate_disbursement(convertDateToMonthDayYearNumeric(date));//new implementation as requested by bank mm-dd-yyyy
 		
 		Chequedtls.compileReport(chk);
 		chk.setDate_disbursement(tmpDate);
@@ -652,6 +742,28 @@ public class ChkBean implements Serializable{
 			dateVal = getMonthName(month) + " 0"+day + ", " + year;
 		}else{
 			dateVal = getMonthName(month) + " "+day + ", " + year;
+		}
+		//System.out.println("return date: "+ dateVal);
+		return dateVal;
+	}
+	/**
+	 * 
+	 * @param dateVal YYYY-MM-DD
+	 * @return Month day, Year
+	 */
+	private String convertDateToMonthDayYearNumeric(String dateVal){
+		//System.out.println("Date : " + dateVal);
+		if(dateVal==null || dateVal.isEmpty()){
+			dateVal = DateUtils.getCurrentDateYYYYMMDD();
+		}
+		int month = Integer.valueOf(dateVal.split("-")[1]); 
+		String year = dateVal.split("-")[0];
+		int day = Integer.valueOf(dateVal.split("-")[2]);
+		
+		if(day<10){
+			dateVal = (month<10? "0"+month: month) + "-0"+day + "-" + year;
+		}else{
+			dateVal = (month<10? "0"+month: month) + "-"+day + "-" + year;
 		}
 		//System.out.println("return date: "+ dateVal);
 		return dateVal;

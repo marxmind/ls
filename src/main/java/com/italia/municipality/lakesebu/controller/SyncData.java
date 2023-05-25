@@ -115,6 +115,17 @@ public class SyncData {
 	
 	
 	public static void loadServerData() {
+		String local_path = GlobalVar.DOWNLOADED_DATA_FOLDER;
+		String local_path_copy = GlobalVar.COMPLETED_DATA_FOLDER;
+		loadData(local_path,local_path_copy, true);
+	}
+	/**
+	 * starting point to load data to database
+	 * @param local_path
+	 * @param local_path_copy
+	 * @param backupFile
+	 */
+	public static void loadData(String local_path, String local_path_copy, boolean backupFile) {
 		Conf conf = Conf.getInstance();
 		String DB_PATH = conf.getDatabaseHomePath();
 		String UNAME = conf.getDatabaseUserName();
@@ -123,15 +134,13 @@ public class SyncData {
 		String TAXATION = conf.getDatabaseLand();
 		String CHEQUE = conf.getDatabaseBank();
 		String CASHBOOK = conf.getDatabaseCashBook();
-		String local_path = GlobalVar.DOWNLOADED_DATA_FOLDER;
-		String local_path_copy = GlobalVar.COMPLETED_DATA_FOLDER;
 		
-		
-		copyFileUsingStream(local_path + WEBTIS+".sql", local_path_copy + WEBTIS+".sql");
-		copyFileUsingStream(local_path + TAXATION+".sql", local_path_copy + TAXATION+".sql");
-		copyFileUsingStream(local_path + CHEQUE+".sql", local_path_copy + CHEQUE+".sql");
-		copyFileUsingStream(local_path + CASHBOOK+".sql", local_path_copy + CASHBOOK+".sql");
-		
+		if(backupFile) {
+			copyFileUsingStream(local_path + WEBTIS+".sql", local_path_copy + WEBTIS+".sql");
+			copyFileUsingStream(local_path + TAXATION+".sql", local_path_copy + TAXATION+".sql");
+			copyFileUsingStream(local_path + CHEQUE+".sql", local_path_copy + CHEQUE+".sql");
+			copyFileUsingStream(local_path + CASHBOOK+".sql", local_path_copy + CASHBOOK+".sql");
+		}
 		if(loadToDatabase(WEBTIS, UNAME, PWORD, local_path, DB_PATH)) {
 			//Application.addMessage(1, "Success", "The webtis table has been successfully updated");
 			System.out.println("The webtis table has been successfully updated");

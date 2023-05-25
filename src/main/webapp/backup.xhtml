@@ -1,0 +1,37 @@
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:faces="jakarta.faces"
+	xmlns:ui="jakarta.faces.facelets"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:p="http://primefaces.org/ui">
+ 
+    <ui:composition>
+    	
+    		<script>
+		    	//<![CDATA[
+		        function start() {
+		            PF('statusDialog').show();
+		        }
+		
+		        function stop() {
+		            PF('statusDialog').hide();
+		        }
+		        //]]>
+			</script>
+    		
+    		<p:dialog widgetVar="dlgBakup" width="300" height="100" header="Fetch to server" closable="true" modal="true" closeOnEscape="true">
+				<div class="card">
+						<p:commandButton icon="pi pi-download" value="Backup Data" actionListener="#{backup.zippingFile}" update="msg" styleClass="ui-button-outlined"/>
+				       	
+				        <p:commandButton value="Download Backup" icon="pi pi-arrow-down" styleClass="ui-button-outlined">
+				            <p:fileDownload value="#{backup.file}"/>
+				        </p:commandButton>
+				</div>
+    		</p:dialog>
+    		<p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false"
+				              resizable="false">
+				     <i class="pi pi-spinner pi-spin" style="font-size:3rem"></i>
+			</p:dialog>
+    </ui:composition>
+ </html>

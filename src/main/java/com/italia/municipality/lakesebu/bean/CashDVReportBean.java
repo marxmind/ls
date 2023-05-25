@@ -2259,7 +2259,8 @@ public class CashDVReportBean implements Serializable{
 	}
 	
 	public void onCellEdit(CellEditEvent event) {
-		 try{
+		/* 
+		try{
 	        Object oldValue = event.getOldValue();
 	        Object newValue = event.getNewValue();
 	        
@@ -2290,7 +2291,15 @@ public class CashDVReportBean implements Serializable{
 	        
 		 }catch(Exception e){
 			 e.printStackTrace();
-		 }  
+		 }  */
 	 }
-	
+	public void saveItem(CashDisbursement cz) {
+		cz.setFundId(getCashDvData().getFundId());
+    	cz.setIsActive(1);
+    	cz.setReport(getCashDvData());
+    	CashDisbursement.save(cz);
+    	load();
+    	clickItemRpt(getCashDvData());
+    	Application.addMessage(1, "Success", "Successfully saved.");
+	}
 }

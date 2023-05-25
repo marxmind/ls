@@ -67,7 +67,7 @@
                          
                          <f:facet name="{Exporters}">
                          	  <div class="ui-inputgroup" style="float: right">
-                         	  <p:commandButton id="btn" icon="fa fa-map"  value="Show Map" onclick="PF('dlg').show();" actionListener="#{mapping.openMap}" update="gmap"/>
+                         	  <p:commandButton id="btn" icon="pi pi-map"  value="Show Map" onclick="PF('dlg').show();" actionListener="#{mapping.openMap}" update="gmap"/>
 	                          <p:menuButton id="exInqiD" value="Exports" >
 	                          	<p:menuitem value="Export Excel All Data">
 	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData"/>
@@ -93,6 +93,10 @@
                          
                          <p:column headerText="Date" width="50">
 		            		<p:outputLabel  value="#{pt.dateTrans}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Year" width="50">
+		            		<p:outputLabel  value="#{pt.year}"/>
 		            	 </p:column>
 		            	 
 		            	 <p:column headerText="Owner" width="100">

@@ -6,11 +6,7 @@
       xmlns:f="jakarta.faces.core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="jakarta.faces.facelets"
-      xmlns:pt="jakarta.faces.passthrough"
-      xmlns:cc="jakarta.faces.composite"
-      xmlns:c="jakarta.tags.core"
-    xmlns:fn="jakarta.tags.functions"
-    xmlns:my="jakarta.faces.component"
+     xmlns:my="jakarta.faces.composite/my"
     >
 
 <h:head>
@@ -618,7 +614,7 @@
 	
 	<p:dialog position="center top" widgetVar="selectDialog" modal="false" draggable="true" closable="false" resizable="false" fitViewport="true" responsive="true" showHeader="false"  closeOnEscape="true">
     				<p:card style="width: 100em">
-    				<p:toolbar id="tbAdd">
+    				<p:toolbar id="tbAdd" style="width: 100em">
 			    		<f:facet name="left">
 			    			<div class="ui-inputgroup" style="float:left">
 			    				<span class="ui-input-icon-left">
@@ -634,30 +630,25 @@
 			    		</f:facet>
 					</p:toolbar>
 					
+					<div id="suggestedId" style="display: block">
 					<p:outputLabel value="Recently Selected" />
-					<p:dataGrid id="dataSugId" value="#{oRListingBean.suggestedData}" var="sug" stickyHeader="false"
-							paginator="false" rows="10" columns="5">
-                         	
-            				<p:column headerText="Suggested" width="40">
-            						<p:commandButton value="#{sug.name} Php#{sug.amount}" style="width: 180px" actionListener="#{oRListingBean.addSuggested(sug)}" update="dataId dataSelectedId totalId"/>
-            				</p:column>
-            		</p:dataGrid>
+					<p:tagCloud id="dataSugId" model="#{oRListingBean.suggestedCloud}" style="width: 100em">
+			            <p:ajax event="select" update="dataId dataSelectedId totalId" listener="#{oRListingBean.onSelect}"/>
+			        </p:tagCloud>
             		
             		<br/>
             		
-            		<p:outputLabel value="Group Tax Particulars" />
-            		<p:dataGrid id="dataGroupId" value="#{oRListingBean.groups}" var="tx" stickyHeader="false"
-							paginator="true" paginatorAlwaysVisible="false" paginatorPosition="top" rows="10" columns="5">
-                         	
-            				<p:column headerText="Suggested" width="50">
-            						<p:commandButton value="#{tx.name}" style="width: 180px" actionListener="#{oRListingBean.loadPaymentDetails(tx)}" update="dataId dataSelectedId totalId" oncomplete="PF('selectDialog').hide();"/>
-            				</p:column>
-            		</p:dataGrid>
+            		<p:outputLabel value="Select Payment Type" />
+            		<p:tagCloud id="dataGroupId" model="#{oRListingBean.suggestedGroup}" style="width: 100em">
+			            <p:ajax event="select" update="dataId dataSelectedId totalId" listener="#{oRListingBean.onSelectGroup}"/>
+			        </p:tagCloud>
+            		
+            		</div>
             		
 					<p:outputLabel value="Selection" />
-    				<p:dataTable id="dataId" value="#{oRListingBean.namesData}" var="rpt" stickyHeader="false" 
+    				<p:dataTable id="dataId" value="#{oRListingBean.namesData}" var="rpt" stickyHeader="false"  style="width: 100em"
 							rows="100" paginator="false"
-							editable="true" editMode="cell" rowKey="#{rpt.id}" 
+							editable="true" editMode="cell" rowKey="#{rpt.id}" scrollable="true" scrollHeight="250"
                          >
                          	
                          	<p:ajax event="cellEdit"  listener="#{oRListingBean.onCellEdit}" update="dataId dataSelectedId totalId" />
@@ -719,6 +710,13 @@
 		}
 		function hideSettingButton() {
 			$("#settingId").hide();
+		}
+		
+		function hideSuggestionButton() {
+			$("#suggestedId").hide();
+		}
+		function showSuggestionButton() {
+			$("#suggestedId").show();
 		}
 		
 	</h:outputScript>
@@ -1278,7 +1276,7 @@
 	</p:dialog>
 	
 	<p:commandButton title="Duplicate Series" icon="pi pi-clone" actionListener="#{oRListingBean.viewDuplicate}" update="dataDupId msg" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 229px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
-	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Duplicate OR" widgetVar="dlgDuplicateSeries" width="1000" height="550" position="center">
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Duplicate Series" widgetVar="dlgDuplicateSeries" width="1000" height="550" position="center">
 		
 		<p:dataTable id="dataDupId" value="#{oRListingBean.orsDuplicate}" var="st" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

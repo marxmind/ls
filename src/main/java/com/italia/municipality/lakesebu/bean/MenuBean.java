@@ -281,4 +281,8 @@ public class MenuBean implements Serializable{
 	public void setStyleButton(String styleButton) {
 		this.styleButton = styleButton;
 	}
+	
+	public String bnIndex() {
+		return "bni.xhtml";
+	}
 }

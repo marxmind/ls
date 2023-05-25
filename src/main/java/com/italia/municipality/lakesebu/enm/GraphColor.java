@@ -6,7 +6,7 @@ public enum GraphColor {
 	COLOR2(2,"rgb(255, 99, 132)"),
 	COLOR3(3,"rgb(54, 162, 235)"),
 	COLOR4(4,"rgb(255, 205, 86)"),
-	COLOR5(5,"rgb(255, 99, 132)"),
+	COLOR5(5,"rgb(201, 50, 10)"),
 	COLOR6(6,"rgb(255, 159, 64)"),
 	COLOR7(7,"rgb(255, 205, 86)"),
 	COLOR8(8,"rgb(75, 192, 192)"),

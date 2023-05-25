@@ -21,13 +21,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 import javax.imageio.ImageIO;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.DragDropEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.tagcloud.DefaultTagCloudItem;
+import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudItem;
+import org.primefaces.model.tagcloud.TagCloudModel;
+
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -264,6 +271,10 @@ public class ORListingBean implements Serializable{
 	@Setter @Getter private String orNumberRedColor="";
 	@Setter @Getter private List<Date> rangeDate;
 	@Setter @Getter private String[] proffesionsList;
+	@Setter @Getter private TagCloudModel suggestedCloud;
+	@Setter @Getter private Map<String, PaymentName> suggestedMap;
+	@Setter @Getter private TagCloudModel suggestedGroup;
+	@Setter @Getter private Map<String, TaxCodeGroup> suggestedGroupMap;
 	
 	public void validateSeries() {
 		boolean isExist = ORListing.isExistingSeries(getCollectorId(), getOrNumber(), getFormTypeId());
@@ -312,6 +323,8 @@ public class ORListingBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
+		suggestedCloud = new DefaultTagCloudModel();
+		suggestedGroup = new DefaultTagCloudModel();
 		Date dateRpt = DateUtils.getDateToday();
 		rangeDate = new ArrayList<Date>();
 		rangeDate.add(dateRpt);
@@ -590,12 +603,16 @@ public class ORListingBean implements Serializable{
 	}
 	
 	private void suggestedInfo() {
-		suggestedData = new ArrayList<PaymentName>();//Collections.synchronizedList(new ArrayList<PaymentName>());
-		Map<Long, PaymentName> mapData = new HashMap<Long, PaymentName>();//Collections.synchronizedMap(new HashMap<Long, PaymentName>());
+		suggestedPayment();
+		/*
+		suggestedData = new ArrayList<PaymentName>();
+		Map<Long, PaymentName> mapData = new HashMap<Long, PaymentName>();
 		int cnt = 1;
 		for(ORNameList or : ORNameList.retrieve(" ORDER BY nameL.timestampol DESC LIMIT 100", new String[0])) {
 			if(cnt<=10) {
 				long id = or.getPaymentName().getId();
+				
+				
 				if(mapData!=null) {
 					if(!mapData.containsKey(id)) {
 						PaymentName name = or.getPaymentName();
@@ -611,8 +628,62 @@ public class ORListingBean implements Serializable{
 				}
 			}
 			cnt++;
-		}
+		}*/
+		
+		/**
+		 * xhtml
+		 * <p:dataGrid id="dataSugId" value="#{oRListingBean.suggestedData}" var="sug" stickyHeader="false"
+							paginator="false" rows="10" columns="5">
+                         	
+            				<p:column headerText="Suggested" width="40">
+            						<p:commandButton value="#{sug.name} Php#{sug.amount}" style="width: 180px" actionListener="#{oRListingBean.addSuggested(sug)}" update="dataId dataSelectedId totalId"/>
+            				</p:column>
+            		</p:dataGrid>
+		 */
 	}
+	
+	private void suggestedPayment() {
+		suggestedCloud = new DefaultTagCloudModel();
+		suggestedMap = new LinkedHashMap<String, PaymentName>();
+		Map<Long, PaymentName> mapData = new HashMap<Long, PaymentName>();
+		int cnt = 1;
+		for(ORNameList or : ORNameList.retrieve(" ORDER BY nameL.timestampol DESC LIMIT 100", new String[0])) {
+			String nMap="";
+			if(cnt<=10) {
+				long id = or.getPaymentName().getId();
+				int[] nums = {1,2,3,4,5};
+				Random random = new Random();
+				int numRan = random.nextInt(4 - 0 + 1) + 0;
+				
+				if(mapData!=null) {
+					if(!mapData.containsKey(id)) {
+						PaymentName name = or.getPaymentName();
+						name.setAmount(or.getAmount());
+						mapData.put(id, name);
+						nMap = name.getName()+"("+ Currency.formatAmount(or.getAmount())+")";
+						suggestedMap.put(nMap, name);
+						suggestedCloud.addTag(new DefaultTagCloudItem(nMap, nums[numRan]));
+					}
+				}else {
+					PaymentName name = or.getPaymentName();
+					name.setAmount(or.getAmount());
+					mapData.put(id, name);
+					nMap = name.getName()+"("+ Currency.formatAmount(or.getAmount())+")";
+					suggestedMap.put(nMap, name);
+					suggestedCloud.addTag(new DefaultTagCloudItem(nMap, nums[numRan]));
+				}
+			}
+			cnt++;
+		}
+		
+	}
+	
+	public void onSelect(SelectEvent<TagCloudItem> event) {
+        TagCloudItem item = event.getObject();
+        //Application.addMessage(1, "Item Selected", item.getLabel() + " strength: " + item.getStrength());
+        PaymentName name = getSuggestedMap().get(item.getLabel()); 
+        addSuggested(name);
+	}    
 	
 	public void load() {
 		String sql = "";
@@ -824,7 +895,7 @@ public class ORListingBean implements Serializable{
 				isCTC = true;
 			}
 			
-			//this line of code has been change. check below codes
+			//this line of code was changed. check below codes
 			//boolean isbarangayCtc = or.getCollector().getDepartment().getDepid()>=62? true : false; //62-80 = barangay
 			
 			//revise above condition for barangay
@@ -1469,6 +1540,29 @@ public class ORListingBean implements Serializable{
 			
 			
 		}
+		
+		PrimeFaces pf = PrimeFaces.current();
+		if(getSearchPayName()==null || getSearchPayName().isEmpty()){
+			
+			loadSuggested();
+			pf.executeScript("showSuggestionButton()");	
+			
+		}else {
+			if("tax".equalsIgnoreCase(getSearchPayName()) || "ctc".equalsIgnoreCase(getSearchPayName()) ){
+				
+				loadSuggested();
+				pf.executeScript("showSuggestionButton()");		
+				
+			}else {
+				pf.executeScript("hideSuggestionButton()");	
+			}
+		}
+		
+		
+		
+	}
+	
+	private void loadSuggested() {
 		loadTaxGroup();
 		
 		//ADDED
@@ -1476,9 +1570,37 @@ public class ORListingBean implements Serializable{
 	}
 	
 	public void loadTaxGroup() {
-		groups = new ArrayList<TaxCodeGroup>();
-		groups= TaxCodeGroup.retrieve("", new String[0]);
+		//groups = new ArrayList<TaxCodeGroup>();
+		//groups= TaxCodeGroup.retrieve("", new String[0]);
+		/**
+		 * <p:dataGrid id="dataGroupId" value="#{oRListingBean.groups}" var="tx" stickyHeader="false"
+							paginator="true" paginatorAlwaysVisible="false" paginatorPosition="top" rows="10" columns="5">
+                         	
+            				<p:column headerText="Suggested" width="50">
+            						<p:commandButton value="#{tx.name}" style="width: 180px" actionListener="#{oRListingBean.loadPaymentDetails(tx)}" update="dataId dataSelectedId totalId" oncomplete="PF('selectDialog').hide();"/>
+            				</p:column>
+            		</p:dataGrid>
+		 */
+		
+		suggestedGroup = new DefaultTagCloudModel();
+		suggestedGroupMap=new LinkedHashMap<String, TaxCodeGroup>();
+		for(TaxCodeGroup gp : TaxCodeGroup.retrieve(" ORDER BY st.groupname", new String[0])) {
+			int[] nums = {1,2,3,4,5};
+			Random random = new Random();
+			int numRan = random.nextInt(4 - 0 + 1) + 0;
+			suggestedGroup.addTag(new DefaultTagCloudItem(gp.getName(),numRan));
+			suggestedGroupMap.put(gp.getName(),gp);
+		}
+		
 	}
+	
+	public void onSelectGroup(SelectEvent<TagCloudItem> event) {
+        TagCloudItem item = event.getObject();
+        TaxCodeGroup name = getSuggestedGroupMap().get(item.getLabel()); 
+        loadPaymentDetails(name);
+        PrimeFaces pf = PrimeFaces.current();
+        pf.executeScript("PF('selectDialog').hide()");
+	}  
 	
 	public void loadPaymentDetails(TaxCodeGroup gp) {
 		namesData = new ArrayList<PaymentName>();
@@ -2074,6 +2196,8 @@ public class ORListingBean implements Serializable{
 					setSearchName(getPayorName());
 				}
 			}
+			//instead of payorname change to ORNumber or Cedula Number
+			setSearchName(or.getOrNumber());
 			
 			namesDataSelected = new ArrayList<PaymentName>();
 			selectedPaymentNameMap = new HashMap<Long, PaymentName>();
@@ -2797,14 +2921,14 @@ public class ORListingBean implements Serializable{
 	
 	public void printSummaryOnly() {
 		try{
-			List<Reports> rss = new ArrayList<Reports>();//Collections.synchronizedList(new ArrayList<Reports>());
+			List<Reports> rss = new ArrayList<Reports>();
 			
 			int size = getRptsOnly().size();
-			
+			System.out.println("getRptsOnly().size(): " + size);
 			if(size>35) {
 				int cnt=1;
-				List<Reports> r1 = new ArrayList<Reports>();//Collections.synchronizedList(new ArrayList<>());
-				List<Reports> r2 = new ArrayList<Reports>();//Collections.synchronizedList(new ArrayList<>());
+				List<Reports> r1 = new ArrayList<Reports>();
+				List<Reports> r2 = new ArrayList<Reports>();
 				int cntRem = 1;
 				for(Reports r : getRptsOnly()) {
 					if(cnt<36) {
@@ -2824,6 +2948,8 @@ public class ORListingBean implements Serializable{
 				
 				
 				//combine the two list
+				//this is for the first page only
+				//which is less than 35 rows
 				for(int i=0; i<35;i++) {
 					Reports r = new Reports();
 					r.setF1(r1.get(i).getF1());
@@ -2835,11 +2961,28 @@ public class ORListingBean implements Serializable{
 					rss.add(r);
 				}
 				
+				//adding for more than
+				//this code is for more than one page
+				if(cntRem>=36) {
+					for(int i=35; i<cntRem;i++) {
+						Reports r = new Reports();
+						r.setF1(r2.get(i).getF1());
+						r.setF2(r2.get(i).getF2());
+						i+=1;
+						try{r.setF3(r2.get(i).getF1());}catch(IndexOutOfBoundsException ie) {}
+						try{r.setF4(r2.get(i).getF2());}catch(IndexOutOfBoundsException ie) {}
+						
+						rss.add(r);
+					}
+				}
+				
 			}else {
 				rss = getRptsOnly();
 			}
 			
-			
+			for(Reports r : rss) {
+				System.out.println("f1: " + r.getF1() + " f2: " + r.getF2() + " f3: " + r.getF3() + " f4: " + r.getF4());
+			}
 			
 			String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 					AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();

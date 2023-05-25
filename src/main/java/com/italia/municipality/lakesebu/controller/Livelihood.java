@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.italia.municipality.lakesebu.controller.UserDtls;
+import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.Database;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
@@ -158,6 +159,37 @@ public class Livelihood {
 		}catch(Exception e){e.getMessage();}
 		
 		return result;
+	}
+	
+	public static List<String> retrieveBusinessName(String sql, String[] params){
+		List<String> results = new ArrayList<String>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			System.out.println("business: " + rs.getString("livename"));
+			results.add(rs.getString("livename"));
+		}
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException sl){}
+		
+		return results;
 	}
 	
 	public static List<Livelihood> retrieve(String sqlAdd, String[] params){

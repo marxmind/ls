@@ -99,6 +99,7 @@
 					            <p:outputLabel value="MOOE"/>
 								<p:selectOneMenu id="moId" value="#{chk.mooeId}" style="width: 15em" filter="true" filterMatchMode="contains">
 					            		<f:selectItems value="#{chk.mooes}"/>
+					            		<p:ajax event="change" listener="#{chk.selectedMooeChecker}" update="idMsg" />
 					            </p:selectOneMenu>
 				                
 		    				</h:panelGrid>
@@ -157,7 +158,7 @@
 	    		<div class="grid">
 	    		
 	    		<div class="col-12">
-	    			<p:panel id="idSearch" header="Use these fields for searching..." style="margin-bottom:10px;">
+	    			<p:panel id="idSearch" header="Use below fields for searching data" style="margin-bottom:10px;">
 	    			<div class="ui-inputgroup">
 	    				<p:autoComplete minQueryLength="5" placeholder="Search..." value="#{chk.searchPayTo}" completeMethod="#{chk.autoPayToName}" effect="fade" maxResults="10">
 		    					<p:ajax event="change" listener="#{chk.search}" update="dataChkId"/>
@@ -360,8 +361,10 @@
 	</p:dialog>
 	
 	<p:dialog closable="false" closeOnEscape="true" showHeader="true" header="MOOE" widgetVar="dlgMooe" width="1000" height="500" position="center top">
-		
-		
+				
+				<p:tabView dynamic="true" cache="true" prependId="false">
+		            <p:tab title="Add/Edit">
+	            
 						<p:toolbar>
 		    				<p:toolbarGroup>
                 				<div class="ui-inputgroup">
@@ -447,6 +450,75 @@
             						<p:outputLabel value="#{st.yearBudget}"/>
             				</p:column>
 						</p:dataTable>
+		
+		    
+            </p:tab>
+            <p:tab title="MOOE Balance">
+                
+                		<p:toolbar>
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+                					<p:selectOneMenu value="#{chk.yearHisId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItem itemLabel="Select Year"/>
+					            		<f:selectItems value="#{chk.yearsHIs}"/>
+					            		<p:ajax event="change" listener="#{chk.loadMooeForOfficeHis}" update="dataHisId" />
+					            	</p:selectOneMenu>
+									<p:selectOneMenu value="#{chk.officeHisId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItem itemLabel="Select Office"/>
+					            		<f:selectItems value="#{chk.officesHis}"/>
+					            		<p:ajax event="change" listener="#{chk.loadMooeForOfficeHis}" update="dataHisId" />
+					            	</p:selectOneMenu>
+									<p:commandButton icon="pi pi-search" update="dataHisId" actionListener="#{chk.loadMooeForOfficeHis}"/>
+								</div>
+                			</p:toolbarGroup>
+                			<p:toolbarGroup align="right">
+                				<p:commandButton value="Close" icon="pi pi-times" actionListener="#{chk.refresh}" update="idPanel" oncomplete="PF('dlgMooe').hide()"/>     
+                			</p:toolbarGroup>	
+		    			</p:toolbar>
+                		
+                		<p:dataTable id="dataHisId" value="#{chk.budgetsHis}" var="rs" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	  
+							
+							
+							<f:facet name="{Exporters}">
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+				                    <p:dataExporter type="xls" target="dataHisId" fileName="dataHis"/>
+				                </p:commandButton>
+            				</f:facet>
+            				
+							<p:column headerText="Office" width="200" style="text-align: left">
+            						<p:outputLabel value="#{rs.officeName}"/>
+            				</p:column>
+							<p:column headerText="Mooe" width="150">
+            						<p:outputLabel value="#{rs.mooeName}"/>
+            				</p:column>
+            				<p:column headerText="Code" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rs.mooeCode}"/>
+            				</p:column>
+            				<p:column headerText="Allotment" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rs.mooeBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Remaining" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rs.remainingBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Used" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rs.usedBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				
+							
+						</p:dataTable>	
+                		
+            </p:tab>
+       </p:tabView>  
 		
 	</p:dialog>
 	
@@ -565,6 +637,24 @@
 		            				
 						</p:dataTable>
 	
+	</p:dialog>
+	
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Budget Alert" widgetVar="dlgAlertBudget" width="500" height="150" position="center top">
+		<style>
+		    .ui-panelgrid.showcase-text-align-left .ui-grid-responsive .ui-panelgrid-cell {
+		        text-align: center;
+		    }
+		
+		    .customPanelGrid .ui-panelgrid-content {
+		        align-items: center;
+		    }
+		</style>
+		<p:panelGrid id="idMsg" columns="1" layout="grid" styleClass="showcase-text-align-center">
+                  <h:outputText value="#{chk.alertBudgetMsg[2]}"/>
+                  <h:outputText value="#{chk.alertBudgetMsg[0]}"/>
+                  <h:outputText value="#{chk.alertBudgetMsg[1]}"/>
+                  <h:outputText value="#{chk.alertBudgetMsg[3]}" style="color: red; font-weight: bold"/>
+        </p:panelGrid>         
 	</p:dialog>
 	
 	<ui:include src="sendchk.xhtml" />

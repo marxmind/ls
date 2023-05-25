@@ -285,6 +285,37 @@ public class ORNameList {
 		return obj;
 	}
 	
+	public static double retrieveORNumberTotalAmount(String ornumber){
+		
+		String tableNameList = "nameL";
+		String tableOr = "orl";
+		String tableCus = "cuz";
+		String tableName = "pay";
+		String sql = "SELECT sum(nameL.olamount) as amount FROM ornamelist "+ tableNameList +", orlisting "+tableOr+", customer "+ tableCus +",paymentname "+ tableName +"  WHERE  "+tableOr+".isactiveor=1 AND " + 
+				tableNameList +".customerid=" + tableCus + ".customerid AND " + 
+				tableNameList +".orid=" + tableOr + ".orid AND " +
+				tableNameList +".pyid=" + tableName + ".pyid AND orl.ornumber='"+ ornumber.trim() +"'"; 
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			return rs.getDouble("amount");
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return 0.0;
+	}
 	
 	public static List<ORNameList> retrieve(String sqlAdd, String[] params){
 		List<ORNameList> orns = new ArrayList<ORNameList>();

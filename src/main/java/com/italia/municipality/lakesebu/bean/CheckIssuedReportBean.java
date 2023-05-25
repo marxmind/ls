@@ -683,7 +683,8 @@ public class CheckIssuedReportBean implements Serializable{
 	}
 	
 	public void onCellEdit(CellEditEvent event) {
-		 try{
+		/*
+		try{
 	        Object oldValue = event.getOldValue();
 	        Object newValue = event.getNewValue();
 	        
@@ -714,6 +715,15 @@ public class CheckIssuedReportBean implements Serializable{
 	        
 		 }catch(Exception e){
 			 e.printStackTrace();
-		 }  
+		 } */ 
 	 }
+	public void saveItem(CheckIssued cz) {
+		cz.setFundId(getCashDvData().getFundId());
+    	cz.setIsActive(1);
+    	cz.setCheckIssuedReport(getCashDvData());
+    	CheckIssued.save(cz);
+    	load();
+    	clickItemRpt(getCashDvData());
+    	Application.addMessage(1, "Success", "Successfully saved.");
+	}
 }

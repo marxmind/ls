@@ -5,7 +5,7 @@
     xmlns:f="jakarta.faces.core"
     xmlns:h="jakarta.faces.html"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:my="jakarta.faces.component"
+    xmlns:my="jakarta.faces.composite/my"
     >
  
     <ui:composition>
@@ -91,7 +91,7 @@
                          <p:ajax event="cellEdit"  listener="#{paymentTaxCodeBean.onCellEditAccountGroup}" update="dataAccountGroup msgTax" />	
                          
                          <p:column headerText="[*]" style="width:2rem" exportable="false">
-            					<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteAccountGroup(gp)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+            					<p:commandButton update="dataAccountGroup msgTax" icon="pi pi-trash" actionListener="#{paymentTaxCodeBean.deleteAccountGroup(gp)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
             					</p:commandButton>
             			 </p:column>
@@ -106,7 +106,7 @@
 						 </p:column>
 						 
 						 <p:column headerText="Action" style="width:2rem" exportable="false">
-            					<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveAccountGroup(gp)}">
+            					<p:commandButton update="dataAccountGroup msgTax" icon="pi pi-save" actionListener="#{paymentTaxCodeBean.saveAccountGroup(gp)}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
             					</p:commandButton>
             			 </p:column>
@@ -116,7 +116,7 @@
 			             </p:column>
 						 
 						 <p:rowExpansion rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
-						 	<p:dataTable id="dataAccntNames" value="#{gp.groups}" var="gpx" reflow="true" emptyMessage="No data available">
+						 	<p:dataTable id="dataAccntNames" value="#{gp.groups}" var="gpx" reflow="true" emptyMessage="No data available" lazy="false" >
 								
 								<p:column headerText="[*]" style="width:2rem" exportable="false">
             					
@@ -126,7 +126,7 @@
 	          								
             							</f:facet>
              							<f:facet name="else">
-			         						<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteAccountGroupId(gp,gpx)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+			         						<p:commandButton update="dataAccountGroup msgTax" icon="pi pi-trash" actionListener="#{paymentTaxCodeBean.deleteAccountGroupId(gp,gpx)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
 			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
 			            					</p:commandButton>
 		        						</f:facet>
@@ -156,7 +156,7 @@
 								<p:column headerText="Action" style="width:2rem" exportable="false">
             					
             					
-	          								<p:commandButton update="dataAccountGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveAccountGroupPaymentCode(gp,gpx.pyId)}" rendered="#{gpx.name.equalsIgnoreCase('Add Name')}">
+	          								<p:commandButton update="dataAccountGroup msgTax" icon="pi pi-save" actionListener="#{paymentTaxCodeBean.saveAccountGroupPaymentCode(gp,gpx.pyId)}" rendered="#{gpx.name.equalsIgnoreCase('Add Name')}">
 			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
 			            					</p:commandButton>
             							
@@ -181,7 +181,7 @@
                          <p:ajax event="cellEdit"  listener="#{paymentTaxCodeBean.onCellEditGroup}" update="dataGroup msgTax" />	
                          
                          <p:column headerText="[*]" style="width:2rem" exportable="false">
-            					<p:commandButton update="dataGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteGroup(gp)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+            					<p:commandButton update="dataGroup msgTax" icon="pi pi-trash" actionListener="#{paymentTaxCodeBean.deleteGroup(gp)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
             					</p:commandButton>
             			 </p:column>
@@ -196,7 +196,7 @@
 						 </p:column>
 						 
 						 <p:column headerText="Action" style="width:2rem" exportable="false">
-            					<p:commandButton update="dataGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveGroup(gp)}">
+            					<p:commandButton update="dataGroup msgTax" icon="pi pi-save" actionListener="#{paymentTaxCodeBean.saveGroup(gp)}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
             					</p:commandButton>
             			 </p:column>
@@ -216,7 +216,7 @@
 	          								
             							</f:facet>
              							<f:facet name="else">
-			         						<p:commandButton update="dataGroup msgTax" icon="fa fa-trash" actionListener="#{paymentTaxCodeBean.deleteGroupId(gp,gpx)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
+			         						<p:commandButton update="dataGroup msgTax" icon="pi pi-trash" actionListener="#{paymentTaxCodeBean.deleteGroupId(gp,gpx)}" rendered="#{!gp.name.equalsIgnoreCase('Add Name')}">
 			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
 			            					</p:commandButton>
 		        						</f:facet>
@@ -246,7 +246,7 @@
 								<p:column headerText="Action" style="width:2rem" exportable="false">
             					
             					
-	          								<p:commandButton update="dataGroup msgTax" icon="fa fa-floppy-o" actionListener="#{paymentTaxCodeBean.saveGroupPaymentCode(gp,gpx.pyId)}" rendered="#{gpx.name.equalsIgnoreCase('Add Name')}">
+	          								<p:commandButton update="dataGroup msgTax" icon="pi pi-save" actionListener="#{paymentTaxCodeBean.saveGroupPaymentCode(gp,gpx.pyId)}" rendered="#{gpx.name.equalsIgnoreCase('Add Name')}">
 			            						<p:confirm header="Confirmation" message="Are you sure you want to delete this group" icon="ui-icon-alert" />
 			            					</p:commandButton>
             							

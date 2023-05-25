@@ -1668,6 +1668,10 @@ public void printPermit(BusinessPermit permit) {
 		try{qr += mapMemo.get("3rd QUARTER");}catch(Exception e) {}
 		try{qr += mapMemo.get("4th QUARTER");}catch(Exception e) {}
 		
+		try{qr += mapMemo.get("1st to 3rd Qtr");}catch(Exception e) {}
+		try{qr += mapMemo.get("2nd to 3rd Qtr");}catch(Exception e) {}
+		try{qr += mapMemo.get("2nd to 4th Qtr");}catch(Exception e) {}
+		
 		try{sem += mapMemo.get("1st SEMI-ANNUAL");}catch(Exception e) {}
 		try{sem += mapMemo.get("2nd SEMI-ANNUAL");}catch(Exception e) {}
 		
