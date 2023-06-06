@@ -47,9 +47,54 @@ public class BusinessIndex {
 	private Regional regional;
 	private String purok;
 	private BusinessMapping map;
+	private int isEssential;
+	private int category;
 	
 	private Date dateTmp;
 	private String address;
+	private int type;
+	
+	public static List<BusinessIndex> retrieveName(String columnName, String name){
+		List<BusinessIndex> bns = new ArrayList<BusinessIndex>();
+		
+		
+		String sql = "SELECT bnid,bnname,bnowner,isessentail,category FROM businessindex WHERE isactivebn=1 AND bnstatus=0 AND  "+columnName+" like '%"+ name +"%'";
+		
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		
+		System.out.println("names SQL " + ps.toString());
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			BusinessIndex index = BusinessIndex.builder()
+					.id(rs.getLong("bnid"))
+					.businessName(rs.getString("bnname"))
+					.owner(rs.getString("bnowner"))
+					.isEssential(rs.getInt("isessentail"))
+					.category(rs.getInt("category"))
+					.build();
+			
+			bns.add(index);
+			
+		}
+		
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		
+		}catch(Exception e){e.getMessage();}
+		
+		return bns;
+	}
 	
 	public static List<BusinessIndex> retrieve(String sql, String[] params){
 		List<BusinessIndex> bns = new ArrayList<BusinessIndex>();
@@ -132,6 +177,8 @@ public class BusinessIndex {
 					.regional(reg)
 					.address(address.toUpperCase())
 					.map(BusinessMapping.builder().id(rs.getLong("bzid")).build())
+					.isEssential(rs.getInt("isessentail"))
+					.category(rs.getInt("category"))
 					.build();
 			
 			bns.add(index);
@@ -198,8 +245,10 @@ public class BusinessIndex {
 				+ "provid,"
 				+ "regid,"
 				+ "purok,"
-				+ "bzid)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "bzid,"
+				+ "isessentail,"
+				+ "category)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -233,6 +282,8 @@ public class BusinessIndex {
 		ps.setInt(cnt++, st.getRegional().getId());
 		ps.setString(cnt++, st.getPurok());
 		ps.setLong(cnt++, st.getMap().getId());
+		ps.setInt(cnt++, st.getIsEssential());
+		ps.setInt(cnt++, st.getCategory());
 		
 		LogU.add(st.getDateTrans());
 		LogU.add(st.getBusinessName());
@@ -244,7 +295,9 @@ public class BusinessIndex {
 		LogU.add(st.getProvincial().getId());
 		LogU.add(st.getRegional().getId());
 		LogU.add(st.getPurok());
-		LogU.add(st.getMap().getId());		
+		LogU.add(st.getMap().getId());	
+		LogU.add(st.getIsEssential());
+		LogU.add(st.getCategory());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -270,7 +323,9 @@ public class BusinessIndex {
 				+ "provid=?,"
 				+ "regid=?,"
 				+ "purok=?,"
-				+ "bzid=?" 
+				+ "bzid=?,"
+				+ "isessentail=?,"
+				+ "category=?" 
 				+ " WHERE bnid=?";
 		
 		PreparedStatement ps = null;
@@ -294,6 +349,8 @@ public class BusinessIndex {
 		ps.setInt(cnt++, st.getRegional().getId());
 		ps.setString(cnt++, st.getPurok());
 		ps.setLong(cnt++, st.getMap().getId());
+		ps.setInt(cnt++, st.getIsEssential());
+		ps.setInt(cnt++, st.getCategory());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDateTrans());
@@ -306,6 +363,8 @@ public class BusinessIndex {
 		LogU.add(st.getRegional().getId());
 		LogU.add(st.getPurok());
 		LogU.add(st.getMap().getId());
+		LogU.add(st.getIsEssential());
+		LogU.add(st.getCategory());
 		LogU.add(st.getId());
 		
 		

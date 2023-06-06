@@ -181,7 +181,6 @@ public class Livelihood {
 		rs = ps.executeQuery();
 		
 		while(rs.next()){
-			System.out.println("business: " + rs.getString("livename"));
 			results.add(rs.getString("livename"));
 		}
 		rs.close();

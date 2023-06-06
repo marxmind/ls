@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Business</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	
+	<p:growl id="msg" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-5">
+		    		<div class="grid">
+		    		<div class="col-12">
+		    			<p:panelGrid id="gridId" columns="1" layout="grid" styleClass="ui-noborder">
+		    				
+		    				
+		    				<p:outputLabel value="Business Name"/>
+							<p:inputText value="#{bnreg.businessName}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px">
+								<p:ajax event="change" update="dtlsId dataIdBiz gridId payDataId" listener="#{bnreg.provideBusinessDtls}"/>
+							</p:inputText>
+							
+							
+							<p:outputLabel value="Owner Name"/>	
+							<p:inputText value="#{bnreg.ownerName}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px">
+								<p:ajax event="change" update="dtlsId" listener="#{bnreg.provideOwnerDtls}"/>
+							</p:inputText>
+		    			
+		    				<p:outputLabel value="Business Type"/>	
+		    				<p:selectOneMenu value="#{bnreg.typeId}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{bnreg.types}"/>
+									<p:ajax event="change" update="amountLabelId" listener="#{bnreg.updateData}" />
+							</p:selectOneMenu>
+							
+							<p:outputLabel id="amountLabelId" value="#{bnreg.labelAmountCapitalGross}"/>	
+							<p:inputNumber value="#{bnreg.amountCapitalGross}" inputStyle="width: 25em; color: red; font-weight: bold; font-size: 20px"/>	
+							
+							<p:outputLabel value="Essential/Non-Essential"/>	
+		    				<p:selectOneMenu value="#{bnreg.essentialId}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{bnreg.essentials}"/>
+							</p:selectOneMenu>
+							
+							<p:outputLabel value="Category"/>	
+		    				<p:selectOneMenu value="#{bnreg.businessTypeId}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{bnreg.businessTypes}"/>
+							</p:selectOneMenu>
+							
+		    			</p:panelGrid>
+		    		</div>
+		    		
+		    		<div class="col-12">
+		    			<p:dataTable id="payDataId" value="#{bnreg.payments}" var="py" stickyHeader="false"
+							rows="100" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="100"
+                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top" style="text-align: left" stripedRows="true"
+                         editMode="cell" editable="true"
+                         >
+                         
+                         <p:ajax event="cellEdit"  listener="#{bnreg.onCellPayEdit}" update="payDataId" />
+                         
+                         <p:column headerText="Action" width="30" exportable="false">
+		                        <p:commandButton icon="pi pi-trash" update="payDataId" actionListener="#{bnreg.deletePay(py)}" rendered="#{py.id>0}">
+		                        	<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		                        </p:commandButton>
+		                        <p:commandButton value="Add" actionListener="#{bnreg.addPayment}" update="payDataId" rendered="#{py.id==0}"/>
+		                 </p:column>
+                         
+                         <p:column headerText="Name" width="150">
+		            		<p:outputLabel  value="#{py.name}" rendered="#{py.id>0}"/>
+		            		<p:selectOneMenu value="#{bnreg.idName}" filterMatchMode="contains" filter="true" rendered="#{py.id==0}">
+									<f:selectItems value="#{bnreg.names}"/>
+							</p:selectOneMenu>
+		            	 </p:column>
+		            	  
+		            	 <p:column headerText="Amount" width="100">
+		            		 <p:cellEditor>
+							       <f:facet name="output"><p:outputLabel value="#{py.amount}" /></f:facet>
+								         <f:facet name="input">
+								         <p:inputNumber  placeholder="0.00" value="#{py.amount}" rendered="#{py.id>0}"/>
+								         <p:inputNumber value="#{bnreg.amountNew}" placeholder="0.00" rendered="#{py.id==0}"/>
+							       </f:facet>
+							 </p:cellEditor>
+		            	 </p:column>
+		            	 
+		            	 
+             			</p:dataTable>
+             			
+             			
+		    		</div>
+		    		
+		    		
+		    		
+		    		<div class="col-12">
+		    			<div class="ui-inputgroup" style="float:right">
+		    				<p:commandButton value="Re-Calculate" icon="pi pi-microsoft" update="dtlsId payDataId" actionListener="#{bnreg.reCalculateBusiness}"/>
+		    			</div>
+		    		</div>
+		    		</div>
+	    		</div>
+	    	
+	    	<div class="col-7">
+	    			
+	    			<div id="businessId" style="display: none">
+	    			
+	    				<p:dataTable id="dataIdBiz" value="#{bnreg.business}" var="pt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top" style="text-align: left" stripedRows="true"
+                         >
+                         
+                         <p:column headerText="Select" width="30" exportable="false">
+		                        <p:commandButton icon="pi pi-thumbs-up" update="gridId dtlsId payDataId" actionListener="#{bnreg.selectedBusiness(pt)}"/>
+		                 </p:column>
+                         
+                         <p:column headerText="Name" width="150">
+		            		<p:outputLabel  value="#{pt.businessName}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Owner" width="100">
+		            		<p:outputLabel  value="#{pt.owner}"/>
+		            	 </p:column>
+		            	 
+             			</p:dataTable>  
+	    			
+	    			</div>
+	    	
+	    			<p:textEditor id="dtlsId" widgetVar="varDtls" value="#{bnreg.dtls}" height="1400" readonly="true" toolbarVisible="false"/>
+	    			<div class="ui-inputgroup" style="float:right">
+		    				<p:commandButton value="Print" icon="pi pi-print" update="dtlsId" actionListener="#{bnreg.calculateBusiness}" styleClass="shadow-1 mb-3 mr-2">
+		    					<p:printer target="dtlsId"/>
+		    				</p:commandButton>
+		    		</div>
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<script>
+	
+	function showBusiness() {
+		$("#businessId").show(1000);
+	}
+	function hideBusiness() {
+		$("#businessId").hide(1000);
+	}
+	
+	</script>
+	
+	<ui:include src="loader.xhtml" />
+</h:form>
+</h:body>
+</html>	

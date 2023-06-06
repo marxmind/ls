@@ -50,6 +50,7 @@ public class BusinessIndexTrans {
 	private int typeOf;
 	private double capital;
 	private double gross;
+	private double basicTax;
 	
 	private String quarterName;
 	private double amountPaid;
@@ -111,6 +112,7 @@ public class BusinessIndexTrans {
 					.typeOfName(BusinessType.val(rs.getInt("bntype")).getName())
 					.capital(rs.getDouble("capital"))
 					.gross(rs.getDouble("gross"))
+					.basicTax(rs.getDouble("basictax"))
 					.build();
 			
 			tns.add(tn);
@@ -176,8 +178,9 @@ public class BusinessIndexTrans {
 				+ "qtrype,"
 				+ "bntype,"
 				+ "capital,"
-				+ "gross)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+				+ "gross,"
+				+ "basictax)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -210,6 +213,7 @@ public class BusinessIndexTrans {
 		ps.setInt(cnt++, st.getTypeOf());
 		ps.setDouble(cnt++, st.getCapital());
 		ps.setDouble(cnt++, st.getGross());
+		ps.setDouble(cnt++, st.getBasicTax());		
 		
 		LogU.add(st.getYear());
 		LogU.add(st.getDateTrans());
@@ -221,6 +225,7 @@ public class BusinessIndexTrans {
 		LogU.add(st.getTypeOf());
 		LogU.add(st.getCapital());
 		LogU.add(st.getGross());
+		LogU.add(st.getBasicTax());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -245,7 +250,8 @@ public class BusinessIndexTrans {
 				+ "qtrype=?,"
 				+ "bntype=?,"
 				+ "capital=?,"
-				+ "gross=?" 
+				+ "gross=?,"
+				+ "basictax=?" 
 				+ " WHERE bntid=?";
 		
 		PreparedStatement ps = null;
@@ -268,6 +274,7 @@ public class BusinessIndexTrans {
 		ps.setInt(cnt++, st.getTypeOf());
 		ps.setDouble(cnt++, st.getCapital());
 		ps.setDouble(cnt++, st.getGross());
+		ps.setDouble(cnt++, st.getBasicTax());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getYear());
@@ -279,6 +286,7 @@ public class BusinessIndexTrans {
 		LogU.add(st.getTypeOf());
 		LogU.add(st.getCapital());
 		LogU.add(st.getGross());
+		LogU.add(st.getBasicTax());
 		LogU.add(st.getId());
 		
 		

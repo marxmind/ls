@@ -25,6 +25,7 @@ import com.italia.municipality.lakesebu.controller.BusinessIndexTrans;
 import com.italia.municipality.lakesebu.controller.BusinessMapping;
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.ORNameList;
+import com.italia.municipality.lakesebu.enm.BusinessCategory;
 import com.italia.municipality.lakesebu.enm.BusinessQtrType;
 import com.italia.municipality.lakesebu.enm.BusinessType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
@@ -102,6 +103,9 @@ public class BusinessIndexBean implements Serializable {
 	private Marker marker;
 	private Map<String, BusinessMapping> mapBiz;
 	
+	private List essentials;
+	private List categories;
+	
 	@PostConstruct
 	public void init() {
 		
@@ -114,6 +118,14 @@ public class BusinessIndexBean implements Serializable {
 			typeOfSearch.add(new SelectItem(type.getId(),type.getName()));
 		}
 		
+		essentials = new ArrayList<>();
+		essentials.add(new SelectItem(0, "Non-Essential"));
+		essentials.add(new SelectItem(1, "Essential"));
+		
+		categories = new ArrayList<>();
+		for(BusinessCategory cat : BusinessCategory.values()) {
+			categories.add(new SelectItem(cat.getId(), cat.getName()));
+		}
 		
 		mapBarangayData = new LinkedHashMap<Integer, Barangay>();
 		barangay = new ArrayList<>();
@@ -183,7 +195,7 @@ public class BusinessIndexBean implements Serializable {
 		}
 		dateFrom = DateUtils.getDateToday();
 		dateTo = dateFrom;
-		loadBusiness();
+		initBiz("init");
 		
 	}
 	
@@ -197,7 +209,9 @@ public class BusinessIndexBean implements Serializable {
 		
 	}
 	
-	public void loadBusiness() {
+	private void initBiz(String type) {
+		
+		
 		business = new ArrayList<BusinessIndex>();
 		String sql = "";
 		if(getSearchParam()!=null && !getSearchParam().isEmpty()) {
@@ -206,8 +220,18 @@ public class BusinessIndexBean implements Serializable {
 		if(getBarId1()>0) {
 			sql += " AND bgy.bgid=" + getBarId1();
 		}
+		
+		
+		if("init".equalsIgnoreCase(type)) {
+			sql += " LIMIT 10";
+		}
+		
 		business = BusinessIndex.retrieve(sql, new String[0]);
 		Collections.reverse(business);
+	}
+	
+	public void loadBusiness() {
+		initBiz("search");
 	}
 	
 	public void loadBusinessTrans() {
@@ -356,16 +380,29 @@ public class BusinessIndexBean implements Serializable {
 	}
 	
 	public void saveTrans(BusinessIndexTrans tran) {
-		tran.save();
-		trans = BusinessIndexTrans.retrieve(" AND bn.bnid=" + businessIndex.getId(), new String[0]);
-		tranData = BusinessIndexTrans.builder()
-				.year(DateUtils.getCurrentYear())
-				.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
-				.businessIndex(tran.getBusinessIndex())
-				.isActive(1)
-				.build();
-		trans.add(tranData);
-		Application.addMessage(1, "Success", "Successfully saved");
+		boolean isOk = true;
+		if(BusinessQtrType.ANNUAL.getId()==tran.getQtrPayment()
+				|| BusinessQtrType.FIRST_QTR.getId()==tran.getQtrPayment()
+				|| BusinessQtrType.FIRST_SEMI_ANNUAL.getId()==tran.getQtrPayment()
+				|| BusinessQtrType.FIRST_TO_THIRD.getId()==tran.getQtrPayment()) {
+			if(tran.getBasicTax()==0) {//required basic tax
+				isOk = false;
+				Application.addMessage(3, "Error", "Basix tax is required");
+			}
+		}
+		
+		if(isOk) {
+			tran.save();
+			trans = BusinessIndexTrans.retrieve(" AND bn.bnid=" + businessIndex.getId(), new String[0]);
+			tranData = BusinessIndexTrans.builder()
+					.year(DateUtils.getCurrentYear())
+					.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
+					.businessIndex(tran.getBusinessIndex())
+					.isActive(1)
+					.build();
+			trans.add(tranData);
+			Application.addMessage(1, "Success", "Successfully saved");
+		}
 	}
 	
 	public void onCellEdit(CellEditEvent event) {}

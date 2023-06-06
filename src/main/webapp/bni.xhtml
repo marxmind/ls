@@ -76,45 +76,54 @@
 		    			<p:panelGrid id="gridId" columns="2" layout="grid" styleClass="ui-noborder">
 		    				
 		    				<p:outputLabel value="Date"/>
-							<p:calendar value="#{bnIndex.businessIndex.dateTmp}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 12em"/>
+							<p:calendar value="#{bnIndex.businessIndex.dateTmp}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
 							
 							<p:outputLabel value="Status"/>	
-						    <p:selectOneMenu id="frmId" value="#{bnIndex.businessIndex.statusId}" style="width: 12em" filterMatchMode="contains" filter="true">
+						    <p:selectOneMenu id="frmId" value="#{bnIndex.businessIndex.statusId}" style="width: 15em" filterMatchMode="contains" filter="true">
 									<f:selectItems value="#{bnIndex.status}"/>
 							</p:selectOneMenu>
 							
 							<p:outputLabel value="Business"/>
-							<p:autoComplete minQueryLength="5" placeholder="Business" value="#{bnIndex.businessIndex.businessName}" completeMethod="#{bnIndex.autoBusinessName}" effect="fade" maxResults="10" style="width: 12em"/>
-							
+							<p:autoComplete minQueryLength="5" placeholder="Business" value="#{bnIndex.businessIndex.businessName}" completeMethod="#{bnIndex.autoBusinessName}" effect="fade" maxResults="10" inputStyle="width: 15em"/>
 							
 							<p:outputLabel value="Owner"/>
-							<p:autoComplete minQueryLength="5" placeholder="Owner" value="#{bnIndex.businessIndex.owner}" completeMethod="#{bnIndex.autoOwnerName}" effect="fade" maxResults="10" style="width: 12em"/>
+							<p:autoComplete minQueryLength="5" placeholder="Owner" value="#{bnIndex.businessIndex.owner}" completeMethod="#{bnIndex.autoOwnerName}" effect="fade" maxResults="10" inputStyle="width: 15em"/>
+							
+							<p:outputLabel value="Type"/>
+							<p:selectOneMenu value="#{bnIndex.businessIndex.isEssential}" style="width: 15em">
+								<f:selectItems value="#{bnIndex.essentials}"/>
+						    </p:selectOneMenu>
+						    
+						    <p:outputLabel value="Category"/>
+							<p:selectOneMenu value="#{bnIndex.businessIndex.category}" style="width: 15em">
+								<f:selectItems value="#{bnIndex.categories}"/>
+						    </p:selectOneMenu>
 							
 							<p:outputLabel value="Region"/>
-							<p:selectOneMenu value="#{bnIndex.businessIndex.regional.id}" style="width: 12em" disabled="true">
+							<p:selectOneMenu value="#{bnIndex.businessIndex.regional.id}" style="width: 15em" disabled="true">
 								<f:selectItems value="#{bnIndex.regional}"/>
 						    </p:selectOneMenu>
 						    
 						    <p:outputLabel value="Province"/>
-							<p:selectOneMenu value="#{bnIndex.businessIndex.provincial.id}" style="width: 12em" disabled="true">
+							<p:selectOneMenu value="#{bnIndex.businessIndex.provincial.id}" style="width: 15em" disabled="true">
 								<f:selectItems value="#{bnIndex.provincial}"/>
 						    </p:selectOneMenu>
 							
 							<p:outputLabel value="Municipality"/>
-							<p:selectOneMenu value="#{bnIndex.businessIndex.municipal.id}" style="width: 12em" disabled="true">
+							<p:selectOneMenu value="#{bnIndex.businessIndex.municipal.id}" style="width: 15em" disabled="true">
 								<f:selectItems value="#{bnIndex.municipal}"/>
 						    </p:selectOneMenu>
 						    
 						    <p:outputLabel value="Barangay"/>
-							<p:selectOneMenu value="#{bnIndex.businessIndex.barangay.id}" style="width: 12em" filterMatchMode="contains" filter="true">
+							<p:selectOneMenu value="#{bnIndex.businessIndex.barangay.id}" style="width: 15em" filterMatchMode="contains" filter="true">
 								<f:selectItems value="#{bnIndex.barangay}"/>
 						    </p:selectOneMenu>
 							
 							<p:outputLabel value="Purok/Sitio/Zone"/>
-							<p:inputText value="#{bnIndex.businessIndex.purok}" style="width: 12em"/>
+							<p:inputText value="#{bnIndex.businessIndex.purok}" style="width: 15em"/>
 							
 							<p:outputLabel value="Link Map"/>
-							<p:commandButton id="mapId" icon="pi pi-link" value="#{bnIndex.businessIndex.map.id>0? 'linked' : 'unlinked'}" style="width: 12em;#{bnIndex.businessIndex.map.id>0? '':'background-color: red'}" actionListener="#{bnIndex.loadMap}" oncomplete="PF('dlgMap').show()" update="mapDataId"/>
+							<p:commandButton id="mapId" icon="pi pi-link" value="#{bnIndex.businessIndex.map.id>0? 'linked' : 'unlinked'}" style="width: 15em;#{bnIndex.businessIndex.map.id>0? '':'background-color: red'}" actionListener="#{bnIndex.loadMap}" oncomplete="PF('dlgMap').show()" update="mapDataId"/>
 							
 		    			</p:panelGrid>
 		    		</div>
@@ -387,6 +396,15 @@
 								              	  <f:facet name="output"><p:outputLabel value="#{rt.gross}" /></f:facet>
 								                  <f:facet name="input">
 								                  <p:inputNumber  placeholder="0.00" value="#{rt.gross}"/>
+								                  </f:facet>
+								              </p:cellEditor>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Basic Tax" width="50">
+		            						 <p:cellEditor>
+								              	  <f:facet name="output"><p:outputLabel value="#{rt.basicTax}" /></f:facet>
+								                  <f:facet name="input">
+								                  <p:inputNumber  placeholder="0.00" value="#{rt.basicTax}"/>
 								                  </f:facet>
 								              </p:cellEditor>
 		            				</p:column>

@@ -5,7 +5,8 @@ public enum BusinessType {
 	//BusinessIndexBean loadBusinessTrans() for reference
 	NEW(0, "NEW"),
 	RENEW(1, "RENEW"),
-	OTHERS(2, "OTHERS");
+	ADDED(2, "ADDED"),//3 is reserve
+	OTHERS(4, "OTHERS");
 	
 	private int id;
 	private String name;

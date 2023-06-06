@@ -4,7 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
 import lombok.AllArgsConstructor;
@@ -44,6 +47,44 @@ public class PaymentName {
 	
 	public static List<PaymentName> retrieve(long id){
 		return retrieve(" AND accntgrpid=" + id + " ORDER BY pyname", new String[0]);
+	}
+	
+	public static Map<Long,PaymentName> retrieveAllInMap(){
+		Map<Long, PaymentName> names = new HashMap<Long, PaymentName>();
+		
+		String sql = "SELECT * FROM paymentname  WHERE  isactivepy=1 ";
+				
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		System.out.println("SQL " + ps.toString());
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			PaymentName name = new PaymentName();
+			try{name.setId(rs.getLong("pyid"));}catch(NullPointerException e){}
+			try{name.setDateTrans(rs.getString("pydatetrans"));}catch(NullPointerException e){}
+			try{name.setAccountingCode(rs.getString("pyaccntcode"));}catch(NullPointerException e){}
+			try{name.setName(rs.getString("pyname"));}catch(NullPointerException e){}
+			try{name.setAmount(rs.getDouble("pyamount"));}catch(NullPointerException e){}
+			try{name.setIsActive(rs.getInt("isactivepy"));}catch(NullPointerException e){}
+			try{name.setDescription(rs.getString("description"));}catch(NullPointerException e){}
+			try{name.setTaxGroupId(rs.getLong("accntgrpid"));}catch(NullPointerException e){}
+			
+			names.put(name.getId(), name);
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return names;
 	}
 	
 	public static List<PaymentName> retrieve(String sqlAdd, String[] params){
