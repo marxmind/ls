@@ -1,0 +1,101 @@
+{
+	"collection" : [
+		{
+"formName" : "AF-51",
+"amount" : "1,109,265.59",
+"month" : "",
+"year" : "2019"
+		},
+		{
+"formName" : "C.T.C",
+"amount" : "16,732,387.15",
+"month" : "",
+"year" : "2019"
+		},
+		{
+"formName" : "AF-56",
+"amount" : "3,077,331.04",
+"month" : "",
+"year" : "2019"
+		},
+		{
+"formName" : "C.T.C",
+"amount" : "11,327,576.30",
+"month" : "",
+"year" : "2020"
+		},
+		{
+"formName" : "CT 5.00",
+"amount" : "6,882,782.33",
+"month" : "",
+"year" : "2020"
+		},
+		{
+"formName" : "AF-51",
+"amount" : "2,128,426.83",
+"month" : "",
+"year" : "2020"
+		},
+		{
+"formName" : "C.T.C",
+"amount" : "13,548,967.13",
+"month" : "",
+"year" : "2021"
+		},
+		{
+"formName" : "CT 5.00",
+"amount" : "5,425,309.82",
+"month" : "",
+"year" : "2021"
+		},
+		{
+"formName" : "AF-51",
+"amount" : "1,999,016.38",
+"month" : "",
+"year" : "2021"
+		},
+		{
+"formName" : "AF-51",
+"amount" : "2,689,810.49",
+"month" : "",
+"year" : "2022"
+		},
+		{
+"formName" : "CT 5.00",
+"amount" : "5,903,570.60",
+"month" : "",
+"year" : "2022"
+		},
+		{
+"formName" : "C.T.C",
+"amount" : "6,877,196.59",
+"month" : "",
+"year" : "2022"
+		},
+		{
+"formName" : "AF-56",
+"amount" : "9,862,760.59",
+"month" : "",
+"year" : "2022"
+		},
+		{
+"formName" : "AF-51",
+"amount" : "2,134,012.97",
+"month" : "",
+"year" : "2023"
+		},
+		{
+"formName" : "AF-56",
+"amount" : "1,885,929.66",
+"month" : "",
+"year" : "2023"
+		},
+		{
+"formName" : "CT 5.00",
+"amount" : "6,147,770.96",
+"month" : "",
+"year" : "2023"
+		}
+		]
+}
+
