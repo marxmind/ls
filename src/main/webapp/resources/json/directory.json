@@ -1,0 +1,82 @@
+{
+  "directory":[
+    {
+      "departmentName" : "Mayor",
+      "departmentHead" : "Hon. Floro S. Gandam",
+      "contactNumber" : "12345678901",
+      "imageURL" : "https://zamboanga.com/z/images/e/e1/Lake_Sebu_South_Cotabato_Seal.png"
+    },
+    {
+      "departmentName" : "Vice-Mayor",
+      "departmentHead" : "Hon. Remmie M. Unggol",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Sangguniang Bayan",
+      "departmentHead" : "Hon. Remmie M. Unggol",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Treasurer",
+      "departmentHead" : "Ferdinand L. Lopez",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Accounting",
+      "departmentHead" : "Edgar A. Artacho",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Budget",
+      "departmentHead" : "Jojet B. Tupas",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Assesor",
+      "departmentHead" : "Edna Tuna",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Business and Licensing Office",
+      "departmentHead" : "Melver A. Vergara",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Agriculture",
+      "departmentHead" : "Zaldy A. Artacho",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Civil Registrar",
+      "departmentHead" : "Gaya Alam",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "DSWD Office",
+      "departmentHead" : "XXXXX",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "Municipal Information",
+      "departmentHead" : "Christopher Ofong",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    },
+    {
+      "departmentName" : "MPDC Office",
+      "departmentHead" : "Engr. Rex Espegar",
+      "contactNumber" : "12345678901",
+      "imageURL" : "images/logo.png"
+    }
+  ]
+}
