@@ -4,13 +4,41 @@
       "id" : "1",
       "uname" : "mark",
       "pword" : "october181986*",
-      "passcode" : "88888888"
+      "passcode" : "88888888",
+      "fullname" : "Mark R. Italia",
+      "role" : "1"
     },
     {
       "id" : "2",
       "uname" : "henry",
       "pword" : "sam40",
-      "passcode" : "99999999"
+      "passcode" : "99999999",
+      "fullname" : "Henry E. Magbanua",
+      "role" : "2"
+    },
+    {
+      "id" : "3",
+      "uname" : "ferdinand",
+      "pword" : "treasurer",
+      "passcode" : "99999999",
+      "fullname" : "Ferdinand L. Lopez",
+      "role" : "2"
+    },
+    {
+      "id" : "4",
+      "uname" : "melver",
+      "pword" : "bplo",
+      "passcode" : "99999999",
+      "fullname" : "Melver Vergara",
+      "role" : "3"
+    },
+    {
+      "id" : "5",
+      "uname" : "mailyn",
+      "pword" : "msb",
+      "passcode" : "99999999",
+      "fullname" : "Mailyn S. Binueza",
+      "role" : "4"
     }
   ]
 }
