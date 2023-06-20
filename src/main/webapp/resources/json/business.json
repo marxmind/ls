@@ -111,6 +111,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2678",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-581",
+"type" : "NEW",
+"businessName" : "3-KIDS ABACA FIBER TRADING",
+"owner" : "LANDAYONG, ROMEL TAMBUKONG",
+"location" : "Sitio Traankini, Lamlahak, Lake Sebu, South Cotabato",
+"category" : "ABACA BUY & SELL",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1592",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-096",
@@ -386,6 +397,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2695",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-593",
+"type" : "RENEW",
+"businessName" : "A4.COM TARPAULIN PRINTING SERVICES",
+"owner" : "ANTENOR, PHILIPP NOEL ALIBUSA",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "TARPAULIN PRINTING SERVICES",
+"remarks" : "1st QUARTER"
+		},
+		{
 "id" : "452",
 "dateTrans" : "January 01, 2020",
 "controlNumber" : "2020-0215",
@@ -560,6 +582,17 @@
 "location" : "Purok 2. Sitio Kibang, Ned, Lake Sebu, South Cotabato",
 "category" : "GROCERY",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2672",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-579",
+"type" : "NEW",
+"businessName" : "AC RTW SHOP",
+"owner" : "BENSON, DONA CLAIRE BALAÑA",
+"location" : "Zone 4, Talisay, Lake Sebu, South Cotabato",
+"category" : "RTW",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "341",
@@ -892,6 +925,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2741",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-626",
+"type" : "NEW",
+"businessName" : "AJ J  FURNITURE SHOP",
+"owner" : "FELONGCO JR., VICENTE CANIETE",
+"location" : "Sitio Upper Kawig, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Sari-Sari Store",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2473",
 "dateTrans" : "February 01, 2023",
 "controlNumber" : "2023-404",
@@ -1033,6 +1077,17 @@
 "location" : "Purok Pag-asa, Poblacion, Lake Sebu, SOUTH COTABATO",
 "category" : "Hardware Enterprise",
 "remarks" : "1st SEMI-ANNUAL"
+		},
+		{
+"id" : "2735",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-282-2",
+"type" : "RENEW",
+"businessName" : "ALEXANDREY ENTERPRISE",
+"owner" : "AGNES, CORAZON CASIPONG",
+"location" : "Purok Pag-asa, Poblacion, Lake Sebu, South Cotabato",
+"category" : "HARDWARE AND CONSTRUCTION SUPPLY, CEMENT",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "222",
@@ -1451,6 +1506,17 @@
 "location" : "Purok Paghidaet, Lake Lahit, Lake Sebu, South Cotabato",
 "category" : "RESTAURANT",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2711",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-012-2",
+"type" : "RENEW",
+"businessName" : "ANTENOR RESTAURANT",
+"owner" : "ANTENOR, CATHERINE D",
+"location" : "Purok Paghidaet, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "RESTAURANT",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "2522",
@@ -2212,6 +2278,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2699",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-597",
+"type" : "NEW",
+"businessName" : "BALBACUAHAN SA ROSAS",
+"owner" : "HIPONIA, RHOY CERIA",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CARENDERIA",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "795",
 "dateTrans" : "January 01, 2021",
 "controlNumber" : "2021-0048",
@@ -2553,6 +2630,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2723",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-613",
+"type" : "NEW",
+"businessName" : "BEATRIZZ BILLS PAYMENT AND REMITTANCE SERVICES",
+"owner" : "BARBER, RIZZA MAE MOLATO",
+"location" : "Sitio Kibang , Ned, Lake Sebu, South Cotabato",
+"category" : "REMITTANCE SERVICE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2523",
 "dateTrans" : "February 01, 2023",
 "controlNumber" : "2023-434",
@@ -2737,6 +2825,17 @@
 "owner" : "WALI, RUDY u",
 "location" : "Sitio Temeguilon, Poblacion, Lake Sebu, South Cotabato",
 "category" : "BILLIARD TABLE",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2738",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-623",
+"type" : "NEW",
+"businessName" : "BISOY TIRE AND MOTORCYCLE PARTS SUPPLY",
+"owner" : "BISONAYA, EDWIN EMBOLTORIO",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "TIRE AND MOTORCYCLE PARTS SUPPLY",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -3455,6 +3554,28 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2729",
+"dateTrans" : "March 01, 2023",
+"controlNumber" : "2023-618",
+"type" : "RENEW",
+"businessName" : "BZ FRIED CHICKEN",
+"owner" : "FLORES, FLORELYN FERNANDEZ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "FRIED CHICKEN",
+"remarks" : "2nd SEMI-ANNUAL"
+		},
+		{
+"id" : "2730",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-618-2",
+"type" : "RENEW",
+"businessName" : "BZ FRIED CHICKEN",
+"owner" : "FLORES, FLORELYN FERNANDEZ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "FRIED CHICKEN",
+"remarks" : "3rd to 4th Qtr"
+		},
+		{
 "id" : "1223",
 "dateTrans" : "April 01, 2021",
 "controlNumber" : "2021-0455",
@@ -3810,11 +3931,11 @@
 "id" : "2261",
 "dateTrans" : "January 01, 2023",
 "controlNumber" : "2023-199",
-"type" : "RENEW",
-"businessName" : "CAMICAZI RTW STORE",
+"type" : "NEW",
+"businessName" : "CAMICAZI RTW STORE/LECHON MANOK",
 "owner" : "VELASCO, MICHELLE BAUTISTA",
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
-"category" : "RTW",
+"category" : "Sari-Sari Store",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -3860,6 +3981,17 @@
 "location" : "Sitio Tukofol Poblacion, Lake Sebu, South Cotabato",
 "category" : "RESTAURANT,CONVENTION HALL ACCOMODATION,ROOM ACCOMODATION AND RECREATIONAL CENTER",
 "remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2689",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-269-2",
+"type" : "RENEW",
+"businessName" : "CAMP LAKEVIEW RECREATION CENTER",
+"owner" : "RIVERA, ROY CHUA",
+"location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
+"category" : "RESTAURANT, CONVENTION HALL ACCOMODATION,ROOM ACCOMODATION AND RECREATIONAL CENTER",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "600",
@@ -3926,6 +4058,17 @@
 "location" : "Public Market Poblacion, Lake Sebu, South Cotaabto",
 "category" : "FISH RETAILER",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2714",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-608",
+"type" : "NEW",
+"businessName" : "CANDOLE AGRICULTURAL FARM",
+"owner" : "CANDOLE, HAZEL ROSE HURTADO",
+"location" : "Sitio kumilat, Ned, Lake Sebu, South Cotabato",
+"category" : "AGRI FARM SUPPLY",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2021",
@@ -4234,6 +4377,17 @@
 "location" : "Lot 70. Poblacion Lake Sebu, South Cotabato",
 "category" : "PHARMACY",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2687",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-014-2",
+"type" : "RENEW",
+"businessName" : "CASTORA PHARMACY",
+"owner" : "CASTORA, ANNABELLE TUPAS",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Pharmacy",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "235",
@@ -4709,6 +4863,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2700",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-598",
+"type" : "NEW",
+"businessName" : "CHANTONG ENTERPRISE",
+"owner" : "DIOCARES, DENNIS PAGADOR",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "PRINTING SERVICES  GARMENT",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2498",
 "dateTrans" : "February 01, 2023",
 "controlNumber" : "2023-429",
@@ -4819,6 +4984,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2668",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-307-2",
+"type" : "RENEW",
+"businessName" : "CHERRY'S BAKESHOP",
+"owner" : "PERBILLO, FROYLAN JAY VALDEZ",
+"location" : " Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "BAKESHOP",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1771",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-337",
@@ -4872,6 +5048,17 @@
 "location" : "Sitio Tabite Poblacion, Lake Sebu, South Cotabato",
 "category" : "SARI-SARI STORE",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2696",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-594",
+"type" : "NEW",
+"businessName" : "CHRISTOPHER LOGONG SARI-SARI STORE",
+"owner" : "LOGONG, CHRISTOPHER LUGAN",
+"location" : "Purok Maligaya, Lamfugon, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1740",
@@ -4962,12 +5149,23 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2726",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-616",
+"type" : "NEW",
+"businessName" : "COLD'NSKY PRINTING SERVICES",
+"owner" : "KWATIK, RENNETTE ROY PAGDATO",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "PRINTING SERVICES",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2650",
 "dateTrans" : "April 01, 2023",
 "controlNumber" : "2023-571",
 "type" : "NEW",
-"businessName" : "COMMUNITY FARMER AND EMPOWER PROGRAM ASSOCIATION (CFEDA)",
-"owner" : "ASSOCIATION (CFEPA), COMMUNITY FARMER AND EMPOWER PROGRAM .",
+"businessName" : "COMMUNITY FARMERS AND EMPOWERMENT PROGRAM ASSOCIATION (CFEPA)",
+"owner" : "ASSOCIATION (CFEPA), COMMUNITY FARMERS AND EMPOWERMENT PROGRAM .",
 "location" : "Sitio Lower Talubek, Lamlahak, Lake Sebu, South Cotabato",
 "category" : "ASSOCIATION",
 "remarks" : "ANNUALLY"
@@ -5110,7 +5308,7 @@
 "controlNumber" : "2023-573",
 "type" : "NEW",
 "businessName" : "D'HUNTERS CALL CENTER SERVICES",
-"owner" : "STANDZHIKOY, MERCY M",
+"owner" : "STANDZHIKOV, MERCY M",
 "location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
 "category" : "THE HUNTERS",
 "remarks" : "ANNUALLY"
@@ -5402,6 +5600,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2674",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-288-4",
+"type" : "RENEW",
+"businessName" : "DELTA EARTHMOVING, INC.",
+"owner" : "INC., DELTA EARTHMOVING, .",
+"location" : "Sitio Tafal, Ned, Lake Sebu, South Cotabato",
+"category" : "CONSTRUCTION,QUARRYING AND MINING",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1983",
 "dateTrans" : "June 01, 2022",
 "controlNumber" : "2022-517",
@@ -5444,6 +5653,17 @@
 "location" : "Zone 1, Talisay, Lake Sebu, South Cotabato",
 "category" : "GROCERY,LIQUOR, CIGARETTES",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2669",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-044-2",
+"type" : "RENEW",
+"businessName" : "DEOCAMPO SARI-SARI STORE",
+"owner" : "DEOCAMPO, VILLA DONA POLMO",
+"location" : "Zone 1, Talisay, Lake Sebu, South Cotabato",
+"category" : "GROCERY,LIQUOR,CIGARETTES",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "1238",
@@ -5930,6 +6150,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2688",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-365-2",
+"type" : "RENEW",
+"businessName" : "DOLORES LAKE RESORT",
+"owner" : "CORP., TROPICANA WORLDWIDE .",
+"location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
+"category" : "HOTEL,RESTAURANT AND SWIMMING POOL",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "2434",
 "dateTrans" : "January 01, 2023",
 "controlNumber" : "2023-365",
@@ -5950,6 +6181,17 @@
 "location" : "SITIO TUKOFOL, LAKE SEBU, SOUTH COTABATO",
 "category" : "RESTAURANT & HOTEL",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2739",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-624",
+"type" : "NEW",
+"businessName" : "DON SEKO SARI-SARI STORE",
+"owner" : "CABAOBAO, NIMFA SIDON",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE,LIQUOR,BEER",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1704",
@@ -6359,6 +6601,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2709",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-606",
+"type" : "NEW",
+"businessName" : "EJ MOTORCYCLE PARTS SHOP",
+"owner" : "TAMONGGAL, EGING B",
+"location" : "Sitio Upper Kawig, Poblacion, Lake Sebu, South Cotabato",
+"category" : "MOTORCYCLE PARTS SHOP",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1284",
 "dateTrans" : "September 01, 2021",
 "controlNumber" : "2021-0512",
@@ -6467,6 +6720,17 @@
 "location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
 "category" : "RESORT",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2737",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-622",
+"type" : "NEW",
+"businessName" : "ELEUTERIO BILLIARD HALL",
+"owner" : "ELEUTERIO, JESSIE G",
+"location" : "Lamfugon, Lake Sebu, South Cotabato",
+"category" : "BILLIARD HALL",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1822",
@@ -7085,6 +7349,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2728",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-192-2",
+"type" : "RENEW",
+"businessName" : "FAELANGCA MEAT STAND",
+"owner" : "FAELANGCA, NOEL FONTELAR",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Meat Stand",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "1451",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-092",
@@ -7503,6 +7778,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2671",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-578",
+"type" : "NEW",
+"businessName" : "FLASH EXPRESS (PH) CO., LTD. INC.",
+"owner" : "LTD. INC., FLASH EXPRESS (PH) CO., .",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "FLASH EXPRESS",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "666",
 "dateTrans" : "June 01, 2020",
 "controlNumber" : "2020-0383",
@@ -7633,6 +7919,17 @@
 "location" : "Sitio EL-ALIS, Luhib, Lake Sebu, South Cotabato",
 "category" : "FEEDS SUPPLY",
 "remarks" : "4th QUARTER"
+		},
+		{
+"id" : "2682",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-583",
+"type" : "NEW",
+"businessName" : "FORTH CELLPHONE AND ACCESSORIES SHOP",
+"owner" : "DESIPOLO JR., FRANCISCO ALQUINO",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CELLPHONE AND ACCESSORIES",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "455",
@@ -7855,6 +8152,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2713",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-283-2",
+"type" : "RENEW",
+"businessName" : "G STAR ABACA TRADING",
+"owner" : "GALA, ALBERT GAFA",
+"location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
+"category" : "ABACA BUY & SELL",
+"remarks" : "2nd to 4th Qtr"
+		},
+		{
 "id" : "1437",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-084",
@@ -7864,6 +8172,17 @@
 "location" : "Sito Tukofol, Poblacion, Lake Sebu, South Cotabato",
 "category" : "ABACA TRADING",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2702",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-600",
+"type" : "NEW",
+"businessName" : "GAB BARBER SHOP",
+"owner" : "DALICAN, GABRONNIE D",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "BARBER SHOP",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2455",
@@ -8201,7 +8520,18 @@
 "controlNumber" : "2022-242",
 "type" : "RENEW",
 "businessName" : "GEDORIO MEAT STAND",
-"owner" : "GEDORIO, CRISTOPHER P",
+"owner" : "GEDORIO, CRISTOPHER PANES",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Meat Stand",
+"remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2694",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-592",
+"type" : "RENEW",
+"businessName" : "GEDORIO MEAT STAND",
+"owner" : "GEDORIO, CRISTOPHER PANES",
 "location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
 "category" : "Meat Stand",
 "remarks" : "1st QUARTER"
@@ -8212,7 +8542,7 @@
 "controlNumber" : "2021-0477",
 "type" : "NEW",
 "businessName" : "GEDORIO MEAT STAND",
-"owner" : "GEDORIO, CRISTOPHER P",
+"owner" : "GEDORIO, CRISTOPHER PANES",
 "location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
 "category" : "Meat Stand",
 "remarks" : "1st QUARTER"
@@ -8345,8 +8675,8 @@
 "type" : "RENEW",
 "businessName" : "GEN. SUPPLIES CONSUMER GOODS TRADING",
 "owner" : "TAPEL, JANET TAYAMORA",
-"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
-"category" : "RICE RETAILER",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "GROCERY, RICE RETAILER",
 "remarks" : "2nd QUARTER"
 		},
 		{
@@ -8446,6 +8776,17 @@
 "owner" : "GAN, CEZAR LEE",
 "location" : "Lot 70. Poblacion, Lake Sebu, South Cotabato",
 "category" : "Furified Drinking Water and Refilling Station",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2720",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-610",
+"type" : "NEW",
+"businessName" : "GEORGE BILLIARD TABLE",
+"owner" : "SULEN, GEORGE BLAHING",
+"location" : "Sitio Tablo, Lamdalag, Lake Sebu, South Cotabato",
+"category" : "BILLIARD TABLE",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -8933,6 +9274,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2693",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-591",
+"type" : "RENEW",
+"businessName" : "GREENBOX CONVENIENCE STORE",
+"owner" : "ANTENOR, KEVIN T",
+"location" : "Sitio Lembanig, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CONVENIENCE,LIQUOR,BEER,CIGARETTES",
+"remarks" : "1st SEMI-ANNUAL"
+		},
+		{
 "id" : "1075",
 "dateTrans" : "January 01, 2021",
 "controlNumber" : "2021-0308",
@@ -9362,6 +9714,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2710",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-274-2",
+"type" : "RENEW",
+"businessName" : "HOSEENU OFFICE AND SCHOOL SUPPLIES TRADING",
+"owner" : "DEPITA, JOVELYN SAUSA",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SCHOOL AND OFFICE SUPLIES TRADING",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "402",
 "dateTrans" : "January 01, 2020",
 "controlNumber" : "2020-0165",
@@ -9425,6 +9788,17 @@
 "owner" : "JAVELLANA, SUSAN BELGICA",
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu",
 "category" : "Grocery Store",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2708",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-605",
+"type" : "NEW",
+"businessName" : "HUSSEIN NAJILYN MOTOR VEHICLE SHOP",
+"owner" : "BEIT SAYAH, MARILYN MINDAL",
+"location" : "Upper Talubek, Lamlahak, Lake Sebu, South Cotabato",
+"category" : "MOTORPARTS",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -9910,6 +10284,17 @@
 "location" : "Sitio EL-ALis A, Luhib, Lake Sebu, South Cotabato",
 "category" : "STORE, RICE RETAILER, LIQUOR,CIGARETTES, BEER",
 "remarks" : "4th QUARTER"
+		},
+		{
+"id" : "2670",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-577",
+"type" : "RENEW",
+"businessName" : "JANJESTER WOOD WORKS",
+"owner" : "VALENCIA, JOY D",
+"location" : "Purok Pag-asa, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Furniture Shop",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1957",
@@ -10814,6 +11199,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2727",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-617",
+"type" : "NEW",
+"businessName" : "JOHNIE ISDAAN AND VEGETABLES",
+"owner" : "BATAL, JOHNIE BARTOLOME",
+"location" : "Sitio Lem-ehek, Poblacion, Lake Sebu, South Cotabato",
+"category" : "FISH AND VEGETABLES",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "457",
 "dateTrans" : "January 01, 2020",
 "controlNumber" : "2020-0220",
@@ -11155,6 +11551,17 @@
 "remarks" : "1st SEMI-ANNUAL"
 		},
 		{
+"id" : "2704",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-602",
+"type" : "NEW",
+"businessName" : "JULIOMARIA RESTOGARDEN RESTAURANT",
+"owner" : "PACALDA, STEPHANIE DIAZ",
+"location" : "Purok Pag-asa, Poblacion, Lake Sebu, South Cotabato",
+"category" : "RESTAURANT",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2620",
 "dateTrans" : "March 01, 2023",
 "controlNumber" : "2023-549",
@@ -11362,6 +11769,17 @@
 "location" : "Tuhitum Village, Poblacion, Lake Sebu",
 "category" : "Corporation",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2681",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-582",
+"type" : "RENEW",
+"businessName" : "K'BOI T'NALAK HANDICRAFTS TRADING",
+"owner" : "LU-AYON, ANITA MALANAO",
+"location" : "Tuhitum Village, Poblacion, Lake Sebu, South Cotabato",
+"category" : "HANDICRAFTS",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2039",
@@ -11768,6 +12186,17 @@
 "owner" : "PANES, CYNTHIA MAGBANUA",
 "location" : "PUROK ILANG-ILANG POBLACION, LAKE SEBU, SOUTH COTABATO",
 "category" : "SARI-SARI,RICE  RETAILER,LIQUOR,BEER & CIGARETTES",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2698",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-596",
+"type" : "NEW",
+"businessName" : "KC BILLIARD TABLE",
+"owner" : "PABILONA, KESSERNAIL SORSANO",
+"location" : "Sitio Tabite, Poblacion, Lake Sebu, South Cotabato",
+"category" : "BILLIARD TABLE",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -12263,6 +12692,17 @@
 "owner" : "SANDOY, AKENNEDY L",
 "location" : "SITIO LUGAN POBLACION, LAKE SEBU, SOUTH COTABATO",
 "category" : "AGRICULTURAL PRODUCER",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2683",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-584",
+"type" : "NEW",
+"businessName" : "KREYS FOOD HOUSE",
+"owner" : "GONORA, PRINCESS ROLLYN DIMPUT",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "FOOD HOUSE",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -13245,6 +13685,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2715",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-122-2",
+"type" : "RENEW",
+"businessName" : "LEONES BUY & SELL",
+"owner" : "LEGAL, LEONES MANUMBA",
+"location" : "Proper 2. Tasiman, Lake Sebu, South Cotabato",
+"category" : "Buy and Sell",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "1950",
 "dateTrans" : "May 01, 2022",
 "controlNumber" : "2022-490",
@@ -13265,6 +13716,17 @@
 "location" : "Proper 2, Tasiman, Lake Sebu, South Cotabato",
 "category" : "SARI-SARI STORE",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2716",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-123-2",
+"type" : "RENEW",
+"businessName" : "LEONES SARI-SARI STORE",
+"owner" : "LEGAL, LEONES MANUMBA",
+"location" : "Proper 2, Tasiman, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "1949",
@@ -13905,6 +14367,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2705",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-580",
+"type" : "RENEW",
+"businessName" : "LUCKYWYNZ TABACULDE FOOD HOUSE",
+"owner" : "TABACULDE, ROY SERNA",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SUGBAHAN (TILAPIA)",
+"remarks" : "1st SEMI-ANNUAL"
+		},
+		{
 "id" : "2394",
 "dateTrans" : "January 01, 2023",
 "controlNumber" : "2023-328",
@@ -14200,6 +14673,17 @@
 "location" : "Proper 2, Tasiman, Lake Sebu, South Cotabato",
 "category" : "RATTAN FURNITURE",
 "remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2673",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-235-2",
+"type" : "RENEW",
+"businessName" : "MAKARIOS RESTAURANT",
+"owner" : "GARMINO, NANCY CACHUELA",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "EATERY & REFRESHMENT",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "1416",
@@ -14695,6 +15179,17 @@
 "location" : "Public Market Poblacion, Lake Sebu, South Cotabato",
 "category" : "RTW",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2736",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-621",
+"type" : "NEW",
+"businessName" : "MATEO LPG SUPPLY",
+"owner" : "ALISO, ARNEL MALAGYANON",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "LPG SSUPPLY (RETAILER)",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2166",
@@ -15577,6 +16072,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2725",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-615",
+"type" : "NEW",
+"businessName" : "MMB MOTORCYCLE PARTS AND ACCESSORIES SHOP",
+"owner" : "BALASA, MIC MARS DONGON",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "MOTOR PATRS AND ACCESSORIES SHOP",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2542",
 "dateTrans" : "February 01, 2023",
 "controlNumber" : "2023-472",
@@ -15951,6 +16457,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2718",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-359-2",
+"type" : "RENEW",
+"businessName" : "MVN LOU CONSTRUCTION SUPPLIES",
+"owner" : "MAGBANUA, ELBERT ESCORIDO",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CONSTRUCTION SUPPLIES, CEMENT",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "475",
 "dateTrans" : "January 01, 2020",
 "controlNumber" : "2020-0238",
@@ -16058,6 +16575,17 @@
 "owner" : "ROSALIE FE, GASMIN E",
 "location" : "Purok Rosas Poblacion, Lake Sebu, South Cotabato",
 "category" : "MC PARTS SHOP",
+"remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2686",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-587",
+"type" : "RENEW",
+"businessName" : "NADINE'S LAKE RESORT",
+"owner" : "HINAY, RICARDO S",
+"location" : "Tuhitum Village, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Resort",
 "remarks" : "1st QUARTER"
 		},
 		{
@@ -16226,6 +16754,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2685",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-586",
+"type" : "NEW",
+"businessName" : "NED TRANSPORT COOPERATIVE (NEDTRANSCO)",
+"owner" : "(NEDTRANSCO), NED TRANSPORT COOPERATIVE .",
+"location" : "Sitio Kibang, Ned, Lake Sebu, South Cotabato",
+"category" : "COOPERATIVE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "811",
 "dateTrans" : "January 01, 2021",
 "controlNumber" : "2021-0049",
@@ -16274,10 +16813,10 @@
 "dateTrans" : "January 01, 2023",
 "controlNumber" : "2023-350",
 "type" : "NEW",
-"businessName" : "NENE VEGETABLE STALL",
+"businessName" : "NENE VEGETABLES STALL",
 "owner" : "LOZAGA, JOY E",
-"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
-"category" : "VEGETABLE STAND",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "VEGETABLES STAND",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -16545,6 +17084,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2743",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-628",
+"type" : "NEW",
+"businessName" : "NONOY BILLIARD HALL",
+"owner" : "BAGAYGAY, JOYCE DONGON",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "BILLIARD HALL",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2103",
 "dateTrans" : "January 01, 2023",
 "controlNumber" : "2023-041",
@@ -16743,6 +17293,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2697",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-595",
+"type" : "RENEW",
+"businessName" : "ONE STOP SHOP",
+"owner" : "SAVAGE, AIZA M",
+"location" : "Tboli Village, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "246",
 "dateTrans" : "January 01, 2020",
 "controlNumber" : "2020-0019",
@@ -16752,6 +17313,17 @@
 "location" : "T'BOLI VILLAGE POBLACION, LAKE SEBU, SOUTH COTABATO",
 "category" : "STORE,LIQUOR,CIGARETTES",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2684",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-585",
+"type" : "NEW",
+"businessName" : "ONYOK RICE STORE",
+"owner" : "CAYUGAN, CHENETA ULAW",
+"location" : "Lamdalag, Lake Sebu, South Cotabato",
+"category" : "RICE STORE",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2528",
@@ -16774,6 +17346,17 @@
 "location" : "Sitio Tinugas, Ned, Lake Sebu, South Cotabato",
 "category" : "SARI-SARI,LIQUOR",
 "remarks" : "4th QUARTER"
+		},
+		{
+"id" : "2692",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-590",
+"type" : "NEW",
+"businessName" : "ORMEL BAKESHOP",
+"owner" : "AMPAN, ORMEL KINDAT",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "BAKESHOP",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2634",
@@ -16806,6 +17389,17 @@
 "owner" : "ORQUIOLA, BERNADITH B",
 "location" : "Proper Ned, Lake Sebu, South Cotabato",
 "category" : "VIDEO-K",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2722",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-612",
+"type" : "NEW",
+"businessName" : "OWEN EATERY",
+"owner" : "LANGGONG, ARJENE FOLOK",
+"location" : "Sitio Temeguilon, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CARENDERIA",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -18316,6 +18910,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2706",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-603",
+"type" : "NEW",
+"businessName" : "QUEMADA FOOD HOUSE",
+"owner" : "QUEMADA, HEROLD PINGOY",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SUGBAHAN (TILAPIA)",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "628",
 "dateTrans" : "March 01, 2020",
 "controlNumber" : "2020-0348",
@@ -18547,6 +19152,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2740",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-625",
+"type" : "NEW",
+"businessName" : "R'S SARI-SARI STORE",
+"owner" : "DELA CRUZ, LUISA MENDOZA",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,LIQUOR,BEER",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "321",
 "dateTrans" : "January 01, 2020",
 "controlNumber" : "2020-0091",
@@ -18676,6 +19292,17 @@
 "owner" : "CABRERA, ROSE SHERLIE FUNDAL",
 "location" : "Purok Rosas Poblacion, Lake Sebu, South Cotabato",
 "category" : "RICE RETAILER",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2742",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-627",
+"type" : "NEW",
+"businessName" : "RAGO SARI-SARI STORE",
+"owner" : "OFONG, PRENCIS CYRIEL DEN GAL",
+"location" : "Sitio Be Afus, Poblacion, Lake Sebu, South Cotabato",
+"category" : "STORE,LIQUOR,CIGARETTES,BEER",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -19281,6 +19908,17 @@
 "owner" : "BELANDRES, RICHIE HERMO",
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "GENERAL MERCHANDISE",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2712",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-607",
+"type" : "NEW",
+"businessName" : "RICKY'S PISONET",
+"owner" : "MANTANG, RICKY LIM",
+"location" : "Sitio Bulat, Denlag, Lake Sebu, South Cotabato",
+"category" : "PISONET",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -20131,6 +20769,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2691",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-589",
+"type" : "RENEW",
+"businessName" : "SAINT JOHN PHARMACY",
+"owner" : "DIAZ, RENANTE LEYSA",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Pharmacy",
+"remarks" : "1st QUARTER"
+		},
+		{
 "id" : "2006",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-536",
@@ -20580,6 +21229,17 @@
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "CONSUMER GOODS",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2717",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-358-2",
+"type" : "RENEW",
+"businessName" : "SETTLERS CONSUMER GOODS TRADING",
+"owner" : "MAGBANUA, ELBERT ESCORIDO",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CONSUMER GOODS",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "1556",
@@ -21253,6 +21913,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2679",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-285-2",
+"type" : "RENEW",
+"businessName" : "SOLID VIEW HOSPITALITY GROUP CORPORATION",
+"owner" : "SOLIVIO, VALIREE B",
+"location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
+"category" : "RESORT & LODGING",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "1935",
 "dateTrans" : "April 01, 2022",
 "controlNumber" : "2022-476",
@@ -21451,6 +22122,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2701",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-599",
+"type" : "NEW",
+"businessName" : "SORSANO AGRIVET TRADING",
+"owner" : "SORSANO, PRECIOUS FAITH W",
+"location" : "Sitio Tabite, Poblacion, Lake Sebu, South Cotabato",
+"category" : "AGRIVET SUPPLIES",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1337",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-021",
@@ -21646,6 +22328,17 @@
 "owner" : "PARANAQUE, RUTH S",
 "location" : "Proper Ned Lake Sebu, South Cotabato",
 "category" : "GENERAL MERCHANDISE,LIQUR, CIGARETTES,BEER",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2703",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-601",
+"type" : "NEW",
+"businessName" : "STARLET'S CONSUMER GOODS TRADING",
+"owner" : "SEPALON, RUNISLY BAUTISTA",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CONSUMER GOODS TRADING",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -21957,6 +22650,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2724",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-614",
+"type" : "NEW",
+"businessName" : "T'NALAK CULTURE.PH NATIVE PRODUCTS MANUFACTURING",
+"owner" : "ENGANE, LOUIE DELAMBOTIQUE",
+"location" : "Sitio Be Afus, Poblacion, Lake Sebu, South Cotabato",
+"category" : "NATIVE PRODUCTS MANUFACTURING",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "822",
 "dateTrans" : "January 01, 2021",
 "controlNumber" : "2021-0067",
@@ -22138,8 +22842,8 @@
 "controlNumber" : "2023-097",
 "type" : "RENEW",
 "businessName" : "TALONDATA SARI-SARI STORE",
-"owner" : "TALONDATA, MERLINDA DUBLA",
-"location" : "Zone 2, Talisay, Lake Sebu, South Cotabato",
+"owner" : "TALONDATA, MERLINA DUBLA",
+"location" : "Zone 2. Talisay, Lake Sebu, South Cotabato",
 "category" : "Sari-Sari Store",
 "remarks" : "ANNUALLY"
 		},
@@ -22149,10 +22853,21 @@
 "controlNumber" : "2022-532",
 "type" : "NEW",
 "businessName" : "TALONDATA SARI-SARI STORE",
-"owner" : "TALONDATA, MERLINDA DUBLA",
+"owner" : "TALONDATA, MERLINA DUBLA",
 "location" : "Zone 2, Talisay, Lake Sebu, South Cotabato",
 "category" : "Sari-Sari Store",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2707",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-604",
+"type" : "NEW",
+"businessName" : "TALUBEK DRY GOODS STORE",
+"owner" : "MAS, JOHN MARK U",
+"location" : "Sitio Upper Talubek, Lamlahak, Lake Sebu, South Cotabato",
+"category" : "STORE & BOTIQUE",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1482",
@@ -22527,6 +23242,28 @@
 "location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
 "category" : "CHICKEN HOUSE",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2731",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-619",
+"type" : "RENEW",
+"businessName" : "TEAFC CHICKEN HOUSE",
+"owner" : "ENRIJO, MC ROY JONES VALDEZ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Sari-Sari Store",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2732",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-620",
+"type" : "RENEW",
+"businessName" : "TEAFC CHICKEN HOUSE",
+"owner" : "ENRIJO, MC ROY JONES VALDEZ",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Sari-Sari Store",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1761",
@@ -23079,6 +23816,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2680",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-354-2",
+"type" : "RENEW",
+"businessName" : "TOTO BALBAKWA EATERY",
+"owner" : "DAPATNAPO, ROSALYN MENDIOLA",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "EATERY",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "1558",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-173",
@@ -23288,6 +24036,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2676",
+"dateTrans" : "April 01, 2023",
+"controlNumber" : "2023-298-2",
+"type" : "RENEW",
+"businessName" : "TRIPLE N MOTOR PARTS CENTER",
+"owner" : "TANALGO, LEONORA ESTOMAGUIO",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "MOTORCYCLE PARTS AND ACCESSORIES AND REPAIR SHOP",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "1413",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-070",
@@ -23343,6 +24102,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2734",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-348-2",
+"type" : "RENEW",
+"businessName" : "TRIPPLE DJ CORN TRADING",
+"owner" : "MASQUITE, JOY MAY DEMANDANTE",
+"location" : "Proper 1. Tasiman, Lake Sebu, South Cotabato",
+"category" : "Buy and Sell",
+"remarks" : "2nd QUARTER"
+		},
+		{
 "id" : "1824",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-381",
@@ -23363,6 +24133,17 @@
 "location" : "Proper 1. Tasiman, Lake Sebu, South Cotabato",
 "category" : "SARI-SARI.LIQUOR,CIGARETTES",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2733",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-347-2",
+"type" : "RENEW",
+"businessName" : "TRIPPLE DJ SARI-SARI STORE",
+"owner" : "MASQUITE, JOY MAY DEMANDANTE",
+"location" : "Proper 1. Tasiman, Lake Sebu, South Cotabato",
+"category" : "Sari-Sari/Liquor/Beer and Cigar",
+"remarks" : "2nd QUARTER"
 		},
 		{
 "id" : "1042",
@@ -23473,6 +24254,17 @@
 "location" : "Purok Malipayon, Lamdalag, Lake Sebu, South Cotabato",
 "category" : "Store/Liquor/Cigar",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2690",
+"dateTrans" : "May 01, 2023",
+"controlNumber" : "2023-588",
+"type" : "NEW",
+"businessName" : "TUPAS LITSON HOUSE",
+"owner" : "TUPAS, JESSON PEREZ",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "LITSON HOUSE",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2157",
@@ -23783,6 +24575,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2719",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-609",
+"type" : "RENEW",
+"businessName" : "VIEW DECK RESTAURANT",
+"owner" : "BORNEA, BRYAN S",
+"location" : "Sitio Tabite, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Restaurant",
+"remarks" : "2nd SEMI-ANNUAL"
+		},
+		{
 "id" : "1741",
 "dateTrans" : "January 01, 2022",
 "controlNumber" : "2022-310",
@@ -24034,6 +24837,17 @@
 "location" : "Purok Rosas, Poblacion, Lake Sebu, South Catabato",
 "category" : "SATELITE CABLE TRADING",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2721",
+"dateTrans" : "June 01, 2023",
+"controlNumber" : "2023-611",
+"type" : "RENEW",
+"businessName" : "VVGA TV SATELITE CABLE TRADING",
+"owner" : "DULAY, VICBOY KALA",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "TV INSTALLATION SERVICES",
+"remarks" : "2nd SEMI-ANNUAL"
 		},
 		{
 "id" : "754",
