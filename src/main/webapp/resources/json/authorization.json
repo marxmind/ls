@@ -39,6 +39,14 @@
       "passcode" : "99999999",
       "fullname" : "Mailyn S. Binueza",
       "role" : "4"
+    },
+    {
+      "id" : "6",
+      "uname" : "tata",
+      "pword" : "123456789",
+      "passcode" : "99999999",
+      "fullname" : "Hernane Blonto",
+      "role" : "5"
     }
   ]
 }
