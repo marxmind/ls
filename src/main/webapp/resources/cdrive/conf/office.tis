@@ -1,0 +1,34 @@
+This is configuration file is use for
+office app
+Author: Mark Italia
+Marxmind IT Solutions
+
+MAYOR=loginmayor.xhtml
+VICE_MAYOR=loginvice.xhtml
+SB=http://localhost:8080/sb/marxmind/login.xhtml
+SK=http://localhost:8080/sk/marxmind/login.xhtml
+TREASURER=login.xhtml
+BUDGET=http://localhost:8080/budget/marxmind/login.xhtml
+ACCOUNTING=loginac.xhtml
+ADMIN=http://localhost:8080/admin/marxmind/login.xhtml
+PERSONNEL=loginper.xhtml
+MSWD=http://localhost:8080/mswd/marxmind/login.xhtml
+MAO=loginda.xhtml
+ASSESSOR=http://localhost:8080/assessor/marxmind/login.xhtml
+CIVIL_REGISTRAR=http://localhost:8080/cr/marxmind/login.xhtml
+LICENSING=loginlic.xhtml
+MPDC=http://localhost:8080/mpdc/marxmind/login.xhtml
+ENGINEERING=http://localhost:8080/engr/marxmind/login.xhtml
+GSO=logingso.xhtml
+MDREAMS=http://localhost:8080/mdreams/marxmind/login.xhtml
+TOURISM=http://localhost:8080/tourism/marxmind/login.xhtml
+TOURISM_LODGE=http://localhost:8080/lodge/marxmind/login.xhtml
+MOTORPOOL=http://localhost:8080/motorpool/marxmind/login.xhtml
+HOSPITAL=http://localhost:8080/hospital/marxmind/login.xhtml
+HEALTH=http://localhost:8080/health/marxmind/login.xhtml
+MENRO=http://localhost:8080/menro/marxmind/login.xhtml
+SENIOR=http://localhost:8080/senior/marxmind/login.xhtml
+IPMR=http://localhost:8080/ipmr/marxmind/login.xhtml
+IPS=http://localhost:8080/ips/marxmind/login.xhtml
+SECUIRTY=http://localhost:8080/ips/marxmind/login.xhtml
+DILG=dilg.xhtml

@@ -1,0 +1,488 @@
+Configuration
+Author: Mark Italia
+Date: December 26, 2017
+
+BARANGAY TAG LINE
+tagline="HENTILOB POBLACION - HENLOS T'KOY"
+
+BANK REPORT
+FILE NAME: bankreport.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+bank-string-1=This is to certify that hereunder listed checks with details of payee amount date of checks were issued by Barangay 
+bank-recepient=THE MANAGER
+bank-name=LAND BANK OF THE PHILIPPINES
+bank-location=SURALLAH
+bank-province=SOUTH COTABATO
+bank-cedula-cap=18352866
+bank-cedula-issued-cap=2018-01-16
+
+
+BUSINESS PERMIT MUNICIPAL APPLICATION
+BUSINESS PERMIT MUNICIPAL RENEWAL
+BUSINESS CERTIFICATION
+BUSINESS CERTIFICATION FOR LOAN REQUIREMENT
+RETIREMENT OF BUSINESS
+FILE NAME: bizclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+business-permit-municipal-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress>
+business-permit-municipal-string-2=, with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress> 
+business-permit-municipal-string-3=owner/representative
+business-permit-municipal-string-4=owner
+business-permit-municipal-string-5= is the <ownerrep> of\n
+business-permit-municipal-string-6=\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.\n\n\n
+business-permit-municipal-string-7=PURPOSE: MUNICIPAL BUSINESS PERMIT APPLICATION
+business-permit-municipal-string-8=PURPOSE: MUNICIPAL BUSINESS PERMIT RENEWAL
+business-permit-municipal-string-9=PURPOSE: BUSINESS CERTIFICATION
+business-permit-municipal-string-10=PURPOSE: LOAN REQUIREMENT
+business-permit-municipal-string-11=PURPOSE: RETIREMENT OF BUSINESS
+business-permit-municipal-string-12=\tPursuant to the provisions of section 152(c) of Republic Act No. 7160 (Otherwise known as the Local Government Code of 1991) and Barangay Ordinance No. 2018-1 s.2018 and subject to compliance with the requirements of other Government Agencies and Instrumentalities.\n\n
+
+BUSINESS PERMIT BARANGAY
+FILE NAME: businesspermit.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+business-permit-barangay-string-1=to Operate the following Business
+business-permit-barangay-string-2=Comm. Tax No/Issued Date:
+
+FISH CAGE PERMIT
+FILE NAME: cageclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+fish-cage-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress> 
+fish-cage-string-2=, with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress> 
+fish-cage-string-3=is the owner/representative of\n
+fish-cage-string-4=\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.\n\n\n
+fish-cage-string-5=PURPOSE: FISH CAGE PERMIT APPLICATION
+fish-cage-string-6=PURPOSE: FISH CAGE PERMIT RENEWAL
+fish-cage-string-7=\tPursuant to the provisions of section 129(c) of Republic Act No. 7160 (Otherwise known as the Local Government Code of 1991) and Barangay Ordinance No. 2018-1 s.2018 and subject to compliance with the requirements of other Government Agencies and Instrumentalities.\n\n
+
+REGISTRATION OF DEATH
+LATE REGISTRATION OF DEATH
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-death-string-1=\tThis is to CERTIFY that <requestor>, <civilstatus>, is the <relationship> of the late <diedperson>, are known to the undersigned being residents of this Barangay.\n\n
+asstance-death-string-2=\tThis is to CERTIFY that <requestor>, <civilstatus>, and the <relationship> of the late <diedperson>, are known to the undersigned being residents of this Barangay.\n\n
+asstance-death-string-3=\t
+asstance-death-string-4=\n\n\tThis Barangay Certification is being issued upon the request of <requestor> for
+asstance-death-string-5=SECURING REGISTRATION OF DEATH AND FOR WHATEVER LEGAL PURPOSE THIS MAY SERVE.
+asstance-death-string-6=SECURING DELAYED REGISTRATION OF DEATH AND FOR WHATEVER LEGAL PURPOSE THIS MAY SERVE.
+asstance-death-string-7=\n\tDone this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+
+INDIGENT BURIAL ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-burial-string-1=\tThis is to CERTIFY that 
+asstance-burial-string-2=, of legal age, Filipino citizen, 
+asstance-burial-string-3=, and a bonafide resident of 
+asstance-burial-string-4=.\n\n
+asstance-burial-string-5=\t
+asstance-burial-string-6=\n\n\tThis is to Certify further that the above-mentioned name is belongs to the low income of this barangay, as such 
+asstance-burial-string-7=is entitled to any assistance extended by any government agency and private service provider for which 
+asstance-burial-string-8=is rightly entitled to.\n\n
+asstance-burial-string-9=\tThis Barangay Certification is being issued upon the request of 
+asstance-burial-string-10=of the late 
+asstance-burial-string-11=, are known undersigned being residents of this Barangay.
+asstance-burial-string-12=PURPOSE: TO SEEK INDIGENT BURIAL ASSISTANCE
+asstance-burial-string-13=\tIssued this 
+asstance-burial-string-14=Day of 
+asstance-burial-string-15=at 
+asstance-burial-string-16=the Office of the Punong Barangay of 
+
+FINANCIAL ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-financial-string-1=\tThis is to CERTIFY that 
+asstance-financial-string-2=, of legal age, Filipino citizen, 
+asstance-financial-string-3=, and a bonafide resident of 
+asstance-financial-string-4=\n\n\tThis is to Certify further that the above-mentioned name belongs to the low income of this barangay, as such 
+asstance-financial-string-5=is entitled to any assistance extended by any government agency and private service provider for which 
+asstance-financial-string-6=is rightly entitled to.\n\n
+asstance-financial-string-7=\tThis Barangay Certification is being issued upon the request of 
+asstance-financial-string-8=of the above subject name of person in connection to their purpose/s.
+asstance-financial-string-9=TO SEEK FINANCIAL ASSISTANCE
+asstance-financial-string-10=\tIssued this 
+asstance-financial-string-11=Day of 
+asstance-financial-string-12=at 
+asstance-financial-string-13=the Office of the Punong Barangay of 
+
+FINANCIAL/MEDICAL ASSISTANCE
+MEDICAL ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-medical-string-1=\tThis is to CERTIFY that 
+asstance-medical-string-2=, of legal age, Filipino citizen, 
+asstance-medical-string-3=, and a bonafide resident of 
+asstance-medical-string-4=, is being confined at 
+asstance-medical-string-5=.\n\n
+asstance-medical-string-6=\tThis Barangay Certification is being issued upon the request of 
+asstance-medical-string-7=of the above subject name of person in connection to their purpose.
+asstance-medical-string-8=TO SEEK FINANCIAL/MEDICAL ASSISTANCE
+asstance-medical-string-9=TO SEEK MEDICAL ASSISTANCE
+asstance-medical-string-10=\tIssued this 
+asstance-medical-string-11=Day of 
+asstance-medical-string-12=at 
+asstance-medical-string-13=the Office of the Punong Barangay of 
+asstance-medical-string-14=, <age> year old, Filipino citizen, 
+asstance-medical-string-15=\tCertifying further that the above-named patient is belongs to indigent family of this barangay, as such he/she is entitled to any assistance extended by any government agency and private service provider for which he/she is rightly entitled to.\n\n
+asstance-medical-string-16=\tThis Barangay Clearance is being issued upon the request of 
+asstance-medical-string-17=\tThis Barangay Indigency Certification is being issued upon the request of 
+
+CALAMITY ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-calamity-string-1=\tThis is to CERTIFY that 
+asstance-calamity-string-2=, of legal age, Filipino citizen, 
+asstance-calamity-string-3=, and a bonafide resident of 
+asstance-calamity-string-4=TO SEEK : CALAMITY ASSISTANCE
+asstance-calamity-string-5=\tIssued this 
+asstance-calamity-string-6=Day of 
+asstance-calamity-string-7=at 
+asstance-calamity-string-8=the Office of the Punong Barangay of 
+asstance-calamity-string-9=\n\n\tThis BARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-calamity-string-10=\n\n\tThis BARANGAY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-calamity-string-11=\n\n\tThis BARANGAY INDIGENCY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+
+INDIGENT ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-indigent-string-1=\tThis is to CERTIFY that 
+asstance-indigent-string-2=, of legal age, Filipino citizen, 
+asstance-indigent-string-3=, and a bonafide resident of 
+asstance-indigent-string-4=is known to undersigned that 
+asstance-indigent-string-5=is belongs to indigent family of this barangay, as such 
+asstance-indigent-string-6=is entitled to any assistance extended by any government agency and private service provider for which 
+asstance-indigent-string-7=is rightly entitled to.\n\n
+asstance-indigent-string-8=\tThis Barangay Certification is being issued upon the request of 
+asstance-indigent-string-9=of the above subject name of person in connection to their purpose/s.
+asstance-indigent-string-10=PURPOSE: MEDICAL/FINANCIAL INDIGENT ASSISTANCE
+asstance-indigent-string-11=\tIssued this 
+asstance-indigent-string-12=Day of 
+asstance-indigent-string-13=at 
+asstance-indigent-string-14=the Office of the Punong Barangay of 
+
+INDIGENT ATTORNEY ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-attorney-string-1=\tThis is to CERTIFY that 
+asstance-attorney-string-2=, of legal age, Filipino citizen, 
+asstance-attorney-string-3=, and a bonafide resident of 
+asstance-attorney-string-4=with Community Tax Certificate No. 
+asstance-attorney-string-5=issued on 
+asstance-attorney-string-6=at 
+asstance-attorney-string-7=\n\n\tThis is to Certify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such 
+asstance-attorney-string-8=is entitled to any assistance extended by any government agency and private service provider for which 
+asstance-attorney-string-9=is rightly entitled to.
+asstance-attorney-string-10=PURPOSE: SEEKING LEGAL ASSISTANCE FROM THE PUBLIC ATTORNEYS OFFICE
+asstance-attorney-string-11=\n\tIssued this 
+asstance-attorney-string-12=Day of 
+asstance-attorney-string-13=at 
+asstance-attorney-string-14=the Office of the Punong Barangay of 
+asstance-attorney-string-15=\n\n\tThis BARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-attorney-string-16=\n\n\tThis BARANGAY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+
+INDIGENT HOSPITAL FINANCIAL ASSISTANCE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-hospital-string-1=\tThis is to CERTIFY that 
+asstance-hospital-string-2=, of legal age, Filipino citizen, 
+asstance-hospital-string-3=, and a bonafide resident of 
+asstance-hospital-string-4=, is being confined at 
+asstance-hospital-string-5=.\n\n
+asstance-hospital-string-6=\tCertifying further that the above-named patient is belongs to indigent family of this barangay, as such 
+asstance-hospital-string-7=is entitled to any assistance extended by any government agency and private service provider for which 
+asstance-hospital-string-8=is rightly entitled to.\n\n
+asstance-hospital-string-9=\tThis Barangay Certification is being issued upon the request of 
+asstance-hospital-string-10=of the above subject name of person in connection to their purpose.
+asstance-hospital-string-11=PURPOSE: HOSPITAL FINANCIAL ASSISTANCE
+asstance-hospital-string-12=\tIssued this 
+asstance-hospital-string-13=Day of 
+asstance-hospital-string-14=at 
+asstance-hospital-string-15=the Office of the Punong Barangay of 
+asstance-hospital-string-16=, <age> year old, Filipino citizen, 
+
+INDIGENT CERTIFICATION
+EDUCATION/SCHOLARSHIP ASSISTANCE
+SPES REQUIREMENTS
+CHED SCHOLARSHIP
+TESDA REQUIREMENT
+KABUGWASON REQUIREMENT
+SCHOLARSHIP APPLICATION
+CERTIFICATE OF CONFIRMATION APPLICATION
+SCHOLARSHIP REQUIREMENT
+ESC SCHOLARSHIP REQUIREMENT
+SCHOOL REGISTRATION
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+asstance-cert-string-1=\tThis is to CERTIFY that 
+asstance-cert-string-2=, of legal age, Filipino citizen, 
+asstance-cert-string-3=, and a bonafide resident of 
+asstance-cert-string-4=with Community Tax Certificate No. 
+asstance-cert-string-5=issued on 
+asstance-cert-string-6=at 
+asstance-cert-string-7=\n\n\tThis is to Certify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such 
+asstance-cert-string-8=is entitled to any assistance extended by any government agency and private service provider for which 
+asstance-cert-string-9=is rightly entitled to.
+asstance-cert-string-10=PURPOSE: INDIGENT CERTIFICATION
+asstance-cert-string-11=\tIssued this 
+asstance-cert-string-12=Day of 
+asstance-cert-string-13=at 
+asstance-cert-string-14=the Office of the Punong Barangay of 
+asstance-cert-string-15=PURPOSE: EDUCATION/SCHOLARSHIP ASSISTANCE
+asstance-cert-string-16=PURPOSE: FOR EMPLOYMENT
+asstance-cert-string-17=PURPOSE: SPES REQUIREMENTS
+asstance-cert-string-18=\n\n\tThis BARANGAY INDIGENCY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-cert-string-19=PURPOSE: CHED SCHOLARSHIP
+asstance-cert-string-20=PURPOSE: TESDA REQUIREMENT
+asstance-cert-string-21=PURPOSE: KABUGWASON REQUIREMENT
+asstance-cert-string-22=PURPOSE: SCHOLARSHIP APPLICATION
+asstance-cert-string-23=PURPOSE: CERTIFICATE OF CONFIRMATION APPLICATION
+asstance-cert-string-24=PURPOSE: ESC SCHOLARSHIP REQUIREMENT
+asstance-cert-string-25=PURPOSE: SCHOLARSHIP REQUIREMENTS
+asstance-cert-string-26=\n\n\tThis BARANGAY INCOME CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-cert-string-27=PURPOSE: SCHOOL REGISTRATION
+asstance-cert-string-28=PURPOSE: SCHOOL REQUIREMENT
+asstance-cert-string-29=\n\n\tThis BARANGAY CERTIFICATE OF LOW INCOME is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-cert-string-30=is the <relationship> of <parents> which is earning an average income.
+asstance-cert-string-31=\n\n\tThis <opentitle> is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+asstance-cert-string-32=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that <he/she> has no derogatory record filed in this office and a law abiding citizen in our locality.
+
+LARGE CATTLE CERTIFICATION
+FILE NAME: largecattle.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+large-cattle-string-1=\tThis is to CERTIFY that 
+large-cattle-string-2=, of legal age, Filipino citizen, 
+large-cattle-string-3=, and a bonafide resident of 
+large-cattle-string-4=is known to undersigned that 
+large-cattle-string-5=is the owner of 
+large-cattle-string-6=which specifically describe below.
+large-cattle-string-7=\n\n\tThis CERTIFICATION is being issued upon the request of the aforementioned name for the purpose of 
+large-cattle-string-8=with Community Tax Certificate No. 
+large-cattle-string-9=issued on 
+large-cattle-string-10=\tIssued this 
+large-cattle-string-11=Day of 
+large-cattle-string-12=at 
+large-cattle-string-13=the Office of the Punong Barangay of 
+
+LATE BIRTH REGISTRATION
+FILE NAME: latebirthreg.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+late-birth-string-1=delayed registration of Live Birth at the Office of the Municipal Civil Registrar, 
+late-birth-string-2=Live Birth registration at the Office of the Municipal Civil Registrar, 
+
+CERTIFICATE OF RESIDENCY
+POSTAL ID APPLICATION
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+residency-string-1=\tThis is to CERTIFY that 
+residency-string-2=, of legal age, Filipino citizen, 
+residency-string-3=, and a bonafide resident of 
+residency-string-4=with Community Tax Certificate No. 
+residency-string-5=issued on 
+residency-string-6=at 
+residency-string-7=PURPOSE: CERTIFICATE OF RESIDENCY
+residency-string-8=PURPOSE: POSTAL ID APPLICATION
+residency-string-9=\tIssued this 
+residency-string-10=Day of 
+residency-string-11=at 
+residency-string-12=the Office of the Punong Barangay of 
+residency-string-13=PURPOSE: DIRECT SELLER AGENT APPLICATION
+
+CERTIFICATE OF EMPLOYMENT
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+employment-string-1=\tThis is to certify that 
+employment-string-2=has been employed 
+employment-string-3=with our Barangay Hall from 
+employment-string-4=to 
+employment-string-5=holding the position of 
+employment-string-6=\n\n\tIssued this 
+employment-string-7=Day of 
+employment-string-8=at 
+employment-string-9=the Office of the Punong Barangay of 
+
+4P's CERTIFICATION FOR TRANSFERRED ADDRESS
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+4ps-transferred-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress> 
+4ps-transferred-string-2=with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress>.
+4ps-transferred-string-3=\n\n\tCERTIFY further that the above-mentioned name is the recepient of Pantawid Pamilyang Pilipino Program (4P's). 
+4ps-transferred-string-4=\n\n\tThis Barangay Certification is being issued upon the request of the above-mentioned name of person in connection to <hisher> purpose.
+4ps-transferred-string-5=TO TRANSFER MEMBERSHIP FROM <formeradress> TO THE MUNICIPALITY OF <newaddress>
+4ps-transferred-string-6=\n\n\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+
+
+SENIOR CITIZEN AUTHORIZATION LETTER
+4P's AUTHORIZATION LETTER
+FILE NAME: authorization.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+authorized-string-1=\tI 
+authorized-string-2=, of legal age, Filipino citizen, 
+authorized-string-3=, and a bonafide resident of 
+authorized-string-4=, 
+authorized-string-5=and declared that I am the 
+authorized-string-6=of 
+authorized-string-7=, 
+authorized-string-8=is a resident of 
+authorized-string-9=, 
+authorized-string-10=and member of 
+authorized-string-11=SENIOR CITIZEN
+authorized-string-12=4P's
+authorized-string-13=and 
+authorized-string-14=is 
+authorized-string-15=, and that I am authorized to claim all the benefits and pension in 
+authorized-string-16=stead.
+
+MOTORCYCLE/CAR LOAN REQUIREMENT CERTIFICATE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+mocar-string-1=\tThis is to CERTIFY that 
+mocar-string-2=, of legal age, Filipino citizen, 
+mocar-string-3=, and a bonafide resident of 
+mocar-string-4=with Community Tax Certificate No. 
+mocar-string-5=issued on 
+mocar-string-6=at 
+mocar-string-7=\n\n\tThis BARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purpose
+mocar-string-8=PURPOSE: 
+mocar-string-9=\tIssued this 
+mocar-string-10=Day of 
+mocar-string-11=at 
+mocar-string-12=the Office of the Punong Barangay of 
+mocar-string-13=\n\n\tThis BARANGAY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose
+
+MULTIPLE CLEARANCE CLEARANCE/CERTIFICATE/INDIGENT
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+multi-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress>  
+multi-string-2=with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress>.
+multi-string-3=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purposes
+multi-string-4=PURPOSE: 
+multi-string-5=\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+multi-string-6=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CERTIFICATE is being issued upon request of the above-mentioned name of person in connection to his/her purposes
+multi-string-7=\n\n\tCertify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such he/she is entitled to any assistance extended by any government agency and private service provider for which he/she is rightly entitled to.\n\n\tBARANGAY INDIGENT CERTIFICATE is being issued upon request of the above-mentioned name of person in connection to his/her purposes.
+
+OTHER LEGAL MATTERS
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+legal-string-1=\tThis is to CERTIFY that 
+legal-string-2=, of legal age, Filipino citizen, 
+legal-string-3=, and a bonafide resident of 
+legal-string-4=with Community Tax Certificate No. 
+legal-string-5=issued on 
+legal-string-6=at 
+legal-string-7=\n\n\tThis is to Certify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such 
+legal-string-8=is entitled to any assistance extended by any government agency and private service provider for which 
+legal-string-9=is rightly entitled to.
+legal-string-10=PURPOSE: WHATEVER LEGAL PURPOSE THIS MAY SERVE
+legal-string-11=\n\tIssued this 
+legal-string-12=Day of 
+legal-string-13=at 
+legal-string-14=the Office of the Punong Barangay of 
+legal-string-15=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+legal-string-16=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CERTIFICATE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+legal-string-17=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CERTIFICATE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+legal-string-18=\n\n\tCertify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such he/she is entitled to any assistance extended by any government agency and private service provider for which he/she is rightly entitled to.\n\n\tBARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+
+OTHER CLEARANCE/CERTIFICATE
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+other-string-1=\tThis is to CERTIFY that 
+other-string-2=, of legal age, Filipino citizen, 
+other-string-3=, and a bonafide resident of 
+other-string-4=with Community Tax Certificate No. 
+other-string-5=issued on 
+other-string-6=at 
+other-string-7=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tThis BARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to his/her purposes.
+other-string-8=PURPOSE: 
+other-string-9=\tIssued this 
+other-string-10=Day of 
+other-string-11=at 
+other-string-12=the Office of the Punong Barangay of 
+other-string-13=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that he/she has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tThis BARANGAY CERTIFICATE is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+other-string-14=\n\n\tCertify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such he/she is entitled to any assistance extended by any government agency and private service provider for which he/she is rightly entitled to.\n\n\tThis BARANGAY INDIGENCY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to his/her purpose.
+
+MUNICIPAL MOTORCYCLE OPERATOR PERMIT APPLICATION
+MUNICIPAL MOTORCYCLE OPERATOR PERMIT RENEWAL
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+motor-permit-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress> 
+motor-permit-string-2=with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress> 
+motor-permit-string-3=, is the owner of Motorcycle with the following specifications;\n\n
+motor-permit-string-4=\n\n\tThis Barangay Certification is being issued upon request of the above-mentioned name in connection to <hisher> purpose:
+motor-permit-string-5=PURPOSE: TO SECURE MUNICIPAL PERMIT APPLICATION
+motor-permit-string-6=PURPOSE: TO SECURE MUNICIPAL PERMIT RENEWAL
+motor-permit-string-7=\n\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+
+CERTIFICATE OF LAND OWNERSHIP
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+land-permit-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress> 
+land-permit-string-2=with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress>.
+land-permit-string-3=\n\n\tCertify further that the above-mentioned name is known to the undersigned being the lawful owner of a certain parcel of <landtype> with Lot No. <lotno>, containing an area of <areasqrt> more or less located at Barangay <barangayaddress>, bounded as follows to wit;\n\nBounded on the;\n\tNorth by <north>\n\tEast by <east>\n\tSouth by <south>\n\tWest by <west>
+land-permit-string-4=\n\n\tThis Barangay Certification is being issued upon request of the above-mentioned name for assessment purposes only.
+land-permit-string-5=\n\n\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.\n\nSigned in the presence of:
+
+LOAN REQUIREMENTS
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+loan-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress> 
+loan-string-2=with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress>.
+loan-string-3=\n\n\tThis is to Certify further that the above-mentioned name belongs to the low income or indigent family of this barangay, as such <he/she> is entitled to any assistance extended by any government agency and private service provider for which <he/she> is rightly entitled to.
+loan-string-4=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that <he/she> has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CLEARANCE is being issued upon request of the above-mentioned name of person in connection to <his/her> purpose.
+loan-string-5=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that <he/she> has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY CERTIFICATE is being issued upon request of the above-mentioned name of person in connection to <his/her> purpose.
+loan-string-6=PURPOSE: LOAN REQUIREMENTS FOR 
+loan-string-7=\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+loan-string-8=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that <he/she> has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY RESIDENCY CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to <his/her> purpose.
+loan-string-9=\n\n\tCertify further that the above-mentioned name of person is known to the undersigned that <he/she> has no derogatory record filed in this office and a law abiding citizen in our locality.\n\n\tBARANGAY INCOME CERTIFICATION is being issued upon request of the above-mentioned name of person in connection to <his/her> purpose.
+
+CASE NOTICE
+FILE NAME: casenotice.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+case-note-string1=\tYou are hereby summoned to appear before me in person, together with your witness on <monthdayyear> at <time> at the Office of the Lupong Tagapamayapa for mediation/conciliation of your dispute with the complainant.
+case-note-string2=\n\n\tYou are hereby warned that if you refuse or willfully fail to appear in obediance to this summons, you may be barred from filing any counterclaim arising from said complaint.
+case-note-string3=\n\n\tFAIL NOT OR ELSE face punishment as for contempt of court.
+case-note-string4=\n\n\tDone this <date> day of <month> <year>.
+
+TREE OWNERHIP
+FILE NAME: assclearance.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+tree-permit-string-1=\tThis is to CERTIFY that <requestor>, of legal age, Filipino citizen, <civilstatus>, and a bonafide resident of <requestoraddress> 
+tree-permit-string-2=with Community Tax Certificate No. <ctcno> issued on <ctcissueddate> at <ctcissuedaddress> , is the owner of Tree with the following information;\n\n
+tree-permit-string-3=\n\n\tThis Barangay Certification is being issued upon request of the above-mentioned name in connection to <hisher> purpose:
+tree-permit-string-4=\n\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+
+CASE ENDORSEMENT
+FILE NAME: endorsementcase.jrxml
+LOCATION: C:\bris\reports\<BARANGAY NAME>
+FILE CONFIG: C:\bris\conf\reports.xml
+case-endorsement-string1=. There has several confrontation made between the parties before the Lupong Tagapamayapa;\n
+case-endorsement-string2=. There has no confrontation made between the parties before the Lupong Tagapamayapa;\n
+case-endorsement-string3=. Mediation Failed.\n
+case-endorsement-string4=. The Complainant wants this matter to reach the HIGHER COURT;\n
+case-endorsement-string5=. Therefore, the correspoding complaint for the dispute may now be filed in court / government office / any concerned agency.
+case-endorsement-string6=\n\n\tDone this <date> day of <month> <year>.

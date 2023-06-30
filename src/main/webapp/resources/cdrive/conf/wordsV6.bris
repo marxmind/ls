@@ -1,0 +1,45 @@
+Configuration
+Author: Mark Italia
+Date: December 26, 2017
+Revised: July 10, 2018
+
+//activate to display remarks
+activate-case-note=on
+activate-other-legal=on
+activate-motorcycle-loan=on
+activate-multipurpose=on
+activate-all=on
+
+mayor=FLORO S. GANDAM
+official-position=Municipal Mayor
+oic=CHARLOTTE LOUISE J. LUCERO
+license-officer-pos=Acting Licensing Officer
+types=NEW,RENEW,ADDITIONAL
+memotype=ANNUALLY,1st SEMI-ANNUAL,2nd SEMI-ANNUAL,1st QUARTER,2nd QUARTER,3rd QUARTER,4th QUARTER,1st to 3rd Qtr,2nd to 3rd Qtr,2nd to 4th Qtr
+
+menro=CYRIL DONGON
+menro-officer-pos=Acting Menro Officer
+preparedby=ERNANE BLONTO
+preparedby-pos=DATA ENCODER
+
+cash disbursement module
+disbursing-officer=EVELYN BOLIVAR
+disbursing-officer-designation=Cashier I
+lgu-name=Municipality of Lake Sebu
+check issued recording
+treasurer-name=FERDINAND L. LOPEZ
+official-designation=MUNICIPAL TREASURER
+receiving-person=APRIL MARK T. MEYEN, CPA
+receiving-position=Accountant II
+
+MUNICPAL TAG LINE
+tagline=KEMDOL LAKE SEBU
+province-line=Province of <province>
+municipality-line=Municipality of <municipality>
+barangay-line=
+BARANGAY <barangay>
+citizenship=FILIPINO
+issued-date-office=\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.\n\n
+issued-date-office-2=\tIssued this <day> Day of <month> <year>  at the Office of the Punong Barangay of <barangayaddress>.
+
+profession-list=0-Senior Citizen,1-Farmer,2-Laborer,3-House Keeper,4-House Wife,5-Bussinessman,6-Bussinesswoman,7-Government Employee,8-Teacher I,9-Teacher II,10-Teacher III,11-Municipal Doctor,12-Doctor,13-Municipal Engineer,14-Engineer,15-Attorney,16-Mayor,17-Vice Mayor,18-Municipal Kagawad,19-SK Chairman,20-SK,21-Municipal Nusrse,22-Nurse,23-Midwife,24-OFW,25-Others,26-Security Guard,27-Government Officials,28-Self Employed,29-PNP,30-AFP,31-Navy,32-Seaman,32-Applicant

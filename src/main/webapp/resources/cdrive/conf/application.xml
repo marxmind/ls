@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<application>
+	<databaseBank>bank_cheque</databaseBank>
+	<databaseTax>taxation</databaseTax>
+	<databaseWebTis>webtis</databaseWebTis>
+	<databaseCash>cashbook</databaseCash>
+	<licensing>bls</licensing>
+	<da>webtis</da>
+	<driver>org.mariadb.jdbc.Driver</driver>
+	<url>jdbc:mariadb://localhost</url>
+	<port>3306</port>
+	<SSL>useSSL=false</SSL>
+	<username>cm9vdA==</username>
+	<password>bWFya29jdG9iZXIxODE5ODYqaXRhbGlh</password>
+	<applicationExp>02r03i-00m01a-02r00m01a08i</applicationExp>
+	<applicationVersion>Version 1.0</applicationVersion>
+	<copyright>Copyright 2016</copyright>
+	<author>Mark Italia</author>
+	<supportEamil>markritalia@gamil.com</supportEamil>
+	<supportNo>09175121252</supportNo>
+	<includeLog>yes</includeLog>
+	<logPath>C:\webtis\log\</logPath>
+	<license-img>C:\webtis\license\img\</license-img>
+	<chequeJrxml>Format2</chequeJrxml>
+	<chequePdfName>BankChequeReport</chequePdfName>
+	<dispenseChequePdfName>Dispense</dispenseChequePdfName>
+	<form56>form56</form56>
+	<form56all>form56all</form56all>
+	<checkIssued>checkissuedreport</checkIssued>
+	<cashbook>cashbook</cashbook>
+	<voucher>voucher</voucher>
+	<themeStyle>rocket</themeStyle>
+	<dtr>dtr</dtr>
+	<form11>form11</form11>
+	<reports>C:\webtis\reports\</reports>
+	<server-local>true</server-local>
+</application>

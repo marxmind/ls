@@ -1,0 +1,18 @@
+
+DATABASE_UNAME=cm9vdA==
+DATABASE_PASSWORD=b2N0b2JlcjE4MTk4Nio=
+DATABASE_NAME_BANK=bank_cheque
+DATABASE_NAME_LAND=taxation
+DATABASE_NAME_MAIN=webtis
+DATABASE_NAME_LICENSING=bls
+DATABASE_NAME_AGRICULTURE=webtis
+DATABASE_NAME_CASHBOOK=cashbook
+DATABASE_DRIVER=org.mariadb.jdbc.Driver
+DATABASE_URL=jdbc:mariadb://localhost
+DATABASE_URL_SERVER=jdbc:mariadb://mto-server
+DATABASE_PORT=3306
+DATABASE_SSL=useSSL=false
+DATABASE_SERVER_TIME_ZONE=serverTimezone=UTC
+DATABASE_SERVER_DB_URL=jdbc:mariadb://mto-server:3306/webtis?serverTimezone=UTC&useSSL=false
+DATABASE_SERVER_IP=mto-server
+DATABASE_HOME_PATH=C:\\Program Files\\MariaDB 10.6\\bin\\

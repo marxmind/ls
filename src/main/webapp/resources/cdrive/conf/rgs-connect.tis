@@ -1,0 +1,4 @@
+This program use for RGS connection
+
+database-location=C:/webtis/rgs/rgs.accdb
+database-driver=jdbc:ucanaccess://

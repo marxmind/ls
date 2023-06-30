@@ -1,0 +1,44 @@
+Do not delete this file
+
+Date Created: March 20, 2019
+
+Author: MARXMIND
+
+
+collection-last-year=1=100,2=100,3=50,4=400,5=500,6=500,7=300,8=500,9=650,10=250,11=300,12=100
+collection-this-year=1=60,2=120,3=80,4=500,5=1000,6=550,7=230,8=800,9=10,10=800,11=500,12=300
+
+forms-last-year=CTC-IND=1200,CTC-CORP.=20000,AF-51=24000,AF-52=45600,AF-53=100000,AF-54=2500,AF-56=600,AF-47=25100,CT-2=5000,CT-5=6252
+forms-this-year=CTC-IND=500,CTC-CORP.=200,AF-51=2400,AF-52=4600,AF-53=1000,AF-54=2000,AF-56=6000,AF-47=2500,CT-2=5000,CT-5=6025
+
+collector-data=charlotte=100,merver=80,levy=50
+
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(26,'2018-01-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(27,'2018-02-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(28,'2018-03-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(29,'2018-04-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(30,'2018-05-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(31,'2018-06-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(32,'2018-07-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(33,'2018-08-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(34,'2018-09-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(35,'2018-10-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(36,'2018-11-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(37,'2018-12-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(38,'2019-01-01',3,1,50,50,1,1,1,2,50,400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(39,'2019-02-01',3,1,50,50,1,1,1,2,50,400,3);
+
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(40,'2018-01-01',3,1,50,50,1,1,1,2,50,120400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(41,'2018-02-01',3,1,50,50,1,1,1,2,50,140000,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(42,'2018-03-01',3,1,50,50,1,1,1,2,50,121400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(43,'2018-04-01',3,1,50,50,1,1,1,2,50,134400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(44,'2018-05-01',3,1,50,50,1,1,1,2,50,413200,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(45,'2018-06-01',3,1,50,50,1,1,1,2,50,43400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(46,'2018-07-01',3,1,50,50,1,1,1,2,50,40430,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(47,'2018-08-01',3,1,50,50,1,1,1,2,50,123400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(48,'2018-09-01',3,1,50,50,1,1,1,2,50,342400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(49,'2018-10-01',3,1,50,50,1,1,1,2,50,43200,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(50,'2018-11-01',3,1,50,50,1,1,1,2,50,404320,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(51,'2018-12-01',3,1,50,50,1,1,1,2,50,44500,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(52,'2019-01-01',3,1,50,50,1,1,1,2,50,234400,3);
+INSERT INTO collectioninfo (colid,receiveddate,formtypecol,beginningNoCol,endingNoCol,colpcs,isactivecol,isid,logid,colstatus,prevPcs,amount,rptgroup) VALUES(53,'2019-02-01',3,1,50,50,1,1,1,2,50,59400,3);

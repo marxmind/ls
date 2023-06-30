@@ -1,0 +1,44 @@
+Author: Mark Italia
+Company: MARXMIND I.T. SOLUTIONS
+Created: 07/13/2018
+Version 1.0
+
+This configuration file is use for document layout of the certificate, clearance etc
+
+This file applicable only start from WEBTIS version 14 and above
+
+
+initialize version
+documentContentSource=C:/webtis/conf/wordsV6.bris
+documentLayout=V6
+
+document V6
+C:/bls/conf/wordsV6.bris
+clearance/certificate
+v6_business-permit=businesspermitV7
+v6_fishcage-permit=cageclearanceV6
+
+cheques
+v6_transmittal_letter=transmittalV6-long
+
+v7_fishcage-payment-history=cageclearanceV7
+v7_fishcage-billing-statement=water_rental_bill_statement
+
+for fish cage
+menro-officer=Cyril Dongon
+menro-position=MENRO-OIC
+mto-fishery-display-person=false
+clerk-name=Alma Sangid
+clerk-position=Bookbinder I
+treasurer-name=Ferdinand L. Lopez
+treasurer-position=Municipal Treasurer
+fishery-coordinator-name=Dearly C. Tosoc
+fishery-coordinator-position=Mun. Fishery Coordinator
+zoning-name=Noemi Dita Dalipe
+zoning-position=Zoning Officer
+agriculturist-name=Zaldy B. Artacho
+agriculturist-position=Municipal Agriculturist
+mayor-name=Floro S. Gandam
+mayor-position=Municipal Mayor
+
+printer-type=LQ310
