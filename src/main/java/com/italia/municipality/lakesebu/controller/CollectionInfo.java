@@ -91,6 +91,19 @@ public class CollectionInfo {
 		
 	}
 	
+	public static Map<Integer, Map<Integer, Double>> graph(List years, int form) {
+		Map<Integer, Map<Integer, Double>> mapYear = new LinkedHashMap<Integer, Map<Integer, Double>>();
+		
+			for(Object year : years) {
+				int yer = Integer.valueOf(year.toString());
+				mapYear = CollectionInfo.retrieveYear(yer,form,mapYear);
+			}
+		
+		
+		return mapYear;
+		
+	}
+	
 	/*
 	 * public static Map<Integer,Map<Integer, Map<Integer, Map<Integer, Double>>>>
 	 * graph(List years, List collectors, List forms) { Map<Integer, Map<Integer,
@@ -215,6 +228,65 @@ public class CollectionInfo {
 		
 		return mapYear;
 	}
+	
+	public static Map<Integer, Map<Integer, Double>> retrieveYear(int year, int form,Map<Integer, Map<Integer, Double>> mapYear){
+		 Map<Integer, Double> formType = new LinkedHashMap<Integer, Double>();
+		String[] params = new String[2];
+		params[0] = year + "-01-01";
+		params[1] = year + "-12-31";
+		String sql = "SELECT DATE_FORMAT(receiveddate,'%Y') as year, sum(amount) as amount,formtypecol FROM collectioninfo WHERE isactivecol=1 and (receiveddate>=? AND receiveddate<=?) ";
+		
+		if(form>0) {
+		sql += " AND formtypecol=" + form;
+		}
+		sql += " GROUP BY MONTH(receiveddate)";
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		try{
+			conn = WebTISDatabaseConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			
+			if(params!=null && params.length>0){
+				
+				for(int i=0; i<params.length; i++){
+					ps.setString(i+1, params[i]);
+				}
+				
+			}
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				//mapData.put(rs.getInt("month"), rs.getDouble("amount"));
+				int yr = rs.getInt("year");
+				int type = rs.getInt("formtypecol");
+				double amount = rs.getDouble("amount");
+				
+				if(mapYear!=null && mapYear.containsKey(yr)) {
+					if(mapYear.get(yr).containsKey(type)) {
+						double amnt = mapYear.get(yr).get(type) + amount;
+						mapYear.get(yr).put(type, amnt);
+					}else {
+						formType.put(type, amount);
+						mapYear.put(yr, formType);
+					}
+				}else {
+					mapYear.put(yr, formType);
+				}
+				
+			}
+		
+			rs.close();
+			ps.close();
+			WebTISDatabaseConnect.close(conn);
+			}catch(Exception e){e.getMessage();}
+		
+		return mapYear;
+	}
+	
 	
 	/*
 	 * public static Map<Integer, Map<Integer, Map<Integer, Map<Integer, Double>>>>

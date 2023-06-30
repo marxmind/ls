@@ -296,6 +296,9 @@
 							</div>
 			        	</f:facet>
 			    		<f:facet name="right">
+			    		
+			    			<p:commandButton icon="pi pi-chart-pie" oncomplete="PF('graphDaily').show()" />
+			    		
 						</f:facet>
 				</p:toolbar>
 	    		</div>
@@ -460,6 +463,35 @@
             			</p:column>
                          
                   </p:dataTable>       
+		</p:dialog>
+		
+		
+		<p:dialog header="Business Graph Transaction" showEffect="clip" hideEffect="clip" 
+		position="center top" modal="false" widgetVar="graphDaily" Height="500" width="1100" closable="false">
+		
+		<p:toolbar id="tbDailyGraph">
+    		<f:facet name="left">
+    			<div class="ui-inputgroup">
+    			<p:selectOneMenu value="#{businessPermitBean.typeOfId}" style="width: 15em;">
+				      <f:selectItems value="#{businessPermitBean.typeOfs}"/>
+				</p:selectOneMenu>
+    			<p:selectOneMenu value="#{businessPermitBean.monthId}" style="width: 15em;">
+				      <f:selectItems value="#{businessPermitBean.months}"/>
+				</p:selectOneMenu>
+        		<p:selectOneMenu value="#{businessPermitBean.yearId}" style="width: 15em;">
+				      <f:selectItems value="#{businessPermitBean.years}"/>
+				</p:selectOneMenu>
+				<p:commandButton  icon="pi pi-search"  actionListener="#{businessPermitBean.createBarModel}" update="idDailyGraph"/>
+				</div>
+    		</f:facet>
+    			
+    		<f:facet name="right">
+    			<p:commandButton  value="Close" icon="pi pi-times"  style="width: 10em;" onclick="PF('graphDaily').hide();"/>
+    		</f:facet>
+		</p:toolbar>
+		
+		<p:barChart id="idDailyGraph" model="#{businessPermitBean.barModel}" style="width: 100%; height: 500px;"/>
+		
 		</p:dialog>
 		
 	<ui:include src="loader.xhtml" />

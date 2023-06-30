@@ -299,7 +299,6 @@ public class BusinessIndexBean implements Serializable {
 			}
 			
 			sql += " ORDER BY bn.bnowner";
-			
 			String address = "";
 			for(BusinessIndexTrans b : BusinessIndexTrans.retrieve(sql, params)) {
 				int id = b.getBusinessIndex().getBarangay().getId();

@@ -222,9 +222,9 @@ public class ORListing {
 		
 		String sql = "select o.orid,c.fullname, "
 				+ "(select sum(s.olamount) as amount from ornamelist s where s.orid=o.orid) as amount ,"
-				+ " ornumber, "
-				+ "ordatetrans,"
-				+ "aform as formtype,o.orstatus,i.collectorname "
+				+ " o.ornumber, "
+				+ "o.ordatetrans,"
+				+ "o.aform as formtype,o.orstatus,i.collectorname "
 				+ "from orlisting o, customer c,issuedcollector i where "
 				+ "c.customerid=o.customerid and o.isid=i.isid  AND o.isactiveor=1 ";
 				//+ "and (o.ordatetrans='"+ params +"' OR or.ornumber='"+ params +"')";
@@ -257,6 +257,7 @@ public class ORListing {
 						.formName(FormType.nameId(rs.getInt("formtype")))
 						.customer(Customer.builder().fullname(rs.getString("fullname")).build())
 						.status(stat)
+						.statusName(FormStatus.nameId(stat))
 						.collector(Collector.builder().name(rs.getString("collectorname")).build())
 						.build();
 				ors.add(or);

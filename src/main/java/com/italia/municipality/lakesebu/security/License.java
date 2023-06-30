@@ -334,6 +334,80 @@ public class License {
 		return false;
 	}
 	
+	public static boolean activateLicenseCode(Module module, String activationCode){
+		
+		String sql = "SELECT * FROM activationcode where modulename=? AND activationcode=?";
+		String[] params = new String[2]; 
+		params[0] = module.getName();
+		params[1] = activationCode;
+		
+		ActivationCode code = null;
+		try{code = ActivationCode.retrieve(sql, params).get(0);}catch(Exception e){}
+		
+		if(code!=null){
+			System.out.println("Code accepted....");
+			System.out.println("updating license..");
+			
+			sql = "SELECT * FROM license WHERE modulename=?";
+			params = new String[1];
+			params[0] = module.getName();
+			License lic = null; 
+			try{
+			
+			lic = License.retrieve(sql, params).get(0);
+			lic.setIsActive(1);
+			lic.setMonthExpiration(code.getMonthExpiration());
+			lic.setCodeName(code.getCodeName());
+			lic.setActivationCode(code.getActivationCode());
+			lic.update();
+			
+			char[] month = lic.getMonthExpiration().split("-")[0].toCharArray();
+			int m1 = Integer.valueOf(month[0]+"");
+			int m2 = Integer.valueOf(month[1]+"");
+			
+			char[] day = lic.getMonthExpiration().split("-")[1].toCharArray();
+			int d1 = Integer.valueOf(day[0]+"");
+			int d2 = Integer.valueOf(day[1]+"");
+			
+			
+			char[] year = lic.getMonthExpiration().split("-")[2].toCharArray();
+			int y1 = Integer.valueOf(year[0]+"");
+			int y2 = Integer.valueOf(year[1]+"");
+			int y3 = Integer.valueOf(year[2]+"");
+			int y4 = Integer.valueOf(year[3]+"");
+			
+			String decodedDate = months()[m1]+months()[m2] +"-"+ days()[d1]+days()[d2] +"-"+ years()[y1]+years()[y2]+years()[y3]+years()[y4]; 
+			
+			//update xml license file
+			updateLicense(module, decodedDate);
+			
+			}catch(Exception e){}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private static void updateLicense(Module moduleName, String licenseKey){
+		
+		try {
+			File xmlFile = new File(APPLICATION_FILE);
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(xmlFile);
+			Node node = document.selectSingleNode("/license/module/"+moduleName.getName());
+				
+			System.out.println(node.getStringValue());
+			node.setText(licenseKey);
+			
+			OutputFormat format = OutputFormat.createPrettyPrint();
+			XMLWriter writer = new XMLWriter(new FileWriter(xmlFile),format);
+			writer.write(document);
+			writer.close();
+			
+			}catch(Exception e) {}
+	}
+	
 	private static String[] days(){
 		char[] addChar = "markitalia".toCharArray();
 		String[] days = new String[10];

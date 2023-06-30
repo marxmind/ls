@@ -13,6 +13,7 @@ import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.Pages;
 import com.italia.municipality.lakesebu.security.AppModule;
 import com.italia.municipality.lakesebu.security.ClientInfo;
+import com.italia.municipality.lakesebu.security.Copyright;
 import com.italia.municipality.lakesebu.security.License;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
@@ -188,11 +189,11 @@ public class LoginBean implements Serializable{
 			 
 			
 			//Check application Expiration
-			/*if(Copyright.checkLicenseExpiration()){	
-				LogU.add("The application is expired. Please contact application owner.");
-				result = "expired";
-			}else{*/
-				logUserIn(in);
+			//if(Copyright.checkLicenseExpiration()){	
+				//LogU.add("The application is expired. Please contact application owner.");
+				//result = "expired";
+			//}else{
+				//logUserIn(in);
 			//}
 		}else{
 			FacesContext.getCurrentInstance().addMessage(

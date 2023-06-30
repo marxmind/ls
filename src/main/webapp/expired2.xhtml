@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+     xmlns:my="jakarta.faces.composite/my"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Expired</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+html{
+	font-size: 11px;
+}
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+
+<p:dialog visible="true"  header="Application Expired" widgetVar="multiDialog" modal="true" showEffect="clip" hideEffect="clip" resizable="false" width="250">
+        <p:outputPanel id="dialogaction" style="text-align:center;">
+        </p:outputPanel>
+        
+        <p:panelGrid columns="1">
+        	<f:facet name="header">
+        		<p style="color: red">Please contact application developer.</p>
+        	</f:facet>
+        	<h:outputText value="Module"/>
+        	<p:selectOneMenu value="#{expiredBean.moduleId}"  style="width:150px;">
+						<f:selectItem itemLabel="Select..."/>
+						<f:selectItems value="#{expiredBean.modules}"/>
+				</p:selectOneMenu>	
+        	<h:outputText value="Please provide product key"/>
+			<p:inputText  id="uname" value="#{expiredBean.activationCode}"/>
+			<f:facet name="footer">
+				<h:commandButton value="Activate" styleClass="btn btn-primary" action="#{expiredBean.activate}"/>
+			</f:facet>
+        </p:panelGrid>
+        
+</p:dialog>   
+
+</h:form>
+
+</h:body>
+</html>

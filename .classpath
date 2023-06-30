@@ -14,7 +14,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/hibernate-validator-7.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.faces-4.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.faces-4.0.2.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.json-api-2.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.validation-api-3.0.2.jar"/>
@@ -54,5 +54,6 @@
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/javase-3.4.0.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/barbecue-1.5-beta1.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/lombok.jar"/>
+	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.jakartaee-web-api-10.0.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

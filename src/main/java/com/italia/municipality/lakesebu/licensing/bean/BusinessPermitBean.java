@@ -29,6 +29,17 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
+import org.primefaces.model.charts.bar.BarChartDataSet;
+import org.primefaces.model.charts.bar.BarChartModel;
+import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.model.charts.optionconfig.animation.Animation;
+import org.primefaces.model.charts.optionconfig.legend.Legend;
+import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
+import org.primefaces.model.charts.optionconfig.title.Title;
 
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.Login;
@@ -37,6 +48,9 @@ import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.BFilter;
 import com.italia.municipality.lakesebu.enm.DateFormat;
+import com.italia.municipality.lakesebu.enm.GraphColor;
+import com.italia.municipality.lakesebu.enm.GraphColorWithBorder;
+import com.italia.municipality.lakesebu.enm.Months;
 import com.italia.municipality.lakesebu.licensing.controller.Barangay;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessEngaged;
@@ -117,6 +131,8 @@ public class BusinessPermitBean implements Serializable{
 	private static final String BUSINESS_REPORT = "businesslist";
 	private List<BusinessPermit> seriesData;
 	
+	private BarChartModel barModel;
+	
 	private  String DOC_PATH = AppConf.PRIMARY_DRIVE.getValue() + 
 			AppConf.SEPERATOR.getValue() + 
 			AppConf.APP_CONFIG_FOLDER_NAME.getValue() + 
@@ -160,8 +176,35 @@ public class BusinessPermitBean implements Serializable{
 	private List businessStatus;
 	private String businessStatusId;
 	
+	private List years;
+	private int yearId;
+	
+	private List months;
+	private int monthId;
+	
+	private String typeOfId;
+	private List typeOfs;
+	
 	@PostConstruct
 	public void init() {
+		
+		typeOfId = "ALL";
+		typeOfs = new ArrayList<>();
+		typeOfs.add(new SelectItem("ALL", "ALL"));
+		typeOfs.add(new SelectItem("NEW", "NEW"));
+		typeOfs.add(new SelectItem("RENEW", "RENEW"));
+		
+		years = new ArrayList<>();
+		yearId = DateUtils.getCurrentYear();
+		for(int year=2019; year<=DateUtils.getCurrentYear(); year++){
+			years.add(new SelectItem(year, year+""));
+		}
+		months = new ArrayList<>();
+		months.add(new SelectItem(0, "All Months"));
+		for(int month=1; month<=12; month++){
+			months.add(new SelectItem(month, Months.getMonthName(month)));
+		}
+		monthId = DateUtils.getCurrentMonth();
 		
 		calendarFromCon = DateUtils.getDateToday();
 		calendarToCon = DateUtils.getDateToday();
@@ -172,7 +215,79 @@ public class BusinessPermitBean implements Serializable{
 		loadMemos();
 		loadSearch();
 		System.out.println("end init...");
+		
+		createBarModel();
 	}
+	
+	public void createBarModel() {
+		
+        barModel = new BarChartModel();
+        ChartData data = new ChartData();
+        
+        Map<String, Integer> days = BusinessPermit.dailyTransaction(getYearId(), getMonthId(), getTypeOfId());
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        
+        
+        
+        List<Number> values = new ArrayList<>();
+        List<String> bgColor = new ArrayList<>();
+        List<String> borderColor = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        int color = 1;
+        int total = 0;
+        for(String m : days.keySet()) {
+        	labels.add(m);
+        	values.add(days.get(m));
+    		bgColor.add(GraphColorWithBorder.valueId(color));
+    		borderColor.add(GraphColor.valueId(color));
+        	total += days.get(m);
+        	color++;
+        	if(color>25) {
+        		color=1;
+        	}
+        }
+        barDataSet.setLabel(getTypeOfId().equalsIgnoreCase("ALL")? "All Business Transaction ("+ total +")" : getTypeOfId()+ " Transaction ("+ total +")");
+        barDataSet.setData(values);
+        barDataSet.setBackgroundColor(bgColor);
+        barDataSet.setBorderColor(borderColor);
+        barDataSet.setBorderWidth(1);
+        data.addChartDataSet(barDataSet);
+        data.setLabels(labels);
+        barModel.setData(data);
+
+        //Options
+        BarChartOptions options = new BarChartOptions();
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        linearAxes.setTicks(ticks);
+        cScales.addYAxesData(linearAxes);
+        options.setScales(cScales);
+
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Monthly Graph");
+        options.setTitle(title);
+
+        Legend legend = new Legend();
+        legend.setDisplay(true);
+        legend.setPosition("top");
+        LegendLabel legendLabels = new LegendLabel();
+        legendLabels.setFontStyle("italic");
+        legendLabels.setFontColor("#2980B9");
+        legendLabels.setFontSize(24);
+        legend.setLabels(legendLabels);
+        options.setLegend(legend);
+
+        // disable animation
+        Animation animation = new Animation();
+        animation.setDuration(0);
+        options.setAnimation(animation);
+
+        barModel.setOptions(options);
+    }
 	
 	public void loadTypes() {
 		types = new ArrayList<>();

@@ -42,7 +42,7 @@
 
 <h:form prependId="false" id="formId">
 	<ui:include src="header.xhtml" />
-	
+	<p:defaultCommand target="#{oRListingBean.keyPress}"/>
 	<p:growl id="msg" showDetail="true" life="2000" />
 	
 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
@@ -738,8 +738,21 @@
 	<p:commandButton title="Click to save" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 460px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; ">
 			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-exclamation-triangle" />
 	</p:commandButton>
+	<p:commandButton title="Open QRCode" icon="pi pi-qrcode" id="startQR"   style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 490px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<p:overlayPanel for="startQR" style="width:350px">
+            <p>Scan QRCode on TEKLEAD</p>
+            <p>
+            <span class="ui-input-icon-left">
+			    				<i class="pi pi-qrcode" />
+				    			<p:inputText id="searchQR" value="#{oRListingBean.qrCode}" placeholder="Scan your qrcode" style="width: 20em">
+				    				<p:ajax event="keyup" listener="#{oRListingBean.qrCodeMobileScan}" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId remarkId noteToColId" delay="800"/>
+				    			</p:inputText>
+				    			<p:commandButton id="subId" actionListener="#{oRListingBean.qrCodeMobileScan}" icon="pi pi-search" update="queDataId fldId fldId2 dataSelectedId dataOrId fldId fldId2 dtlsId totalId idTotal idInterest idGrand fldNoteId remarkId noteToColId"/>
+			    			</span>
+            </p>
+   </p:overlayPanel>
 	
-		
+			
 	<p:commandButton title="Click to Clear" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 80px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; ">
 			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to clear this fields?" icon="ui-icon-alert" />
 	</p:commandButton>

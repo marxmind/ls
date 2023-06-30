@@ -3,6 +3,7 @@ package com.italia.municipality.lakesebu.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,6 +126,7 @@ public class BusinessRegBean implements Serializable{
 		}else {
 			setLabelAmountCapitalGross("Please Provide Gross");
 		}
+		reCalculateBusiness();
 	}
 	
 	public void selectedBusiness(BusinessIndex in) {
@@ -183,9 +185,9 @@ public class BusinessRegBean implements Serializable{
 					}
 					count++;
 					
-					text += "<p>Issued: " + DateUtils.convertDateToMonthDayYear(tr.getDateTrans()) +"</p>";
-					text += "<p>OR Number: " + tr.getOrnumber()+"</p>";
-					text += "<p>Quarter: " + BusinessQtrType.typeName(tr.getQtrPayment())+"</p>";
+					text += "<p>Issued: <b>" + DateUtils.convertDateToMonthDayYear(tr.getDateTrans()) +"</b></p>";
+					text += "<p>OR Number: <b style='color: red'>" + tr.getOrnumber()+"</b></p>";
+					text += "<p>Quarter: <b>" + BusinessQtrType.typeName(tr.getQtrPayment())+"</b></p>";
 					text += findORNumber(tr);
 				}
 			}
@@ -333,7 +335,7 @@ public class BusinessRegBean implements Serializable{
 			count++;
 		}
 		text += "</ul>";
-		text += "<p>Total: "+ Currency.formatAmount(amount) +"</p>";
+		text += "<p>Total: <b>"+ Currency.formatAmount(amount) +"</b></p>";
 		text += "<br/>";
 		return text;
 	}
@@ -372,8 +374,8 @@ public class BusinessRegBean implements Serializable{
 			text += "<ul>";
 			text += "<li>Business Name</li>";
 			text += "<li>Owner Name</li>";
-			text += "<li>Business Type: NEW</li>";
-			text += "<li>Capital: Provide capital more than 30,000.00</li>";
+			text += "<li>Business Type: <b>NEW</b></li>";
+			text += "<li>Capital: <b>Provide capital more than 30,000.00</b></li>";
 			text += "<li><h1>Non-Essential</h1>Entertainment & hospitality, including but not limited to strip clubs and brothels, casinos, concert venues, arenas, auditoriums, stadiums, large conference rooms, meeting halls, and cafeterias, Recreation and athletic facilities, including but not limited to community and recreation centers, gyms, health clubs, fitness centers, yoga, barre and spin facilities, Beauty and personal care services and facilities, including but not limited to barber shops, beauty, tanning, waxing hair salons, and nail salons and spas, Retail facilities, including shopping malls except for pharmacy or other health care facilities within retail operations. Retailers are encouraged to continue online operations with pickup and delivery.</li>";
 			text += "<li><h1>Essential</h1>Fire services, law enforcement agencies, emergency medical services & public safety agencies, Healthcare services, Businesses or organizations that provide food, shelter, or critical social services for disadvantaged populations, Home maintenance/repair services, Auto repair services & trucking service centers, Grocery stores, supermarkets, hardware stores, convenience & discount stores, Pharmacies, healthcare operations, & biomedical facilities, Post offices & shipping outlets, Gas stations & truck stops, Banks & financial institutions, Veterinary services & pet stores, Laundromats & dry cleaners, Food processing, Agriculture, livestock & feed mills, Logistics & Supply Chain Operations: Warehousing, storage, distribution, and supply-chain related operations, Public transportation, Essential stays in hotels, commercial lodging, dormitories, shelters, and homeless encampments</li>";
 			text += "<li><h1>Category</h1>Retailer, Wholesaler, Amusement, Contractor, Cottages, Eating Places, Financial Institution, Fishery Rental, Institution, Manufacturer, Other Retailer, Sylab Permit, Swimming Pool, and Trader</li>";
@@ -441,18 +443,18 @@ public class BusinessRegBean implements Serializable{
 		text += "<p>Type: <b>"+BusinessType.val(getTypeId()).getName()+"</b></p>";
 		text += "<p>Category: <b>"+BusinessCategory.val(getBusinessTypeId()).getName()+"</b></p>";
 		text += "<p>For the : <b>"+(getEssentialId()==0? "Non-Essential":"Essential")+"</b></p>";
-		text += "</br>";
+		text += "<br/>";
 		
 		if(getAmountCapitalGross()>=30000) {
 			text += calc();
-			text += "</br></br>";
+			text += "<br/><br/>";
 		}else {
 			text += "<p>Remarks: "+ (getTypeId()>0? "Gross amount below 30,000.00 is not qualified for renewing for Business Permit." : "Capital less than 30,000.00 is not qualified for Municipal Business Permit.") +"</p>";
 		}
 		
-		text += "</br></br>";
-		text +="Additional requirements. Please disregard if already settled.";
-		text += "</br></br>";
+		text += "<br/><br/>";
+		text +="<p><b>Additional requirements. Please disregard if already settled.</b></p>";
+		text += "<br/><br/>";
 		text += otherRequirements();
 		
 		setDtls(text);
@@ -470,18 +472,19 @@ public class BusinessRegBean implements Serializable{
 		text += "<p>Type: <b>"+BusinessType.val(getTypeId()).getName()+"</b></p>";
 		text += "<p>Category: <b>"+BusinessCategory.val(getBusinessTypeId()).getName()+"</b></p>";
 		text += "<p>For the : <b>"+(getEssentialId()==0? "Non-Essential":"Essential")+"</b></p>";
-		text += "</br>";
+		text += "<br/>";
 		
 		if(getAmountCapitalGross()>=30000) {
-			text += calculatePayment();
-			text += "</br></br>";
+			//text += calculatePayment();
+			text += reCalculatePayment();
+			text += "<br/><br/>";
 		}else {
 			text += "<p>Remarks: "+ (getTypeId()>0? "Gross amount below 30,000.00 is not qualified for renewing for Business Permit." : "Capital less than 30,000.00 is not qualified for Municipal Business Permit.") +"</p>";
 		}
 		
-		text += "</br></br>";
-		text +="Additional requirements. Please disregard if already settled.";
-		text += "</br></br>";
+		text += "<br/><br/>";
+		text +="<p><b>Additional requirements. Please disregard if already settled.</b></p>";
+		text += "<br/><br/>";
 		text += otherRequirements();
 		
 		setDtls(text);
@@ -636,7 +639,8 @@ public class BusinessRegBean implements Serializable{
 				sql = " AND pyid="+ids[i];
 				PaymentName py =  PaymentName.retrieve(sql, params).get(0);
 				
-				if(py.getId()==1) {//Retailer
+				//only renew will have a businesstax
+				if(py.getId()==1 && BusinessType.RENEW.getId()==getTypeId()) {//Retailer
 					if(getBusinessTypeId()==BusinessCategory.RETAILER.getId() 
 							|| getBusinessTypeId()==BusinessCategory.FINANCIAL_INSTITUTION.getId()
 							|| getBusinessTypeId()==BusinessCategory.AMUSEMENT.getId()
@@ -654,14 +658,14 @@ public class BusinessRegBean implements Serializable{
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 						payments.add(py);
 					}
-				}else if(py.getId()==87) {//wholesaler
+				}else if(py.getId()==87 && BusinessType.RENEW.getId()==getTypeId()) {//wholesaler
 					if(getBusinessTypeId()==BusinessCategory.WHOLESALER.getId()) {
 						text += "<li><b>"+py.getName()+ "\t" + Currency.formatAmount(firstQuarter) + " (first quarter) </b></li>";
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 						payments.add(py);
 					}
-				}else if(py.getId()==219) {//Business Tax
+				}else if(py.getId()==219 && BusinessType.RENEW.getId()==getTypeId()) {//Business Tax
 					if(getBusinessTypeId()!=BusinessCategory.RETAILER.getId() || getBusinessTypeId()!=BusinessCategory.WHOLESALER.getId()) {
 						text += "<li><b>"+py.getName()+ "\t" + Currency.formatAmount(firstQuarter) + " (first quarter) </b></li>";
 						amount += firstQuarter;
@@ -712,6 +716,7 @@ public class BusinessRegBean implements Serializable{
 		return text;
 	}
 	
+	@Deprecated
 	private String calculatePayment() {
 		
 		String text = "";
@@ -738,8 +743,8 @@ public class BusinessRegBean implements Serializable{
 				//amount += py.getAmount();
 				//text += "<li>"+py.getName()+ "\t" + Currency.formatAmount(py.getAmount()) + "</li>";
 				
-				
-				if(py.getId()==1) {//Retailer
+				//only renew has a basic tax
+				if(py.getId()==1 && BusinessType.RENEW.getId()==getTypeId()) {//Retailer
 					if(getBusinessTypeId()==BusinessCategory.RETAILER.getId() 
 							|| getBusinessTypeId()==BusinessCategory.FINANCIAL_INSTITUTION.getId()
 							|| getBusinessTypeId()==BusinessCategory.AMUSEMENT.getId()
@@ -756,13 +761,13 @@ public class BusinessRegBean implements Serializable{
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 					}
-				}else if(py.getId()==87) {//wholesaler
+				}else if(py.getId()==87 && BusinessType.RENEW.getId()==getTypeId()) {//wholesaler
 					if(getBusinessTypeId()==BusinessCategory.WHOLESALER.getId()) {
 						text += "<li><b>"+py.getName()+ "\t" + Currency.formatAmount(firstQuarter) + " (first quarter) </b></li>";
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 					}
-				}else if(py.getId()==219) {//Business Tax
+				}else if(py.getId()==219 && BusinessType.RENEW.getId()==getTypeId()) {//Business Tax
 					if(getBusinessTypeId()!=BusinessCategory.RETAILER.getId() || getBusinessTypeId()!=BusinessCategory.WHOLESALER.getId()) {
 						text += "<li><b>"+py.getName()+ "\t" + Currency.formatAmount(firstQuarter) + " (first quarter) </b></li>";
 						amount += firstQuarter;
@@ -812,17 +817,110 @@ public class BusinessRegBean implements Serializable{
 		return text;
 	}
 	
+private String reCalculatePayment() {
+		
+		String text = "";
+		
+		double tarifAnnual = 0d;
+		double firstQuarter = 0d;
+		double perQuarter = 0d;
+		double threeQuarter = 0d;
+		//basic tax
+		if(getTypeId()==1) {//RENEW
+			tarifAnnual = tarifa();
+			perQuarter = tarifAnnual/4;
+			threeQuarter = perQuarter * 3;
+			firstQuarter = tarifAnnual - threeQuarter;// only first quarter is charge
+		}
+		
+		double amount = 0d;
+		
+		try {
+			text += "Regulatory Fees";
+			text += "<ul>";
+			List<PaymentName> pays = new ArrayList<PaymentName>();
+			for(PaymentName py : getPayments()) {
+				if(py.getId()>0) {
+					text += "<li>"+py.getName()+ "\t" + Currency.formatAmount(py.getAmount()) + "</li>";
+					amount += py.getAmount();
+				}
+				pays.add(py);
+			}	
+			setPayments(pays);//return to original list
+			text += "</ul>";
+			
+		}catch(Exception e) {e.printStackTrace();}
+		
+		if(getTypeId()==1) {//RENEW
+			text += "<br/><br/>";
+			text += "<h2>Basic Tax : "+ Currency.formatAmount(tarifAnnual) +"</h2>";
+			text += "<p><b>1ST QUARTER : "+Currency.formatAmount(perQuarter)+"</b></p>";
+			text += "<p><b>2ND QUARTER : "+Currency.formatAmount(perQuarter)+"</b></p>";
+			text += "<p><b>3RD QUARTER : "+Currency.formatAmount(perQuarter)+"</b></p>";
+			text += "<p><b>4TH QUARTER : "+Currency.formatAmount(perQuarter)+"</b></p>";
+		}
+		
+		text += "<br/><br/>";
+		text += "<h2>Total : Php"+ Currency.formatAmount(amount) +"</h2>";
+		
+		return text;
+	}
+	
+	public void toggledNewBusiness() {
+		if(BusinessType.NEW.getId()==getTypeId()) {
+		payments = new ArrayList<PaymentName>();
+		long[] ids = new long[11];
+		double[] amounts = new double[11];
+		//sanitary fee
+		ids[0] = 33;
+		amounts[0] = 40.00;
+		//mayor's permit
+		ids[1] = 4;
+		amounts[1] = mayorPermitTrarif(getAmountCapitalGross());
+		//police clearance
+		ids[2] = 19;
+		amounts[2] = 40.00;
+		//other misc income
+		ids[3] = 37;
+		amounts[3] = 40.00;
+		//business plate fee
+		ids[4] = 38;
+		amounts[4] = 350.00;
+		//zonal
+		ids[5] = 9;
+		amounts[5] = 100.00;
+		//occupation tax fee
+		ids[6] = 48;
+		amounts[6] = 100.00;
+		//inspection fees
+		ids[7] = 18;
+		amounts[7] = 40.00;
+		//secretary fee
+		ids[8] = 20;
+		amounts[8] = 50.00;
+		//garbage
+		ids[9] = 28;
+		amounts[9] = 275.00;
+		//MENRO
+		ids[10] = 24;
+		amounts[10] = 50.00;
+		Map<Long, PaymentName> pays = PaymentName.retrieveAllInMap();
+		for(int i=0; i<ids.length; i++) {
+			PaymentName py = pays.get(ids[i]);
+			py.setAmount(amounts[i]);
+			payments.add(py);
+		}
+		//add for new payment
+		payments.add(PaymentName.builder().id(0).name("Add here").build());
+		}
+		reCalculateBusiness();
+	}
+	
 	private double tarifa() {
 		double amount = 0d;
 		double tarifAmount = 400000;
 		double defaultAmountAdd = 8000;//this the 2% of tarifAmount
-		/*if(BusinessCategory.RETAILER.getId()==getBusinessTypeId() 
-				|| BusinessCategory.WHOLESALER.getId()==getBusinessTypeId()
-				|| BusinessCategory.AMUSEMENT.getId()==getBusinessTypeId()
-				|| BusinessCategory.OTHER_RETAILER.getId()==getBusinessTypeId()
-				|| BusinessCategory.OTHER.getId()==getBusinessTypeId()
-				|| BusinessCategory.MANUFACTURER.getId()==getBusinessTypeId()
-				|| BusinessCategory.EATING_PLACES.getId()==getBusinessTypeId()) {*/
+		
 		if(getBusinessTypeId()==BusinessCategory.RETAILER.getId() 
 				|| getBusinessTypeId()==BusinessCategory.FINANCIAL_INSTITUTION.getId()
 				|| getBusinessTypeId()==BusinessCategory.AMUSEMENT.getId()
@@ -834,7 +932,8 @@ public class BusinessRegBean implements Serializable{
 				|| getBusinessTypeId()==BusinessCategory.OTHER_RETAILER.getId()
 				|| getBusinessTypeId()==BusinessCategory.OTHER.getId()
 				|| getBusinessTypeId()==BusinessCategory.TRADER.getId()
-				|| getBusinessTypeId()==BusinessCategory.SALON.getId()) {	
+				|| getBusinessTypeId()==BusinessCategory.SALON.getId()
+				|| getBusinessTypeId()==BusinessCategory.WHOLESALER.getId()) {	
 			if(getAmountCapitalGross()<=tarifAmount) {
 				if(getEssentialId()==0) {//non-essential
 					amount = getAmountCapitalGross() * 0.01;
@@ -927,6 +1026,8 @@ public class BusinessRegBean implements Serializable{
 		PaymentName name = getMapPaynames().get(getIdName());
 		name.setAmount(getAmountNew());
 		payments.add(name);
+		reCalculateBusiness();
+		setAmountNew(0);
 	}
 	
 	public void onCellPayEdit(CellEditEvent event) {
@@ -934,9 +1035,11 @@ public class BusinessRegBean implements Serializable{
 		if(payments.get(index).getId()==0) {
 			payments.get(index).setAmount(getAmountNew());
 		}
+		reCalculateBusiness();
 	}
 	
 	public void deletePay(PaymentName py) {
 		payments.remove(py);
+		reCalculateBusiness();
 	}
 }

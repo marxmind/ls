@@ -353,7 +353,9 @@ public class DateUtils {
 		}
 		int month = Integer.valueOf(dateVal.split("-")[1]); 
 		String year = dateVal.split("-")[0];
-		int day = Integer.valueOf(dateVal.split("-")[2]);
+		int day = 1;
+		
+		try{Integer.valueOf(dateVal.split("-")[2]);}catch(ArrayIndexOutOfBoundsException ae) {}
 		
 		if(day<10){
 			dateVal = getMonthName(month) + " 0"+day + ", " + year;

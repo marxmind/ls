@@ -52,40 +52,45 @@
 		    	<div class="col-5">
 		    		<div class="grid">
 		    		<div class="col-12">
+		    			<p:scrollPanel style="width:580px;height:350px">
 		    			<p:panelGrid id="gridId" columns="1" layout="grid" styleClass="ui-noborder">
 		    				
-		    				
-		    				<p:outputLabel value="Business Name"/>
-							<p:inputText value="#{bnreg.businessName}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px">
+							<p:inputText value="#{bnreg.businessName}" placeholder="Input business name here" style="width: 25em; color: blue; font-weight: bold; font-size: 20px">
 								<p:ajax event="change" update="dtlsId dataIdBiz gridId payDataId" listener="#{bnreg.provideBusinessDtls}"/>
 							</p:inputText>
-							
-							
-							<p:outputLabel value="Owner Name"/>	
-							<p:inputText value="#{bnreg.ownerName}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px">
+						
+							<p:inputText value="#{bnreg.ownerName}" placeholder="Input owner here" style="width: 25em; color: blue; font-weight: bold; font-size: 20px">
 								<p:ajax event="change" update="dtlsId" listener="#{bnreg.provideOwnerDtls}"/>
 							</p:inputText>
-		    			
-		    				<p:outputLabel value="Business Type"/>	
+		    					
 		    				<p:selectOneMenu value="#{bnreg.typeId}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px" filterMatchMode="contains" filter="true">
 									<f:selectItems value="#{bnreg.types}"/>
-									<p:ajax event="change" update="amountLabelId" listener="#{bnreg.updateData}" />
+									<p:ajax event="change" update="amountLabelId dtlsId" listener="#{bnreg.updateData}" />
 							</p:selectOneMenu>
 							
 							<p:outputLabel id="amountLabelId" value="#{bnreg.labelAmountCapitalGross}"/>	
-							<p:inputNumber value="#{bnreg.amountCapitalGross}" inputStyle="width: 25em; color: red; font-weight: bold; font-size: 20px"/>	
+							<p:inputNumber value="#{bnreg.amountCapitalGross}" inputStyle="width: 25em; color: red; font-weight: bold; font-size: 20px">
+								<p:ajax event="keyup" listener="#{bnreg.toggledNewBusiness}" update="payDataId dtlsId"/>
+							</p:inputNumber>	
 							
 							<p:outputLabel value="Essential/Non-Essential"/>	
 		    				<p:selectOneMenu value="#{bnreg.essentialId}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px" filterMatchMode="contains" filter="true">
 									<f:selectItems value="#{bnreg.essentials}"/>
+									<p:ajax event="change" update="dtlsId" listener="#{bnreg.reCalculateBusiness}" />
 							</p:selectOneMenu>
 							
 							<p:outputLabel value="Category"/>	
 		    				<p:selectOneMenu value="#{bnreg.businessTypeId}" style="width: 25em; color: blue; font-weight: bold; font-size: 20px" filterMatchMode="contains" filter="true">
 									<f:selectItems value="#{bnreg.businessTypes}"/>
+									<p:ajax event="change" update="dtlsId" listener="#{bnreg.reCalculateBusiness}" />
 							</p:selectOneMenu>
 							
+							<div class="ui-inputgroup" style="float:right">
+		    					<p:commandButton value="Re-Calculate" icon="pi pi-microsoft" update="dtlsId payDataId" actionListener="#{bnreg.reCalculateBusiness}"/>
+		    				</div>
+							
 		    			</p:panelGrid>
+		    			</p:scrollPanel>
 		    		</div>
 		    		
 		    		<div class="col-12">
@@ -96,13 +101,13 @@
                          editMode="cell" editable="true"
                          >
                          
-                         <p:ajax event="cellEdit"  listener="#{bnreg.onCellPayEdit}" update="payDataId" />
+                         <p:ajax event="cellEdit"  listener="#{bnreg.onCellPayEdit}" update="payDataId dtlsId" />
                          
                          <p:column headerText="Action" width="30" exportable="false">
-		                        <p:commandButton icon="pi pi-trash" update="payDataId" actionListener="#{bnreg.deletePay(py)}" rendered="#{py.id>0}">
+		                        <p:commandButton icon="pi pi-trash" update="payDataId dtlsId" actionListener="#{bnreg.deletePay(py)}" rendered="#{py.id>0}">
 		                        	<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
 		                        </p:commandButton>
-		                        <p:commandButton value="Add" actionListener="#{bnreg.addPayment}" update="payDataId" rendered="#{py.id==0}"/>
+		                        <p:commandButton value="Add" actionListener="#{bnreg.addPayment}" update="payDataId dtlsId" rendered="#{py.id==0}"/>
 		                 </p:column>
                          
                          <p:column headerText="Name" width="150">
@@ -131,9 +136,7 @@
 		    		
 		    		
 		    		<div class="col-12">
-		    			<div class="ui-inputgroup" style="float:right">
-		    				<p:commandButton value="Re-Calculate" icon="pi pi-microsoft" update="dtlsId payDataId" actionListener="#{bnreg.reCalculateBusiness}"/>
-		    			</div>
+		    			
 		    		</div>
 		    		</div>
 	    		</div>

@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
+import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Currency;
@@ -68,8 +69,60 @@ public class Chequedtls {
 	
 	private String statusName;
 	private int fundTypeId;
-	
+	private String fundName;
 	private String style;
+	
+	public static List<Chequedtls> retrieveSpecAll(String param){
+			Map<Integer, BankAccounts> bud = BankAccounts.budgetAll();
+			List<Chequedtls> chks = new ArrayList<Chequedtls>();
+			String sql = "SELECT "
+					+ "chk.cheque_id,chk.accnt_no,chk.cheque_no,chk.date_disbursement,chk.pay_to_the_order_of,chk.chkstatus,chk.cheque_amount,of.name,mo.description "
+					+ "FROM  "
+					+ "bank_cheque.tbl_chequedtls chk, "
+					+ "webtis.offices of, "
+					+ "webtis.mooe mo "
+					+ "WHERE "
+					+ "chk.isactive=1 AND "
+					+ "chk.offid = of.offid AND "
+					+ "chk.moid = mo.moid " + param;
+					
+					sql += " ORDER BY chk.cheque_id";
+					
+					
+			Connection conn = null;
+			ResultSet rs = null;
+			PreparedStatement ps = null;
+		
+			try{
+			conn = BankChequeDatabaseConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				int fundId = Integer.valueOf(rs.getString("accnt_no"));
+				Chequedtls chk = Chequedtls.builder()
+						.fundName(bud.get(fundId).getBankAccntName())
+						.cheque_id(rs.getLong("cheque_id"))
+						.checkNo(rs.getString("cheque_no"))
+						.date_disbursement(rs.getString("date_disbursement"))
+						.payToTheOrderOf(rs.getString("pay_to_the_order_of"))
+						.statusName(rs.getInt("chkstatus")==1? "Issued" : "Cancelled")
+						.office(Offices.builder().name(rs.getString("name")).build())
+						.moe(Mooe.builder().description(rs.getString("description")).build())
+						.amount(rs.getDouble("cheque_amount"))
+						.build();
+				chks.add(chk);
+			}
+			
+			rs.close();
+			ps.close();
+			
+			BankChequeDatabaseConnect.close(conn);
+			}catch(SQLException sl){sl.getMessage();}
+		
+		return chks;
+	}
 	
 	public static Map<Long, Double> retrievePerOffice(int year){
 		Map<Long, Double> mapData = new LinkedHashMap<Long, Double>();

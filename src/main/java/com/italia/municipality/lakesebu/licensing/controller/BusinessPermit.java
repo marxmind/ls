@@ -60,6 +60,62 @@ public class BusinessPermit {
 	
 	//select datetrans,controlno,year from businesspermit where bid = (select bid from businesspermit where (datetrans>='2023-01-01' and datetrans<='2023-01-31') order by controlno asc limit 1) or bid = (select bid from businesspermit where (datetrans>='2023-01-01' and datetrans<='2023-01-31') order by controlno desc  limit 1) and (datetrans>='2023-01-01' and datetrans<='2023-01-31')
 	
+	public static Map<String, Integer> dailyTransaction(int year, int month, String typeOf){
+		Map<String, Integer> days = new LinkedHashMap<String, Integer>();
+		
+		String sql ="";
+				
+				String monthVal ="01";
+				if(month<10) {
+					monthVal = "0"+month;
+				}else {
+					monthVal = ""+month;
+				}
+				
+				
+		
+				if(month>0) {
+					sql = "select datetrans, count(datetrans) as total FROM businesspermit where isactivebusiness=1 ";
+					if(!"ALL".equalsIgnoreCase(typeOf)) {
+						sql += " AND typeof='"+ typeOf +"'";
+					}
+					sql += " AND (datetrans>='"+ year +"-"+monthVal+"-01' AND datetrans<='"+ year +"-"+monthVal+"-31') group by datetrans order by datetrans";
+				}else {
+					
+					sql = "select DATE_FORMAT(datetrans,'%m') as datetrans, count(DATE_FORMAT(datetrans,'%m')) as total from businesspermit where isactivebusiness=1 ";
+					if(!"ALL".equalsIgnoreCase(typeOf)) {
+						sql += " AND typeof='"+ typeOf +"'";
+					}
+					sql += " AND (datetrans>='"+ year +"-01-01' AND datetrans<='"+ year +"-12-31') group by date_format(datetrans,'%m')";
+				}
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		System.out.println("dailyTransaction : "+ps.toString());
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			if(month==0) {
+				if(!"NULL".equalsIgnoreCase(rs.getString("datetrans"))) {
+					days.put(DateUtils.getMonthName(Integer.valueOf(rs.getString("datetrans"))), rs.getInt("total"));
+				}
+			}else {
+				days.put(rs.getString("datetrans"), rs.getInt("total"));
+			}
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return days;
+	}
+	
 	public static List<BusinessPermit> getFirstAndLastControlNumber(String fromDate, String toDate){
 		List<BusinessPermit> nums = new ArrayList<BusinessPermit>();
 		

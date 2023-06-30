@@ -21,7 +21,7 @@ public class BankChequeDatabaseConnect {
 		try{
 			HttpSession session = SessionBean.getSession();
 			 String val = session.getAttribute("server-local").toString();//if value is true meaning local server is using
-			 
+			 //String val="true";
 			String driver = conf.getDatabaseDriver();//ReadConfig.value(AppConf.DB_DRIVER);
 		       //driver = SecureChar.decode(driver);
 		Class.forName(driver);

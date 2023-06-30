@@ -85,7 +85,7 @@ public class VRData {
 			
 			while(rs.next()){
 				oldCheckNo = rs.getString("checkno");
-				System.out.println("Old Check No: " + oldCheckNo);
+				//System.out.println("Old Check No: " + oldCheckNo);
 			}
 			rs.close();
 			ps.close();
@@ -95,7 +95,7 @@ public class VRData {
 		String checkNo = "0000000000";
 		long num = 0l;
 		if(oldCheckNo!=null) {
-			num = Long.valueOf(oldCheckNo);
+			try{num = Long.valueOf(oldCheckNo);}catch(Exception e) {checkNo = "0000000000";}
 			num += 1; //increment by one
 			
 			String len = num+"";

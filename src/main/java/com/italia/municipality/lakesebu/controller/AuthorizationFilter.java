@@ -1,6 +1,7 @@
 package com.italia.municipality.lakesebu.controller;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -19,7 +20,17 @@ public class AuthorizationFilter implements Filter{
 	public AuthorizationFilter(){}
 	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException{}
+	public void init(FilterConfig filterConfig) throws ServletException{
+		
+		Enumeration<String> initParameterNames = filterConfig.getInitParameterNames();
+        while (initParameterNames.hasMoreElements()) {
+            String name = initParameterNames.nextElement();
+            String value = filterConfig.getInitParameter(name);
+            System.out.println("Init response header parameter: " + name + " - " + value);
+            //m_responseHeaders.put(name, value);
+        }
+		
+	}
 	
 	@Override
 	public void doFilter(ServletRequest request, 
@@ -43,9 +54,11 @@ public class AuthorizationFilter implements Filter{
 													|| reqURI.indexOf("/loginper.xhtml")>=0
 															|| reqURI.indexOf("/que.xhtml")>=0
 																	|| reqURI.indexOf("/businessreg.xhtml")>=0
+																			|| reqURI.indexOf("/api/official")>=0
 					|| (session != null && session.getAttribute("username") !=null)
 					|| reqURI.indexOf("/public/")>=0
-					|| reqURI.contains("javax.faces.resource")){
+					|| reqURI.contains("jakarta.faces.resource")
+					|| reqURI.contains("/api/official")){
 				chain.doFilter(request, response);
 			}else{
 				resp.sendRedirect(reqt.getContextPath() + "/marxmind/portal.xhtml");
