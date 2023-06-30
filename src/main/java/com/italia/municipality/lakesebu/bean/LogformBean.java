@@ -1422,7 +1422,7 @@ public class LogformBean implements Serializable{
 	private RCDReader buildFormData(CollectionInfo in) {
 		Collector col = Collector.retrieve(in.getCollector().getId());
 		String[] dates = in.getReceivedDate().split("-");
-		
+		//System.out.println("in.getReceivedDate(): " + in.getReceivedDate());
 		String collector = col.getName();
 		String virifiedDate = dates[1]+"/"+dates[2]+"/"+dates[0];
 		
@@ -1443,6 +1443,7 @@ public class LogformBean implements Serializable{
 		RCDReader rcd = new RCDReader();
 		rcd.setBrisFile("marxmind");
 		rcd.setDateCreated(DateUtils.convertDateToMonthDayYear(in.getReceivedDate()));
+		//System.out.println("rcd.setDateCreated: " + rcd.getDateCreated());
 		rcd.setFund(FundType.typeName(in.getFundId()));
 		rcd.setAccountablePerson(collector);
 		rcd.setSeriesReport(value);
@@ -1749,7 +1750,6 @@ public class LogformBean implements Serializable{
   		param.put("PARAM_COLLECTOR_NAME",rcd.getAccountablePerson().replace("-", "/").toUpperCase());
   		
   		String date = DateUtils.convertDateToMonthDayYear(DateUtils.convertDate(getPerReportDate(), "yyyy-MM-dd"));
-  		
   		param.put("PARAM_PRINTED_DATE", useModifiedDate==true? date : rcd.getDateCreated());
   		param.put("PARAM_VERIFIED_DATE", useModifiedDate==true? date : rcd.getDateVerified());
   		param.put("PARAM_VERIFIED_PERSON", rcd.getVerifierPerson());
