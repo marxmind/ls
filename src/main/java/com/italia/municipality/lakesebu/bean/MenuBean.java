@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.primefaces.PrimeFaces;
 
@@ -12,6 +15,9 @@ import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.UserAccessLevel;
 import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.enm.AppConf;
+import com.italia.municipality.lakesebu.security.AppModule;
+import com.italia.municipality.lakesebu.security.License;
+import com.italia.municipality.lakesebu.utils.DateUtils;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -130,23 +136,43 @@ public class MenuBean implements Serializable{
 	}
 	
 	public String stocks() {
-		return "stocks";
+		String result="stocks.xhtml";
+		String  det = License.dbLicense(AppModule.STOCK_RECORDING);
+		  	if(checkdate(det)) {
+		  		result="expired";
+		  	}
+		return result;
 	}
 	
 	public String logform() {
-		return "logform";
+		String result="logform.xhtml";
+		String det = License.dbLicense(AppModule.COLLECTORS_RECORDING);
+		  	if(checkdate(det)) {
+		  		result="expired";
+		  	}
+		return result;
 	}
 	public String reportsgraph() {
 		return "reportsgraph";
 	}
 	public String orlisting() {
-		return "orlisting";
+		String result="orlisting.xhtml";
+		String  det = License.dbLicense(AppModule.GENERAL_COLLECTIONS);
+		  	if(checkdate(det)) {
+		  		result="expired";
+		  	}
+		return result;
 	}
 	public String uploadrcd() {
 		return "uploadrcd";
 	}
 	public String vr() {
-		return "vr";
+		String result="vr.xhtml"; 
+    	String det = License.dbLicense(AppModule.VOUCHER_RECORDING);
+	  	if(checkdate(det)) {
+	  		result="expired";
+	  	}
+		return result;
 	}
 	public String waterowner() {
 		return "waterowner";
@@ -178,7 +204,12 @@ public class MenuBean implements Serializable{
 	}
 	
 	public String writing(){
-		return "chk.xhtml";
+		String result="chk.xhtml";
+		String det = License.dbLicense(AppModule.CHECK_WRITING);
+		  	if(checkdate(det)) {
+		  		result="expired";
+		  	}
+		return result;
 	}
 	
 	public String funds(){
@@ -285,4 +316,38 @@ public class MenuBean implements Serializable{
 	public String bnIndex() {
 		return "bni.xhtml";
 	}
+	
+	private static boolean checkdate(String dbLicense){
+		
+		String systemDate = DateUtils.getCurrentDateMMDDYYYY();
+		
+		SimpleDateFormat dFormat = new SimpleDateFormat("MM-dd-yyyy");
+		
+		try{
+		Date dbDate = dFormat.parse(dbLicense);	
+		Date sysDate = dFormat.parse(systemDate);
+		
+		System.out.println("dbDate = " + dbDate);
+		System.out.println("sysDate = " + sysDate);
+		
+		if(dbDate.compareTo(sysDate)>0){
+			System.out.println("Not expired");
+		}else if(dbDate.compareTo(sysDate)<0){
+			System.out.println("Expired...");
+			return true;
+		}else if(dbDate.compareTo(sysDate)==0){
+			System.out.println("Expired...");
+			return true;
+		}else{
+			System.out.println("Expired...");
+			return true;
+		}
+		
+		}catch(ParseException pre){}
+		
+		
+		
+		return false;
+	}
+	
 }
