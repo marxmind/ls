@@ -1,6 +1,20 @@
 {
 
   "articles" : [
+	  {
+      "id" : "1",
+      "title" : "Launching of Love Philippines",
+      "subtitle": "Department of Tourism 2023 Tourism Campaign",
+      "body" : "From sunrises to sunsets, the waters and the mountains, the smiles, the experiences and more—there is so much to see and much more to love in the Philippines. Come and visit us. We’re ready to share them with you. Visit Philippines.travel/lovethephilippines. #LoveThePhilippines.",
+      "body2" : "",
+      "bodyImageUrl" : "https://i.postimg.cc/Nfrt6SFk/love-1-ls.jpg",
+      "author" : "Chris Ofong, LTE-LRCO/Infomation Officer",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/BbFqnV1p/love-2-ls.jpg",
+      "views" : "3000",
+      "createdAt" : "1"
+    },
     {
       "id" : "1",
       "title" : "Blotik Queen 2023",
