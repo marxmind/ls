@@ -30,9 +30,9 @@ public class JsonBuilder {
 		//String val="true";
 		
 		//createBusinessJsonFile();
-		//createCollectionJsonFile();
+		createCollectionJsonFile();
 		//createCheckJsonFile();
-		createORJsonFile();
+		//createORJsonFile();
 	}
 
 static void createORJsonFile() {
@@ -61,7 +61,7 @@ static void createORJsonFile() {
 			
 			String str = "{\n";
 			str += "\t\"orlisting\" : [\n";
-			Object[] objs = ORListing.getReport(" AND (o.ordatetrans>='2023-05-01' AND o.ordatetrans<='2023-12-31')");
+			Object[] objs = ORListing.getReport(" AND (o.ordatetrans>='2023-06-01' AND o.ordatetrans<='2023-12-31')");
 			List<ORListing> ors = (List<ORListing>)objs[1];
 			int totalSize = ors.size();
 			int count = 1;
@@ -271,7 +271,7 @@ static void createCollectionJsonFile() {
 			for(int year : mapYear.keySet()) {
 				for(int form : mapYear.get(year).keySet()) {
 					str +="\t\t{\n";
-					
+					str += "\"id\" : \"" + count + "\",\n";
 					str += "\"formName\" : \"" + FormType.nameId(form) + "\",\n";
 					str += "\"amount\" : \"" + Currency.formatAmount(mapYear.get(year).get(form)) + "\",\n";
 					str += "\"month\" : \"" + "\",\n";

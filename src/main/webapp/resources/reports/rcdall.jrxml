@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rcd" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26e068af-d628-4cb1-a9f8-d0c0204ec0af">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
@@ -14,6 +14,7 @@
 	<parameter name="PARAM_LOGO" class="java.io.InputStream"/>
 	<parameter name="PARAM_TOTAL" class="java.lang.String"/>
 	<parameter name="PARAM_COLLECTOR_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_VERIFIED_POSITION" class="java.lang.String"/>
 	<parameter name="PARAM_RPT_GROUP" class="java.lang.String"/>
 	<parameter name="PARAM_LOGO_TRANS" class="java.io.InputStream"/>
 	<parameter name="PARAM_PRINTED_DATE" class="java.lang.String"/>
@@ -199,6 +200,9 @@
 	</pageFooter>
 	<summary>
 		<band height="298" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="1" y="0" width="579" height="280" uuid="af16f330-e265-4345-a47b-b9fc4b7e6cea"/>
+			</rectangle>
 			<staticText>
 				<reportElement x="1" y="0" width="481" height="15" uuid="541b44f6-adf2-44e2-af5c-f2bd64bdb7ad"/>
 				<box padding="1">
@@ -216,7 +220,7 @@
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="308" y="210" width="118" height="15" uuid="532d2a8c-e7dd-4e6f-9ffc-60fe0f8a9fe4"/>
+				<reportElement x="309" y="210" width="176" height="15" uuid="532d2a8c-e7dd-4e6f-9ffc-60fe0f8a9fe4"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -224,7 +228,7 @@
 				<text><![CDATA[Name and Signature]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="308" y="224" width="118" height="15" uuid="c4fff1b3-124d-4b6a-97d3-bd43f053337d"/>
+				<reportElement x="309" y="222" width="176" height="15" uuid="c4fff1b3-124d-4b6a-97d3-bd43f053337d"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.0"/>
 				</box>
@@ -255,14 +259,6 @@
 				<text><![CDATA[Name and Signature]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="5" y="221" width="210" height="15" uuid="af0f45d1-3446-4d76-939b-0e8fcfcf40a4"/>
-				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-					<pen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Asst. Mun. Treasurer/Liquidating Officer]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="215" y="216" width="88" height="15" uuid="6431cc90-30bc-41b2-a473-b608854eae04"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.0"/>
@@ -289,8 +285,8 @@
 				<textFieldExpression><![CDATA[$P{PARAM_VERIFIED_DATE}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="311" y="200" width="210" height="15" uuid="0ecf7b11-5140-473d-b86e-17922f63a06e"/>
-				<textElement textAlignment="Left">
+				<reportElement x="309" y="200" width="176" height="15" uuid="0ecf7b11-5140-473d-b86e-17922f63a06e"/>
+				<textElement textAlignment="Center">
 					<font size="10" isBold="true" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_TREASURER}]]></textFieldExpression>
@@ -305,9 +301,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_REFERENCENO}]]></textFieldExpression>
 			</textField>
-			<rectangle>
-				<reportElement mode="Transparent" x="1" y="0" width="579" height="280" uuid="af16f330-e265-4345-a47b-b9fc4b7e6cea"/>
-			</rectangle>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="482" y="0" width="98" height="15" uuid="8bae5fcd-43bd-4c2c-aea4-98ca3eb035d3"/>
 				<box padding="1">
@@ -534,6 +527,15 @@
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="5" y="223" width="210" height="13" uuid="63bc68e8-abaf-488e-9563-e397bbbc499b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_VERIFIED_POSITION}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

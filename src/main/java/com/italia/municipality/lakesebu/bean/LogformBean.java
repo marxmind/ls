@@ -28,6 +28,7 @@ import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
 import com.italia.municipality.lakesebu.reports.Rcd;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
@@ -1318,6 +1319,8 @@ public class LogformBean implements Serializable{
   		param.put("PARAM_VERIFIED_DATE", useModifiedDate==true? date : xml.getDateVerified());
   		param.put("PARAM_VERIFIED_PERSON", xml.getVerifierPerson());
   		param.put("PARAM_TREASURER", xml.getTreasurer());
+  		DocumentFormatter doc = new DocumentFormatter();
+  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
   		
   		int cnt = 1;
   		for(RCDFormDetails d : xml.getRcdFormDtls()) {
@@ -1652,11 +1655,12 @@ public class LogformBean implements Serializable{
 		rcd.setAddAmount(Currency.formatAmount(totalAmount));
 		rcd.setLessAmount(Currency.formatAmount(totalAmount));
 		rcd.setBalanceAmount("0.00");
-		
+		DocumentFormatter doc = new DocumentFormatter();
 		rcd.setCertificationPerson(collector);
-		rcd.setVerifierPerson("HENRY E. MAGBANUA");
+		System.out.println("verified:"+doc.getTagName("verified-person"));
+		rcd.setVerifierPerson(doc.getTagName("verified-person"));
 		rcd.setDateVerified(dates[1]+"/"+dates[2]+"/"+dates[0]);
-		rcd.setTreasurer("FERDINAND L. LOPEZ");
+		rcd.setTreasurer(doc.getTagName("treasurer-name"));
 		
 		//force order do not remove
 		List<RCDFormDetails> dets = rcd.getRcdFormDtls();
@@ -1753,6 +1757,8 @@ public class LogformBean implements Serializable{
   		param.put("PARAM_PRINTED_DATE", useModifiedDate==true? date : rcd.getDateCreated());
   		param.put("PARAM_VERIFIED_DATE", useModifiedDate==true? date : rcd.getDateVerified());
   		param.put("PARAM_VERIFIED_PERSON", rcd.getVerifierPerson());
+  		DocumentFormatter doc = new DocumentFormatter();
+  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
   		param.put("PARAM_TREASURER", rcd.getTreasurer());
   		param.put("PARAM_RPT_GROUP",rcd.getSeriesReport().replace("#", ""));
   		param.put("PARAM_TOTAL",rcd.getAddAmount());
@@ -1902,11 +1908,11 @@ public class LogformBean implements Serializable{
 				param.put("PARAM_COLLECTOR_NAME",col.getName());
 		  		
 				String[] dates = in.getReceivedDate().split("-");
-				
+				DocumentFormatter doc = new DocumentFormatter();
 		  		param.put("PARAM_PRINTED_DATE", DateUtils.convertDateToMonthDayYear(in.getReceivedDate()));
 		  		param.put("PARAM_VERIFIED_DATE", dates[1]+"/"+dates[2]+"/"+dates[0]);
-		  		param.put("PARAM_VERIFIED_PERSON", "HENRY E. MAGBANUA");
-		  		param.put("PARAM_TREASURER", "FERDINAND L. LOPEZ");
+		  		param.put("PARAM_VERIFIED_PERSON", doc.getTagName("verified-person"));
+		  		param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
 		  		
 		  		String sql = " AND frm.isactivecol=1 AND cl.isid=? AND frm.rptgroup=?";
 				String[] params = new String[2];
@@ -3106,10 +3112,11 @@ public class LogformBean implements Serializable{
 	  		System.out.println("report file : " + REPORT_NAME);
 	  		
 	  		title += ", " +  getSelectedCollection().get(0).getReceivedDate().split("-")[0];
-	  		
+	  		DocumentFormatter doc = new DocumentFormatter();
 	  		param.put("PARAM_TITLE", title);
-			param.put("PARAM_TREASURER", "FERDINAND L. LOPEZ");
-	  		param.put("PARAM_LIQUIDATING_OFFICER", "HENRY E. MAGBANUA");
+			param.put("PARAM_TREASURER", doc.getTagName("treasurer-name").toUpperCase());
+	  		param.put("PARAM_LIQUIDATING_OFFICER", doc.getTagName("verified-person").toUpperCase());
+	  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
 	  		param.put("PARAM_TOTAL",Currency.formatAmount(totalAmount));
 	  		
 	  		String date = DateUtils.convertDateToMonthDayYear(DateUtils.getCurrentDateYYYYMMDD());
@@ -3219,9 +3226,10 @@ public class LogformBean implements Serializable{
 			
 			JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
 	  		HashMap param = new HashMap();
-	  		
-			param.put("PARAM_TREASURER", "FERDINAND L. LOPEZ");
-	  		param.put("PARAM_LIQUIDATING_OFFICER", "HENRY E. MAGBANUA");
+	  		DocumentFormatter doc = new DocumentFormatter();
+			param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+	  		param.put("PARAM_LIQUIDATING_OFFICER", doc.getTagName("verified-person"));
+	  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
 	  		param.put("PARAM_TOTAL",Currency.formatAmount(totalAmount));
 	  		
 	  		String date = DateUtils.convertDateToMonthDayYear(DateUtils.convertDate(getSummaryDate(), "yyyy-MM-dd")); //DateUtils.convertDateToMonthDayYear(getSelectedCollection().get(0).getReceivedDate());
@@ -3331,9 +3339,10 @@ public class LogformBean implements Serializable{
 			
 			JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
 	  		HashMap param = new HashMap();
-	  		
-			param.put("PARAM_TREASURER", "FERDINAND L. LOPEZ");
-	  		param.put("PARAM_LIQUIDATOR_PERSON", "HENRY E. MAGBANUA");
+	  		DocumentFormatter doc = new DocumentFormatter();
+			param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+	  		param.put("PARAM_LIQUIDATOR_PERSON", doc.getTagName("verified-person"));
+	  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
 	  		param.put("PARAM_TOTAL",Currency.formatAmount(totalAmount));
 	  		
 	  		String date = DateUtils.convertDateToMonthDayYear(DateUtils.convertDate(getSummaryDate(), "yyyy-MM-dd"));//DateUtils.convertDateToMonthDayYear(getSelectedCollection().get(0).getReceivedDate());
