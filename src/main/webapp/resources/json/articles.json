@@ -1,7 +1,48 @@
 {
 
   "articles" : [
-	  
+	  {
+      "id" : "1",
+      "title" : "OIC-Municipal Fire Marshal SF04 Ronald Navares",
+      "subtitle": "Newly installed BFP",
+      "body" : "Newly installed BFP, OIC-Municipal Fire Marshal SF04 Ronald Navares with SF03, Jessie Tarroza paid courtesy call to Lake Sebu Municipal Mayor Floro S. Gandam today July 17, 2023.",
+      "body2" : "Welcome to Lake Sebu Sir",
+      "bodyImageUrl" : "https://i.postimg.cc/s2Pcpkn1/taroza.jpg<:>https://i.postimg.cc/50xmpsGg/taroza-2.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/s2Pcpkn1/taroza.jpg",
+      "views" : "210",
+      "createdAt" : "1"
+    },
+	  {
+      "id" : "1",
+      "title" : "Twenty Sixth Session of 15th Municipal Council",
+      "subtitle": "held at SB Session Hall was conducted today July 17, 2023 presided by  Lake Sebu Municipal Vice Mayor Remie M. Unggol on the following agenda",
+      "body" : "Twenty Sixth Session of 15th Municipal Council, held at SB Session Hall was conducted today July 17, 2023 presided by  Lake Sebu Municipal Vice Mayor Remie M. Unggol on the following agenda:\n\nb. Resolutions\n\n1. Resolution Adopting the proposed tariff of the Lake Sebu Public Terminal Tourist Driver Association (LASEPTTOUDA) as endorse by our Tourism Office.\nSponsored by: Hon. Basilio M. Salif\n\n2. Resolution Concurring the appointment of Dr. Arenz Jade C. Docdocil as the Municipal Government Head I (Municipal Health Officer) of the Municipality of Lake Sebu.\nSponsored by: Hon. Charles Jerry E. Larido\n\n3. Declaring Supplemental Budget No. 01 of Brgy. Poblacion, Lake Sebu, South Cotabato, amounting to P138,000.24.\nSponsored by: Hon. Vicente F. Somido",
+      "body2" : "Attendance:\n\n1. Hon. Remie M. Unggol - Vice Mayor/Presiding Officer\n2. Hon. Charles Jerry E. Larido- SB Member\n3. Hon. Vicente F. Somido-SB Member\n4. Hon. Jimmy G. Baay - SB Member\n5. Hon. Ace B. Ofong - SB Member\n6. Hon. Basilio L. Salif - SB Member\n7. Hon. Bernard S. Ca-at - LnB President\n\nSupport Staff:\n\n1. Mr. Rene T. Landayong - Municipal Secretary\n2. Ms. Mercy R. Penetrante - Minutes Officer\n3. Ms. Pinky Jane Tasil- Stenographer\n\nDepartment Heads:\n\n1. Mary Grace Y. Guay, LPT, MPA - General Services Officer\n2. Maria L. Gandam, RSW, MAED - Municipal Administrator.",
+      "bodyImageUrl" : "https://i.postimg.cc/pTtSvQS5/SB-session.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/pTtSvQS5/SB-session.jpg",
+      "views" : "210",
+      "createdAt" : "1"
+    },
+	  {
+      "id" : "1",
+      "title" : " July 17, 2023",
+      "subtitle": "Lake Sebu Municipal Mayor Hon. Floro S. Gandam led the flag raising ceremony today  July 17, 2023 facilitated by Human Resource Management Office headed by HRMO (Dept Head I) Felimon Elloran, Jr.",
+      "body" : "Lake Sebu Municipal Mayor Hon. Floro S. Gandam led the flag raising ceremony today  July 17, 2023 facilitated by Human Resource Management Office headed by HRMO (Dept Head I) Felimon Elloran, Jr.\n\nThe ceremony was attended by Sangguniang Bayan member headed by Vice Mayor Remie M. Unggol along with the  Department Heads, Section Heads, Line Agencies and fellow municipal government employees.",
+      "body2" : "After the ceremony, MSU Gensan personnel paid courtesy call and conducted MOA Signing between MSU-Gensan & Municipality of Lake Sebu for the English Enhancement program (ELEPIP) for LGU Employee Lake Sebu led by MSU Gensan Prof. Jeffrey E. Floriza Department Chairperson.",
+      "bodyImageUrl" : "https://i.postimg.cc/zD6Q7rzG/july172023.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/zD6Q7rzG/july172023.jpg",
+      "views" : "200",
+      "createdAt" : "1"
+    },
 	  {
       "id" : "1",
       "title" : "Meeting with Investor",
