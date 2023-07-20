@@ -3,6 +3,48 @@
   "articles" : [
 	  {
       "id" : "1",
+      "title" : "Province of South Cotabato welcomes Sen. Francis Tolentino",
+      "subtitle": "as a guest speaker",
+      "body" : "Look: the Province of South Cotabato welcomes Sen. Francis Tolentino as a guest speaker at the opening program and dance thematic parade musical dance competition held today, July 14, 2023, at the SMRAA Sports Complex in Koronadal City.",
+      "body2" : "#tnalakfestival2023",
+      "bodyImageUrl" : "https://i.postimg.cc/13dsXzhn/senator-francis-0.jpg<:>https://i.postimg.cc/0NJxwqPt/senator-francis-1.jpg",
+      "author" : "Floro S. Gandam",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/13dsXzhn/senator-francis-0.jpg",
+      "views" : "210",
+      "createdAt" : "1"
+    },
+    {
+      "id" : "1",
+      "title" : "Theme: \"Onwards South Cotabato: Dreaming big, Weaving more progress, Rising above challenges\"",
+      "subtitle": "During the South Cotabato 57th Foundation Anniversary and 24th T'nalak",
+      "body" : "During the South Cotabato 57th Foundation Anniversary and 24th T'nalak Festival Program conducted yesterday July 18, 2023 with the Theme: \"Onwards South Cotabato: Dreaming big, Weaving more progress, Rising above challenges\" held South Cotabato, Sports Complex, Koronadal City.\n\nPart of the program are the ceremonial turn-over of assistance from DA to the  Fishery Sectors of South Cotabato led by South Cotabato Governor Reynaldo S. Tamayo, Jr. and Senator, Republic of the Philippines, Hon.Imee R. Marcos",
+      "body2" : "Final Showdown: Street Dancing Competition\n• Madal Be'lan\n• Kasadyahan sa Kapqtagan\n• Kadsagayan A Lalan\n\nIn attendance;\nGovernor Reynaldo S. Tamayo Jr.\nVice Governor of South Cotabato, Hon. Arthuro P. Pinggoy Jr.\nBoard Members-1st District:\nHon. Nilda Almencion\nHon. Noel Escobillo\nHon. Alan Ines\n\nBoard Members-2nd District:\nHon. Junette Hurtado \nHon. Dardanilo Dar\nHon. Ervin Luntao\nHon. Mike Matinong\nHon. Alicia Nicole Causing\nHon. Henry Ladot\nHon. Cecil Diel\nProvincial SK Federation President, Hon. Alyssa Marie Fale\n\nMunicipal Mayors:\nLake Sebu Hon. Floro S. Gandam Sr.\nCity Mayor of Koronadal, Hon. Atty. Eliordo U. Ogena.\nMunicipal Mayor of Tampakan, Hon. Leonard Escobillo, RN.\nMunicipal Mayor of Tupi, Hon. Romeo Tamayo.\nMunicipal Mayor of Sto. Niño Hon. Sulpicio F. Villalobos.\nMunicipal Mayor of Surallah, Hon. Pedro  Matinong.\nMunicipal Mayor of Polomolok, Hon. Bernie Palencia\nMunicipal Mayor of Banga, Hon. Evangeline Palencia.\nMunicipal Mayor of Tantangan, Hon. Timee Joy Torres-Gonzales.\nMunicipal Mayor of Norala, Hon. Clemente  D. Fedoc.\nMunicipal Mayor of T'boli, Hon. Keo Dayle Tuan.\n\nVice Mayors:\nLake Sebu Hon. Remie Mann Unggol.\nBanga Hon. Gemma I. Lloren , RSW\nCity of Koronadal Hon. Erlinda P. Araquil\nTampakan Hon. Anadel T. Magbanua\nTantangan Hon. Cesar L. Dasilao\nPolomolok Hon. Melchor J. Jutar\nSurallah Hon. Antonio O. Bendita\nT'boli Hon. Ronie L. Dela Peña\nSto. Niño Hon. Wilfredo Dimzon\nNorala Hon. Jonel T. Daniel\nTupi Hon. Glenn C.  Hatulan\n\nDepartment and Section Heads led by Municipal Administrator, Ms.\nMaria L. Gandam, RSW, MAED.\nSB member of Lake Sebu\nHon. Ace Ofong\nHon. Liezel T. Isuga\nHon. Basilio Salif Jr.\nHon. Vicente Somido\nHon. Jimmy Baay\nHon. Ornalfo Estares\nHon. Charles Jerry Larido\nMunicipal IPMR, Hon. Leo Tang\nABC President/Barangay Poblacion P/B.\nHon. Bernard S. Ca-at\nSK Federation President, Poblacion SK,\nChairman, Hon. Andrey Mike Ungcal\nProvincial Directors,  Regional Directors of Different Offices and Agency South Cotabato, Visitors and South Cotabateños.",
+      "bodyImageUrl" : "https://i.postimg.cc/j5fJS9DN/mayor-1jpg.jpg<:>https://i.postimg.cc/mgrzHhcT/mayor-2.jpg",
+      "author" : "Floro S. Gandam",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/j5fJS9DN/mayor-1jpg.jpg",
+      "views" : "210",
+      "createdAt" : "1"
+    },
+    {
+      "id" : "1",
+      "title" : "FIRST RUNNER UP",
+      "subtitle": "Pandanggo Sa Ilaw",
+      "body" : "First runner-up Pandanggo Sa Ilaw- Municipality of Lake Sebu",
+      "body2" : "#tnalakfestival2023",
+      "bodyImageUrl" : "https://i.postimg.cc/cJmRNP8J/ilaw-1.jpg",
+      "author" : "Floro S. Gandam",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/kgWNT2JK/ilaw-2.jpg",
+      "views" : "210",
+      "createdAt" : "1"
+    },
+	  {
+      "id" : "1",
       "title" : "OIC-Municipal Fire Marshal SF04 Ronald Navares",
       "subtitle": "Newly installed BFP",
       "body" : "Newly installed BFP, OIC-Municipal Fire Marshal SF04 Ronald Navares with SF03, Jessie Tarroza paid courtesy call to Lake Sebu Municipal Mayor Floro S. Gandam today July 17, 2023.",
