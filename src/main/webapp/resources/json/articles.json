@@ -1,6 +1,67 @@
 {
 
   "articles" : [
+	  
+	  {
+      "id" : "1",
+      "title" : "LOVE LAKE SEBU",
+      "subtitle": "T'nalak",
+      "body" : "T'nalak, is a weaving tradition of the T'boli people of South Cotabato, Philippines. T'nalak cloth is woven exclusively by women who have received the designs for the weave in their dreams, which they believe are a gift from Fu Dalu, the T'boli Goddess of abacá.",
+      "body2" : "#LoveThePhilippines\n#lovesouthcotabato\nlovelakesebu",
+      "bodyImageUrl" : "https://i.postimg.cc/dVf48rQK/love.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/dVf48rQK/love.jpg",
+      "views" : "220",
+      "createdAt" : "2"
+    },
+	  
+	  {
+      "id" : "1",
+      "title" : "49th Nutrition Month with the theme \"Healthy Diet Affordable for All\"",
+      "subtitle": "NutrisyongSapatParasaLahat",
+      "body" : "Lake Sebu Municipal Mayor Floro S. Gandam graced the celebration of 49th Nutrition Month with the theme \"Healthy Diet Affordable for All\" NutrisyongSapatParasaLahat conducted yesterday July 26, 2023 at Lake Sebu Municipal Gymnasium.",
+      "body2" : "The celebration was attended by Municipal Health Office representative, Dr. Jocel Mae Dominic P. Bayquin along with MNAO, Nurse-II, Ms. Guia Arroza, RN, Nutrition Dietitian from Department of Health , Ms. Lai Entol, Municipal Agriculture Office, Agricultural Technologist, Mr. Joey Hechanova, Municipal Civil Registrar representative, Ms. Mylene D. Ca-at which was participated by personnel from Barangay Local Government Unit of Lake Sebu.",
+      "bodyImageUrl" : "https://i.postimg.cc/QCdPdsx8/n-1-mayor.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/QCdPdsx8/n-1-mayor.jpg",
+      "views" : "220",
+      "createdAt" : "2"
+    },
+	  
+	  {
+      "id" : "1",
+      "title" : "Distribution of Emergency Housing Assistance Program (EHAP)",
+      "subtitle": "Cash Assistance to the families affected by calamities in Sitio Blit, Barangay Ned Lake Sebu South Cotabato",
+      "body" : "Distribution of Emergency Housing Assistance Program (EHAP) Cash Assistance to the families affected by calamities in Sitio Blit, Barangay Ned Lake Sebu South Cotabato  to the following beneficiaries namely:",
+      "body2" : "• Galagate, Leomar F. Sitio Aboy, Ned\n• Kudo, Egi K. Sitio Blit, Ned\n• Ligal, Ronnie D. Sitio Blit.\n• Nawan, Jocelyn M. Crossing Sison, Lahit\n• Sebanes, Jenalyn L. Sitio Kinubing, Ned\n• Seya, Banyes S. Sitio Blit, Ned\n\nFunded by: National Housing Authority Region XII facilitated by GSCKCSarDO Acting Manager Engr. Fretzie M. Punzalan with LGU Lake Sebu headed by Municipal Mayor Floro S. Gandam Sr. through MDRRMO represented by OIC MDRRMO Mr. Jose Parreño along with LDRRMO III Edna Angkoy.",
+      "bodyImageUrl" : "https://i.postimg.cc/Z5bckjnm/housing.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/Z5bckjnm/housing.jpg",
+      "views" : "220",
+      "createdAt" : "2"
+    },
+    
+    {
+      "id" : "1",
+      "title" : "Municipal Development Council (MDC)",
+      "subtitle": "meeting was conducted yesterday July 25, 2023 chaired by Lake Sebu Municipal Mayor Floro S. Gandam",
+      "body" : "Municipal Development Council (MDC) meeting was conducted yesterday July 25, 2023 chaired by Lake Sebu Municipal Mayor Floro S.\nAgenda:\n• 2023 Annual Investment Plan (AIP) revision\n• 2024 Annual Investment Plan (AIP) proposal\n• Development Updates",
+      "body2" : "The meeting was attended by Municipal Mayor Gandam  along with MLGOO, Ms. Maria Fe Soto, SB Member/Committee on Finance, Appropriation & Ways and Means, Committee on Laws, Rules, Ethics, Privileges and Good Governance, Committee on Blue Ribbon/Oversight Committee and Appropriation, Hon. Ornalfo S. Estares, MBO Jojet B. Tupas,MDMG, Municipal Planning and Development Officer, Engr. EnP, Rex Salvador Espigar, MTRM, RPABE, Municipal General Services Officer, Ms. Mary Grace Guay,MPA, ABC President, P/B, Poblacion, Hon. Bernard S. Ca-at, Municipal Administrator’s Office representative, Ms. Lyshly Boclaras, LSNHS, MPC, Ms. Marianne A. Olili, MAO representative, Mr. Mario Loberiza, COWHED, Ms. Jenalyn T. Ipil, LARFA, Pstr. Michael Ata, LASVEGAS, Vice President, Mr. Ruben Bautista, MAFC, Mr. Paulino Dongon, SCMSI  President /Commissioner Mr Reden S. Ulo, Kukum Tribu, Mr. Bernard Doy,Tinugas Communal Irrigation, Ms. Michelle O. Busa, LASEPTOUDA, Mr. Daniel Dalican and 19 Barangay Captains of Lake Sebu.",
+      "bodyImageUrl" : "https://i.postimg.cc/Qxx9hzQf/mpdc.jpg",
+      "author" : "Information Office",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/Qxx9hzQf/mpdc.jpg",
+      "views" : "220",
+      "createdAt" : "2"
+    },
+	  
 	  {
       "id" : "1",
       "title" : "Province of South Cotabato welcomes Sen. Francis Tolentino",
@@ -15,6 +76,23 @@
       "views" : "210",
       "createdAt" : "1"
     },
+    
+    {
+      "id" : "1",
+      "title" : "Signing of Memorandum of Agreement (MOA)",
+      "subtitle": "entered into by and among the Local Government Unit of Lake Sebu",
+      "body" : "Signing of Memorandum of Agreement (MOA) entered into by and among the Local Government Unit of Lake Sebu , The Municipal Police Station, The Kabalikat Rescue Communicator's Association Inc. and National Police Commission was conducted last July 24, 2023 held at Mayor’s Office",
+      "body2" : "Program Agreements\nA. Adoption of community service-Oriented Policing System (CSOP) the CSOP framework balster coordination and cooperation the citenry, local executives and lntegrated Law enforcement and Public safety agencies existing in the locality undertaken through program or project implementation, including sharing of information, funds, personnel, and logistics;\n\nB. Development POPS Plan/Integrated Area/Community Public safety Plan (IACPSP) in coordinate with the guidelines that will provided by DILG;\n\nC. Implementation of joint programs, project, services and services within the CSOP framework as outlined in the POPS Plan; and D. Adoption and implementation of other programs, which can contribute to the enchantment of access to justify delivery of justice services.\n\nThe signing of MOA was attended by Municipal Mayor Floro S. Gandam Sr. along with Municipal Chief of  Police, PLt. Col, Romy Castañares, PNP Faith Based Leader, Pastor Joemar G Alang",
+      "bodyImageUrl" : "https://i.postimg.cc/kXF0FjLP/moa-1.jpg",
+      "author" : "Floro S. Gandam",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/j5ppvBst/moa.jpg",
+      "views" : "210",
+      "createdAt" : "1"
+    },
+    
+    
     {
       "id" : "1",
       "title" : "Theme: \"Onwards South Cotabato: Dreaming big, Weaving more progress, Rising above challenges\"",
