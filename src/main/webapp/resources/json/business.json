@@ -100,6 +100,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2779",
+"dateTrans" : "July 17, 2023",
+"controlNumber" : "2023-651",
+"type" : "RENEW",
+"businessName" : "6'L WKG LQKO-LQKO LZGKT",
+"owner" : "YKQFEOLEG, HQZKOEA SGXOLT ZOUQL",
+"location" : "Public Marker, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,RICE RETAILER,LIQUOR,CIGARETTES,BEER",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2223",
 "dateTrans" : "January 24, 2023",
 "controlNumber" : "2023-161",
@@ -408,6 +419,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2765",
+"dateTrans" : "July 11, 2023",
+"controlNumber" : "2023-593-2",
+"type" : "RENEW",
+"businessName" : "Q5.EGD ZQKHQXSOF HKOFZOFU LTKCOETL",
+"owner" : "QFZTFGK, HIOSOHH FGTS QSOWXLQ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "TARPAULIN PRINTING SERVICES",
+"remarks" : "2nd to 3rd Qtr"
+		},
+		{
 "id" : "452",
 "dateTrans" : "January 22, 2020",
 "controlNumber" : "2020-0215",
@@ -549,6 +571,17 @@
 "location" : "SITIO UPPER TALUBEK, LAKE SEBU, SOUTH COTABATO",
 "category" : "MANUFACTURING (SOFA, BED, CHAIR)",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2767",
+"dateTrans" : "July 12, 2023",
+"controlNumber" : "2023-645",
+"type" : "NEW",
+"businessName" : "QWY ZKXEAOFU LTKCOETL",
+"owner" : "YXFUQF LK., QFZGFOG WGFQ",
+"location" : "Sitio Upper Talubek, Lamlahak, Lake Sebu, South Cotabato",
+"category" : "TRUCKING SERVICES",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2514",
@@ -1090,6 +1123,17 @@
 "remarks" : "2nd QUARTER"
 		},
 		{
+"id" : "2744",
+"dateTrans" : "June 20, 2023",
+"controlNumber" : "2023-282-3",
+"type" : "RENEW",
+"businessName" : "QSTBQFRKTN TFZTKHKOLT",
+"owner" : "QUFTL, EGKQMGF EQLOHGFU",
+"location" : "Purok Pag-asa, Poblacion, Lake Sebu, South Cotabato",
+"category" : "HARDWARE AND CONSTRUCTION SUPPLY, CEMENT",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "222",
 "dateTrans" : "January 17, 2019",
 "controlNumber" : "2019-089",
@@ -1519,6 +1563,17 @@
 "remarks" : "2nd QUARTER"
 		},
 		{
+"id" : "2776",
+"dateTrans" : "July 17, 2023",
+"controlNumber" : "2023-012-3",
+"type" : "RENEW",
+"businessName" : "QFZTFGK KTLZQXKQFZ",
+"owner" : "QFZTFGK, EQZITKOFT R",
+"location" : "Purok Paghidaet, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "RESTAURANT",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "2522",
 "dateTrans" : "February 23, 2023",
 "controlNumber" : "2023-453",
@@ -1616,6 +1671,17 @@
 "location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
 "category" : "General Merchandise",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2789",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-103-3",
+"type" : "RENEW",
+"businessName" : "QHQEOWST UTFTKQS DTKEIQFROLT",
+"owner" : "QHQEOWST, KGVTFQ SQDQ",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "General Merchandise",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1507",
@@ -1946,6 +2012,17 @@
 "location" : "Lot 70 Poblacion, Poblacion, Lake Sebu, South Cotabato",
 "category" : "STORE AND RTW",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2775",
+"dateTrans" : "July 17, 2023",
+"controlNumber" : "2023-191-3",
+"type" : "RENEW",
+"businessName" : "QZITFQ LQKO-LQKO LZGKT",
+"owner" : "LZQ EKXM, PGPQFT HQEQKRG",
+"location" : "Lot 70 Poblacion, Poblacion, Lake Sebu, South Cotabato",
+"category" : "STORE AND RTW",
+"remarks" : "3rd to 4th Qtr"
 		},
 		{
 "id" : "830",
@@ -4456,6 +4533,28 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2762",
+"dateTrans" : "July 06, 2023",
+"controlNumber" : "2023-643",
+"type" : "NEW",
+"businessName" : "EQZISOFREN IQKRVQKT & EGFLZKXEZOGF LXHHSOTL",
+"owner" : "EQFSQL, RTDLGF DOUXTS",
+"location" : "Purok 1. Kibang, Ned, Lake Sebu, South Cotabato",
+"category" : "HARDWARE",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2745",
+"dateTrans" : "June 23, 2023",
+"controlNumber" : "2023-629",
+"type" : "NEW",
+"businessName" : "EQZISOFREN SHU ETFZTK",
+"owner" : "EQFSQL, RTDLGF DOUXTS",
+"location" : "PUROK 1. KIBANG, Ned, Lake Sebu, South Cotabato",
+"category" : "PRYCEGAS",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "291",
 "dateTrans" : "January 14, 2020",
 "controlNumber" : "2020-0062",
@@ -4498,6 +4597,17 @@
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "RETAILER-RTW,OFFICESUPPLIES,TEXTILE & KETCHEN WARE",
 "remarks" : "1st SEMI-ANNUAL"
+		},
+		{
+"id" : "2794",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-233-3",
+"type" : "RENEW",
+"businessName" : "EQMM EGFLXDTK UGGRL ZKQROFU",
+"owner" : "IQKG, MGSQ ZGSTFZOFG",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "RETAIL-RTW/OFFICE SUPPLIES/TXTTILE & KITCHEN WARE",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2295",
@@ -5006,6 +5116,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2792",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-653",
+"type" : "NEW",
+"businessName" : "EITKKNSNF LZGKT",
+"owner" : "ITKFQFT, EIOKKNSNF HGFZOSSOQL",
+"location" : "Purok Marang, Ned, Lake Sebu, South Cotabato",
+"category" : "STORE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1775",
 "dateTrans" : "January 19, 2022",
 "controlNumber" : "2022-341",
@@ -5435,6 +5556,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2771",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-324-2",
+"type" : "RENEW",
+"businessName" : "RQSOEQF LQKO-LQKO LZGKT",
+"owner" : "RQSOEQF, FGTDO LOSQV",
+"location" : "Sitio Upper Kawig, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI, LIQUOR, CIGARETTES",
+"remarks" : "2nd SEMI-ANNUAL"
+		},
+		{
 "id" : "771",
 "dateTrans" : "January 08, 2021",
 "controlNumber" : "2021-0024",
@@ -5686,6 +5818,17 @@
 "location" : "Zone 1. Talisay, Lake Sebu, South Cotabato",
 "category" : "STORE,LIQUOR,CIGARETTES",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2786",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-044-3",
+"type" : "RENEW",
+"businessName" : "RTGEQDHG LQKO-LQKO LZGKT",
+"owner" : "RTGEQDHG, COSSQ RGFQ HGSDG",
+"location" : "Zone 1, Talisay, Lake Sebu, South Cotabato",
+"category" : "GROCERY,LIQUOR,CIGARETTES",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1274",
@@ -6084,6 +6227,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2791",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-652",
+"type" : "NEW",
+"businessName" : "RGRM DGZGKLIGH",
+"owner" : "KTHXFZT, P-TF SQFMQKGZT",
+"location" : "Purok Marang, Ned, Lake Sebu, South Cotabato",
+"category" : "MOTORSHOP",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2356",
 "dateTrans" : "January 20, 2023",
 "controlNumber" : "2023-294",
@@ -6125,6 +6279,17 @@
 "owner" : "KQDHOFU, DQKN JXTTF ITQKZN TLZQKTL",
 "location" : "Sitio Lagpan, Poblacion, Lake Sebu, South Cotabato",
 "category" : "CARENDERIA",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2750",
+"dateTrans" : "June 29, 2023",
+"controlNumber" : "2023-634",
+"type" : "NEW",
+"businessName" : "RGSSN'L LQKO-LQKO LZGKT",
+"owner" : "RQJXT, PGIF KNQF DXTSQF",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,LIQUOR,CIGARETTES",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -6887,6 +7052,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2787",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-182-3",
+"type" : "RENEW",
+"businessName" : "TDOSOG'L AQVQ YSGVTK UQKRTF",
+"owner" : "ZXDOWQN OO, TDOSOG QSWTKZT",
+"location" : "Zone 4, Talisay, Lake Sebu, South Cotabato",
+"category" : "FLOWER GARDEN RESORT",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "1757",
 "dateTrans" : "January 19, 2022",
 "controlNumber" : "2022-324",
@@ -7380,6 +7556,17 @@
 "location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
 "category" : "Meat Stand",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2783",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-192-3",
+"type" : "RENEW",
+"businessName" : "YQTSQFUEQ DTQZ LZQFR",
+"owner" : "YQTSQFUEQ, FGTS YGFZTSQK",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Meat Stand",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1852",
@@ -9208,6 +9395,28 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2748",
+"dateTrans" : "June 27, 2023",
+"controlNumber" : "2023-632",
+"type" : "NEW",
+"businessName" : "UKTQZ ZQLZT WQATLIGHHT",
+"owner" : "WQXZOLZQ, SGKQOFT LGSQL",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Bakery Shoppe",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2747",
+"dateTrans" : "June 27, 2023",
+"controlNumber" : "2023-631",
+"type" : "RENEW",
+"businessName" : "UKTQZ ZTLZ WQATLIGHHT",
+"owner" : "WQXZOLZQ, SGKQOFT LGSQL",
+"location" : "Sitio Tabite, Poblacion, Lake Sebu, South Cotabato",
+"category" : "BAKESHOPPE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "887",
 "dateTrans" : "January 18, 2021",
 "controlNumber" : "2021-0124",
@@ -9723,6 +9932,28 @@
 "location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
 "category" : "SCHOOL AND OFFICE SUPLIES TRADING",
 "remarks" : "2nd QUARTER"
+		},
+		{
+"id" : "2754",
+"dateTrans" : "July 03, 2023",
+"controlNumber" : "2023-274-2",
+"type" : "RENEW",
+"businessName" : "IGLTTFX GYYOET QFR LEIGGS LXHHSOTL ZKQROFU",
+"owner" : "RTHOZQ, PGCTSNF LQXLQ",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SCHOOL AND OFFICE SUPLIES TRADING",
+"remarks" : "3rd QUARTER"
+		},
+		{
+"id" : "2755",
+"dateTrans" : "July 03, 2023",
+"controlNumber" : "2023-274-3",
+"type" : "RENEW",
+"businessName" : "IGLTTFX GYYOET QFR LEIGGS LXHHSOTL ZKQROFU",
+"owner" : "RTHOZQ, PGCTSNF LQXLQ",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SCHOOL AND OFFICE SUPPIES TRADING",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "402",
@@ -10286,6 +10517,17 @@
 "remarks" : "4th QUARTER"
 		},
 		{
+"id" : "2770",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-648",
+"type" : "NEW",
+"businessName" : "PQFET LQKO-LQKO LZGKT",
+"owner" : "PQFET, KGDQNSNF IXTEQL",
+"location" : "Purok Silangan, Lower Maculan, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,LIQUOR",
+"remarks" : "3rd to 4th Qtr"
+		},
+		{
 "id" : "2670",
 "dateTrans" : "April 25, 2023",
 "controlNumber" : "2023-577",
@@ -10636,6 +10878,17 @@
 "location" : "Lot 70. Poblacion, Lake Sebu, South Cotabato",
 "category" : "MC PARTS AND ACCESSORIES SHOP AND REPAIR SHOP",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2804",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-036-3",
+"type" : "RENEW",
+"businessName" : "PI DGZGKENEST HQKZL QFR QEETLLGKOTL LIGH",
+"owner" : "LQSGDQ, KGRTS EQLQFQNQF",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "MC PARTS AND ACCESSORIES SHOP AND REPAIR SHOP",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1425",
@@ -11100,6 +11353,28 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2766",
+"dateTrans" : "July 11, 2023",
+"controlNumber" : "2023-268-3",
+"type" : "RENEW",
+"businessName" : "PFZXHQL IQKRVQKT QFR EGFLZKXEZOGF LXHHSN",
+"owner" : "ZXHQL, SQKKN HTKTM",
+"location" : "Purok Moroboro, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "HARDWARE AND CONSRTRUCTION SUPPLY, CEMENT",
+"remarks" : "3rd QUARTER"
+		},
+		{
+"id" : "2751",
+"dateTrans" : "June 30, 2023",
+"controlNumber" : "2023-635",
+"type" : "NEW",
+"businessName" : "PG RKN UGGRL LZGKT",
+"owner" : "EQDQFG, PGLTHIOFT W",
+"location" : "Zone 3, Talisay, Lake Sebu, South Cotabato",
+"category" : "BEAUTIQUE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1899",
 "dateTrans" : "March 16, 2022",
 "controlNumber" : "2022-447",
@@ -11263,6 +11538,28 @@
 "location" : "PUBLIC MARKET, Poblacion, Lake Sebu, SOUTH COTABATO",
 "category" : "VEGETABLE STAND",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2772",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-649",
+"type" : "NEW",
+"businessName" : "PGKUT PQFET DGZGKENEST HQKZL",
+"owner" : "PQFET, PGKUT EQSOWQFU",
+"location" : "Purok Kaunlaran, Lower Maculan, Lake Sebu, South Cotabato",
+"category" : "MOTORCYCLE PARTS",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2773",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-650",
+"type" : "NEW",
+"businessName" : "PGKUT PQFET LQKO-LQKO LZGKT",
+"owner" : "PQFET, PGKUT EQSOWQFU",
+"location" : "Purok Kaunlaran, Lower Maculan, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,LIQUOR",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "537",
@@ -11626,6 +11923,17 @@
 "location" : "Sitio Lemlunay, Poblacion, Lake Sebu, South Cotabato",
 "category" : "store",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2803",
+"dateTrans" : "July 21, 2023",
+"controlNumber" : "2023-128-3",
+"type" : "RENEW",
+"businessName" : "PXFPXF LQKO-LQKO LZGKT",
+"owner" : "WQZQS, PGIFOT WQKZGSGDT",
+"location" : "Sitio Lemlunay, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1780",
@@ -12035,6 +12343,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2782",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-119-3",
+"type" : "RENEW",
+"businessName" : "AQKTF LQKO-LQKO LZGKT",
+"owner" : "HQDQ, KTFQFZT HQFOMQSTL",
+"location" : "Sitio Upper Kawig, Poblacion, Lake Sebu, South Cotabato",
+"category" : "STORE, LIQUOR",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "410",
 "dateTrans" : "January 20, 2020",
 "controlNumber" : "2020-0173",
@@ -12099,6 +12418,17 @@
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "SARI-SARI/LIQUOR,BEER & CIGARETTES",
 "remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2799",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-237-3",
+"type" : "RENEW",
+"businessName" : "AQN LXLQF ZQNG LQKO-LQKO LZGKT",
+"owner" : "PQCTSSQFQ, LXLQF WTSUOEQ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "CROCERY,LIQUOR,CIGARETTES,BEER",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2299",
@@ -12385,6 +12715,17 @@
 "location" : "Sitio Lem-ehek, Poblacion, Lake Sebu, south cotabato",
 "category" : "Sari-Sari & school supplies",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2777",
+"dateTrans" : "July 17, 2023",
+"controlNumber" : "2023-205-3",
+"type" : "RENEW",
+"businessName" : "AITOSQ TFZTKHKOLTL",
+"owner" : "IQWQSXNQL, SOFRQ ZODWQFU",
+"location" : "Sitio Lem-ehek, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SCHOOL SUPPLIES",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2267",
@@ -12759,6 +13100,28 @@
 "location" : "Purok Ilang-Ilang Poblacion, Lake Sebu, South Cotabato",
 "category" : "Agricultural Supply (Retailer)",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2797",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-178-3",
+"type" : "RENEW",
+"businessName" : "AKOLDQF QUKOEXSZXKQS LXHHSN",
+"owner" : "SXDQ PK., FGKDQF DQKZOF",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "Agricultural Supply (Retailer)",
+"remarks" : "3rd QUARTER"
+		},
+		{
+"id" : "2760",
+"dateTrans" : "July 05, 2023",
+"controlNumber" : "2023-641",
+"type" : "NEW",
+"businessName" : "AKOMTS UKQET LQKO-LQKO LZGKT",
+"owner" : "SQFMQKGZT, AKOMTS UKQET JXOSSG",
+"location" : "Sitio Proper, Ned, Lake Sebu, South Cotabato",
+"category" : "FISH AND VEGETABLE STAND",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "2024",
@@ -13498,6 +13861,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2757",
+"dateTrans" : "July 03, 2023",
+"controlNumber" : "2023-305-2",
+"type" : "RENEW",
+"businessName" : "SQFET LANSTK KQZZQF YXKFOZXKT DQFXYQEZXKOFU",
+"owner" : "STNLQ, DOFRQ AQYGF",
+"location" : "Proper 1, Tasiman, Lake Sebu, South Cotabato",
+"category" : "RATTAN FURNITURE",
+"remarks" : "2nd to 4th Qtr"
+		},
+		{
 "id" : "1486",
 "dateTrans" : "January 17, 2022",
 "controlNumber" : "2022-118",
@@ -13707,6 +14081,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2796",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-122-3",
+"type" : "RENEW",
+"businessName" : "STGFTL WXN & LTSS",
+"owner" : "STUQS, STGFTL DQFXDWQ",
+"location" : "Proper 2. Tasiman, Lake Sebu, South Cotabato",
+"category" : "BUY & SELL",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "2185",
 "dateTrans" : "January 17, 2023",
 "controlNumber" : "2023-123",
@@ -13738,6 +14123,17 @@
 "location" : "Proper 2. Tasiman, Lake Sebu, South Cotabato",
 "category" : "SARI-SARI,LIQUOR,CIGARETTES,BEER",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2795",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-123-3",
+"type" : "RENEW",
+"businessName" : "STGFTL LQKO-LQKO LZGKT",
+"owner" : "STUQS, STGFTL DQFXDWQ",
+"location" : "Proper 2, Tasiman, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2214",
@@ -14675,6 +15071,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2763",
+"dateTrans" : "July 07, 2023",
+"controlNumber" : "2023-644",
+"type" : "RENEW",
+"businessName" : "DQRSGF KQZZQF YXKFOZXKT DQFXYQEZXKOFU",
+"owner" : "DQRSGF, FGKDQ RQLQF",
+"location" : "Proper 2. Tasiman, Lake Sebu, South Cotabato",
+"category" : "RATTAN FURNITURE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2673",
 "dateTrans" : "April 26, 2023",
 "controlNumber" : "2023-235-2",
@@ -14695,6 +15102,17 @@
 "location" : "Lot 70. Poblacion, Lake Sebu, South Cotabato",
 "category" : "EATERY & REFRESHMENT",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2801",
+"dateTrans" : "July 21, 2023",
+"controlNumber" : "2023-235-3",
+"type" : "RENEW",
+"businessName" : "DQAQKOGL KTLZQXKQFZ",
+"owner" : "UQKDOFG, FQFEN EQEIXTSQ",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "EATERY & REFRESHMENT",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1017",
@@ -15335,6 +15753,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2778",
+"dateTrans" : "July 17, 2023",
+"controlNumber" : "2023-642",
+"type" : "NEW",
+"businessName" : "DQBOFT. LQKO-LQKO LZGKT",
+"owner" : "EQFEOQFG, LGFOQ ZXIOZXD",
+"location" : "T'boli Village, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "791",
 "dateTrans" : "January 11, 2021",
 "controlNumber" : "2021-0044",
@@ -15365,6 +15794,17 @@
 "owner" : "RQTFQS, DQNTZQ L",
 "location" : "SITIO MINI HANO-ON, LAKE SEBU, SOUTH COTABATO",
 "category" : "FURNITURE SHOP",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2769",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-647",
+"type" : "NEW",
+"businessName" : "DTUQF ZGFTZ LQKO-LQKO LZGKT",
+"owner" : "EQLOHGFU, EIKOLZOFT HSQZQ",
+"location" : "Lower Maculan, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,LIQUOR,BEER,CIGARETTES",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -15399,6 +15839,17 @@
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "CONSUMER GOODS,LIQUOR,BEER,CIGARETTES",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2793",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-168-3",
+"type" : "RENEW",
+"businessName" : "DTUL EGFLXDTK UGGRL ZKQROFU",
+"owner" : "WXUFGL, DGGFNTTF TDWGSZGKOG",
+"location" : "purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "COMSUMER GOODS,LIQUOR,BEER,CIGARETTES",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "535",
@@ -16094,6 +16545,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2516",
+"dateTrans" : "February 23, 2023",
+"controlNumber" : "2023-447",
+"type" : "RENEW",
+"businessName" : "DGSQZG KZV LZGKT",
+"owner" : "DGSQZG, KOG MQHQFZQ",
+"location" : "Sitio Kibang, Ned, Lake Sebu, South Cotabato",
+"category" : "RTW STORE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1167",
 "dateTrans" : "March 18, 2021",
 "controlNumber" : "2021-0400",
@@ -16108,17 +16570,6 @@
 "id" : "1716",
 "dateTrans" : "February 22, 2022",
 "controlNumber" : "2022-291",
-"type" : "RENEW",
-"businessName" : "DGSQZG LZGKT & KZV",
-"owner" : "DGSQZG, KOG MQHQFZQ",
-"location" : "Sitio Kibang, Ned, Lake Sebu, South Cotabato",
-"category" : "STORE & RTW",
-"remarks" : "ANNUALLY"
-		},
-		{
-"id" : "2516",
-"dateTrans" : "February 23, 2023",
-"controlNumber" : "2023-447",
 "type" : "RENEW",
 "businessName" : "DGSQZG LZGKT & KZV",
 "owner" : "DGSQZG, KOG MQHQFZQ",
@@ -17073,6 +17524,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2749",
+"dateTrans" : "June 29, 2023",
+"controlNumber" : "2023-633",
+"type" : "NEW",
+"businessName" : "FOEGST & KOEG LQKO-LQKO LZGKT",
+"owner" : "TEQSRKT, DQKN PGFQSNF RGFUGF",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI,LIQUOR",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2502",
 "dateTrans" : "February 22, 2023",
 "controlNumber" : "2023-433",
@@ -17091,7 +17553,7 @@
 "businessName" : "FGFGN WOSSOQKR IQSS",
 "owner" : "WQUQNUQN, PGNET RGFUGF",
 "location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
-"category" : "BILLIARD HALL",
+"category" : "BILLIARD HALL AND POOL TABLE",
 "remarks" : "ANNUALLY"
 		},
 		{
@@ -17104,6 +17566,17 @@
 "location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
 "category" : "MOTORCTYCLE PARTS AND REPAIR SHOP",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2798",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-041-3",
+"type" : "RENEW",
+"businessName" : "FGFGN DGZGK CTIOEST LIGH",
+"owner" : "RTS KGLQKOG, PGTDTK RT PXQF",
+"location" : "Purok Rosas, Poblacion, Lake Sebu, South Cotabato",
+"category" : "MOTORCYCLE PARTS AND REPAIR SHOP",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1953",
@@ -17236,6 +17709,17 @@
 "location" : "PROPER NED, Ned, Lake Sebu",
 "category" : "Sari-Sari Store",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2752",
+"dateTrans" : "June 30, 2023",
+"controlNumber" : "2023-636",
+"type" : "RENEW",
+"businessName" : "FKTTUG IQKRVQKT & EGFLZKXEZOGF LXHHSOTL",
+"owner" : "WTKFQS, TKFTLZ PQDTL D",
+"location" : "PROPER NED, Ned, Lake Sebu, South Cotabato",
+"category" : "HARDWARE & CONSTRUCTION SUPPLIES",
+"remarks" : "ANNUALLY"
 		},
 		{
 "id" : "1072",
@@ -18481,6 +18965,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2756",
+"dateTrans" : "July 03, 2023",
+"controlNumber" : "2023-638",
+"type" : "NEW",
+"businessName" : "HGLZQFTL ROLEG. DGWOST. LGXFR LNLZTD KTFZQS",
+"owner" : "HGLZQFTL, QSCOF E",
+"location" : "Sitio Lamsufo, Poblacion, Lake Sebu, South Cotabato",
+"category" : "SOUND SYSTEM",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "897",
 "dateTrans" : "January 18, 2021",
 "controlNumber" : "2021-0134",
@@ -18710,6 +19205,17 @@
 "location" : "Sitio Tabite, Poblacion, Lake Sebu, South Cotabato",
 "category" : "STORE,LIQUOR,BEER,CIGARETTES",
 "remarks" : "2nd QUARTER"
+		},
+		{
+"id" : "2774",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-016-3",
+"type" : "RENEW",
+"businessName" : "HKOFETLL-FOEGST LQKO-LQKO LZGKT",
+"owner" : "HQFQLQF, LTDQ U",
+"location" : "Sitio Tabite, Poblacion, Lake Sebu, South Cotabato",
+"category" : "STORE, LIQUOR, BEER, CIGARETTES",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2183",
@@ -19075,6 +19581,17 @@
 "remarks" : "ANNUALLY"
 		},
 		{
+"id" : "2632",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-136-3",
+"type" : "RENEW",
+"businessName" : "JXGFOEQ QUKOEXSZXKQS LXHHSN",
+"owner" : "LGSGUQLZXQ, EIQKFO-SNF RGFUGF",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "AGRICULTURAL SUPPLY",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "2645",
 "dateTrans" : "April 17, 2023",
 "controlNumber" : "2023-136-2",
@@ -19403,6 +19920,17 @@
 "location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
 "category" : "RESORT AND SWIMMING POOL",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2784",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-137-3",
+"type" : "RENEW",
+"businessName" : "KQDYTSL HQKQROLT KTLGKZ",
+"owner" : "LGSGUQLZXQ, EIQKFO-SNF RGFUGF",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "RESORT AND SWIMMING POOL",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2578",
@@ -19977,6 +20505,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2768",
+"dateTrans" : "July 13, 2023",
+"controlNumber" : "2023-646",
+"type" : "NEW",
+"businessName" : "KP LTDOSSQFG LQKO-LQKO LZGKT",
+"owner" : "LTDOSSQFG, STQ SGHT",
+"location" : "Purok Kaunlaran, Lower Maculan, Lake Sebu, South Cotabato",
+"category" : "SARI-SARI STORE",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "1453",
 "dateTrans" : "January 20, 2022",
 "controlNumber" : "2022-094",
@@ -19997,6 +20536,28 @@
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "PHARMACY",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2764",
+"dateTrans" : "July 07, 2023",
+"controlNumber" : "2023-169-2",
+"type" : "RENEW",
+"businessName" : "KPL HIQKDQEN",
+"owner" : "PQKXRQ, KGFQ KGLT KGQ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "PHARMACY",
+"remarks" : "2nd QUARTER"
+		},
+		{
+"id" : "2802",
+"dateTrans" : "July 21, 2023",
+"controlNumber" : "2023-169-3",
+"type" : "RENEW",
+"businessName" : "KPL HIQKDQEN",
+"owner" : "PQKXRQ, KGFQ KGLT KGQ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "PHARMACY",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "2188",
@@ -20294,6 +20855,17 @@
 "location" : "Purok Pag-Asa, Poblacion, Lake Sebu, South Cotabato",
 "category" : "STORE",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2753",
+"dateTrans" : "June 30, 2023",
+"controlNumber" : "2023-637",
+"type" : "RENEW",
+"businessName" : "KGNSOFT UKGETKN LZGKT",
+"owner" : "SQFMQKGZT, KGN U",
+"location" : "Sitio Kalibuhan, Ned, Lake Sebu, South Cotabato",
+"category" : "GROCERY STORE",
+"remarks" : "2nd SEMI-ANNUAL"
 		},
 		{
 "id" : "1236",
@@ -21451,6 +22023,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2758",
+"dateTrans" : "July 03, 2023",
+"controlNumber" : "2023-639",
+"type" : "RENEW",
+"businessName" : "LIOT QUKO HKGRXEZ ZKQROFU",
+"owner" : "UQSTKQ, LIOTSQ E",
+"location" : "PROPER 1, Tasiman, Lake Sebu, South Cotabato",
+"category" : "AGRI PRODUCT",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2301",
 "dateTrans" : "January 20, 2023",
 "controlNumber" : "2023-239",
@@ -21594,6 +22177,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2790",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-306-3",
+"type" : "RENEW",
+"businessName" : "LORGF LZGKT",
+"owner" : "LORGF, EQKTTF EQHXKOIQF",
+"location" : "Purok Everyday, Lake Lahit, Lake Sebu, South Cotabato",
+"category" : "Sari-Sari Store",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "139",
 "dateTrans" : "July 15, 2019",
 "controlNumber" : "2019-012",
@@ -21649,17 +22243,6 @@
 "remarks" : "ANNUALLY"
 		},
 		{
-"id" : "2632",
-"dateTrans" : "March 27, 2023",
-"controlNumber" : "2023-135-2",
-"type" : "RENEW",
-"businessName" : "LOUYKTR'L LZGKT",
-"owner" : "LGSGUQLZXQ, EIQKFO-SNF RGFUGF",
-"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
-"category" : "GROCERY,RICE,RETAILER,LIQUOR,BEER,CIGARETTES",
-"remarks" : "2nd QUARTER"
-		},
-		{
 "id" : "2197",
 "dateTrans" : "January 18, 2023",
 "controlNumber" : "2023-135",
@@ -21669,6 +22252,17 @@
 "location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
 "category" : "GROCERY,RICE RETAILER,LIQUOR,BEER,CIGARETTES",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2785",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-135-3",
+"type" : "RENEW",
+"businessName" : "LOUYKTR'L LZGKT",
+"owner" : "LGSGUQLZXQ, EIQKFO-SNF RGFUGF",
+"location" : "Public Market, Poblacion, Lake Sebu, South Cotabato",
+"category" : "GROCERY,RICE RETAILER,LIQUOR,CIGARETTES,BEER",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "693",
@@ -21933,6 +22527,17 @@
 "location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
 "category" : "RESORT AND LODGING",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2800",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-285-3",
+"type" : "RENEW",
+"businessName" : "LGSOR COTV IGLHOZQSOZN UKGXH EGKHGKQZOGF",
+"owner" : "LGSOCOG, CQSOKTT W",
+"location" : "Sitio Tukofol, Poblacion, Lake Sebu, South Cotabato",
+"category" : "RESORT AND LODGING",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1717",
@@ -22604,6 +23209,17 @@
 "location" : "Sitio Outlet , Lake Seloton, Lake Sebu, South   otabato",
 "category" : "RESORT",
 "remarks" : "1st QUARTER"
+		},
+		{
+"id" : "2781",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-115-3",
+"type" : "RENEW",
+"businessName" : "LXFKOLT UQKRTF SQAT KTLGKZ",
+"owner" : "LGDORG, COETFZT YXSUXTKQL",
+"location" : "Sitio Outlet, Lake Seloton, Lake Sebu, South Cotabato",
+"category" : "Resort",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "226",
@@ -23409,6 +24025,17 @@
 "remarks" : "1st QUARTER"
 		},
 		{
+"id" : "2759",
+"dateTrans" : "July 05, 2023",
+"controlNumber" : "2023-640",
+"type" : "NEW",
+"businessName" : "ZITSL SQAT COTV OFF",
+"owner" : "HQRTKFQS, IQMTS WTKFQS",
+"location" : "Lot 70, Poblacion, Lake Sebu, South Cotabato",
+"category" : "LODGE/INN",
+"remarks" : "ANNUALLY"
+		},
+		{
 "id" : "2217",
 "dateTrans" : "January 18, 2023",
 "controlNumber" : "2023-155",
@@ -23827,6 +24454,17 @@
 "remarks" : "2nd QUARTER"
 		},
 		{
+"id" : "2788",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-354-3",
+"type" : "RENEW",
+"businessName" : "ZGZG WQSWQAVQ TQZTKN",
+"owner" : "RQHQZFQHG, KGLQSNF DTFROGSQ",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "EATERY",
+"remarks" : "3rd QUARTER"
+		},
+		{
 "id" : "1558",
 "dateTrans" : "January 13, 2022",
 "controlNumber" : "2022-173",
@@ -24045,6 +24683,17 @@
 "location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
 "category" : "MOTORCYCLE PARTS AND ACCESSORIES AND REPAIR SHOP",
 "remarks" : "2nd QUARTER"
+		},
+		{
+"id" : "2780",
+"dateTrans" : "July 20, 2023",
+"controlNumber" : "2023-298-3",
+"type" : "RENEW",
+"businessName" : "ZKOHST F DGZGK HQKZL ETFZTK",
+"owner" : "ZQFQSUG, STGFGKQ TLZGDQUXOG",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "MOTORCYCLE PARTS AND ACCESSORIES AND REPAIR SHOP",
+"remarks" : "3rd QUARTER"
 		},
 		{
 "id" : "1413",
@@ -24286,6 +24935,17 @@
 "owner" : "ZKOSSOTK, QFQSOF ZXHQL",
 "location" : "PUROK MALIPAYON, Lamdalag, Lake Sebu, south cotabato",
 "category" : "Store/Liquor/Cigar",
+"remarks" : "ANNUALLY"
+		},
+		{
+"id" : "2746",
+"dateTrans" : "June 26, 2023",
+"controlNumber" : "2023-630",
+"type" : "RENEW",
+"businessName" : "X'WTA QUKO LXHHSN",
+"owner" : "DQUWQFXQ, PODDN TLEGKORG",
+"location" : "Purok Ilang-Ilang, Poblacion, Lake Sebu, South Cotabato",
+"category" : "AGRIVET SUPPLIES",
 "remarks" : "ANNUALLY"
 		},
 		{
