@@ -124,7 +124,7 @@ public class Chequedtls {
 		return chks;
 	}
 	
-	public static Map<Long, Double> retrievePerOffice(int year){
+	public static Map<Long, Double> retrievePerOffice(int year, int fundId, int officeId){
 		Map<Long, Double> mapData = new LinkedHashMap<Long, Double>();
 		String fromDate=year +"-01-01";
 		String toDate=year +"-12-31";
@@ -133,12 +133,19 @@ public class Chequedtls {
 		PreparedStatement ps = null;
 		try{
 		conn = BankChequeDatabaseConnect.getConnection();
-		ps = conn.prepareStatement("SELECT offid,sum(cheque_amount) as amount FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND (date_disbursement>='"+ fromDate +"' AND date_disbursement<='"+ toDate +"') GROUP BY offid");
-		
+		if(officeId==0) {// summary per department
+			ps = conn.prepareStatement("SELECT offid,sum(cheque_amount) as amount FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND (date_disbursement>='"+ fromDate +"' AND date_disbursement<='"+ toDate +"') AND accnt_no='"+ fundId +"' GROUP BY offid");
+		}else {//per office summary of MOOE
+			ps = conn.prepareStatement("SELECT moid,sum(cheque_amount) as amount FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND (date_disbursement>='"+ fromDate +"' AND date_disbursement<='"+ toDate +"') AND accnt_no='"+ fundId +"' AND offid="+officeId+" GROUP BY moid");
+		}
 		rs = ps.executeQuery();
 		
 		while(rs.next()){
-			mapData.put(rs.getLong("offid"), rs.getDouble("amount"));
+			if(officeId==0) {
+				mapData.put(rs.getLong("offid"), rs.getDouble("amount"));
+			}else {
+				mapData.put(rs.getLong("moid"), rs.getDouble("amount"));
+			}
 		}
 		rs.close();
 		ps.close();

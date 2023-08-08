@@ -607,7 +607,7 @@ public class Login {
 		LogU.add("===========================END=========================");
 	}
 	
-	public static boolean checkUserStatus(){
+	/*public static boolean checkUserStatus(){
 		
 		Login in = getUserLogin();
 		LogU.add("Checking user status...");
@@ -625,7 +625,7 @@ public class Login {
 		}
 		
 		return false;
-	}
+	}*/
 	
 	public static Login getUserLogin(){
 		String username = "error";

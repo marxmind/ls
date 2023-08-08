@@ -232,7 +232,7 @@ public class BusinessOwnerBean implements Serializable{
 		setFilteredBarangay(false);
 		setMale(false);
 		setFemale(false);
-		customers = Collections.synchronizedList(new ArrayList<BusinessCustomer>());
+		customers = new ArrayList<BusinessCustomer>();
 		
 		String sql = " AND cus.cusisactive=1 ORDER BY cus.customerid ASC";
 		customers = BusinessCustomer.retrieve(sql, new String[0]);
@@ -433,7 +433,7 @@ public class BusinessOwnerBean implements Serializable{
 	
 	public String save(){
 		
-		if(Login.getUserLogin().checkUserStatus()){
+		//if(Login.getUserLogin().checkUserStatus()){
 			
 			BusinessCustomer cus = new BusinessCustomer();
 			if(getCustomer()!=null){
@@ -551,7 +551,7 @@ public class BusinessOwnerBean implements Serializable{
 			init();
 			Application.addMessage(1, "Successfully saved.", "");
 			}
-		}
+		
 		
 		return "save";
 	}
@@ -1109,7 +1109,7 @@ private void close(Closeable resource) {
 	}
 	
 	public void deleteRow(BusinessCustomer cus){
-		if(Login.getUserLogin().checkUserStatus()){
+		//if(Login.getUserLogin().checkUserStatus()){
 			if(cus.hasExistingTransaction()) {
 				Application.addMessage(3, "Error", "Cannot erase this Customer. It has already an existing transaction in Business Registration, Official Receipt listing");
 			}else {
@@ -1118,7 +1118,7 @@ private void close(Closeable resource) {
 				init();
 				Application.addMessage(1, "Successfully deleted", "");
 			}
-		}
+		//}
 	}
 	
 	public void fileUploadListener(FileUploadEvent event) {

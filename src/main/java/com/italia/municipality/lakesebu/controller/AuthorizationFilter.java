@@ -54,6 +54,7 @@ public class AuthorizationFilter implements Filter{
 													|| reqURI.indexOf("/loginper.xhtml")>=0
 															|| reqURI.indexOf("/que.xhtml")>=0
 																	|| reqURI.indexOf("/businessreg.xhtml")>=0
+																			|| reqURI.indexOf("/loginbud.xhtml")>=0
 																			|| reqURI.indexOf("/api/official")>=0
 					|| (session != null && session.getAttribute("username") !=null)
 					|| reqURI.indexOf("/public/")>=0

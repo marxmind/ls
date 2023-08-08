@@ -29,13 +29,13 @@ public class JsonBuilder {
 		//uncomment below code
 		//String val="true";
 		
-		//createBusinessJsonFile();
-		createCollectionJsonFile();
-		//createCheckJsonFile();
-		//createORJsonFile();
+		createBusinessJsonFile(true);
+		createCollectionJsonFile(true);
+		createCheckJsonFile(true);
+		createORJsonFile(true);
 	}
 
-static void createORJsonFile() {
+static void createORJsonFile(boolean isEncrypted) {
 		
 		String FILE_LOG_NAME = "orlisting";
 		String FILE_LOG_TMP_NAME = "tmporlisting";
@@ -65,31 +65,59 @@ static void createORJsonFile() {
 			List<ORListing> ors = (List<ORListing>)objs[1];
 			int totalSize = ors.size();
 			int count = 1;
-	        for(ORListing p : ors) {
-	        	str +="\t\t{\n";
-	        	
-	        	str += "\"id\" : \"" + p.getId() + "\",\n";
-	        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDateTrans()) + "\",\n";
-	        	str += "\"orNumber\" : \"" + p.getOrNumber().trim() + "\",\n";
-	        	str += "\"customerName\" : \"" + p.getCustomer().getFullname().trim().replace("\"", "'") + "\",\n";
-	        	str += "\"collectorName\" : \"" + p.getCollector().getName().trim() + "\",\n";
-	        	str += "\"amount\" : \"" + Currency.formatAmount(p.getAmount()) + "\",\n";
-	        	str += "\"statusName\" : \"" + p.getStatusName() + "\",\n";
-	        	str += "\"formName\" : \"" + p.getFormName() + "\",\n";
-	        	str += "\"formInfo\" : \"" +  "\",\n";
-	        	str += "\"notes\" : \"" +  "\"\n";
-	        	
-	        	if(count==1 && count==totalSize) {
-	        		str+="\t\t}\n";
-	        	}else if(count>1 && count==totalSize) {
-	        		str+="\t\t}\n";
-	        	}else {
-	        		str+="\t\t},\n";
-	        	}
-	        	
-	        	
-	        	count++;
-	        }
+			if(isEncrypted) {
+				for(ORListing p : ors) {
+		        	str +="\t\t{\n";
+		        	
+		        	str += "\"id\" : \"" + p.getId() + "\",\n";
+		        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDateTrans()) + "\",\n";
+		        	str += "\"orNumber\" : \"" + CharacterLibrary.readCharacterEncode(p.getOrNumber().trim()) + "\",\n";
+		        	str += "\"customerName\" : \"" + CharacterLibrary.readCharacterEncode(p.getCustomer().getFullname().trim().replace("\"", "'")) + "\",\n";
+		        	str += "\"collectorName\" : \"" + p.getCollector().getName().trim() + "\",\n";
+		        	str += "\"amount\" : \"" + CharacterLibrary.readCharacterEncode(Currency.formatAmount(p.getAmount())) + "\",\n";
+		        	str += "\"statusName\" : \"" + p.getStatusName() + "\",\n";
+		        	str += "\"formName\" : \"" + p.getFormName() + "\",\n";
+		        	str += "\"formInfo\" : \"" +  "\",\n";
+		        	str += "\"notes\" : \"" +  "\"\n";
+		        	
+		        	if(count==1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else if(count>1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else {
+		        		str+="\t\t},\n";
+		        	}
+		        	
+		        	
+		        	count++;
+		        }
+			}else {
+		        for(ORListing p : ors) {
+		        	str +="\t\t{\n";
+		        	
+		        	str += "\"id\" : \"" + p.getId() + "\",\n";
+		        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDateTrans()) + "\",\n";
+		        	str += "\"orNumber\" : \"" + p.getOrNumber().trim() + "\",\n";
+		        	str += "\"customerName\" : \"" + p.getCustomer().getFullname().trim().replace("\"", "'") + "\",\n";
+		        	str += "\"collectorName\" : \"" + p.getCollector().getName().trim() + "\",\n";
+		        	str += "\"amount\" : \"" + Currency.formatAmount(p.getAmount()) + "\",\n";
+		        	str += "\"statusName\" : \"" + p.getStatusName() + "\",\n";
+		        	str += "\"formName\" : \"" + p.getFormName() + "\",\n";
+		        	str += "\"formInfo\" : \"" +  "\",\n";
+		        	str += "\"notes\" : \"" +  "\"\n";
+		        	
+		        	if(count==1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else if(count>1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else {
+		        		str+="\t\t},\n";
+		        	}
+		        	
+		        	
+		        	count++;
+		        }
+			}
 	        str+="\t\t]\n";
 	        str+="}\n";
 	        
@@ -111,7 +139,7 @@ static void createORJsonFile() {
 	}
 		
 	
-static void createCheckJsonFile() {
+static void createCheckJsonFile(boolean isEncrypted) {
 		
 		String FILE_LOG_NAME = "checks";
 		String FILE_LOG_TMP_NAME = "tmpchecks";
@@ -140,29 +168,51 @@ static void createCheckJsonFile() {
 			List<Chequedtls> chks = Chequedtls.retrieveSpecAll(" AND (chk.date_disbursement>='2023-01-01' AND chk.date_disbursement<='2023-12-31')");
 			int totalSize = chks.size();
 			int count = 1;
-	        for(Chequedtls p : chks) {
-	        	str +="\t\t{\n";
-	        	
-	        	str += "\"id\" : \"" + p.getCheque_id() + "\",\n";
-	        	str += "\"checkNumber\" : \"" + p.getCheckNo() + "\",\n";
-	        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDate_disbursement()) + "\",\n";
-	        	str += "\"fundName\" : \"" + p.getFundName() + "\",\n";
-	        	str += "\"payor\" : \"" + p.getPayToTheOrderOf().trim().replace("\"", "'") + "\",\n";
-	        	str += "\"department\" : \"" + p.getOffice().getName() + "\",\n";
-	        	str += "\"mooeName\" : \"" + p.getMoe().getDescription() + "\",\n";
-	        	str += "\"amount\" : \"" + Currency.formatAmount(p.getAmount()) + "\"\n";
-	        	
-	        	if(count==1 && count==totalSize) {
-	        		str+="\t\t}\n";
-	        	}else if(count>1 && count==totalSize) {
-	        		str+="\t\t}\n";
-	        	}else {
-	        		str+="\t\t},\n";
-	        	}
-	        	
-	        	
-	        	count++;
-	        }
+			if(isEncrypted) {
+				for(Chequedtls p : chks) {
+		        	str +="\t\t{\n";
+		        	
+		        	str += "\"id\" : \"" + p.getCheque_id() + "\",\n";
+		        	str += "\"checkNumber\" : \"" + CharacterLibrary.readCharacterEncode(p.getCheckNo()) + "\",\n";
+		        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDate_disbursement()) + "\",\n";
+		        	str += "\"fundName\" : \"" + p.getFundName() + "\",\n";
+		        	str += "\"payor\" : \"" + CharacterLibrary.readCharacterEncode(p.getPayToTheOrderOf().trim().replace("\"", "'")) + "\",\n";
+		        	str += "\"department\" : \"" + CharacterLibrary.readCharacterEncode(p.getOffice().getName()) + "\",\n";
+		        	str += "\"mooeName\" : \"" + CharacterLibrary.readCharacterEncode(p.getMoe().getDescription()) + "\",\n";
+		        	str += "\"amount\" : \"" + CharacterLibrary.readCharacterEncode(Currency.formatAmount(p.getAmount())) + "\"\n";
+		        	
+		        	if(count==1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else if(count>1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else {
+		        		str+="\t\t},\n";
+		        	}
+		        	count++;
+		        }
+			}else {
+		        for(Chequedtls p : chks) {
+		        	str +="\t\t{\n";
+		        	
+		        	str += "\"id\" : \"" + p.getCheque_id() + "\",\n";
+		        	str += "\"checkNumber\" : \"" + p.getCheckNo() + "\",\n";
+		        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDate_disbursement()) + "\",\n";
+		        	str += "\"fundName\" : \"" + p.getFundName() + "\",\n";
+		        	str += "\"payor\" : \"" + p.getPayToTheOrderOf().trim().replace("\"", "'") + "\",\n";
+		        	str += "\"department\" : \"" + p.getOffice().getName() + "\",\n";
+		        	str += "\"mooeName\" : \"" + p.getMoe().getDescription() + "\",\n";
+		        	str += "\"amount\" : \"" + Currency.formatAmount(p.getAmount()) + "\"\n";
+		        	
+		        	if(count==1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else if(count>1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else {
+		        		str+="\t\t},\n";
+		        	}
+		        	count++;
+		        }
+			}
 	        str+="\t\t]\n";
 	        str+="}\n";
 	        
@@ -183,7 +233,7 @@ static void createCheckJsonFile() {
 		
 	}
 	
-	static void createBusinessJsonFile() {
+	static void createBusinessJsonFile(boolean isEncrypted) {
 		
 		String FILE_LOG_NAME = "business";
 		String FILE_LOG_TMP_NAME = "tmpbusiness";
@@ -212,30 +262,58 @@ static void createCheckJsonFile() {
 			List<BusinessPermit> bls = BusinessPermit.retrieve(" AND bz.isactivebusiness=1 ORDER BY bz.businessname", new String[0]);
 			int totalSize = bls.size();
 			int count = 1;
-	        for(BusinessPermit p : bls) {
-	        	str +="\t\t{\n";
-	        	
-	        	str += "\"id\" : \"" + p.getId() + "\",\n";
-	        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDateTrans()) + "\",\n";
-	        	str += "\"controlNumber\" : \"" + p.getControlNo() + "\",\n";
-	        	str += "\"type\" : \"" + p.getType() + "\",\n";
-	        	str += "\"businessName\" : \"" + p.getBusinessName().trim().replace("\"", "'")+ "\",\n";
-	        	str += "\"owner\" : \"" + p.getCustomer().getFullname().trim().replace("\"", "'") + "\",\n";
-	        	str += "\"location\" : \"" + p.getBusinessAddress() + "\",\n";
-	        	str += "\"category\" : \"" + p.getBusinessEngage() + "\",\n";
-	        	str += "\"remarks\" : \"" + p.getMemoType() + "\"\n";
-	        	
-	        	if(count==1 && count==totalSize) {
-	        		str+="\t\t}\n";
-	        	}else if(count>1 && count==totalSize) {
-	        		str+="\t\t}\n";
-	        	}else {
-	        		str+="\t\t},\n";
-	        	}
-	        	
-	        	
-	        	count++;
-	        }
+			if(isEncrypted) {
+				for(BusinessPermit p : bls) {
+		        	str +="\t\t{\n";
+		        	
+		        	str += "\"id\" : \"" + p.getId() + "\",\n";
+		        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDateTrans())+ "\",\n";
+		        	str += "\"controlNumber\" : \"" + p.getControlNo() + "\",\n";
+		        	str += "\"type\" : \"" + p.getType() + "\",\n";
+		        	str += "\"businessName\" : \"" + CharacterLibrary.readCharacterEncode(p.getBusinessName().trim().replace("\"", "'"))+ "\",\n";
+		        	str += "\"owner\" : \"" + CharacterLibrary.readCharacterEncode(p.getCustomer().getFullname().trim().replace("\"", "'")) + "\",\n";
+		        	str += "\"location\" : \"" + p.getBusinessAddress() + "\",\n";
+		        	str += "\"category\" : \"" + p.getBusinessEngage() + "\",\n";
+		        	str += "\"remarks\" : \"" + p.getMemoType() + "\"\n";
+		        	
+		        	if(count==1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else if(count>1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else {
+		        		str+="\t\t},\n";
+		        	}
+		        	
+		        	
+		        	count++;
+		        }
+			}else {
+		        for(BusinessPermit p : bls) {
+		        	str +="\t\t{\n";
+		        	
+		        	str += "\"id\" : \"" + p.getId() + "\",\n";
+		        	str += "\"dateTrans\" : \"" + DateUtils.convertDateToMonthDayYear(p.getDateTrans()) + "\",\n";
+		        	str += "\"controlNumber\" : \"" + p.getControlNo() + "\",\n";
+		        	str += "\"type\" : \"" + p.getType() + "\",\n";
+		        	str += "\"businessName\" : \"" + p.getBusinessName().trim().replace("\"", "'")+ "\",\n";
+		        	str += "\"owner\" : \"" + p.getCustomer().getFullname().trim().replace("\"", "'") + "\",\n";
+		        	str += "\"location\" : \"" + p.getBusinessAddress() + "\",\n";
+		        	str += "\"category\" : \"" + p.getBusinessEngage() + "\",\n";
+		        	str += "\"remarks\" : \"" + p.getMemoType() + "\"\n";
+		        	
+		        	if(count==1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else if(count>1 && count==totalSize) {
+		        		str+="\t\t}\n";
+		        	}else {
+		        		str+="\t\t},\n";
+		        	}
+		        	
+		        	
+		        	count++;
+		        }
+			}
+	        
 	        str+="\t\t]\n";
 	        str+="}\n";
 	        
@@ -256,7 +334,7 @@ static void createCheckJsonFile() {
 		
 	}
 	
-static void createCollectionJsonFile() {
+static void createCollectionJsonFile(boolean isEncyrpt) {
 		
 	
 			Map<Integer, Map<Integer, Double>> mapYear = new LinkedHashMap<Integer, Map<Integer, Double>>();
@@ -268,24 +346,49 @@ static void createCollectionJsonFile() {
 			String str = "{\n";
 			str += "\t\"collection\" : [\n";
 			int count = 1;
-			for(int year : mapYear.keySet()) {
-				for(int form : mapYear.get(year).keySet()) {
-					str +="\t\t{\n";
-					str += "\"id\" : \"" + count + "\",\n";
-					str += "\"formName\" : \"" + FormType.nameId(form) + "\",\n";
-					str += "\"amount\" : \"" + Currency.formatAmount(mapYear.get(year).get(form)) + "\",\n";
-					str += "\"month\" : \"" + "\",\n";
-					str += "\"year\" : \"" + year + "\"\n";
-					
-					if(count>=1) {
-						str +="\t\t},\n";
-					}else {
-						str +="\t\t}\n";
+			
+			
+			if(isEncyrpt) {
+				for(int year : mapYear.keySet()) {
+					for(int form : mapYear.get(year).keySet()) {
+						str +="\t\t{\n";
+						str += "\"id\" : \"" + count + "\",\n";
+						str += "\"formName\" : \"" + CharacterLibrary.readCharacterEncode(FormType.nameId(form)) + "\",\n";
+						str += "\"amount\" : \"" + CharacterLibrary.readCharacterEncode(Currency.formatAmount(mapYear.get(year).get(form))) + "\",\n";
+						str += "\"month\" : \"" + "\",\n";
+						str += "\"year\" : \"" + CharacterLibrary.readCharacterEncode(year) + "\"\n";
+						
+						if(count>=1) {
+							str +="\t\t},\n";
+						}else {
+							str +="\t\t}\n";
+						}
+						
+						count++;
 					}
-					
-					count++;
+				}
+			}else {
+				for(int year : mapYear.keySet()) {
+					for(int form : mapYear.get(year).keySet()) {
+						str +="\t\t{\n";
+						str += "\"id\" : \"" + count + "\",\n";
+						str += "\"formName\" : \"" + FormType.nameId(form) + "\",\n";
+						str += "\"amount\" : \"" + Currency.formatAmount(mapYear.get(year).get(form)) + "\",\n";
+						str += "\"month\" : \"" + "\",\n";
+						str += "\"year\" : \"" + year + "\"\n";
+						
+						if(count>=1) {
+							str +="\t\t},\n";
+						}else {
+							str +="\t\t}\n";
+						}
+						
+						count++;
+					}
 				}
 			}
+			
+			
 			str+="\t\t]\n";
 	        str+="}\n";
 	

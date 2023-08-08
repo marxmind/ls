@@ -62,6 +62,11 @@ public class PortalBean implements Serializable {
 	public String licensing() {
 		return "loginlic";
 	}
+	
+	public String budget() {
+		return "loginbud";
+	}
+	
 	public String gso() {
 		return getPortal(AppDepartment.GSO);
 	}

@@ -219,8 +219,8 @@
 		            						</div>
 		            						<div class="ui-inputgroup">
 		            						<p:commandButton icon="pi pi-print" value="Print Voucher" actionListener="#{chk.loadSelectedCheck}" update="adviceData msg" style="float: left"/>
-		            						<p:commandButton icon="pi pi-money" value="View Fund Used" actionListener="#{chk.fundSearch}" update="fundData" style="float: left"/>
-		            						<p:commandButton icon="pi pi-money" value="View Office Used" actionListener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData" style="float: left"/>
+		            						<p:commandButton icon="pi pi-money" value="View Fund Used" actionListener="#{chk.fundSearch}" update="fundData barFundId" style="float: left"/>
+		            						<p:commandButton icon="pi pi-money" value="View Office Used" actionListener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId" style="float: left"/>
 		            						</div>
 		            				</f:facet>			
 		                         	
@@ -573,19 +573,35 @@
 	
 	</p:dialog>
 	
-	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Fund" widgetVar="dlgFund" width="700" height="500" position="center top">
-		
-		<p:dataTable id="fundData" value="#{chk.fundData}" var="rt" stickyHeader="false"
-							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
-							>	             
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Fund" widgetVar="dlgFund" width="1200" height="650" position="center top">
+						
+						<p:toolbar>
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+                					<p:selectOneMenu value="#{chk.yearBudId}" style="width:15em; float: left">
+						                   <p:ajax listener="#{chk.fundSearch}" update="fundData barFundId"/>
+						                <f:selectItems value="#{chk.yearBuds}"/>
+						            </p:selectOneMenu>
+                				</div>
+                			</p:toolbarGroup>
+                		</p:toolbar>	
+                		
+                		
+                		<p:tabView prependId="false">
+                		
+                			<p:tab title="Graph View">
+                				<p:barChart id="barFundId" model="#{chk.barModel}" style="width: 700; height: 400px;"/>
+                			</p:tab>	
+                		
+				            <p:tab title="Table View">
+				                
+				                <p:dataTable id="fundData" value="#{chk.fundData}" var="rt" stickyHeader="false"
+											rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				                         rowsPerPageTemplate="5,10,15,20,50,100"
+				                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+											>	             
 							
 									<f:facet name="{Exporters}">
-										<p:selectOneMenu value="#{chk.yearBudId}" style="width:15em; float: left">
-						                    <p:ajax listener="#{chk.fundSearch}" update="fundData"/>
-						                	<f:selectItems value="#{chk.yearBuds}"/>
-						                </p:selectOneMenu>
 										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
 						                    <p:dataExporter type="xls" target="fundData" fileName="series"/>
 						                </p:commandButton>
@@ -602,23 +618,52 @@
 		            						</p:outputLabel>
 		            				</p:column>
 		            				
-						</p:dataTable>
+								</p:dataTable>
+				                
+				            </p:tab>	
+						</p:tabView>
+						
 	
 	</p:dialog>
 	
-	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="MOOE Per Office" widgetVar="dlgMooeOffice" width="700" height="500" position="center top">
+	<p:dialog closable="true" closeOnEscape="true" maximizable="true" showHeader="true" header="MOOE Per Office" widgetVar="dlgMooeOffice" width="1200" height="620" position="center top">
 		
-		<p:dataTable id="fundOfficeData" value="#{chk.fundOfficeData}" var="rt" stickyHeader="false"
+						<p:toolbar>
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+                					<p:selectOneMenu value="#{chk.yearOfficeBudId}" style="width:15em; float: left" filter="true" filterMatchMode="contains">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+						                	<f:selectItems value="#{chk.yearOfficeBuds}"/>
+						                </p:selectOneMenu>
+						             <p:selectOneMenu value="#{chk.fundBudgetPerOfficeId}" style="width:25em; float: left" filter="true" filterMatchMode="contains">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+						                	<f:selectItems value="#{chk.fundBudgetPerOffices}"/>
+						                </p:selectOneMenu> 
+						                <p:selectOneMenu value="#{chk.perFundOfficeId}" style="width:25em; float: left" filter="true" filterMatchMode="contains">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+						                	<f:selectItems value="#{chk.perFundOffices}"/>
+						                </p:selectOneMenu> 
+						                  
+                				</div>
+                			</p:toolbarGroup>
+                		</p:toolbar>
+		
+		
+				<p:tabView prependId="false">
+                		
+                			<p:tab title="Graph View">
+                				<p:barChart id="barFundOfficeId" model="#{chk.barModel2}" style="width: 1200; height: 400px;"/>
+                			</p:tab>	
+                		
+				            <p:tab title="Table View">
+		
+				<p:dataTable id="fundOfficeData" value="#{chk.fundOfficeData}" var="rt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
                          scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
 							>	             
 							
 									<f:facet name="{Exporters}">
-										<p:selectOneMenu value="#{chk.yearOfficeBudId}" style="width:15em; float: left">
-						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData"/>
-						                	<f:selectItems value="#{chk.yearOfficeBuds}"/>
-						                </p:selectOneMenu>
 										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
 						                    <p:dataExporter type="xls" target="fundOfficeData" fileName="series"/>
 						                </p:commandButton>
@@ -636,6 +681,11 @@
 		            				</p:column>
 		            				
 						</p:dataTable>
+						
+						
+						</p:tab>
+						
+						</p:tabView>
 	
 	</p:dialog>
 	

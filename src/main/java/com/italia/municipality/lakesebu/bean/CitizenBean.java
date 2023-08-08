@@ -429,7 +429,7 @@ public class CitizenBean implements Serializable {
 	
 	public String save(){
 		
-		if(Login.getUserLogin().checkUserStatus()){
+		//if(Login.getUserLogin().checkUserStatus()){
 			
 			Customer cus = new Customer();
 			if(getCustomer()!=null){
@@ -548,7 +548,7 @@ public class CitizenBean implements Serializable {
 			init();
 			Application.addMessage(1, "Successfully saved.", "");
 			}
-		}
+		//}
 		
 		return "save";
 	}
@@ -1091,12 +1091,12 @@ private void close(Closeable resource) {
 	}
 	
 	public void deleteRow(Customer cus){
-		if(Login.getUserLogin().checkUserStatus()){
+		//if(Login.getUserLogin().checkUserStatus()){
 			cus.setUserDtls(Login.getUserLogin().getUserDtls());
 			cus.delete();
 			init();
 			Application.addMessage(1, "Successfully deleted", "");
-		}
+		//}
 	}
 	
 	public void fileUploadListener(FileUploadEvent event) {

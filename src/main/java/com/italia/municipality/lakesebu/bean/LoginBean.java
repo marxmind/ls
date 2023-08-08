@@ -185,6 +185,15 @@ public class LoginBean implements Serializable{
 				  break;
 			  }
 			  
+			  case 22: {
+				  result="mainbud.xhtml";
+				  /*det = License.dbLicense(AppModule.STOCK_RECORDING);
+				  	if(checkdate(det)) {
+				  		result="expired";
+				  	}*/
+				  break;
+			  }
+			  
 			  }
 			 
 			

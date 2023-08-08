@@ -396,12 +396,12 @@ public class BusinessBean implements Serializable{
 	}
 	
 	public void deleteRow(Livelihood li){
-		if(Login.checkUserStatus()){
+		//if(Login.checkUserStatus()){
 			li.delete();
 			clearFields();
 			init();
 			Application.addMessage(1, "successfully removed business.","");
-		}
+		//}
 	}
 	
 	public void clearFields(){

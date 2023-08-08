@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Check Writing</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	<p:growl id="msg" showDetail="true" life="2000" />
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+ 	<p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+		    	<div class="col-12">
+		    		
+		    		<p:tabView dynamic="true" cache="true" prependId="false">
+		            <p:tab title="Detailed Current Buget Monitoring">
+		    		
+		    		<p:toolbar id="budSeachId">
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+									<p:selectOneMenu value="#{chk.offBudId}" style="width: 25em" filter="true" filterMatchMode="contains">
+					            		<f:selectItems value="#{chk.offBuds}"/>
+					            		<p:ajax event="change" listener="#{chk.budgetMonitoring}" update="dataBudgetId budTotalId" />
+					            	</p:selectOneMenu>
+					            	<p:selectOneMenu value="#{chk.fundBudgetId}" style="width: 25em" filter="true" filterMatchMode="contains">
+					            		<f:selectItems value="#{chk.fundBudgets}"/>
+					            		<p:ajax event="change" listener="#{chk.budgetMonitoring}" update="dataBudgetId budTotalId" />
+					            	</p:selectOneMenu>
+								</div>
+                			</p:toolbarGroup>
+                			<p:toolbarGroup align="right">
+                				<div class="ui-inputgroup ui-noborder">
+                					<p:outputLabel id="budTotalId" value="Total Budget Used: #{chk.totalBudgetRelease}" style="color: red; font-weight: bold; font-size: 2em"/>
+                				</div>
+                			</p:toolbarGroup>	
+		    			</p:toolbar>
+				
+				<p:dataTable id="dataBudgetId" value="#{chk.budgets}" var="rt" stickyHeader="false" 
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+							<f:facet name="{Exporters}">
+								<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+				                    <p:dataExporter type="xls" target="dataBudgetId" fileName="series"/>
+				                </p:commandButton>
+            				</f:facet>
+            				
+							<p:column headerText="Office" width="200" style="text-align: left">
+            						<p:outputLabel value="#{rt.officeName}"/>
+            				</p:column>
+							<p:column headerText="Mooe" width="150">
+            						<p:outputLabel value="#{rt.mooeName}"/>
+            				</p:column>
+            				<p:column headerText="Code" width="50" style="text-align: left">
+            						<p:outputLabel value="#{rt.mooeCode}"/>
+            				</p:column>
+            				<p:column headerText="Allotment" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.mooeBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Remaining" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.remainingBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Used" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.usedBudget}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+            				<p:column headerText="Date" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.dateCheck}"/>
+            				</p:column>
+            				<p:column headerText="Fund" width="100" style="text-align: left">
+            						<p:outputLabel value="#{rt.fundName}"/>
+            				</p:column>
+            				<p:column headerText="Check No" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.checkNumber}"/>
+            				</p:column>
+            				<p:column headerText="Pay To" width="200" style="text-align: left">
+            						<p:outputLabel value="#{rt.paymentName}"/>
+            				</p:column>
+            				<p:column headerText="Amount" width="70" style="text-align: left">
+            						<p:outputLabel value="#{rt.checkAmount}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+            				</p:column>
+						</p:dataTable>	
+						
+						</p:tab>
+						
+						<p:tab title="MOOE Per Office">
+						
+							
+							<p:toolbar>
+		    				<p:toolbarGroup>
+                				<div class="ui-inputgroup">
+                					<p:selectOneMenu value="#{chk.yearOfficeBudId}" style="width:15em; float: left">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+						                	<f:selectItems value="#{chk.yearOfficeBuds}"/>
+						                </p:selectOneMenu>
+						                <p:selectOneMenu value="#{chk.fundBudgetPerOfficeId}" style="width:25em; float: left">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+						                	<f:selectItems value="#{chk.fundBudgetPerOffices}"/>
+						                </p:selectOneMenu>
+						                <p:selectOneMenu value="#{chk.perFundOfficeId}" style="width:25em; float: left" filter="true" filterMatchMode="contains">
+						                    <p:ajax listener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+						                	<f:selectItems value="#{chk.perFundOffices}"/>
+						                </p:selectOneMenu> 
+						                <p:commandButton value="Load" icon="pi pi-search" actionListener="#{chk.fundOfficeBudgetUsed}" update="fundOfficeData barFundOfficeId"/>
+                				</div>
+                				
+                			</p:toolbarGroup>
+                		</p:toolbar>
+		
+		
+						<p:tabView prependId="false">
+		                			
+		                			
+		                			
+		                			<p:tab title="Graph View">
+		                				<p:barChart id="barFundOfficeId" model="#{chk.barModel2}" style="width: 1200; height: 400px;"/>
+		                			</p:tab>	
+		                		
+						            <p:tab title="Table View">
+				
+									<p:dataTable id="fundOfficeData" value="#{chk.fundOfficeData}" var="rt" stickyHeader="false"
+										rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			                         rowsPerPageTemplate="5,10,15,20,50,100"
+			                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+										>
+											<f:facet name="{Exporters}">
+												<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+								                    <p:dataExporter type="xls" target="fundOfficeData" fileName="series"/>
+								                </p:commandButton>
+						                	
+				            				</f:facet>
+				            				
+				            				<p:column headerText="Office/Department" width="100" resizable="true" >
+				            						<p:outputLabel value="#{rt.f1}"/>
+				            				</p:column>
+				            				
+				            				<p:column headerText="Amount Used" width="70" resizable="true" >
+				            						<p:outputLabel  value="#{rt.f2}">
+				            							<f:convertNumber currencySymbol="" type="currency"/>
+				            						</p:outputLabel>
+				            				</p:column>
+				            				
+									</p:dataTable>
+								
+								
+								</p:tab>
+								
+								</p:tabView>
+						
+						
+						</p:tab>
+						
+						</p:tabView>
+							 
+		    		
+	    		</div>
+	    	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menubud.xhtml" />	
+</h:form>
+</h:body>
+</html>	

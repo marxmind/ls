@@ -19,8 +19,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
+import org.primefaces.model.charts.bar.BarChartDataSet;
+import org.primefaces.model.charts.bar.BarChartModel;
+import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.model.charts.optionconfig.title.Title;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.italia.municipality.lakesebu.controller.BankAccounts;
@@ -131,6 +140,15 @@ public class ChkBean implements Serializable{
 	private List yearsHIs;
 	private List<OfficeBudget> budgetsHis;
 	
+	private BarChartModel barModel;
+	
+	private BarChartModel barModel2;
+	private Map<Double, Reports> mapPerOfficeData;
+	private int fundBudgetPerOfficeId;
+	private List fundBudgetPerOffices;
+	private int perFundOfficeId;
+	private List perFundOffices;
+	
 	public void clickItem(Chequedtls chk) {
 		setSelectedData(chk);
 		setDateTime(DateUtils.convertDateString(chk.getDate_disbursement(), "yyyy-MM-dd"));
@@ -170,24 +188,32 @@ public class ChkBean implements Serializable{
 		officeId=0;//office
 		officeHisId=0;
 		fundId=2;//General Fund
+		fundBudgetPerOfficeId=2;//General Fund
 		fundBudgetId=2;//General Fund
 		fundBudgets = new ArrayList<>();
 		fundBudgets.add(new SelectItem(0, "All Fund"));
 		loadNewCheckNo();//load new check no
 		mooes.add(new SelectItem(0,"Please Select"));
 		fundsData = new LinkedHashMap<Integer,BankAccounts>();
+		fundBudgetPerOffices = new ArrayList<>();
 		for(BankAccounts b : BankAccounts.retrieveAll()) {
 			funds.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
 			searchFunds.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
 			fundBudgets.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
 			fundsData.put(b.getBankId(), b);
+			fundBudgetPerOffices.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
 		}
 		offBuds = new ArrayList<>();
 		offBuds.add(new SelectItem(999, "All"));
 		officeData = new LinkedHashMap<Long, Offices>();
+		perFundOfficeId=0;//ALL
+		perFundOffices=new ArrayList<>();
+		perFundOffices.add(new SelectItem(0, "All Offices"));
+		
 		for(Offices d : Offices.retrieve(" ORDER BY name", new String[0])) {
 			offices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			officesHis.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
+			perFundOffices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			offBuds.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			officeData.put(d.getId(), d);
 		}
@@ -234,7 +260,12 @@ public class ChkBean implements Serializable{
 			yearOfficeBuds.add(new SelectItem(y, y+""));
 		}
 		search();
+		
+		createBarModel();
+		createBarModelPerOffice();
 	}
+	
+	
 	
 	public void loadMooeForOffice() {
 			int year = getYearDataClick();
@@ -1088,29 +1119,210 @@ public class ChkBean implements Serializable{
 		double total = 0d;
 		for(String s : data.keySet()) {
 			double amount = Double.valueOf(data.get(s));
-			Reports r = Reports.builder().f1(s).f2(Currency.formatAmount(amount)).build();
+			Reports r = Reports.builder()
+					.f1(s)
+					.f2(Currency.formatAmount(amount))
+					.build();
 			fundData.add(r);
 			total += amount;
 		}
 		Reports r = Reports.builder().f1("Total").f2(Currency.formatAmount(total)).build();
 		fundData.add(r);
+		createBarModel();
 		pf.executeScript("PF('dlgFund').show(1000)");
 	}
+	
+	public void createBarModel() {
+		
+		if(fundData==null || fundData.size()==0) {
+			fundData = new ArrayList<Reports>();
+			Reports r = Reports.builder().f1("Fund").f2("1000").build();
+			fundData.add(r);
+		}
+		
+        barModel = new BarChartModel();
+        ChartData data = new ChartData();
+
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        
+        barDataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
+        barDataSet.setBorderColor("rgb(255, 99, 132)");
+        barDataSet.setBorderWidth(1);
+        
+        List<String> labels = new ArrayList<>();
+        List<Number> values = new ArrayList<>();
+        String amountTotal = "";
+        for(Reports r : fundData) {
+        	if(!"Total".equalsIgnoreCase(r.getF1())) {
+	        	labels.add(r.getF1() + "("+ r.getF2() +")");
+	        	values.add(Double.valueOf(r.getF2().replace(",", "")));
+        	}else {
+        		amountTotal = r.getF2();
+        	}
+        }
+        barDataSet.setLabel("Graph Fund Chart("+ amountTotal +")");
+        barDataSet.setData(values);
+        data.addChartDataSet(barDataSet);
+        data.setLabels(labels);
+        barModel.setData(data);
+
+        //Options
+        BarChartOptions options = new BarChartOptions();
+        //options.setMaintainAspectRatio(false);
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        linearAxes.setTicks(ticks);
+        cScales.addYAxesData(linearAxes);
+        options.setScales(cScales);
+
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Fund Chart for year ("+ yearBudId +")");
+        options.setTitle(title);
+
+        barModel.setOptions(options);
+}
+	
 	public void fundOfficeBudgetUsed() {
+		mapPerOfficeData = new LinkedHashMap<Double, Reports>();
 		PrimeFaces pf = PrimeFaces.current();
 		
 		fundOfficeData = new ArrayList<Reports>();
-		Map<Long, Double> data = Chequedtls.retrievePerOffice(yearOfficeBudId);
+		Map<Long, Double> data = Chequedtls.retrievePerOffice(yearOfficeBudId, fundBudgetPerOfficeId, perFundOfficeId);
+		
+		Map<Long, Mooe> mapMooe = new LinkedHashMap<>();
+		if(perFundOfficeId>0) {//this is for MOOE
+			List<Mooe> moes = Mooe.retrieve(" AND ofs.offid="+perFundOfficeId + " AND moe.yearbudget=" + yearOfficeBudId, new String[0]);
+			for(Mooe mo : moes) {
+				mapMooe.put(mo.getId(), mo);
+			}
+		}
+		
 		double total = 0d;
 		for(long s : data.keySet()) {
-			Offices off = officeData.get(s);
-			double amount = Double.valueOf(data.get(s));
-			Reports r = Reports.builder().f1(off.getName()).f2(Currency.formatAmount(amount)).build();
-			fundOfficeData.add(r);
-			total += amount;
+			if(perFundOfficeId==0) {//summary per office
+				Offices off = officeData.get(s);
+				double amount = Double.valueOf(data.get(s));
+				Reports r = Reports.builder().f1(off.getName()).f2(Currency.formatAmount(amount)).build();
+				mapPerOfficeData.put(amount, r);
+				fundOfficeData.add(r);
+				total += amount;
+			}else {// office mooe summary
+				Mooe mooe = mapMooe.get(s);
+				double amount = Double.valueOf(data.get(s));
+				Reports r = Reports.builder().f1(mooe.getDescription()).f2(Currency.formatAmount(amount)).f3(Currency.formatAmount(mooe.getBudgetAmount())).build();
+				mapPerOfficeData.put(amount, r);
+				fundOfficeData.add(r);
+				total += amount;
+			}
 		}
 		Reports r = Reports.builder().f1("Total").f2(Currency.formatAmount(total)).build();
 		fundOfficeData.add(r);
+		createBarModelPerOffice();
 		pf.executeScript("PF('dlgMooeOffice').show(1000)");
 	}
+	
+	public void createBarModelPerOffice() {
+		Map<Double, Reports> rptData = new TreeMap<Double, Reports>();
+		if(fundOfficeData==null || fundOfficeData.size()==0) {
+			fundOfficeData = new ArrayList<Reports>();
+			Reports r = Reports.builder().f1("Fund").f2("1000").build();
+			fundOfficeData.add(r);
+			//rptData = new TreeMap<Double, Reports>(mapPerOfficeData);
+		}else {
+			//has value
+			rptData = new TreeMap<Double, Reports>(mapPerOfficeData);
+		}
+		
+        barModel2 = new BarChartModel();
+        ChartData data = new ChartData();
+
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        
+        
+        
+        barDataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
+        barDataSet.setBorderColor("rgb(255, 99, 132)");
+        barDataSet.setBorderWidth(1);
+        
+        List<String> labels = new ArrayList<>();
+        List<Number> values = new ArrayList<>();
+        
+        BarChartDataSet barDataSet2 = new BarChartDataSet();
+        barDataSet2.setBackgroundColor("rgba(100, 99, 132, 0.2)");
+        barDataSet2.setBorderColor("rgb(100, 99, 132)");
+        barDataSet2.setBorderWidth(1);
+        
+        List<String> labels2 = new ArrayList<>();
+        List<Number> values2 = new ArrayList<>();
+        
+        List<Reports> rpts = new ArrayList<Reports>();
+        for(Reports r : rptData.values()) {
+        	rpts.add(r);
+        }
+        Collections.reverse(rpts);
+        int count=1;
+        for(Reports r : rpts) {
+        	if(count<=20) {
+		        //labels.add(r.getF1() + "("+ r.getF2() +")");
+        		labels.add(r.getF1());
+		        values.add(Double.valueOf(r.getF2().replace(",", "")));
+		        
+		        if(perFundOfficeId>0) {
+			        labels2.add(r.getF1());
+			        values2.add(Double.valueOf(r.getF3().replace(",", "")));
+		        }
+        	}
+	        count++;
+        }
+        
+                
+       
+        
+        if(perFundOfficeId==0) {
+        	barDataSet.setLabel("Graph Fund Chart");
+            barDataSet.setData(values);
+            data.addChartDataSet(barDataSet);
+            data.setLabels(labels);
+        }else {
+        	 
+        	 barDataSet2.setLabel("Budget");
+             barDataSet2.setData(values2);
+             data.addChartDataSet(barDataSet2);
+             data.setLabels(labels2);
+        	
+             barDataSet.setLabel("Expense");
+             barDataSet.setData(values);
+             data.addChartDataSet(barDataSet);
+             data.setLabels(labels);
+             
+             
+        }
+        
+        
+        barModel2.setData(data);
+
+        //Options
+        BarChartOptions options = new BarChartOptions();
+        //options.setMaintainAspectRatio(false);
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        linearAxes.setTicks(ticks);
+        cScales.addYAxesData(linearAxes);
+        options.setScales(cScales);
+
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Fund Chart Used for year ("+ yearOfficeBudId +") top 20 only");
+        options.setTitle(title);
+
+        barModel2.setOptions(options);
+}
+	
 }
