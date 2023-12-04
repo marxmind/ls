@@ -19,11 +19,9 @@ import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
 import org.primefaces.model.charts.optionconfig.title.Title;
-import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.enm.GraphColor;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessPermit;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;

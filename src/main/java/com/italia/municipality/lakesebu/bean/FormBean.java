@@ -13,9 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
 import org.primefaces.event.TabChangeEvent;
-
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
 import com.italia.municipality.lakesebu.controller.Form11Report;
@@ -35,7 +33,6 @@ import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.xml.RCDFormDetails;
 import com.italia.municipality.lakesebu.xml.RCDFormSeries;
 import com.italia.municipality.lakesebu.xml.RCDReader;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;

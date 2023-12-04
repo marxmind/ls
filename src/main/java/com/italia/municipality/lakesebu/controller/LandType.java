@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.database.TaxDatabaseConnect;
 

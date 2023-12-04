@@ -26,7 +26,6 @@ import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -35,8 +34,6 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -344,7 +341,10 @@ public class CheckIssuedReportBean implements Serializable{
 		param.put("PARAM_RECEIVED_POSITION", rpt.getReceivePosition());
 		param.put("PARAM_DISBURSING_OFFICER", rpt.getDisbursingOfficer());
 		param.put("PARAM_DISBURSING_POSITION", rpt.getDesignation());
-		param.put("PARAM_DATE", rpt.getDateReport());
+		
+		String[] mmddyy = rpt.getDateReport().split("-");
+		
+		param.put("PARAM_DATE", mmddyy[1]+"-"+mmddyy[2]+"-"+mmddyy[0]);
 		param.put("PARAM_BANK_ACCOUNT", rpt.getBankAccountNo());
 		param.put("PARAM_CHECK_NOS", startSeries + " to " + endSeries);
 		//logo

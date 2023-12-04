@@ -2,11 +2,9 @@ package com.italia.municipality.lakesebu.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import com.italia.municipality.lakesebu.bean.SessionBean;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.enm.AppConf;
-
 import jakarta.servlet.http.HttpSession;
 
 public class WebTISDatabaseConnect {
@@ -19,9 +17,9 @@ public class WebTISDatabaseConnect {
 		Conf conf = Conf.getInstance();
 		Connection conn = null;
 		try{
-			 //HttpSession session = SessionBean.getSession();
-			 //String val = session.getAttribute("server-local").toString();//if value is true meaning local server is using
-			String val="true";
+			 HttpSession session = SessionBean.getSession();
+			 String val = session.getAttribute("server-local").toString();//if value is true meaning local server is using
+			//String val="true";
 			String driver = conf.getDatabaseDriver();//ReadConfig.value(AppConf.DB_DRIVER);
 			       //driver = SecureChar.decode(driver);
 			Class.forName(driver);

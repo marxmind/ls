@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

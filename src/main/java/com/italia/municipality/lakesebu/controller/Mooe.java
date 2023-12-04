@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

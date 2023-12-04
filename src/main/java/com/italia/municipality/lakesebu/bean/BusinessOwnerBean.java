@@ -39,7 +39,6 @@ import com.italia.municipality.lakesebu.licensing.controller.Purok;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.FacesException;
 import jakarta.faces.context.ExternalContext;

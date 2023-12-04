@@ -17,7 +17,6 @@ import java.util.TreeMap;
 import org.primefaces.PrimeFaces;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.enm.AppConf;
-import com.italia.municipality.lakesebu.enm.DateFormat;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessORTransaction;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessPermit;
@@ -27,8 +26,6 @@ import com.italia.municipality.lakesebu.licensing.controller.DocumentPrinting;
 import com.italia.municipality.lakesebu.licensing.controller.Words;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Currency;
-import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;

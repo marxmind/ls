@@ -2,9 +2,7 @@ package com.italia.municipality.lakesebu.security;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
 import org.primefaces.context.PrimeFacesContext;
-
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpServletRequest;

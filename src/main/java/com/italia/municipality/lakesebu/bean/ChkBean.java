@@ -20,7 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
@@ -30,12 +29,10 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
 import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
-
-import com.google.gson.internal.LinkedTreeMap;
+import com.italia.municipality.lakesebu.controller.AppSetting;
 import com.italia.municipality.lakesebu.controller.BankAccounts;
 import com.italia.municipality.lakesebu.controller.ChequeXML;
 import com.italia.municipality.lakesebu.controller.Chequedtls;
-import com.italia.municipality.lakesebu.controller.Department;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.Mooe;
 import com.italia.municipality.lakesebu.controller.NumberToWords;
@@ -43,19 +40,14 @@ import com.italia.municipality.lakesebu.controller.Offices;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.controller.Reports;
 import com.italia.municipality.lakesebu.controller.Signatories;
-import com.italia.municipality.lakesebu.controller.Voucher;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
-import com.italia.municipality.lakesebu.enm.TransactionType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.reports.OfficeBudget;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-import com.italia.municipality.lakesebu.xml.BookCheck;
-import com.italia.municipality.lakesebu.xml.CheckXML;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -65,6 +57,8 @@ import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -149,6 +143,9 @@ public class ChkBean implements Serializable{
 	private int perFundOfficeId;
 	private List perFundOffices;
 	
+	@Setter @Getter private String printName=GlobalVar.EPSON_L3110;
+	@Setter @Getter private boolean printMode;
+	
 	public void clickItem(Chequedtls chk) {
 		setSelectedData(chk);
 		setDateTime(DateUtils.convertDateString(chk.getDate_disbursement(), "yyyy-MM-dd"));
@@ -169,10 +166,30 @@ public class ChkBean implements Serializable{
 		generateWords();//generate words
 	}
 	
+	public void modeMsg() {
+		Application.addMessage(1, "Printer Mode", "You have " + (isPrintMode()==true? "activated the printer " + GlobalVar.EPSON_L220 : "activated the printer " + GlobalVar.EPSON_L3110));
+		//RCDReader.saveCollectorMode(isCollectorsMode()==true? "ON" : "OFF");
+		setPrintName(isPrintMode()==false? GlobalVar.EPSON_L3110 : GlobalVar.EPSON_L220);
+		AppSetting.updatePrintMode(isPrintMode());
+	}
+	
 	@PostConstruct
 	@SuppressWarnings("unchecked")
 	public void init() {
 		System.out.println("init.......");
+		
+		
+			String mode = AppSetting.getPrintMode();
+			System.out.println("Checking printer mode: " + mode);
+			if(GlobalVar.EPSON_L3110.equalsIgnoreCase(mode)){
+				printMode = false;
+				setPrintName(GlobalVar.EPSON_L3110);
+			}else {
+				printMode = true;
+				setPrintName(GlobalVar.EPSON_L220);
+			}
+		
+		
 		setIncludeDate(true);//default set to true
 		Date dateSource = DateUtils.getDateToday();
 		selectedChecks = new ArrayList<Chequedtls>();
@@ -685,13 +702,14 @@ public class ChkBean implements Serializable{
 		String tmpDate = date;
 		//chk.setDate_disbursement(convertDateToMonthDayYear(date));
 		chk.setDate_disbursement(convertDateToMonthDayYearNumeric(date));//new implementation as requested by bank mm-dd-yyyy
-		
-		Chequedtls.compileReport(chk);
+		String REPORT_NAME = getPrintName();
+		Chequedtls.compileReport(chk,REPORT_NAME);
 		chk.setDate_disbursement(tmpDate);
 		try{
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
-		String REPORT_NAME = ReadConfig.value(AppConf.CHEQUE_REPORT_NAME);
+		//String REPORT_NAME = ReadConfig.value(AppConf.CHEQUE_REPORT_NAME);
+		
 		
 		File file = new File(REPORT_PATH, REPORT_NAME + ".pdf");
 		 FacesContext faces = FacesContext.getCurrentInstance();

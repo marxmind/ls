@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.database.TaxDatabaseConnect;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

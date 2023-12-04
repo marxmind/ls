@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.italia.municipality.lakesebu.controller.Department;
 import com.italia.municipality.lakesebu.utils.Application;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;

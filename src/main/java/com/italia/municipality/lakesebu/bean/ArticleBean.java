@@ -9,7 +9,6 @@ import java.util.TreeMap;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.TabChangeEvent;
-
 import com.italia.municipality.lakesebu.controller.Article;
 import com.italia.municipality.lakesebu.controller.ArticleParticular;
 import com.italia.municipality.lakesebu.controller.ArticleSubtype;
@@ -17,7 +16,6 @@ import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.RevenueCode;
 import com.italia.municipality.lakesebu.enm.AccessLevel;
 import com.italia.municipality.lakesebu.utils.Application;
-
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;

@@ -2,13 +2,9 @@ package com.italia.municipality.lakesebu.licensing.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
 import org.primefaces.PrimeFaces;
 import com.italia.municipality.lakesebu.controller.Email;
 import com.italia.municipality.lakesebu.controller.Login;
@@ -20,7 +16,6 @@ import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessORTransaction;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;

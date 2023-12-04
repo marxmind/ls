@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
@@ -19,7 +18,6 @@ import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
-
 import com.italia.municipality.lakesebu.controller.BusinessIndex;
 import com.italia.municipality.lakesebu.controller.BusinessIndexTrans;
 import com.italia.municipality.lakesebu.controller.BusinessMapping;
@@ -37,7 +35,6 @@ import com.italia.municipality.lakesebu.licensing.controller.Regional;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -45,9 +42,6 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 @Named("bnIndex")
 @ViewScoped
 @Data

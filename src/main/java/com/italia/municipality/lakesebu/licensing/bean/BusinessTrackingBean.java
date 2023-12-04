@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessPermit;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessTracking;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;

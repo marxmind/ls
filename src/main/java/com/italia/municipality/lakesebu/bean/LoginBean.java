@@ -6,19 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.Pages;
 import com.italia.municipality.lakesebu.security.AppModule;
 import com.italia.municipality.lakesebu.security.ClientInfo;
-import com.italia.municipality.lakesebu.security.Copyright;
 import com.italia.municipality.lakesebu.security.License;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
 import com.italia.municipality.lakesebu.utils.Whitelist;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -53,7 +50,7 @@ public class LoginBean implements Serializable{
 	
 	//validate login
  public String validateUserNamePassword(){
-		
+		String expired="xxx.xhtml";
 		String sql = "SELECT * FROM login WHERE username=? and password=?";
 		String[] params = new String[2];
 		         params[0] = Whitelist.remove(name);
@@ -94,7 +91,7 @@ public class LoginBean implements Serializable{
 			  		if(in.getLogid()>1) {
 				  		det = License.dbLicense(AppModule.MAIN_APP);
 					  	if(checkdate(det)) {
-					  		result="expired";
+					  		result=expired;
 					  	}
 			  		}
 			  		break;
@@ -102,7 +99,7 @@ public class LoginBean implements Serializable{
 			    	result="vr.xhtml"; 
 			    	det = License.dbLicense(AppModule.VOUCHER_RECORDING);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 			    	break;
 				case 9: result="main.xhtml"; break;
@@ -110,14 +107,14 @@ public class LoginBean implements Serializable{
 					result="mainda.xhtml"; 
 					det = License.dbLicense(AppModule.DA_FISHERY);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 					break;
 				case 11:
 					result="mainlic.xhtml"; 
 					det = License.dbLicense(AppModule.LICENSING_CLERK);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 					break;
 				case 12: result="maingso.xhtml"; break;
@@ -127,7 +124,7 @@ public class LoginBean implements Serializable{
 				  result="orlisting.xhtml";
 				  det = License.dbLicense(AppModule.GENERAL_COLLECTIONS);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 				  break;
 			  }
@@ -137,14 +134,14 @@ public class LoginBean implements Serializable{
 			    	result="form56.xhtml"; 
 			    	det = License.dbLicense(AppModule.LAND_TAX);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 			    	break;
 				case 16: 
 					result="mainpersonnel.xhtml"; 
 					det = License.dbLicense(AppModule.PERSONNEL_CLERK);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 					break;
 					
@@ -153,7 +150,7 @@ public class LoginBean implements Serializable{
 					result="mainacc.xhtml"; 
 					det = License.dbLicense(AppModule.ACCOUNTING_CLERK);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 					break;
 				case 18: result="checkissued.xhtml"; break;
@@ -162,7 +159,7 @@ public class LoginBean implements Serializable{
 				  result="chk.xhtml";
 				  det = License.dbLicense(AppModule.CHECK_WRITING);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 				  break;
 			  }
@@ -171,7 +168,7 @@ public class LoginBean implements Serializable{
 				  result="logform.xhtml";
 				  det = License.dbLicense(AppModule.COLLECTORS_RECORDING);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 				  break;
 			  }
@@ -180,7 +177,7 @@ public class LoginBean implements Serializable{
 				  result="stocks.xhtml";
 				  det = License.dbLicense(AppModule.STOCK_RECORDING);
 				  	if(checkdate(det)) {
-				  		result="expired";
+				  		result=expired;
 				  	}
 				  break;
 			  }

@@ -7,15 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.CivilStatus;
 import com.italia.municipality.lakesebu.enm.ClientStatus;
 import com.italia.municipality.lakesebu.enm.ClientTransactionType;
-import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

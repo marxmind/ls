@@ -3,16 +3,12 @@ package com.italia.municipality.lakesebu.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
-
 import com.italia.municipality.lakesebu.controller.BusinessIndex;
 import com.italia.municipality.lakesebu.controller.BusinessIndexTrans;
-import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.ORNameList;
 import com.italia.municipality.lakesebu.controller.PaymentName;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
@@ -24,7 +20,6 @@ import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.Numbers;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;

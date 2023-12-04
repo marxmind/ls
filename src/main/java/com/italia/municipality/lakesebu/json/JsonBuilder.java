@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.italia.municipality.lakesebu.controller.Chequedtls;
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.ORListing;
@@ -17,7 +16,6 @@ import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessPermit;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-import com.italia.municipality.lakesebu.utils.OrlistingXML;
 
 public class JsonBuilder {
 

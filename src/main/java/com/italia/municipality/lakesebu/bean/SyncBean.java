@@ -2,17 +2,12 @@ package com.italia.municipality.lakesebu.bean;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import org.primefaces.PrimeFaces;
-
 import com.italia.municipality.lakesebu.controller.Reports;
 import com.italia.municipality.lakesebu.controller.SyncData;
 import com.italia.municipality.lakesebu.database.Conf;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.OrlistingXML;
-
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Getter;

@@ -2,9 +2,7 @@ package com.italia.municipality.lakesebu.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import com.italia.municipality.lakesebu.bean.SessionBean;
-
 import jakarta.servlet.http.HttpSession;
 
 /**

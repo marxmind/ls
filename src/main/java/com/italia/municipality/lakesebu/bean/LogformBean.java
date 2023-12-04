@@ -11,24 +11,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
-
+import org.primefaces.event.ReorderEvent;
 import com.italia.municipality.lakesebu.controller.AppSetting;
+import com.italia.municipality.lakesebu.controller.Cash;
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
+import com.italia.municipality.lakesebu.controller.DepositTransaction;
 import com.italia.municipality.lakesebu.controller.Form11Report;
 import com.italia.municipality.lakesebu.controller.IssuedForm;
 import com.italia.municipality.lakesebu.controller.Login;
+import com.italia.municipality.lakesebu.controller.RCDAllController;
+import com.italia.municipality.lakesebu.controller.RCDDeposit;
+import com.italia.municipality.lakesebu.controller.RCDSummaryController;
 import com.italia.municipality.lakesebu.controller.Stocks;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
+import com.italia.municipality.lakesebu.enm.Months;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
+import com.italia.municipality.lakesebu.licensing.controller.Words;
 import com.italia.municipality.lakesebu.reports.Rcd;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
@@ -38,7 +47,6 @@ import com.italia.municipality.lakesebu.utils.Numbers;
 import com.italia.municipality.lakesebu.xml.RCDFormDetails;
 import com.italia.municipality.lakesebu.xml.RCDFormSeries;
 import com.italia.municipality.lakesebu.xml.RCDReader;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -162,7 +170,290 @@ public class LogformBean implements Serializable{
 	private Date toFormDate;
 	private int collectorIdSearch;
 	private List collectorSearch;
-	 
+	
+	private List<RCDAllController> rcdAll;
+	private int rcdAllFundTypeId;
+	private List rcdAllFundTypes;
+	
+	private List<RCDSummaryController> rcdSum;
+	private int rcdSumFundTypeId;
+	private List rcdSumFundTypes;
+	
+	private int yearDepositId;
+	private List yearDeposits;
+	private int monthDepositId;
+	private List monthDeposits;
+	private List<DepositTransaction> depTrans;
+	private int depositFundTypeId;
+	private List depositFundTypes;
+	
+	public void deleteDeposit(DepositTransaction tran) {
+		if(tran.getData() instanceof RCDDeposit) {
+			RCDDeposit dep = (RCDDeposit) tran.getData();
+			dep.delete();
+			viewDeposit();
+			Application.addMessage(1, "Success", "Successfully deleted");	
+		}else {
+			Application.addMessage(2, "Information", "No item to be deleted");	
+		}
+	}
+	
+	public void viewDeposit() {
+		depTrans = new ArrayList<DepositTransaction>();
+		String paramFrom = getYearDepositId() + "-" + (getMonthDepositId()<10? "0" + getMonthDepositId() : getMonthDepositId()) + "-01";
+		String paramTo = getYearDepositId() + "-" + (getMonthDepositId()<10? "0" + getMonthDepositId() : getMonthDepositId()) + "-31";
+		List<RCDAllController> rcds = RCDAllController.retrieve(" AND ct.fundtype="+ getDepositFundTypeId() +" AND (ct.alldatetrans>='"+ paramFrom+"' AND ct.alldatetrans<='"+ paramTo +"') ORDER BY ct.alldatetrans", new String[0]);
+		List<RCDDeposit> deposits = RCDDeposit.retrieve(" AND ct.fundtype="+ getDepositFundTypeId() +" AND (ct.datetrans>='"+ paramFrom+"' AND ct.datetrans<='"+ paramTo +"') ORDER BY ct.datetrans", new String[0]);
+		double balance = 0d;
+		//int totalDataSize = rcds.size() + deposits.size();
+		RCDDeposit beginning =  null;
+		Map<Integer, DepositTransaction> data = new LinkedHashMap<Integer, DepositTransaction>();
+		try{
+			beginning = deposits.get(0); 
+			DepositTransaction t = DepositTransaction.builder()
+					.index(0)
+					//.day(beginning.getDateTrans().split("-")[2])
+					.day(DateUtils.getMonthName(getMonthDepositId()) + " " + getYearDepositId())
+					.particular("BEGINNING BALANCE")
+					.reference("")
+					.debit(beginning.getAmount())
+					.balance(beginning.getAmount())
+					.data(beginning)
+					.build();
+			
+			//record balance
+			balance = beginning.getAmount();
+			data.put(0, t);
+		}catch(Exception e) {
+			RCDDeposit rcd = RCDDeposit.builder()
+					.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
+					.indexId(0)
+					.isActive(1)
+					.build();
+			//add new beginning balance
+			DepositTransaction t = DepositTransaction.builder()
+					.index(0)
+					.day(DateUtils.getMonthName(getMonthDepositId()) + " " + getYearDepositId())
+					.particular("BEGINNING BALANCE")
+					.reference("")
+					.debit(0.00)
+					.data(rcd)	
+					.build();
+			data.put(0, t);
+		}
+		
+		//get all rcd summary with index
+		int index = 1;
+		for(RCDAllController d : rcds) {
+			if(d.getIndex()>0) {
+				String day = d.getDateTrans().split("-")[2];
+				//balance += d.getAmount();
+				DepositTransaction t = DepositTransaction.builder()
+						.index(d.getIndex())
+						.day(day)
+						.particular("RCD-COLLECTION")
+						.reference(d.getControlNumber())
+						.debit(d.getAmount())
+						//.balance(balance)
+						.data(d)
+						.build();
+				data.put(d.getIndex(), t);
+				index++;
+			}
+		}
+		
+		
+		for(RCDDeposit c : deposits) {
+			if(c.getIndexId()>0) {
+			String day = c.getDateTrans().split("-")[2];
+			//balance -= c.getAmount();
+			DepositTransaction t = DepositTransaction.builder()
+					.index(c.getIndexId())
+					.day(day)
+					.particular("RCD-DEPOSIT")
+					.reference(c.getReference())
+					.credit(c.getAmount())
+					//.balance(balance)
+					.data(c)				
+					.build();
+					data.put(c.getIndexId(), t);
+					index++;
+			}
+		}
+		
+		//adding index with zero
+		for(RCDAllController d : rcds) {
+			if(d.getIndex()==0) {
+				String day = d.getDateTrans().split("-")[2];
+				//balance += d.getAmount();
+				DepositTransaction t = DepositTransaction.builder()
+						.index(index)
+						.day(day)
+						.particular("RCD-COLLECTION")
+						.reference(d.getControlNumber())
+						.debit(d.getAmount())
+						//.balance(balance)
+						.data(d)
+						.build();
+				data.put(index, t);
+				
+				//save new index
+				d.setIndex(index);
+				d.save();
+				
+				index++;
+			}
+		}
+		
+		
+		Map<Integer, DepositTransaction> organizeData = new TreeMap<Integer, DepositTransaction>(data);
+		double bal = 0d;
+		for(DepositTransaction d : organizeData.values()) {
+			if(d.getIndex()==0) {
+				bal = d.getDebit();
+				d.setBalance(bal);
+			}else {
+				if(d.getDebit()>0) {
+					bal += d.getDebit();
+					d.setBalance(bal);
+				}else {
+					bal -= d.getCredit();
+					d.setBalance(bal);
+				}
+			}
+			depTrans.add(d);
+		}
+		
+		//adding new deposit field
+				RCDDeposit rcd = RCDDeposit.builder()
+						.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
+						.indexId(index)
+						.isActive(1)
+						.build();
+				DepositTransaction t = DepositTransaction.builder()
+						.index(index)
+						.day(DateUtils.getCurrentDateYYYYMMDD().split("-")[2])
+						.particular("RCD-DEPOSIT")
+						.reference("")
+						.credit(0.00)
+						.data(rcd)	
+						.build();
+				depTrans.add(t);
+		
+	}
+	
+	public void onRowReorder(ReorderEvent event) {
+		int index = 0;
+		for(DepositTransaction rt : getDepTrans()) {
+			if("RCD-DEPOSIT".equalsIgnoreCase(rt.getParticular()) && rt.getCredit()>0) {
+				RCDDeposit dep = (RCDDeposit)rt.getData();
+				//dep.setId(rt.getId());
+				dep.setRemarks(rt.getParticular());
+				dep.setReference(rt.getReference());
+				dep.setAmount(rt.getCredit());
+				dep.setIndexId(index);
+				dep.setIsActive(1);
+				dep.setFundType(getDepositFundTypeId());
+				dep.save();
+				//System.out.println("INDEXING:::::: " + index);
+			}else if("BEGINNING BALANCE".equalsIgnoreCase(rt.getParticular())) {
+				RCDDeposit dep = (RCDDeposit)rt.getData();
+				//dep.setId(rt.getId());
+				dep.setRemarks(rt.getParticular());
+				dep.setReference(rt.getReference());
+				dep.setAmount(rt.getDebit());
+				dep.setIndexId(index);
+				dep.setIsActive(1);
+				dep.setFundType(getDepositFundTypeId());
+				dep.save();
+				//System.out.println("INDEXING:::::: " + index);
+			}else {
+				RCDAllController con = (RCDAllController) rt.getData();
+				con.setIndex(index);
+				con.save();
+			}
+			index++;
+		}
+		viewDeposit();
+	}
+
+	public void onCellEditDeposit(CellEditEvent event) {
+		Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+        String month = getMonthDepositId()<10? "0"+getMonthDepositId() : getMonthDepositId()+"";
+        int index = event.getRowIndex();
+        String column =  event.getColumn().getHeaderText();
+        //beginning balance only
+        if("Credit".equalsIgnoreCase(column)) {
+        	double amount = (Double)newValue;
+        	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	double balance = getDepTrans().get(index-1).getBalance();
+        	DepositTransaction tr = getDepTrans().get(index);
+        	dp.setAmount(amount);
+        	//dp.setDateTrans(getYearDepositId()+"-"+ month +"-01");
+        	dp.setFundType(getDepositFundTypeId());
+        	dp.setRemarks(tr.getParticular());
+        	dp.setReference(tr.getReference());
+        	dp.setIsActive(1);
+        	dp.setIndexId(index);
+        	dp.save();
+        	//update balance field
+        	double newBal = balance>0? balance-amount : amount;
+        	getDepTrans().get(index).setBalance(newBal);
+        	viewDeposit();
+        }else if("Debit".equalsIgnoreCase(column)) {
+        	double amount = (Double)newValue;
+        	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	double balance = getDepTrans().get(index-1).getBalance();
+        	DepositTransaction tr = getDepTrans().get(index);
+        	dp.setAmount(amount);
+        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+tr.getDay());
+        	dp.setFundType(getDepositFundTypeId());
+        	dp.setRemarks(tr.getParticular());
+        	dp.setReference(tr.getReference());
+        	dp.setIsActive(1);
+        	dp.setIndexId(index);
+        	dp.save();
+        	//update balance field
+        	double newBal = balance>0? balance+amount : amount;
+        	getDepTrans().get(index).setBalance(newBal);
+        	viewDeposit();
+        }else if("Reference".equalsIgnoreCase(column)) {
+        	
+        	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	DepositTransaction tr = getDepTrans().get(index);
+        	if("RCD-DEPOSIT".equalsIgnoreCase(tr.getParticular())) {
+        	dp.setAmount(amount);
+        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+tr.getDay());
+        	dp.setFundType(getDepositFundTypeId());
+        	dp.setRemarks(tr.getParticular());
+        	dp.setReference(newValue+"");
+        	dp.setIsActive(1);
+        	dp.setIndexId(index);
+        	dp.save();
+        	viewDeposit();
+        	}
+        }else if("Date".equalsIgnoreCase(column)) {
+        	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	DepositTransaction tr = getDepTrans().get(index);
+        	String day = (String)newValue;
+        	if("RCD-DEPOSIT".equalsIgnoreCase(tr.getParticular())) {
+        	//dp.setAmount(amount);
+        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+day);
+        	dp.setFundType(getDepositFundTypeId());
+        	//dp.setRemarks(tr.getParticular());
+        	//dp.setReference(newValue+"");
+        	dp.setIsActive(1);
+        	dp.setIndexId(index);
+        	dp.save();
+        	getDepTrans().get(index).setDay(day);
+        	//System.out.println("On cell edit day: " + day);
+        	viewDeposit();
+        	}
+        }
+        
+	}    
+	
 	public void loadFormDetails() {
 		formTypeIdSearch = 0;
 		formTypesSearch = new ArrayList<>();
@@ -457,6 +748,43 @@ public class LogformBean implements Serializable{
 		maps = new HashMap<String, CollectionInfo>();
 		infos = new ArrayList<CollectionInfo>();
 		
+		if(rcdAllFundTypeId==0) {
+			rcdAllFundTypeId=1;
+		}
+		
+		if(rcdSumFundTypeId==0) {
+			rcdSumFundTypeId=1;
+		}
+		
+		if(depositFundTypeId==0) {
+			depositFundTypeId=1;
+		}
+		
+		//for deposit module
+		depTrans = new ArrayList<DepositTransaction>();
+		yearDepositId = DateUtils.getCurrentYear();
+		yearDeposits = new ArrayList<>();
+		monthDepositId = DateUtils.getCurrentMonth();
+		monthDeposits = new ArrayList<>();
+		for(int y=2023; y<=DateUtils.getCurrentYear(); y++) {
+			yearDeposits.add(new SelectItem(y,y+""));
+		}
+		for(Months m : Months.values()) {
+			if(m.getId()>0 && m.getId()<13) {
+				monthDeposits.add(new SelectItem(m.getId(), m.getName()));
+			}
+		}
+		
+		rcdAllFundTypes = new ArrayList<>();
+		rcdSumFundTypes = new ArrayList<>();
+		depositFundTypes = new ArrayList<>();
+		for(FundType f : FundType.values()) {
+			rcdAllFundTypes.add(new SelectItem(f.getId(), f.getName()));
+			rcdSumFundTypes.add(new SelectItem(f.getId(), f.getName()));
+			depositFundTypes.add(new SelectItem(f.getId(), f.getName()));
+		}
+		
+		
 		if(!alreadyRetrieve) {
 			issuedCollectorId = Login.getUserLogin().getCollectorId();
 			setCollectorId(issuedCollectorId);
@@ -532,11 +860,22 @@ public class LogformBean implements Serializable{
 			i.setRptFormat(value);
 			double amnt = Numbers.roundOf(i.getAmount(), 2);
 			i.setAmount(amnt);
+			
+			//adding color
+			if(i.getIsAll()==1 && i.getIsSummary()==0) {
+				i.setColor("color: blue");
+			}else if(i.getIsAll()==0 && i.getIsSummary()==1) {
+				i.setColor("color: orange");
+			}else if(i.getIsAll()==1 && i.getIsSummary()==1) {
+				i.setColor("color: green");
+			}else if(i.getIsAll()==0 && i.getIsSummary()==0) {
+				i.setColor("color: red");	
+			}
+			
 			infos.add(i);
 		}
 		Collections.reverse(infos);
 	}
-	
 	
 	public void checkHasCashTicket(CollectionInfo info) {
 		if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
@@ -3605,7 +3944,536 @@ public class LogformBean implements Serializable{
 		return collectorsMap;
 	}
 
+	
+	private String formatIndividualSeries(CollectionInfo in) {
+		String value = "";
+		String len = in.getRptGroup()+"";
+		int size = len.length();
+		if(size==1) {
+			String[] date = in.getReceivedDate().split("-");
+			value = date[0] +"-"+date[1] + "-#00"+len;
+		}else if(size==2) {
+			String[] date = in.getReceivedDate().split("-");
+			value = date[0] +"-"+date[1] + "-#0"+len;
+		}else if(size==3) {
+			String[] date = in.getReceivedDate().split("-");
+			value = date[0] +"-"+date[1] + "-#"+len;
+		}
+		
+		return value;
+	}
+	
+	public void createRCDALL() {
+		System.out.println("createRCDALL()......");
+		if(getSelectedCollection()!=null && getSelectedCollection().size()>0 && getFundSearchId()>0) {
+			String ids=null;
+			String indSeries=null;
+			int count = 1;
+			System.out.println("Checking createRCDALL().... ");
+			List<CollectionInfo> tmpData = CollectionInfo.retrieveDoubleCheck(getSelectedCollection());
+			System.out.println("createRCDALL()...loading size: " + tmpData.size());
+			//setSelectedCollection(new ArrayList<>());
+			double amnt=0d;
+			double tmpAmount=0d;
+			Map<Long, CollectionInfo> mapIds = new LinkedHashMap<Long, CollectionInfo>();
+			for(CollectionInfo in : tmpData) {
+				if(in.getIsAll()==0) {
+					if(count==1) {
+						ids=in.getId()+"";
+						indSeries=formatIndividualSeries(in);
+						mapIds.put(in.getId(), in);
+					}else {
+						if(mapIds!=null && mapIds.size()>0) {
+							if(mapIds.containsKey(in.getId())) {
+								//do not add on the list
+							}else {
+								ids +="<*>"+in.getId();
+								mapIds.put(in.getId(), in);
+							}
+						}
+						indSeries+="<*>"+formatIndividualSeries(in);
+					}
+					amnt+=in.getAmount();
+					in.setIsAll(1);
+					in.save();
+					count++;
+					//getSelectedCollection().add(in);
+				}
+			}
+			
+			int cc=1;
+			String isIds="";
+			for(CollectionInfo c : getSelectedCollection()) {
+				if(cc==1) {
+					isIds=c.getCollector().getId()+"";
+				}else {
+					isIds+="<*>"+c.getCollector().getId();
+				}
+				cc++;
+			}
+			
+			if(ids!=null) {
+				String series = RCDAllController.getControlNum(getFundSearchId());
+				RCDAllController rcd = RCDAllController.builder()
+						.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
+						.controlNumber(series)
+						.collectionIds(ids)
+						.isActive(1)
+						.fundType(getFundSearchId())
+						.individualSeries(indSeries)
+						.amount(amnt)
+						.index(0)
+						.isids(isIds)
+						.build();
+				
+				RCDAllController.save(rcd);
+				setReportSeriesSummary(series);
+				printAllRCD();
+				loadIssuedForm();
+			}else {
+				setSelectedCollection(new ArrayList<CollectionInfo>());
+				CollectionInfo in = CollectionInfo.builder()
+						.amount(0)
+						.collector(Collector.builder().name("No report selected").build())
+						.fundName("No report selected")
+						.build();
+				
+				getSelectedCollection().add(in);
+				setReportSeriesSummary("000000");
+				printAllRCD();
+				
+				Application.addMessage(3, "Error", "Please select Individual RCD");
+				System.out.println("Error....... createRCDALL");
+			}
+		}else {
+			setSelectedCollection(new ArrayList<CollectionInfo>());
+			CollectionInfo in = CollectionInfo.builder()
+					.amount(0)
+					.collector(Collector.builder().name("No report selected").build())
+					.fundName("No report selected")
+					.build();
+			
+			getSelectedCollection().add(in);
+			setReportSeriesSummary("000000");
+			printAllRCD();
+			
+			Application.addMessage(3, "Error", "Please select Individual RCD");
+			System.out.println("Error....... createRCDALL");
+		}
+	}
+	
+	public void viewRCDAll() {
+		String sql = " AND ct.fundtype=" + getRcdAllFundTypeId();
+		rcdAll = new ArrayList<RCDAllController>();
+		rcdAll = RCDAllController.retrieve(sql + " ORDER BY ct.allid DESC", new String[0]);
+	}
+	
+	public void printRCDAll(RCDAllController rcd) {
+		String sql = " AND (";
+		setSelectedCollection(new ArrayList<>());
+		String[] ids = rcd.getCollectionIds().split("<*>");
+		int count = 1;
+		for(String s : ids) {
+			if(count==1) {
+				sql += " frm.colid=" + s.replace("<*", "");
+			}else {
+				sql += " OR frm.colid=" + s.replace("<*", "");
+			}
+			count++;
+		}
+		sql += ")";
+		
+		setSelectedCollection(createCombineReport(CollectionInfo.retrieve(sql, null),rcd.getIsids()));
+		/*for(CollectionInfo in : CollectionInfo.retrieve(sql, null)) {
+			in.setRptFormat(formatIndividualSeries(in));
+			getSelectedCollection().add(in);
+		}*/
+		
+		setReportSeriesSummary(rcd.getControlNumber());
+		setSummaryDate(DateUtils.convertDateString(rcd.getDateTrans(), "yyyy-MM-dd"));
+		Collections.reverse(getSelectedCollection());
+		printAllRCD();
+	}
+	
+	
+	private List<CollectionInfo> createCombineReport(List<CollectionInfo> data, String isId) {
+		maps = new HashMap<String, CollectionInfo>();
+		List<CollectionInfo> tmpData = new ArrayList<CollectionInfo>();
+		
+		for(CollectionInfo in : data){
+			String key = in.getRptGroup() +"-"+ in.getFundId() +"-"+ in.getCollector().getId() +"";
+			
+			if(maps!=null && maps.containsKey(key)) {
+					double newAmount = maps.get(key).getAmount() + in.getAmount();
+					in.setAmount(newAmount);
+					maps.put(key, in);
+			}else {
+				maps.put(key, in);
+			}
+		}
+		
+		
+		for(String id : isId.split("<*>")) {
+			
+			id = id.replace("<*>", "");
+			id = id.replace("*>", "");
+			id = id.replace(">", "");
+			id = id.replace("<*", "");
+			id = id.replace("<", "");
+			
+			for(CollectionInfo i : maps.values()) {
+				String collectorId=i.getCollector().getId()+"";
+				if(id.equalsIgnoreCase(collectorId)){
+					String value = "";
+					String len = i.getRptGroup()+"";
+					int size = len.length();
+					if(size==1) {
+						String[] date = i.getReceivedDate().split("-");
+						value = date[0] +"-"+date[1] + "-#00"+len;
+					}else if(size==2) {
+						String[] date = i.getReceivedDate().split("-");
+						value = date[0] +"-"+date[1] + "-#0"+len;
+					}else if(size==3) {
+						String[] date = i.getReceivedDate().split("-");
+						value = date[0] +"-"+date[1] + "-#"+len;
+					}
+					i.setRptFormat(value);
+					double amnt = Numbers.roundOf(i.getAmount(), 2);
+					i.setAmount(amnt);
+					tmpData.add(i);
+				}
+			}
+		}
+		Collections.reverse(tmpData);
+		
+		return tmpData;
+	}
+	
+	public void deleteRCDAll(RCDAllController rcd) {
+		
+		String sql = " AND (";
+		setSelectedCollection(new ArrayList<>());
+		String[] ids = rcd.getCollectionIds().split("<*>");
+		int count = 1;
+		for(String s : ids) {
+			if(count==1) {
+				sql += " frm.colid=" + s.replace("<*", "");
+			}else {
+				sql += " OR frm.colid=" + s.replace("<*", "");
+			}
+			count++;
+		}
+		sql += ")";
+		for(CollectionInfo in : CollectionInfo.retrieve(sql, null)) {
+			in.setIsAll(0);
+			in.save();
+		}
+		rcd.delete();
+		viewRCDAll();
+		Application.addMessage(1, "Success", "Successfully deleted");	
+	}
+	
+	public void onCellEditRcdAll(CellEditEvent event) {
+		Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+        
+        int index = event.getRowIndex();
+        String column =  event.getColumn().getHeaderText();
+        
+        //if("Series".equalsIgnoreCase(column) && !oldValue.equals(newValue)) {
+        	RCDAllController rcd = rcdAll.get(index);
+        	rcd.save();
+        //}
+        
+        System.out.println("old Value: " + oldValue);
+        System.out.println("new Value: " + newValue);
+        
+	}
+	
+	
+	/////////////////////////
+	
+	public void createRCDSum() {
+		if(getSelectedCollection()!=null && getSelectedCollection().size()>0 && getFundSearchId()>0) {
+			String ids=null;
+			String indSeries=null;
+			int count = 1;
+			List<CollectionInfo> tmpData = CollectionInfo.retrieveDoubleCheck(getSelectedCollection());
+			//setSelectedCollection(new ArrayList<>());
+			Map<Long, CollectionInfo> mapIds = new LinkedHashMap<Long, CollectionInfo>();
+			double amnt=0d;
+			for(CollectionInfo in : tmpData) {
+				if(in.getIsSummary()==0) {
+					if(count==1) {
+						ids=in.getId()+"";
+						indSeries=formatIndividualSeries(in);
+						mapIds.put(in.getId(), in);
+					}else {
+						if(mapIds!=null && mapIds.size()>0) {
+							if(mapIds.containsKey(in.getId())) {
+								//do not add on the list
+							}else {
+								ids +="<*>"+in.getId();
+								mapIds.put(in.getId(), in);
+							}
+						}
+						indSeries+="<*>"+formatIndividualSeries(in);
+					}
+					amnt+=in.getAmount();
+					in.setIsSummary(1);
+					in.save();
+					count++;
+					//getSelectedCollection().add(in);
+				}
+			}
+			
+			int cc=1;
+			String isIds="";
+			for(CollectionInfo c : getSelectedCollection()) {
+				if(cc==1) {
+					isIds=c.getCollector().getId()+"";
+				}else {
+					isIds+="<*>"+c.getCollector().getId();
+				}
+				cc++;
+			}
+			
+			if(ids!=null) {
+				String series = RCDSummaryController.getControlNum(getFundSearchId());
+				RCDSummaryController rcd = RCDSummaryController.builder()
+						.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
+						.controlNumber(series)
+						.collectionIds(ids)
+						.isActive(1)
+						.fundType(getFundSearchId())
+						.individualSeries(indSeries)
+						.amount(amnt)
+						.isids(isIds)
+						.build();
+				
+				RCDSummaryController.save(rcd);
+				setReportSeriesSummary(series);
+				printSummary();
+				loadIssuedForm();
+			}else {
+				setSelectedCollection(new ArrayList<CollectionInfo>());
+				CollectionInfo in = CollectionInfo.builder()
+						.amount(0)
+						.collector(Collector.builder().name("No report selected").build())
+						.fundName("No report selected")
+						.build();
+				
+				getSelectedCollection().add(in);
+				setReportSeriesSummary("000000");
+				printSummary();
+				
+				
+				Application.addMessage(3, "Error", "Please select Individual RCD");
+				System.out.println("Error....... createRCDALL");
+			}
+		}else {
+			setSelectedCollection(new ArrayList<CollectionInfo>());
+			CollectionInfo in = CollectionInfo.builder()
+					.amount(0)
+					.collector(Collector.builder().name("No report selected").build())
+					.fundName("No report selected")
+					.build();
+			
+			getSelectedCollection().add(in);
+			setReportSeriesSummary("000000");
+			printSummary();
+			
+			
+			Application.addMessage(3, "Error", "Please select Individual RCD");
+			System.out.println("Error....... createRCDALL");
+		}
+	}
+	
+	public void viewRCDSum() {
+		String sql = " AND sm.fundtype=" + getRcdSumFundTypeId();
+		rcdSum = new ArrayList<RCDSummaryController>();
+		rcdSum = RCDSummaryController.retrieve(sql + " ORDER BY sm.sumid DESC", new String[0]);
+	}
+	
+	public void printRCDSum(RCDSummaryController rcd) {
+		String sql = " AND (";
+		setSelectedCollection(new ArrayList<>());
+		String[] ids = rcd.getCollectionIds().split("<*>");
+		int count = 1;
+		for(String s : ids) {
+			if(count==1) {
+				sql += " frm.colid=" + s.replace("<*", "");
+			}else {
+				sql += " OR frm.colid=" + s.replace("<*", "");
+			}
+			count++;
+		}
+		sql += ")";
+		setSelectedCollection(createCombineReport(CollectionInfo.retrieve(sql, null),rcd.getIsids()));
+		/*for(CollectionInfo in : CollectionInfo.retrieve(sql, null)) {
+			in.setRptFormat(formatIndividualSeries(in));
+			getSelectedCollection().add(in);
+		}*/
+		setReportSeriesSummary(rcd.getControlNumber());
+		setSummaryDate(DateUtils.convertDateString(rcd.getDateTrans(), "yyyy-MM-dd"));
+		Collections.reverse(getSelectedCollection());
+		printSummary();
+	}
+	
+	public void deleteRCDSum(RCDSummaryController rcd) {
+		
+		String sql = " AND (";
+		setSelectedCollection(new ArrayList<>());
+		String[] ids = rcd.getCollectionIds().split("<*>");
+		int count = 1;
+		for(String s : ids) {
+			if(count==1) {
+				sql += " frm.colid=" + s.replace("<*", "");
+			}else {
+				sql += " OR frm.colid=" + s.replace("<*", "");
+			}
+			count++;
+		}
+		sql += ")";
+		for(CollectionInfo in : CollectionInfo.retrieve(sql, null)) {
+			in.setIsSummary(0);
+			in.save();
+		}
+		rcd.delete();
+		viewRCDSum();
+		Application.addMessage(1, "Success", "Successfully deleted");	
+	}
+	
+	public void onCellEditRcdSum(CellEditEvent event) {
+		Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+        
+        int index = event.getRowIndex();
+        String column =  event.getColumn().getHeaderText();
+        
+        RCDSummaryController rcd = rcdSum.get(index);
+        rcd.save();
+        
+        System.out.println("old Value: " + oldValue);
+        System.out.println("new Value: " + newValue);
+        
+	}
+	
+	public void printCashInTreasury() {
+		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
+				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
+		String REPORT_NAME = GlobalVar.CASH_IN_TREASURY_RPT;
+		
+		ReportCompiler compiler = new ReportCompiler();
+		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
+		
+		List<Cash> reports = new ArrayList<Cash>();
+		double totalBalance = 0d;
+		double totalCredit = 0d;
+		double totalDebit = 0d;
+		for(DepositTransaction d : getDepTrans()) {
+			if("RCD-DEPOSIT".equalsIgnoreCase(d.getParticular().trim()) 
+					&& d.getReference().trim().isEmpty()) {
+				
+			}else {
+				Cash c = Cash.builder()
+						.f1(d.getDay())
+						.f2(d.getParticular())
+						.f3(d.getReference())
+						.f4(Currency.formatAmount(d.getDebit()))
+						.f5(Currency.formatAmount(d.getCredit()))
+						.f6(Currency.formatAmount(d.getBalance()))
+						.build();
+				totalDebit += d.getDebit();
+				totalCredit += d.getCredit();	
+				totalBalance = totalDebit - totalCredit;
+				//System.out.println("cash : " + totalDebit + "\t " + totalCredit);
+				reports.add(c);	
+			}
+		}
+		
+		
+		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
+  		HashMap param = new HashMap();
+  		DocumentFormatter doc = new DocumentFormatter();
+		param.put("PARAM_TITLE", "CASH IN TREASURY");
+  		param.put("PARAM_ACCOUNT_NAME", FundType.typeName(getDepositFundTypeId()));
+  		param.put("PARAM_TREASURER", Words.getTagName("treasurer-name"));
+  		
+  		param.put("PARAM_DEBIT_TOTAL",Currency.formatAmount(totalDebit));
+  		param.put("PARAM_CREDIT_TOTAL",Currency.formatAmount(totalCredit));
+  		param.put("PARAM_BALANCE_TOTAL",Currency.formatAmount(totalBalance));
+  		
+  		param.put("PARAM_PRINTED_DATE", DateUtils.getCurrentDateMMMMDDYYYY());
+  		
+  		
+  		//logo
+		String officialLogo = REPORT_PATH + "logo.png";
+		try{File file = new File(officialLogo);
+		FileInputStream off = new FileInputStream(file);
+		param.put("PARAM_LOGO", off);
+		}catch(Exception e){e.printStackTrace();}
+		
+		//logo
+		String officialLogotrans = REPORT_PATH + "logotrans.png";
+		try{File file = new File(officialLogotrans);
+		FileInputStream off = new FileInputStream(file);
+		param.put("PARAM_WATERMARK", off);
+		}catch(Exception e){e.printStackTrace();}
+  		
+  		try{
+	  		String jrprint = JasperFillManager.fillReportToFile(jrxmlFile, param, beanColl);
+	  	    JasperExportManager.exportReportToPdfFile(jrprint,REPORT_PATH+ REPORT_NAME +".pdf");
+	  	}catch(Exception e){e.printStackTrace();}
+  		
+  		try{
+	  		File file = new File(REPORT_PATH, REPORT_NAME + ".pdf");
+			 FacesContext faces = FacesContext.getCurrentInstance();
+			 ExternalContext context = faces.getExternalContext();
+			 HttpServletResponse response = (HttpServletResponse)context.getResponse();
+				
+		     BufferedInputStream input = null;
+		     BufferedOutputStream output = null;
+		     
+		     try{
+		    	 
+		    	 // Open file.
+		            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
 
+		            // Init servlet response.
+		            response.reset();
+		            response.setHeader("Content-Type", "application/pdf");
+		            response.setHeader("Content-Length", String.valueOf(file.length()));
+		            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
+		            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+		            // Write file contents to response.
+		            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
+		            int length;
+		            while ((length = input.read(buffer)) > 0) {
+		                output.write(buffer, 0, length);
+		            }
+
+		            // Finalize task.
+		            output.flush();
+		    	 
+		     }finally{
+		    	// Gently close streams.
+		            close(output);
+		            close(input);
+		     }
+		     
+		     // Inform JSF that it doesn't need to handle response.
+		        // This is very important, otherwise you will get the following exception in the logs:
+		        // java.lang.IllegalStateException: Cannot forward after response has been committed.
+		        faces.responseComplete();
+		        
+			}catch(Exception ioe){
+				ioe.printStackTrace();
+			}
+	
+	}
+	
 	public void setCollectorsMap(List collectorsMap) {
 		this.collectorsMap = collectorsMap;
 	}
@@ -3736,6 +4604,7 @@ public class LogformBean implements Serializable{
 		this.funds = funds;
 	}
 	public int getFundSearchId() {
+		if(fundSearchId==0) {fundSearchId=1;}
 		return fundSearchId;
 	}
 
@@ -3745,7 +4614,7 @@ public class LogformBean implements Serializable{
 
 	public List getFundsSearch() {
 		fundsSearch = new ArrayList<>();
-		fundsSearch.add(new SelectItem(0, "ALL FUNDS"));
+		//fundsSearch.add(new SelectItem(0, "ALL FUNDS"));
 		for(FundType f : FundType.values()) {
 			fundsSearch.add(new SelectItem(f.getId(), f.getName()));
 		}
@@ -3810,19 +4679,36 @@ public class LogformBean implements Serializable{
 		this.dateTo = dateTo;
 	}
 
-	
+
+	/**
+	 * replace with auto series
+	 * RCDALLController
+	 * RCDSummaruControll
+	 */
+	@Deprecated
 	public void updateSeriesSummary() {
 		AppSetting.updateSeries(getReportSeriesSummary());
 	}
 	
+
+	/**
+	 * replace with auto series
+	 * RCDALLController
+	 * RCDSummaruControll
+	 */
 	public String getReportSeriesSummary() {
-		if(reportSeriesSummary==null) {
+		/*if(reportSeriesSummary==null) {
 			reportSeriesSummary=AppSetting.getReportSeries();
-		}
+		}*/
 		return reportSeriesSummary;
 	}
 
-	
+
+	/**
+	 * replace with auto series
+	 * RCDALLController
+	 * RCDSummaruControll
+	 */
 	public void setReportSeriesSummary(String reportSeriesSummary) {
 		this.reportSeriesSummary = reportSeriesSummary;
 	}
@@ -4116,7 +5002,113 @@ public class LogformBean implements Serializable{
 		this.collectorSearch = collectorSearch;
 	}
 
+	public List<RCDAllController> getRcdAll() {
+		return rcdAll;
+	}
 
-	
+	public void setRcdAll(List<RCDAllController> rcdAll) {
+		this.rcdAll = rcdAll;
+	}
+
+	public int getRcdAllFundTypeId() {
+		return rcdAllFundTypeId;
+	}
+
+	public void setRcdAllFundTypeId(int rcdAllFundTypeId) {
+		this.rcdAllFundTypeId = rcdAllFundTypeId;
+	}
+
+	public List getRcdAllFundTypes() {
+		return rcdAllFundTypes;
+	}
+
+	public void setRcdAllFundTypes(List rcdAllFundTypes) {
+		this.rcdAllFundTypes = rcdAllFundTypes;
+	}
+
+	public List<RCDSummaryController> getRcdSum() {
+		return rcdSum;
+	}
+
+	public void setRcdSum(List<RCDSummaryController> rcdSum) {
+		this.rcdSum = rcdSum;
+	}
+
+	public int getRcdSumFundTypeId() {
+		return rcdSumFundTypeId;
+	}
+
+	public void setRcdSumFundTypeId(int rcdSumFundTypeId) {
+		this.rcdSumFundTypeId = rcdSumFundTypeId;
+	}
+
+	public List getRcdSumFundTypes() {
+		return rcdSumFundTypes;
+	}
+
+	public void setRcdSumFundTypes(List rcdSumFundTypes) {
+		this.rcdSumFundTypes = rcdSumFundTypes;
+	}
+
+	public int getYearDepositId() {
+		return yearDepositId;
+	}
+
+	public void setYearDepositId(int yearDepositId) {
+		this.yearDepositId = yearDepositId;
+	}
+
+	public List getYearDeposits() {
+		return yearDeposits;
+	}
+
+	public void setYearDeposits(List yearDeposits) {
+		this.yearDeposits = yearDeposits;
+	}
+
+	public int getMonthDepositId() {
+		return monthDepositId;
+	}
+
+	public void setMonthDepositId(int monthDepositId) {
+		this.monthDepositId = monthDepositId;
+	}
+
+	public List getMonthDeposits() {
+		return monthDeposits;
+	}
+
+	public void setMonthDeposits(List monthDeposits) {
+		this.monthDeposits = monthDeposits;
+	}
+
+	public List<DepositTransaction> getDepTrans() {
+		return depTrans;
+	}
+
+	public void setDepTrans(List<DepositTransaction> depTrans) {
+		this.depTrans = depTrans;
+	}
+
+
+	public int getDepositFundTypeId() {
+		return depositFundTypeId;
+	}
+
+
+	public void setDepositFundTypeId(int depositFundTypeId) {
+		this.depositFundTypeId = depositFundTypeId;
+	}
+
+
+	public List getDepositFundTypes() {
+		return depositFundTypes;
+	}
+
+
+	public void setDepositFundTypes(List depositFundTypes) {
+		this.depositFundTypes = depositFundTypes;
+	}
+
 }
 

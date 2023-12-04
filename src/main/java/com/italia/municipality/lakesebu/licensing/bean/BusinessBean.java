@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.primefaces.PrimeFaces;
-
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.enm.DateFormat;
@@ -21,7 +20,6 @@ import com.italia.municipality.lakesebu.licensing.controller.Purok;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.Whitelist;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;

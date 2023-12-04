@@ -87,8 +87,8 @@ public class CollectionDepositBean implements Serializable {
 				.bankAccountNo(acc.getBankAccntBranch() + " " + acc.getBankAccntNo())
 				.disbursingOfficer(Words.getTagName("treasurer-name"))
 				.designation(Words.getTagName("official-designation"))
-				.receivingOfficer(Words.getTagName("receiving-person"))
-				.receivePosition(Words.getTagName("receiving-position"))
+				.receivingOfficer(Words.getTagName("rcd-recieving-person"))
+				.receivePosition(Words.getTagName("rcd-receiving-position"))
 				.build();
 		
 		List<CollectionDeposit> dvs = new ArrayList<CollectionDeposit>();
@@ -439,7 +439,11 @@ public class CollectionDepositBean implements Serializable {
 		param.put("PARAM_RECEIVED_POSITION", rpt.getReceivePosition());
 		param.put("PARAM_DISBURSING_OFFICER", rpt.getDisbursingOfficer());
 		param.put("PARAM_DISBURSING_POSITION", rpt.getDesignation());
-		param.put("PARAM_DATE", rpt.getDateReport());
+		
+		String[] mmddyy = rpt.getDateReport().split("-");
+		
+		param.put("PARAM_DATE", mmddyy[1]+"-"+mmddyy[2]+"-"+mmddyy[0]);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>> : " + rpt.getDateReport());
 		param.put("PARAM_BANK_ACCOUNT", rpt.getBankAccountNo());
 		//param.put("PARAM_CHECK_NOS", startSeries + " to " + endSeries);
 		//logo

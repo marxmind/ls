@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.utils.LogU;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,7 +58,75 @@ public class CollectionInfo {
 	private String fundName;
 	private boolean hasCashTicket;
 	
+	private int isAll;
+	private int isSummary;
+	private String color;
+	
 	private int isRts;
+	
+	public static List<CollectionInfo> retrieveDoubleCheck(List<CollectionInfo> ldata){
+		List<CollectionInfo> data = new ArrayList<CollectionInfo>();
+		//return empty if list is zero
+		if(ldata==null || ldata.size()==0) {return data;}
+		int cnt = 1;
+		String q="SELECT * FROM collectioninfo o, issuedcollector i WHERE o.isactivecol=1 ";
+		q +=" AND ";
+		for(CollectionInfo i : ldata) {
+			if(cnt==1) {
+				q +="(i.isid=o.isid AND o.receiveddate='" + i.getReceivedDate()+"' AND o.isid="+ i.getCollector().getId() +" AND o.rptgroup="+ i.getRptGroup() +" )";
+			}else {
+				q +=" OR (i.isid=o.isid AND o.receiveddate='" + i.getReceivedDate()+"' AND o.isid="+ i.getCollector().getId() +" AND o.rptgroup="+ i.getRptGroup() +" )";
+			}
+			cnt++;
+		}
+		//q +=" )";
+		
+		
+		System.out.println("Check Query: " + q);
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+			conn = WebTISDatabaseConnect.getConnection();
+			ps = conn.prepareStatement(q);
+			
+			
+			System.out.println("SQL retrieveDoubleCheck: " + ps.toString());
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				CollectionInfo info = CollectionInfo.builder()
+						.id(rs.getLong("colid"))
+						.receivedDate(rs.getString("receiveddate"))
+						.formType(rs.getInt("formtypecol"))
+						.beginningNo(rs.getLong("beginningNoCol"))
+						.endingNo(rs.getLong("endingNoCol"))
+						.pcs(rs.getInt("colpcs"))
+						.isActive(rs.getInt("isactivecol"))
+						.collector(Collector.builder().id(rs.getInt("isid")).name(rs.getString("collectorname")).build())
+						.issuedForm(IssuedForm.builder().id(rs.getLong("logid")).build())
+						.status(rs.getInt("colstatus"))
+						.prevPcs(rs.getInt("prevPcs"))
+						.amount(rs.getDouble("amount"))
+						.rptGroup(rs.getInt("rptgroup"))
+						.fundId(rs.getInt("fundid"))
+						.fundName(FundType.typeName(rs.getInt("fundid")))
+						.isRts(rs.getInt("rts"))
+						.isAll(rs.getInt("rptall"))
+						.isSummary(rs.getInt("rptsum"))
+						.build();
+				data.add(info);
+				System.out.println("Collector Name: " + info.getCollector().getName());
+			}
+			
+			rs.close();
+			ps.close();
+			WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return data;
+	}
 	
 	public static Map<Integer, Map<Integer, Double>> graph(List years) {
 		
@@ -459,6 +525,10 @@ public class CollectionInfo {
 			try{form.setFundId(rs.getInt("fundid"));}catch(NullPointerException e){}
 			try{form.setFundName(FundType.typeName(rs.getInt("fundid")));}catch(NullPointerException e){}
 			
+			try{form.setIsAll(rs.getInt("rptall"));}catch(NullPointerException e){}
+			try{form.setIsSummary(rs.getInt("rptsum"));}catch(NullPointerException e){};
+			
+			
 			try{form.setAmount(rs.getDouble("amount"));}catch(NullPointerException e){}
 			try{form.setRptGroup(rs.getInt("rptgroup"));}catch(NullPointerException e){}
 			try{form.setIsRts(rs.getInt("rts"));}catch(NullPointerException e){}
@@ -535,6 +605,9 @@ public class CollectionInfo {
 			try{form.setAmount(rs.getDouble("amount"));}catch(NullPointerException e){}
 			try{form.setRptGroup(rs.getInt("rptgroup"));}catch(NullPointerException e){}
 			try{form.setIsRts(rs.getInt("rts"));}catch(NullPointerException e){}
+			
+			try{form.setIsAll(rs.getInt("rptall"));}catch(NullPointerException e){}
+			try{form.setIsSummary(rs.getInt("rptsum"));}catch(NullPointerException e){}
 			
 			IssuedForm issued = new IssuedForm();
 			try{issued.setId(rs.getLong("logid"));}catch(NullPointerException e){}
@@ -621,8 +694,10 @@ public class CollectionInfo {
 				+ "amount,"
 				+ "rptgroup,"
 				+ "fundid,"
-				+ "rts)" 
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "rts,"
+				+ "rptall,"
+				+ "rptsum)" 
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -659,6 +734,8 @@ public class CollectionInfo {
 		ps.setInt(cnt++, col.getRptGroup());
 		ps.setInt(cnt++, col.getFundId());
 		ps.setInt(cnt++, col.getIsRts());
+		ps.setInt(cnt++, col.getIsAll());
+		ps.setInt(cnt++, col.getIsSummary());
 		
 		LogU.add(col.getReceivedDate());
 		LogU.add(col.getFormType());
@@ -674,6 +751,8 @@ public class CollectionInfo {
 		LogU.add(col.getRptGroup());
 		LogU.add(col.getFundId());
 		LogU.add(col.getIsRts());
+		LogU.add(col.getIsAll());
+		LogU.add(col.getIsSummary());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -704,8 +783,10 @@ public class CollectionInfo {
 				+ "amount,"
 				+ "rptgroup,"
 				+ "fundid,"
-				+ "rts)" 
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "rts,"
+				+ "rptall,"
+				+ "rptsum)" 
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -742,6 +823,8 @@ public class CollectionInfo {
 		ps.setInt(cnt++, getRptGroup());
 		ps.setInt(cnt++, getFundId());
 		ps.setInt(cnt++, getIsRts());
+		ps.setInt(cnt++, getIsAll());
+		ps.setInt(cnt++, getIsSummary());
 		
 		LogU.add(getReceivedDate());
 		LogU.add(getFormType());
@@ -757,6 +840,8 @@ public class CollectionInfo {
 		LogU.add(getRptGroup());
 		LogU.add(getFundId());
 		LogU.add(getIsRts());
+		LogU.add(getIsAll());
+		LogU.add(getIsSummary());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -785,7 +870,9 @@ public class CollectionInfo {
 				+ "amount=?,"
 				+ "rptgroup=?,"
 				+ "fundid=?,"
-				+ "rts=? " 
+				+ "rts=?,"
+				+ "rptall=?,"
+				+ "rptsum=? " 
 				+ " WHERE colid=?";
 		
 		PreparedStatement ps = null;
@@ -813,7 +900,10 @@ public class CollectionInfo {
 		ps.setInt(cnt++, col.getRptGroup());
 		ps.setInt(cnt++, col.getFundId());
 		ps.setInt(cnt++, col.getIsRts());
+		ps.setInt(cnt++, col.getIsAll());
+		ps.setInt(cnt++, col.getIsSummary());
 		ps.setLong(cnt++, col.getId());
+		
 		
 		LogU.add(col.getReceivedDate());
 		LogU.add(col.getFormType());
@@ -828,6 +918,8 @@ public class CollectionInfo {
 		LogU.add(col.getRptGroup());
 		LogU.add(col.getFundId());
 		LogU.add(col.getIsRts());
+		LogU.add(col.getIsAll());
+		LogU.add(col.getIsSummary());
 		LogU.add(col.getId());
 		
 		LogU.add("executing for saving...");
@@ -857,7 +949,9 @@ public class CollectionInfo {
 				+ "amount=?,"
 				+ "rptgroup=?,"
 				+ "fundid=?,"
-				+ "rts=? " 
+				+ "rts=?,"
+				+ "rptall=?,"
+				+ "rptsum=? " 
 				+ " WHERE colid=?";
 		
 		PreparedStatement ps = null;
@@ -885,6 +979,8 @@ public class CollectionInfo {
 		ps.setInt(cnt++, getRptGroup());
 		ps.setInt(cnt++, getFundId());
 		ps.setInt(cnt++, getIsRts());
+		ps.setInt(cnt++, getIsAll());
+		ps.setInt(cnt++, getIsSummary());
 		ps.setLong(cnt++, getId());
 		
 		LogU.add(getReceivedDate());
@@ -900,6 +996,8 @@ public class CollectionInfo {
 		LogU.add(getRptGroup());
 		LogU.add(getFundId());
 		LogU.add(getIsRts());
+		LogU.add(getIsAll());
+		LogU.add(getIsSummary());
 		LogU.add(getId());
 		
 		LogU.add("executing for saving...");

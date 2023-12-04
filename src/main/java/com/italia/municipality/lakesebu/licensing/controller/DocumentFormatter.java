@@ -2,7 +2,6 @@ package com.italia.municipality.lakesebu.licensing.controller;
 
 import java.io.FileInputStream;
 import java.util.Properties;
-
 import com.italia.municipality.lakesebu.enm.AppConf;
 
 /**

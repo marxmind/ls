@@ -3,9 +3,7 @@ package com.italia.municipality.lakesebu.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.primefaces.event.CellEditEvent;
-
 import com.italia.municipality.lakesebu.controller.Barangay;
 import com.italia.municipality.lakesebu.controller.ILandType;
 import com.italia.municipality.lakesebu.controller.ITaxPayor;
@@ -15,7 +13,6 @@ import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.controller.TaxPayor;
 import com.italia.municipality.lakesebu.enm.AppConf;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;

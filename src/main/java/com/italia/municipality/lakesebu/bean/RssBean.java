@@ -8,12 +8,10 @@ import com.italia.municipality.lakesebu.controller.Department;
 import com.italia.municipality.lakesebu.controller.Responsibility;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import lombok.Builder;
 import lombok.Data;
 
 /**

@@ -115,10 +115,10 @@
 				        
 						<p:toolbar id="grandM">
 			    		<f:facet name="left">
-			    			<p:outputLabel id="ownerId" value="Owner: #{form56Bean.selectedOwner}" style="font-size: 20px"/>
+			    			<p:outputLabel id="ownerId" value="Owner: #{form56Bean.selectedOwner}" style="font-size: 30px; font-weight: bold"/>
 			    		</f:facet>
 			    		<f:facet name="right">
-			    			<p:outputLabel id="grandId" value="Total Php#{form56Bean.grandTotal}" style="font-size: 20px"/>
+			    			<p:outputLabel id="grandId" value="Total Php#{form56Bean.finalTotal}" style="font-size: 30px; font-weight: bold"/>
 			    		</f:facet>
 						</p:toolbar>
 						<p:dataTable id="formDataId" var="rpt" value="#{form56Bean.receipts}" editable="true"
@@ -153,51 +153,51 @@
 							</p:column>		  
 							
 							<p:column headerText="Value">
-								<p:outputLabel value="#{rpt.assValueLand}">
+								<p:outputLabel value="#{rpt.assValueLand}" style="font-weight: bold">
 									<f:convertNumber currencySymbol="" type="currency"/>
 								</p:outputLabel>
 							</p:column>       
 		       				
 		       				<p:column headerText="From Year">
-				               <p:outputLabel value="#{rpt.fromYear}" />
+				               <p:outputLabel value="#{rpt.fromYear}" style="font-weight: bold"/>
 					       </p:column>
 					       <p:column headerText="To Year">
-								<p:outputLabel value="#{rpt.toYear}" />
+								<p:outputLabel value="#{rpt.toYear}" style="font-weight: bold"/>
 					       </p:column>
 		       			   <p:column headerText="Type">
-								<p:outputLabel value="#{rpt.installmentType}" />
+								<p:outputLabel value="#{rpt.installmentType}" style="font-weight: bold"/>
 				       	   </p:column>
 				       	   <p:column headerText="Case">
-		                  	<p:selectBooleanCheckbox value="#{rpt.isCase}">
+		                  	<p:selectBooleanCheckbox value="#{rpt.isCase}" style="font-weight: bold">
 		                  		<p:ajax update="formDataId,msg" listener="#{form56Bean.specialCheck(rpt)}" />
 		                  	</p:selectBooleanCheckbox>
 					       </p:column>
 					       <p:column headerText="Adj.">
-					                  	<p:selectBooleanCheckbox value="#{rpt.isAdjust}">
+					                  	<p:selectBooleanCheckbox value="#{rpt.isAdjust}" style="font-weight: bold">
 					                  		<p:ajax update="formDataId,msg" listener="#{form56Bean.adjustmentCheck(rpt)}" />
 					                  	</p:selectBooleanCheckbox>
 					       </p:column>
 					       <p:column headerText="Fullpayment">
 					              <p:cellEditor>
-					                  <f:facet name="output"><h:outputText value="#{rpt.fullPayment}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText></f:facet>
+					                  <f:facet name="output"><h:outputText value="#{rpt.fullPayment}" style="font-weight: bold"><f:convertNumber currencySymbol="" type="currency"/></h:outputText></f:facet>
 					                  <f:facet name="input"><p:inputText value="#{rpt.fullPayment}" placeholder="0.00"  disabled="#{form56Bean.disAbleFullPenalty}"/></f:facet>
 					              </p:cellEditor>
 					       </p:column>
 					       <p:column headerText="Penalty">
 					              <p:cellEditor>
-					                  <f:facet name="output"><h:outputText value="#{rpt.penaltyPercent}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText></f:facet>
+					                  <f:facet name="output"><h:outputText value="#{rpt.penaltyPercent}" style="font-weight: bold"><f:convertNumber currencySymbol="" type="currency"/></h:outputText></f:facet>
 					                  <f:facet name="input"><p:inputText value="#{rpt.penaltyPercent}" placeholder="0.00"  disabled="#{form56Bean.disAbleFullPenalty}"/></f:facet>
 					              </p:cellEditor>
 					       </p:column>
 					       <p:column headerText="Total">
 					              <p:cellEditor>
-					                  <f:facet name="output"><h:outputText value="#{rpt.overallTotal}"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
+					                  <f:facet name="output"><h:outputText value="#{rpt.overallTotal}" style="font-weight: bold"><f:convertNumber currencySymbol="" type="currency"/></h:outputText> </f:facet>
 					                  <f:facet name="input"><p:inputText value="#{rpt.overallTotal}" placeholder="0.00" style="width:96%"/></f:facet>
 					              </p:cellEditor>
 					       </p:column>
 					       <p:column headerText="Remarks">
 					              <p:cellEditor>
-					                  <f:facet name="output"><p:outputLabel value="#{rpt.remarks}"/></f:facet>
+					                  <f:facet name="output"><p:outputLabel value="#{rpt.remarks}" style="font-weight: bold"/></f:facet>
 					                  <f:facet name="input"><p:inputText value="#{rpt.remarks}" style="width:96%"/></f:facet>
 					              </p:cellEditor>
 					       </p:column>

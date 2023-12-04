@@ -60,13 +60,14 @@ public class GlobalVar {
 	public static final String EMPLOYEE_PAYROLL = "payroll";
 	public static final String EMPLOYEE_ID = "id";
 	public static final String EMPLOYEE_ID_FOLDER = EMPLOYEE_IMAGE_PATH + "ID" + SEP; 
-	public static final String CASH_DISBURSEMENT_NAME = "cash-disbursement";
+	public static final String CASH_DISBURSEMENT_NAME = "cash-disbursement2";//"cash-disbursement";
 	public static final String CHECK_ISSUED_REPORT_SHORT_NAME = "check-issued-report-short";
 	public static final String CHECK_ISSUED_REPORT_LONG_NAME = "check-issued-report-long";
 	public static final String CHECK_ISSUED_REPORT_LONG_EXTENDED_NAME = "check-issued-report-long-extended";
 	public static final String COLLECTION_DEPOSIT_REPORT_SHORT_NAME = "collection-deposit-report-short";
 	public static final String COLLECTION_DEPOSIT_REPORT_LONG_NAME = "collection-deposit-report-long";
 	public static final String COLLECTION_DEPOSIT_REPORT_LONG_EXTENDED_NAME = "collection-deposit-report-long-extended";
+	public static final String CASH_IN_TREASURY_RPT = "cashintreasury";
 	public static final String BUSINESS_MAP_IMG = PRIMARY_DRIVE + SEP + APP_NAME + SEP + "license" + SEP + "map" +SEP;
 	public static final String RIS_SLIP_RPT = "ris";
 	public static final String WATER_RENTAL_REG = "water_rental_reg";
@@ -76,4 +77,6 @@ public class GlobalVar {
 	public static final String CHECK_XML_UNPROCCESSED=CHECK_XML_FOLDER+SEP+"unproccessed"+SEP;
 	public static final String BACKUP_DATA_FOLDER=PRIMARY_DRIVE + SEP + APP_NAME + SEP + "app_data_backup" + SEP;
 	public static final String BACKUP_ZIP_FILE_NAME="data_backup";
+	public static final String EPSON_L220="chk_L220";
+	public static final String EPSON_L3110="chk_L3110";
 }

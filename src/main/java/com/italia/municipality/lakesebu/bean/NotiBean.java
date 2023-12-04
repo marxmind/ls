@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.italia.municipality.lakesebu.controller.Email;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.UserDtls;
-
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.AllArgsConstructor;

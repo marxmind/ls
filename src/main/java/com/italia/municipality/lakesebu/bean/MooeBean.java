@@ -12,7 +12,6 @@ import com.italia.municipality.lakesebu.controller.Mooe;
 import com.italia.municipality.lakesebu.controller.Offices;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;

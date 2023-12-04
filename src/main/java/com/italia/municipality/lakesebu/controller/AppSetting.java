@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
+import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,62 @@ public class AppSetting {
 		}catch(Exception e){e.getMessage();}
 		
 		return "OFF";
+	}
+	
+	public static String getPrintMode() {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
+		String sql = "SELECT settingvalue FROM appsettings WHERE isactivesett=1 AND namesetting='PRINT-MODE'";
+		String[] params = new String[0];
+		
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+		
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			return rs.getString("settingvalue");
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return GlobalVar.EPSON_L220;
+	}
+	
+	public static String updatePrintMode(boolean isDefault) {
+		System.out.println("updatePrintMode..." + isDefault);
+		
+			Connection conn = null;
+			PreparedStatement ps = null;
+			String val = (isDefault==true? GlobalVar.EPSON_L220 : GlobalVar.EPSON_L3110);
+			String sql = "UPDATE appsettings SET settingvalue='"+  val +"' WHERE isactivesett=1 AND namesetting='PRINT-MODE'";
+			System.out.println(sql);
+			try{
+			conn = WebTISDatabaseConnect.getConnection();
+			ps = conn.prepareStatement(sql);
+			
+			System.out.println("updating printer..." + isDefault);
+			ps.executeUpdate();
+			
+			ps.close();
+			WebTISDatabaseConnect.close(conn);
+			}catch(Exception e){e.getMessage();}
+		
+		return val;
 	}
 	
 	public static List<AppSetting> getTargetBudget() {
@@ -162,6 +219,12 @@ public class AppSetting {
 		return false;
 	}
 	
+	/**
+	 * replace with auto series
+	 * RCDALLController
+	 * RCDSummaruControll
+	 */
+	@Deprecated
 	public static String getReportSeries() {
 		Connection conn = null;
 		ResultSet rs = null;

@@ -3,7 +3,6 @@ package com.italia.municipality.lakesebu.utils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.database.CashBookConnect;
 import com.italia.municipality.lakesebu.database.TaxDatabaseConnect;
@@ -39,7 +38,7 @@ public class OpenTableAccess {
 			}
 			
 		}
-		
+		System.out.println("OPENTABLE: " + ps.toString());
 		rs = ps.executeQuery();
 
 		//rs.close();

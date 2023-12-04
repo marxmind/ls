@@ -1,5 +1,13 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/resources/reports/cash-disbursement2.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/cashintreasury.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/check-issued-report-long-extended.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/check-issued-report-long.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/check-issued-report-short.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/chk_L3110.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/collection-deposit-report-long-extended.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/collection-deposit-report-long.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/collection-deposit-report-short.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcd-OR.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcd.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcdall.jrxml=UTF-8

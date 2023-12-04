@@ -9,17 +9,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.italia.municipality.lakesebu.controller.UserDtls;
-import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
-import com.italia.municipality.lakesebu.enm.Database;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
 import com.italia.municipality.lakesebu.licensing.controller.Municipality;
 import com.italia.municipality.lakesebu.licensing.controller.Province;
 import com.italia.municipality.lakesebu.licensing.controller.Purok;
 import com.italia.municipality.lakesebu.utils.LogU;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

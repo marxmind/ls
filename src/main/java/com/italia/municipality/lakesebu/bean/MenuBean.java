@@ -7,9 +7,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.primefaces.PrimeFaces;
-
 import com.italia.municipality.lakesebu.controller.Email;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.UserAccessLevel;
@@ -18,7 +16,6 @@ import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.security.AppModule;
 import com.italia.municipality.lakesebu.security.License;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -45,7 +42,7 @@ public class MenuBean implements Serializable{
 	private String total;
 	private String styleButton;
 	private boolean hasUpdate;
-	
+	private String expired = "xxx.xhtml";
 	private static final String REPORT_FOLDER = AppConf.PRIMARY_DRIVE.getValue() + File.separator + 
 			AppConf.APP_CONFIG_FOLDER_NAME.getValue() + File.separator + "dailyreport" + File.separator;
 	
@@ -139,7 +136,7 @@ public class MenuBean implements Serializable{
 		String result="stocks.xhtml";
 		String  det = License.dbLicense(AppModule.STOCK_RECORDING);
 		  	if(checkdate(det)) {
-		  		result="expired";
+		  		result=expired;
 		  	}
 		return result;
 	}
@@ -148,7 +145,7 @@ public class MenuBean implements Serializable{
 		String result="logform.xhtml";
 		String det = License.dbLicense(AppModule.COLLECTORS_RECORDING);
 		  	if(checkdate(det)) {
-		  		result="expired";
+		  		result=expired;
 		  	}
 		return result;
 	}
@@ -159,7 +156,7 @@ public class MenuBean implements Serializable{
 		String result="orlisting.xhtml";
 		String  det = License.dbLicense(AppModule.GENERAL_COLLECTIONS);
 		  	if(checkdate(det)) {
-		  		result="expired";
+		  		result=expired;
 		  	}
 		return result;
 	}
@@ -170,7 +167,7 @@ public class MenuBean implements Serializable{
 		String result="vr.xhtml"; 
     	String det = License.dbLicense(AppModule.VOUCHER_RECORDING);
 	  	if(checkdate(det)) {
-	  		result="expired";
+	  		result=expired;
 	  	}
 		return result;
 	}
@@ -207,7 +204,7 @@ public class MenuBean implements Serializable{
 		String result="chk.xhtml";
 		String det = License.dbLicense(AppModule.CHECK_WRITING);
 		  	if(checkdate(det)) {
-		  		result="expired";
+		  		result=expired;
 		  	}
 		return result;
 	}

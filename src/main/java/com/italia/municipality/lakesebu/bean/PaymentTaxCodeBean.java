@@ -1,13 +1,6 @@
 package com.italia.municipality.lakesebu.bean;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+
 /**
  * 
  * @author Mark Italia
@@ -15,10 +8,15 @@ import java.util.Map;
  * @version 1.0
  *
  */
-
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.TabChangeEvent;
-
 import com.italia.municipality.lakesebu.controller.CollectionAccountingGroup;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.ORNameList;
@@ -29,7 +27,6 @@ import com.italia.municipality.lakesebu.enm.AccessLevel;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;

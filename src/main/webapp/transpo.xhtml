@@ -300,6 +300,9 @@
                     <p:inputText value="#{transpoBean.searchName}" placeholder="Search..." style="width: 30em">
                     	<p:ajax event="keyup" listener="#{transpoBean.search}" update="cusId" delay="800" />
                     </p:inputText>
+                    <p:calendar value="#{transpoBean.dateFrom}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
+                    <p:calendar value="#{transpoBean.dateTo}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
+                    <p:commandButton id="subId" actionListener="#{transpoBean.search}" icon="pi pi-search" update="cusId"/>
                     </span>
                     
                     </div>
@@ -312,6 +315,14 @@
                          rowsPerPageTemplate="5,10,15,20,50,100"
                          scrollable="true" draggableColumns="true" draggableRows="true" paginatorPosition="top"
                          >
+                         	     	
+                         	     	<f:facet name="{Exporters}">
+            						<h:commandLink title="Export Report in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="cusId" fileName="Transports" />
+            						</h:commandLink>
+            						</f:facet>
+                         	     	
                          	     	
 		          					<p:column headerText="" width="20" exportable="false">
 		            					<p:commandButton update="cusId msg" icon="pi pi-trash" title="Click this button to delete this data" actionListener="#{transpoBean.delete(rpt)}">
@@ -333,8 +344,12 @@
 		            						<p:outputLabel  value="#{rpt.dateTrans}"/>
 		            				</p:column>
 		            				
-		            				<p:column headerText="OR/Amount" width="70">
-		            						<p:outputLabel  value="#{rpt.orNumber}"/>
+		            				<p:column headerText="OR" width="70">
+		            						<p:outputLabel  value="#{rpt.orNumber.split('-')[0]}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Amount" width="70">
+		            						<p:outputLabel  value="#{rpt.orNumber.split('-')[1]}"/>
 		            				</p:column>
 		            				
 		                         	<p:column headerText="Control No" width="70">

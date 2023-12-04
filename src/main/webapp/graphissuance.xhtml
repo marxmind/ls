@@ -27,6 +27,28 @@
     		
     		<p:tabView prependId="false">
     		
+    		<p:tab title="Collection Deposit">
+    			
+    			<p:toolbar id="tbCollection">
+	    		<f:facet name="left">
+	    			<div class="ui-inputgroup">
+	    			
+	    			<p:selectCheckboxMenu value="#{graphIssuanceBean.cashYearSelected}" label="Select Year" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 20em">
+						<f:selectItems value="#{graphIssuanceBean.cashYears}" />
+					</p:selectCheckboxMenu>
+					<p:selectOneMenu value="#{graphIssuanceBean.fundId}" label="Select Forms" updateLabel="true" filterMatchMode="contains" filter="true" style="width: 30em">
+						<f:selectItems value="#{graphIssuanceBean.funds}" />
+					</p:selectOneMenu>
+					<p:commandButton icon="pi pi-search" update="graphCollBardId" actionListener="#{graphIssuanceBean.loadCashDeposit}"/>
+	    			
+	    			</div>
+	    		</f:facet>
+	    		<f:facet name="right"/>
+				</p:toolbar> 
+				
+				<p:barChart id="graphCollBardId" model="#{graphIssuanceBean.barModel4}" style="width: 100%; height: 500px;"/>
+    			
+    		</p:tab>
             <p:tab title="Reported Collection">
     		
     		<p:toolbar id="tbGraph">

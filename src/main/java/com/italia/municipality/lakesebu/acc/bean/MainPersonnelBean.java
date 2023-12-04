@@ -5,12 +5,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import org.apache.commons.io.FileUtils;
 import org.primefaces.PrimeFaces;
-
 import com.italia.municipality.lakesebu.acc.controller.EmployeePayroll;
 import com.italia.municipality.lakesebu.controller.Card;
 import com.italia.municipality.lakesebu.controller.EmployeeLoan;
@@ -21,11 +19,9 @@ import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.enm.CivilStatus;
 import com.italia.municipality.lakesebu.enm.EmployeeType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
-import com.italia.municipality.lakesebu.reports.LguId;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.Messages;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;

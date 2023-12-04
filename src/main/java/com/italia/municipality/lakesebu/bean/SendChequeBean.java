@@ -4,14 +4,11 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.primefaces.PrimeFaces;
-
 import com.italia.municipality.lakesebu.controller.ChequeXML;
 import com.italia.municipality.lakesebu.controller.Reports;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.utils.Application;
-
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Data;

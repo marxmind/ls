@@ -20,7 +20,6 @@ import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.utils.CheckServerConnection;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -76,7 +75,7 @@ public class SyncData {
 		String CHEQUE = conf.getDatabaseBank();
 		String CASHBOOK = conf.getDatabaseCashBook();
 		String local_path = GlobalVar.DOWNLOADED_DATA_FOLDER;
-		System.out.println("check path " + local_path + "\n and db path is " + DB_PATH);
+		//System.out.println("check path " + local_path + "\n and db path is " + DB_PATH);
 		File dir = new File(local_path);	
 		
 		dir.mkdir();//create directory if not present
@@ -215,7 +214,7 @@ public class SyncData {
 
             int exitVal = process.waitFor();
             if (exitVal == 0) {
-                System.out.println(output);
+                //System.out.println(output);
                 //System.exit(0);
                 isSuccess = true;
                 //File fileOrig = new File(location + batName);
@@ -223,7 +222,7 @@ public class SyncData {
                 //isSuccess = copyFileUsingStream(fileOrig, fileCopy);
             } else {
                 //abnormal...
-            	System.out.println("abnormal running of bat file... the file " + batName + " was not successfully processed...");
+            	//System.out.println("abnormal running of bat file... the file " + batName + " was not successfully processed...");
             	isSuccess = false;
             }
 
@@ -299,7 +298,7 @@ public class SyncData {
 			
 		conn = WebTISDatabaseConnect.getConnection();
 		ps = conn.prepareStatement("source " + local_path + WEBTIS + ".sql");
-		System.out.println("source " + local_path + WEBTIS + ".sql");
+		//System.out.println("source " + local_path + WEBTIS + ".sql");
 		ps.executeUpdate();
 		ps.close();
 		WebTISDatabaseConnect.close(conn);
@@ -308,7 +307,7 @@ public class SyncData {
 		ps = null;
 		conn = TaxDatabaseConnect.getConnection();
 		ps = conn.prepareStatement("source " + local_path + TAXATION + ".sql");
-		System.out.println("source " + local_path + TAXATION + ".sql");
+		//System.out.println("source " + local_path + TAXATION + ".sql");
 		ps.executeUpdate();
 		ps.close();
 		TaxDatabaseConnect.close(conn);
@@ -317,7 +316,7 @@ public class SyncData {
 		ps = null;
 		conn = BankChequeDatabaseConnect.getConnection();
 		ps = conn.prepareStatement("source " + local_path + CHEQUE + ".sql");
-		System.out.println("source " + local_path + CHEQUE + ".sql");
+		//System.out.println("source " + local_path + CHEQUE + ".sql");
 		ps.executeUpdate();
 		ps.close();
 		BankChequeDatabaseConnect.close(conn);
@@ -326,7 +325,7 @@ public class SyncData {
 		ps = null;
 		conn = CashBookConnect.getConnection();
 		ps = conn.prepareStatement("source " + local_path + CASHBOOK + ".sql");
-		System.out.println("source " + local_path + CASHBOOK + ".sql");
+		//System.out.println("source " + local_path + CASHBOOK + ".sql");
 		ps.executeUpdate();
 		ps.close();
 		CashBookConnect.close(conn);

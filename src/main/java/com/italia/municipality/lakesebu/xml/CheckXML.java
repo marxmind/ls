@@ -3,7 +3,6 @@ package com.italia.municipality.lakesebu.xml;
 import com.italia.municipality.lakesebu.controller.BankAccounts;
 import com.italia.municipality.lakesebu.controller.Department;
 import com.italia.municipality.lakesebu.controller.UserDtls;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

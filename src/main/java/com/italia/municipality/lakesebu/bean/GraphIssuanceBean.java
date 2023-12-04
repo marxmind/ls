@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.charts.ChartData;
@@ -21,24 +22,23 @@ import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
 import org.primefaces.model.charts.optionconfig.title.Title;
-
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
 import com.italia.municipality.lakesebu.controller.TaxAccountGroup;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.FormType;
+import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.enm.GraphColor;
 import com.italia.municipality.lakesebu.enm.GraphColorWithBorder;
+import com.italia.municipality.lakesebu.enm.Months;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.OpenTableAccess;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 
@@ -49,6 +49,7 @@ import lombok.Setter;
  */
 @Named
 @RequestScoped
+@Data
 public class GraphIssuanceBean implements Serializable {
 
 	/**
@@ -56,22 +57,28 @@ public class GraphIssuanceBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1435756756423L;
 	
-	@Setter @Getter private LineChartModel lineModel;
-	@Setter @Getter private List years;
-	@Setter @Getter private List selectedYear;
-	@Setter @Getter private List collectors;
-	@Setter @Getter private List selectedCollector;
-	@Setter @Getter private Map<Integer, Collector> collectorMap;
-	@Setter @Getter private List forms;
-	@Setter @Getter private int selectedForm;
-	@Setter @Getter private BarChartModel barModel2;
+	private LineChartModel lineModel;
+	private List years;
+	private List selectedYear;
+	private List collectors;
+	private List selectedCollector;
+	private Map<Integer, Collector> collectorMap;
+	private List forms;
+	private int selectedForm;
+	private BarChartModel barModel2;
 	
-	@Setter @Getter private List accountYears;
-	@Setter @Getter private List accountSelectedYear;
-	@Setter @Getter private List accounts;
-	@Setter @Getter private List accountSelected;
-	@Setter @Getter private Map<String,String> mapAccounts;
-	@Setter @Getter private BarChartModel barModel3;
+	private List accountYears;
+	private List accountSelectedYear;
+	private List accounts;
+	private List accountSelected;
+	private Map<String,String> mapAccounts;
+	private BarChartModel barModel3;
+	
+	private List cashYears;
+	private List cashYearSelected;
+	private int fundId;
+	private List funds;
+	private BarChartModel barModel4;
 	
 	@PostConstruct
 	public void init() {
@@ -85,9 +92,11 @@ public class GraphIssuanceBean implements Serializable {
 		accountSelectedYear = new ArrayList<>();
 		accountYears = new ArrayList<>();
 		years = new ArrayList<>();
+		cashYears = new ArrayList<>();
 		for(int year=2019; year<=DateUtils.getCurrentYear(); year++) {
 			years.add(new SelectItem(year, year+""));
 			accountYears.add(new SelectItem(year, year+""));
+			cashYears.add(new SelectItem(year, year+""));
 		}
 		selectedCollector = new ArrayList<>();
 		collectors = new ArrayList<>();
@@ -109,8 +118,15 @@ public class GraphIssuanceBean implements Serializable {
 			mapAccounts.put(acc.getName(), acc.getName());
 		}
 		
+		funds = new ArrayList<>();
+		fundId = FundType.GENERAL_FUND.getId();
+		for(FundType type : FundType.values()) {
+			funds.add(new SelectItem(type.getId(), type.getName()));
+		}
+		
 		dummyBarModel2();
 		dummyBarModel3();
+		dummyBarModel4();
 	}
 	
 	public void dummyBarModel2() {
@@ -282,6 +298,92 @@ public class GraphIssuanceBean implements Serializable {
 		 */
         
         barModel3.setOptions(options);
+        //barModel2.setExtender("addValueOnGraph");
+    }
+	
+	public void dummyBarModel4() {
+        barModel4 = new BarChartModel();
+        ChartData data = new ChartData();
+
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        barDataSet.setLabel("Year 1");
+        barDataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
+        barDataSet.setBorderColor("rgb(255, 99, 132)");
+        barDataSet.setBorderWidth(1);
+        List<Number> values = new ArrayList<>();
+        values.add(65);
+        values.add(59);
+        values.add(80);
+        values.add(81);
+        values.add(56);
+        values.add(55);
+        values.add(40);
+        barDataSet.setData(values);
+
+        BarChartDataSet barDataSet2 = new BarChartDataSet();
+        barDataSet2.setLabel("Year 2");
+        barDataSet2.setBackgroundColor("rgba(255, 159, 64, 0.2)");
+        barDataSet2.setBorderColor("rgb(255, 159, 64)");
+        barDataSet2.setBorderWidth(1);
+        List<Number> values2 = new ArrayList<>();
+        values2.add(85);
+        values2.add(69);
+        values2.add(20);
+        values2.add(51);
+        values2.add(76);
+        values2.add(75);
+        values2.add(10);
+        barDataSet2.setData(values2);
+        
+
+        data.addChartDataSet(barDataSet);
+        data.addChartDataSet(barDataSet2);
+
+        List<String> labels = new ArrayList<>();
+        labels.add("January");
+        labels.add("February");
+        labels.add("March");
+        labels.add("April");
+        labels.add("May");
+        labels.add("June");
+        labels.add("July");
+        data.setLabels(labels);
+        barModel4.setData(data);
+
+        //Options
+        BarChartOptions options = new BarChartOptions();
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        linearAxes.setOffset(true);
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        //ticks.setBeginAtZero(true);
+        linearAxes.setTicks(ticks);
+        cScales.addYAxesData(linearAxes);
+        options.setScales(cScales);
+
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Bar Chart");
+        options.setTitle(title);
+        
+        
+        Legend legend = new Legend();
+        legend.setDisplay(true);
+        legend.setPosition("bottom");
+        LegendLabel legendLabels = new LegendLabel();
+        legendLabels.setFontStyle("bold");
+        legendLabels.setFontColor("#2980B9");
+        legendLabels.setFontSize(12);
+        legend.setLabels(legendLabels);
+        options.setLegend(legend);
+        
+		/*
+		 * Tooltip tooltip = new Tooltip(); tooltip.setEnabled(true);
+		 * tooltip.setMode("index"); tooltip.setIntersect(false);
+		 * options.setTooltip(tooltip);
+		 */
+        
+        barModel4.setOptions(options);
         //barModel2.setExtender("addValueOnGraph");
     }
 	
@@ -981,6 +1083,164 @@ public class GraphIssuanceBean implements Serializable {
 	    options.setLegend(legend);
 	    
 	    barModel3.setOptions(options);
+	}
+	
+	public void loadCashDeposit() {
+		String sql = "SELECT DATE_FORMAT(alldatetrans,'%Y') as year,DATE_FORMAT(alldatetrans,'%m') as month, amount as total FROM rcdallcontroller WHERE isactiveall=1 AND fundtype=? ";//AND (alldatetrans>=? AND alldatetrans<=?)";
+		String[] params = new String[1];
+		params[0] = getFundId()+"";
+		int nowYear = DateUtils.getCurrentYear();
+		if(getCashYearSelected()!=null) {
+			if(getCashYearSelected().size()>1) {
+				sql += " AND (";
+				int i=1;
+				for(Object s : getCashYearSelected()) {
+					if(i==1) {
+						sql += "(alldatetrans>='"+ s +"-01-01' AND alldatetrans<='"+ s +"-12-31')";
+					}else {
+						sql += " OR (alldatetrans>='"+ s +"-01-01' AND alldatetrans<='"+ s +"-12-31')";
+					}
+					i++;
+				}
+				sql += " ) ";
+			}else {
+				/*sql += " AND (";
+				for(Object s : getCashYearSelected()) {
+					sql += "alldatetrans>='"+ s +"-01-01' AND alldatetrans<='"+ s +"-12-31'";
+				}
+				sql += " ) ";*/
+				sql += " AND (alldatetrans>='"+ nowYear +"-01-01' AND alldatetrans<='"+ nowYear +"-12-31')";
+			}
+		}else {
+			sql += " AND (alldatetrans>='"+ nowYear +"-01-01' AND alldatetrans<='"+ nowYear +"-12-31')";
+		}
+		sql += " ORDER BY alldatetrans";
+		//sql += " GROUP BY DATE_FORMAT(alldatetrans,'%m')";
+		
+		ResultSet rs = OpenTableAccess.query(sql, params, new WebTISDatabaseConnect());
+		Map<Integer, Map<Integer, Double>> yearData = new LinkedHashMap<Integer, Map<Integer, Double>>();
+		Map<Integer, Double> monthData = new LinkedHashMap<Integer, Double>();
+		try {
+			while(rs.next()) {
+				int month = rs.getInt("month");
+				int year = rs.getInt("year");
+				double total = rs.getDouble("total");
+				if(yearData!=null) {
+					if(yearData.containsKey(year)) {
+						if(yearData.get(year).containsKey(month)) {
+							double amnt = yearData.get(year).get(month);
+							total += amnt;
+							yearData.get(year).put(month, total);
+						}else {
+							yearData.get(year).put(month, total);
+						}
+					}else {
+						monthData = new LinkedHashMap<Integer, Double>();
+						monthData.put(month, total);
+						yearData.put(year, monthData);
+					}
+				}else {
+					monthData.put(month, total);
+					yearData.put(year, monthData);
+				}
+			}
+			rs.close();
+			Map<Integer, Map<Integer,Double>> sortedData = new TreeMap<Integer, Map<Integer, Double>>(yearData);
+			collectionGrpah(sortedData);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void collectionGrpah(Map<Integer, Map<Integer, Double>> mapData) {
+		int nowYear = DateUtils.getCurrentYear();
+		barModel4 = new BarChartModel();
+	    ChartData data = new ChartData();
+	    int color = 1;
+	    
+	    boolean isMorethanOneYearSelected=false;
+	    if(getCashYearSelected()!=null && getCashYearSelected().size()>1) {
+	    	isMorethanOneYearSelected=true;
+	    }
+	    Map<Integer, Double> amounts = new LinkedHashMap<>();
+		for(int year : mapData.keySet()) {
+			BarChartDataSet barDataSet = new BarChartDataSet();
+        	List<Number> values = new ArrayList<>();
+        	List<String> labels = new ArrayList<>();
+			for(int month : mapData.get(year).keySet()) {
+				String name = Months.getMonthName(month);
+				double total = mapData.get(year).get(month);
+				values.add(total);
+				labels.add(name);
+			}
+			barDataSet.setData(values);
+ 	        //barDataSet.setLabel((isMorethanOneYearSelected==true?  "("+ year +")" : ""));
+			barDataSet.setLabel(year+"");
+		    barDataSet.setBackgroundColor(GraphColorWithBorder.valueId(color));
+		    barDataSet.setBorderColor(GraphColor.valueId(color));
+		    barDataSet.setBorderWidth(1);
+	        data.addChartDataSet(barDataSet);
+	        data.setLabels(labels);
+        	color++;
+		}
+		
+		
+		/*
+		 * for(int month=1; month<=12; month++) {
+		 * labels.add(DateUtils.getMonthName(month)); }
+		 */
+		System.out.println("amount size: " + amounts.size());
+		/*
+		if(getCashYearSelected()!=null && getCashYearSelected().size()==1) {
+    		if(getCashYearSelected()!=null && getCashYearSelected().size()>0) {
+    			for(int n : amounts.keySet()) {
+    				labels.add(n + "("+ Currency.formatAmount(amounts.get(n)) +")");
+    			}
+    		}else {
+    			for(String name : getMapAccounts().values()) {
+	    			labels.add(name);
+	    }
+    		}
+		}else {	
+		
+		    for(String name : getMapAccounts().values()) {
+		    			labels.add(name);
+		    }
+	    
+		}*/
+	    
+	    
+	    barModel4.setData(data);
+	    
+	    
+	    BarChartOptions options = new BarChartOptions();
+	    CartesianScales cScales = new CartesianScales();
+	    CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+	    linearAxes.setOffset(true);
+	    CartesianLinearTicks ticks = new CartesianLinearTicks();
+	    //ticks.setBeginAtZero(true);
+	    linearAxes.setTicks(ticks);
+	    cScales.addYAxesData(linearAxes);
+	    options.setScales(cScales);
+
+	    Title title = new Title();
+	    title.setDisplay(true);
+	    title.setText("Cash Collection Data" + (isMorethanOneYearSelected==true? "" : " " +  (getCashYearSelected()==null? nowYear+"" : getCashYearSelected().toString())));
+	    options.setTitle(title);
+	    
+	    
+	    Legend legend = new Legend();
+	    legend.setDisplay(true);
+	    legend.setPosition("bottom");
+	    LegendLabel legendLabels = new LegendLabel();
+	    legendLabels.setFontStyle("bold");
+	    legendLabels.setFontColor("#2980B9");
+	    legendLabels.setFontSize(12);
+	    legend.setLabels(legendLabels);
+	    options.setLegend(legend);
+	    
+	    barModel4.setOptions(options);
 	}
 	
 }

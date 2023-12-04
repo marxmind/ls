@@ -29,7 +29,6 @@ import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.controller.TaxAccountGroup;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
-import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.GraphColor;
 import com.italia.municipality.lakesebu.enm.GraphColorWithBorder;
 import com.italia.municipality.lakesebu.enm.Pages;
@@ -40,7 +39,6 @@ import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
 import com.italia.municipality.lakesebu.utils.OpenTableAccess;
 import com.italia.municipality.lakesebu.utils.Whitelist;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;

@@ -8,18 +8,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import org.primefaces.event.CellEditEvent;
-import com.italia.municipality.lakesebu.controller.Barangay;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.global.GlobalVar;
-import com.italia.municipality.lakesebu.licensing.controller.ClearanceRpt;
-import com.italia.municipality.lakesebu.licensing.controller.Customer;
 import com.italia.municipality.lakesebu.licensing.controller.Transpo;
 import com.italia.municipality.lakesebu.licensing.controller.TranspoItems;
 import com.italia.municipality.lakesebu.licensing.controller.TranspoRpt;
@@ -28,7 +23,6 @@ import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -70,6 +64,8 @@ public class TranspoBean implements Serializable {
 	private String unit;
 	private double qty;
 	
+	private Date dateFrom;
+	private Date dateTo;
 	
 	@PostConstruct
 	public void init() {
@@ -92,6 +88,13 @@ public class TranspoBean implements Serializable {
 			sql += " OR clr.ornumber like '%"+ getSearchName() +"%'";
 			sql += " OR clr.requestor like '%"+ getSearchName() +"%'";
 			sql += ")";
+		}else {
+			
+			String dateF = DateUtils.convertDate(getDateFrom(), "yyyy-MM-dd");
+			String dateT = DateUtils.convertDate(getDateTo(), "yyyy-MM-dd");
+			
+			sql += " AND (clr.datetrans>='"+ dateF +"' AND clr.datetrans<='"+ dateT +"') ";
+			
 		}
 		
 		sql += " ORDER BY clr.tid DESC" ;
@@ -177,7 +180,10 @@ public class TranspoBean implements Serializable {
 	}
 	
 	public void defaultValue() {
-		setDateCreated(DateUtils.getDateToday());
+		Date dateNow = DateUtils.getDateToday();
+		setDateCreated(dateNow);
+		setDateFrom(dateNow);
+		setDateTo(dateNow);
 		/*
 		 * List<TranspoItems> items = new ArrayList<TranspoItems>(); TranspoItems item =
 		 * TranspoItems.builder() .name("Item Name") .unit("Unit") .quantity(0)

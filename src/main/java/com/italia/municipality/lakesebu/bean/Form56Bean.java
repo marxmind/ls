@@ -17,12 +17,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
-
 import com.italia.municipality.lakesebu.controller.Barangay;
 import com.italia.municipality.lakesebu.controller.ILandType;
 import com.italia.municipality.lakesebu.controller.ITaxPayerReceipt;
@@ -48,7 +46,6 @@ import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.Numbers;
 import com.italia.municipality.lakesebu.utils.Whitelist;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.ExternalContext;
@@ -90,7 +87,7 @@ public class Form56Bean implements Serializable{
 	private String checkDate;
 	private String scNo;
 	private Double grandTotal;
-	
+	private String finalTotal;
 		
 	private List<ITaxPayerReceipt> receipts;
 	private ITaxPayerReceipt receiptSelected;
@@ -486,6 +483,7 @@ public class Form56Bean implements Serializable{
     			
     			//register actual amount
 				setGrandTotal(getGrandTotal() + overallTotal);
+				setFinalTotal(Currency.formatAmount(getGrandTotal()));
 			}else{
 
 				penAmount = 0d;
@@ -506,6 +504,7 @@ public class Form56Bean implements Serializable{
     			
     			//register actual amount
     			setGrandTotal(getGrandTotal() + overallTotal);
+    			setFinalTotal(Currency.formatAmount(getGrandTotal()));
 			}
 		}
 		
@@ -538,6 +537,7 @@ public class Form56Bean implements Serializable{
     			System.out.println("same year...");
     			//register actual amount
     			setGrandTotal(getGrandTotal() + overallTotal);
+    			setFinalTotal(Currency.formatAmount(getGrandTotal()));
 			}else{
 				
 			}
@@ -563,6 +563,7 @@ public class Form56Bean implements Serializable{
     			
     			//register actual amount
     			setGrandTotal(getGrandTotal() + overallTotal);
+    			setFinalTotal(Currency.formatAmount(getGrandTotal()));
 		}
     	
 		//advance payment
@@ -582,6 +583,7 @@ public class Form56Bean implements Serializable{
     			
     			//register actual amount
     			setGrandTotal(getGrandTotal() + overallTotal);
+    			setFinalTotal(Currency.formatAmount(getGrandTotal()));
 			}
 		
 		if(fromYear<=year && toYear>year){
@@ -611,6 +613,7 @@ public class Form56Bean implements Serializable{
     			
     			//register actual amount
     			setGrandTotal(getGrandTotal() + overallTotal);
+    			setFinalTotal(Currency.formatAmount(getGrandTotal()));
 		}
 		
     	return rpt;
@@ -621,6 +624,7 @@ public class Form56Bean implements Serializable{
     	Double tmpamnt = 0d;
     	List<ITaxPayerReceipt> tmpreceipts = new ArrayList<>();
     	setGrandTotal(amnt);
+    	setFinalTotal(Currency.formatAmount(getGrandTotal()));
     	double actualTotalAmnt = 0d;
     	
     	if(receipts.size()>0){
@@ -1027,13 +1031,14 @@ public class Form56Bean implements Serializable{
     			}
     			
     			setGrandTotal(getGrandTotal() + overallTotal);
-    			
+    			setFinalTotal(Currency.formatAmount(getGrandTotal()));
     			tmpreceipts.add(rpt);
     		}
     	}
     	receipts = new ArrayList<>();
     	receipts = tmpreceipts;
     	setGrandTotal(Numbers.formatDouble(getGrandTotal()));
+    	setFinalTotal(Currency.formatAmount(getGrandTotal()));
     	generateWords();
     	
     }
@@ -1260,6 +1265,7 @@ public class Form56Bean implements Serializable{
 		setPayorTransData(null);
 		setReceiptSelected(null);
 		setGrandTotal(0d);
+		setFinalTotal(Currency.formatAmount(getGrandTotal()));
 		setReceiveFrom(null);
 		setAmountInWords(null);
 		setIdFromYear(0);
@@ -1269,6 +1275,7 @@ public class Form56Bean implements Serializable{
 		setSignatory1("ALVIN M. BATOL, CPA");
 		setSignatory2("FERDINAND L. LOPEZ");
 		setGrandTotal(0.0);
+		setFinalTotal(Currency.formatAmount(getGrandTotal()));
 		setTransDate(DateUtils.getCurrentDateYYYYMMDD());
 		setTmpTransDate(DateUtils.getDateToday());
 		setPayorSearchParam(null);
@@ -1748,6 +1755,7 @@ private void close(Closeable resource) {
 			setAmountInWords(trans.getAmountInWords());
 		}
 		setGrandTotal(Double.valueOf(trans.getAmount()+""));
+		setFinalTotal(Currency.formatAmount(getGrandTotal()));
 		receipts = new ArrayList<ITaxPayerReceipt>();// Collections.synchronizedList(new ArrayList<ITaxPayerReceipt>());
 		String sql = " select * from taxpayortransreceipt p, taxpayortrans x, taxpayor t, landtype l "
 				+ "WHERE p.payortransid=x.payortransid AND p.payorid=t.payorid AND  p.landid=l.landid AND x.payortransid=? AND p.recisactive=1";
@@ -2705,6 +2713,14 @@ private void close(Closeable resource) {
 
 	public void setYearSelectedTos(List yearSelectedTos) {
 		this.yearSelectedTos = yearSelectedTos;
+	}
+
+	public String getFinalTotal() {
+		return finalTotal;
+	}
+
+	public void setFinalTotal(String finalTotal) {
+		this.finalTotal = finalTotal;
 	}
 		
 }

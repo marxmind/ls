@@ -1,6 +1,6 @@
 package com.italia.municipality.lakesebu.bean;
 
-import java.awt.Point;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -29,10 +29,8 @@ import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
-
 import com.italia.municipality.lakesebu.controller.BusinessMapping;
 import com.italia.municipality.lakesebu.global.GlobalVar;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;

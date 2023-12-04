@@ -34,7 +34,6 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
-
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -931,6 +930,7 @@ public class ORListingBean implements Serializable{
 						}
 					}
 				}else {
+					//removing code 11/13/2023
 					grandcancelledAmnt += n.getAmount();
 					canAmount += n.getAmount();
 				}
@@ -941,15 +941,21 @@ public class ORListingBean implements Serializable{
 				
 				long key = n.getPaymentName().getId();	
 				if(mapData!=null && mapData.containsKey(key)) {
-					double amnt = mapData.get(key).getAmount();
-					amnt += n.getAmount();
-					PaymentName na = n.getPaymentName();
-					na.setAmount(amnt);
-					mapData.put(key, na);
+					//adding condition 11/13/2023
+					if(FormStatus.CANCELLED.getId()!=or.getStatus()) {
+						double amnt = mapData.get(key).getAmount();
+						amnt += n.getAmount();
+						PaymentName na = n.getPaymentName();
+						na.setAmount(amnt);
+						mapData.put(key, na);
+					}
 				}else {
-					PaymentName na = n.getPaymentName();
-					na.setAmount(n.getAmount());
-					mapData.put(key, na);
+					//adding condition 11/13/2023
+					if(FormStatus.CANCELLED.getId()!=or.getStatus()) {
+						PaymentName na = n.getPaymentName();
+						na.setAmount(n.getAmount());
+						mapData.put(key, na);
+					}
 				}
 				
 			}
@@ -1020,21 +1026,22 @@ public class ORListingBean implements Serializable{
 			rss.setF2(Currency.formatAmount(nem.getAmount()));
 			rptsOnly.add(rss);
 		}
+		//removing condition 11/13/2023 - in order not included on the grand total
+		//sumAmount -= grandcancelledAmnt;
 		
-		sumAmount -= grandcancelledAmnt;
 		rpt = new Reports();
 		rpt.setF1("");
 		rpt.setF2("");
 		rpt.setF3("");
 		rpt.setF4("");
-		rpt.setF5("Minus Cancelled OR");
+		rpt.setF5("Total Cancelled OR");
 		rpt.setF6("("+Currency.formatAmount(grandcancelledAmnt)+")");
 		dtls.add(rpt);
 		sumN += rpt.getF5() + "\n";
 		sumA += rpt.getF6() + "\n";
 		
 		rss = new Reports();
-		rss.setF1("Minus Cancelled OR");
+		rss.setF1("Total Cancelled OR");
 		rss.setF2("("+Currency.formatAmount(grandcancelledAmnt)+")");
 		rptsOnly.add(rss);
 		
@@ -1293,14 +1300,14 @@ public class ORListingBean implements Serializable{
 		rpt.setF2("");
 		rpt.setF3("");
 		rpt.setF4("");
-		rpt.setF5("Minus Cancelled OR");
+		rpt.setF5("Total Cancelled OR");
 		rpt.setF6("("+Currency.formatAmount(grandcancelledAmnt)+")");
 		dtls.add(rpt);
 		sumN += rpt.getF5() + "\n";
 		sumA += rpt.getF6() + "\n";
 		
 		rss = new Reports();
-		rss.setF1("Minus Cancelled OR");
+		rss.setF1("Total Cancelled OR");
 		rss.setF2("("+Currency.formatAmount(grandcancelledAmnt)+")");
 		rptsOnly.add(rss);
 		
@@ -4119,15 +4126,19 @@ private void close(Closeable resource) {
 				
 				long key = n.getPaymentName().getId();	
 				if(mapData!=null && mapData.containsKey(key)) {
-					double amnt = mapData.get(key).getAmount();
-					amnt += n.getAmount();
-					PaymentName na = n.getPaymentName();
-					na.setAmount(amnt);
-					mapData.put(key, na);
+					
+						double amnt = mapData.get(key).getAmount();
+						amnt += n.getAmount();
+						PaymentName na = n.getPaymentName();
+						na.setAmount(amnt);
+						mapData.put(key, na);
+					
 				}else {
-					PaymentName na = n.getPaymentName();
-					na.setAmount(n.getAmount());
-					mapData.put(key, na);
+					
+						PaymentName na = n.getPaymentName();
+						na.setAmount(n.getAmount());
+						mapData.put(key, na);
+					
 				}
 				
 			}
@@ -4205,14 +4216,14 @@ private void close(Closeable resource) {
 		rpt.setF2("");
 		rpt.setF3("");
 		rpt.setF4("");
-		rpt.setF5("Minus Cancelled OR");
+		rpt.setF5("Total Cancelled OR");
 		rpt.setF6("("+Currency.formatAmount(grandcancelledAmnt)+")");
 		dtls.add(rpt);
 		sumN += rpt.getF5() + "\n";
 		sumA += rpt.getF6() + "\n";
 		
 		rss = new Reports();
-		rss.setF1("Minus Cancelled OR");
+		rss.setF1("Total Cancelled OR");
 		rss.setF2("("+Currency.formatAmount(grandcancelledAmnt)+")");
 		rptsOnly.add(rss);
 		

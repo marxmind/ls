@@ -1,7 +1,6 @@
 package com.italia.municipality.lakesebu.bean;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,19 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import javax.imageio.ImageIO;
-
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.file.UploadedFile;
-
 import com.italia.municipality.lakesebu.controller.SyncData;
 import com.italia.municipality.lakesebu.database.Conf;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.utils.Application;
-import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.ZipUtil;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.ExternalContext;
@@ -84,12 +77,12 @@ public class ApplicationBackupBean implements Serializable {
 	    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		String contextImageLoc = "resources" + File.separator + "backup" + File.separator + "download" + File.separator;
 		String pathToSave = externalContext.getRealPath("") + contextImageLoc;
-		System.out.println("Path zip: " + pathToSave);
+		//System.out.println("Path zip: " + pathToSave);
 		 try{
          	
  			Files.copy(fileImg.toPath(), (new File(pathToSave + fileImg.getName())).toPath(),
  			        StandardCopyOption.REPLACE_EXISTING);
- 			System.out.println("writing images....." + pathToSave);
+ 			//System.out.println("writing images....." + pathToSave);
  			}catch(IOException e){}
    }
    
@@ -102,7 +95,7 @@ public class ApplicationBackupBean implements Serializable {
 		File fileImg = new File(pathToSave+fileName);
 	    try {
 			boolean isSuccess=copyInputStreamToFile(event.getFile().getInputStream(), fileImg);
-			System.out.println("writing zip file....." + pathToSave);
+			//System.out.println("writing zip file....." + pathToSave);
 			
 			if(isSuccess) {
 				boolean isCompleted = unzipFile(pathToSave+fileName, new File(externalContext.getRealPath("") + "resources" + File.separator + "backup" + File.separator + "upload"));

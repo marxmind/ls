@@ -13,14 +13,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.primefaces.event.FileUploadEvent;
-
 import com.italia.municipality.lakesebu.controller.Barangay;
 import com.italia.municipality.lakesebu.controller.ITaxPayor;
 import com.italia.municipality.lakesebu.controller.LandPayor;
@@ -31,10 +29,8 @@ import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -191,8 +191,15 @@
 									<p:commandButton value="OCT" actionListener="#{chk.monthQuery('OCTOBER')}" update="dataChkId"/>
 									<p:commandButton value="NOV" actionListener="#{chk.monthQuery('NOVEMBER')}" update="dataChkId"/>
 									<p:commandButton value="DEC" actionListener="#{chk.monthQuery('DECEMBER')}" update="dataChkId"/>
+									<p:outputLabel value="Printer Mode:"/>
+									 <p:toggleSwitch value="#{chk.printMode}" label="#{chk.printName}" onIcon="pi pi-printer" offIcon="pi pi-printer">
+							        	<p:ajax listener="#{chk.modeMsg}" update="idMode msg"/>
+									</p:toggleSwitch>
+									<p:outputLabel id="idMode" value="#{chk.printName}"/>
 			                    </div>
 			         </p:panel>
+			        
+					
 	    		</div>
 	    		
 	    		
@@ -706,6 +713,8 @@
                   <h:outputText value="#{chk.alertBudgetMsg[3]}" style="color: red; font-weight: bold"/>
         </p:panelGrid>         
 	</p:dialog>
+	
+	
 	
 	<ui:include src="sendchk.xhtml" />
 	<ui:include src="loader.xhtml" />

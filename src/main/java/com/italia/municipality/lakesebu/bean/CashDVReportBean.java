@@ -13,24 +13,19 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.ReorderEvent;
 import com.italia.municipality.lakesebu.controller.BankAccounts;
 import com.italia.municipality.lakesebu.controller.CashDisbursement;
 import com.italia.municipality.lakesebu.controller.CashDisbursementReport;
-import com.italia.municipality.lakesebu.controller.CheckIssued;
 import com.italia.municipality.lakesebu.controller.CheckRpt;
 import com.italia.municipality.lakesebu.controller.Login;
-import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.Words;
-import com.italia.municipality.lakesebu.reports.Rcd;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -123,7 +118,7 @@ public class CashDVReportBean implements Serializable{
 		
 	}
 	
-	public void print(CashDisbursementReport rpt) {
+	/*public void print(CashDisbursementReport rpt) {
 		String REPORT_PATH = GlobalVar.REPORT_FOLDER;
 		String REPORT_NAME = GlobalVar.CASH_DISBURSEMENT_NAME;
 		
@@ -132,39 +127,7 @@ public class CashDVReportBean implements Serializable{
 		
 		List<CheckRpt> reports = new ArrayList<CheckRpt>();
 		List<CashDisbursement> cashDisList = CashDisbursement.retrieveReportGroupDisbursement(rpt.getId());
-		/*int count = 1;
-		double amount = 0d;
-		for(CashDisbursement cs : cashDisList) {
-			if(count<30) {
-			CheckRpt cpt = CheckRpt.builder()
-					.f1(cs.getDateTrans())
-					.f2(cs.getDvPayroll())
-					.f3(cs.getCafoaNo())
-					.f4(cs.getPayee())
-					.f5(cs.getNaturePay())
-					.f6(Currency.formatAmount(cs.getAmount()))
-					.build();
-			reports.add(cpt);
-			amount += cs.getAmount();
-			
-			if(count==29) {
-				cpt = CheckRpt.builder()
-						.f1("")
-						.f2("")
-						.f3("")
-						.f4("")
-						.f5("Total")
-						.f6(Currency.formatAmount(amount))
-						.build();
-				reports.add(cpt);
-			}else {
-				
-			}
-			
-			}
-			
-			count++;
-		}*/
+		
 		int count = 0;
 		double amount = 0d;
 		if(cashDisList.size()<32) {
@@ -183,17 +146,6 @@ public class CashDVReportBean implements Serializable{
 				count++;
 				amount += cs.getAmount();
 			}
-			/*
-			CheckRpt cpt = CheckRpt.builder()
-					.visible("show")
-					.f1("     ***")
-					.f2("\t***")
-					.f3("\t***")
-					.f4("\tNOTHING FOLLOWS")
-					.f5("\t***")
-					.f6("***\t\t\t")
-					.build();
-			reports.add(cpt);*/
 			
 			count = 31 - count;
 			for(int i=1; i<=count; i++) {
@@ -1966,6 +1918,1906 @@ public class CashDVReportBean implements Serializable{
 					.build();
 			reports.add(cpt);
 		}
+		
+		
+		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
+  		HashMap param = new HashMap();
+  		
+		param.put("PARAM_TITLE", "REPORT OF CASH DISBURSEMENTS");
+		param.put("PARAM_SUB_TITLE", "Period Covered: "+ rpt.getPeriodCovered());
+		param.put("PARAM_LGU_NAME", Words.getTagName("lgu-name"));
+		param.put("PARAM_FUND_NAME", getMapBankAccounts().get(rpt.getFundId()).getBankAccntName());
+		param.put("PARAM_REPORT_NO", rpt.getReportNo());
+		//param.put("PARAM_SHEET_NO", "1");
+		param.put("PARAM_SHEET_TOTAL", "1");
+		param.put("PARAM_DISBURSING_OFFICER", rpt.getDisbursingOfficer());
+		param.put("PARAM_DISBURSING_POSITION", rpt.getDesignation());
+		param.put("PARAM_DATE", "");
+		
+		//logo
+		//String officialLogo = REPORT_PATH + "logo.png";
+		//try{File file = new File(officialLogo);
+		//FileInputStream off = new FileInputStream(file);
+		//param.put("PARAM_LOGO", off);
+		//}catch(Exception e){e.printStackTrace();}
+		
+		//logo
+		//String officialLogotrans = REPORT_PATH + "logotrans.png";
+		//try{File file = new File(officialLogotrans);
+		//FileInputStream off = new FileInputStream(file);
+		//param.put("PARAM_LOGO_TRANS", off);
+		//}catch(Exception e){e.printStackTrace();}
+  		
+  		try{
+	  		String jrprint = JasperFillManager.fillReportToFile(jrxmlFile, param, beanColl);
+	  	    JasperExportManager.exportReportToPdfFile(jrprint,REPORT_PATH+ REPORT_NAME +".pdf");
+	  	}catch(Exception e){e.printStackTrace();}
+  		
+  		try{
+	  		File file = new File(REPORT_PATH, REPORT_NAME + ".pdf");
+			 FacesContext faces = FacesContext.getCurrentInstance();
+			 ExternalContext context = faces.getExternalContext();
+			 HttpServletResponse response = (HttpServletResponse)context.getResponse();
+				
+		     BufferedInputStream input = null;
+		     BufferedOutputStream output = null;
+		     
+		     try{
+		    	 
+		    	 // Open file.
+		            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+		            // Init servlet response.
+		            response.reset();
+		            response.setHeader("Content-Type", "application/pdf");
+		            response.setHeader("Content-Length", String.valueOf(file.length()));
+		            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
+		            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+		            // Write file contents to response.
+		            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
+		            int length;
+		            while ((length = input.read(buffer)) > 0) {
+		                output.write(buffer, 0, length);
+		            }
+
+		            // Finalize task.
+		            output.flush();
+		    	 
+		     }finally{
+		    	// Gently close streams.
+		            close(output);
+		            close(input);
+		     }
+		     
+		     // Inform JSF that it doesn't need to handle response.
+		        // This is very important, otherwise you will get the following exception in the logs:
+		        // java.lang.IllegalStateException: Cannot forward after response has been committed.
+		        faces.responseComplete();
+		        
+			}catch(Exception ioe){
+				ioe.printStackTrace();
+			}
+		
+		
+	}*/
+	
+	public void print(CashDisbursementReport rpt) {
+		String REPORT_PATH = GlobalVar.REPORT_FOLDER;
+		String REPORT_NAME = GlobalVar.CASH_DISBURSEMENT_NAME;
+		
+		ReportCompiler compiler = new ReportCompiler();
+		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
+		
+		List<CheckRpt> reports = new ArrayList<CheckRpt>();
+		List<CashDisbursement> cashDisList = CashDisbursement.retrieveReportGroupDisbursement(rpt.getId());
+		/*
+		cashDisList = new ArrayList<CashDisbursement>();
+		for(int i=1; i<135; i++) {
+			CashDisbursement cv = CashDisbursement.builder()
+					.id(i)
+					.dateTrans("2023-10-25")
+					.dvPayroll("101-23-10-E990")
+					.cafoaNo("101-23-09-4486")
+					.payee("LGU LAKE SEBU")
+					.naturePay("wages")
+					.amount(i*1)
+					.build();
+			cashDisList.add(cv);
+		}*/
+		
+		int count = 0;
+		double amount = 0d;
+		if(cashDisList.size()<46) {
+			
+			for(CashDisbursement cs : cashDisList) {
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			count = 45 - count;
+			for(int i=1; i<=count; i++) {
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+		}
+		
+		if(cashDisList.size()>=46 && cashDisList.size()<89) {
+			
+			for(int i=0; i<=44; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=45; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+		}
+		
+		if(cashDisList.size()>=90 && cashDisList.size()<135) {
+			
+			for(int i=0; i<=44; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=45; i<90; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=92; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+		}
+		
+		if(cashDisList.size()>=136 && cashDisList.size()<180) {
+			
+			for(int i=0; i<=44; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=45; i<88; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=90; i<135; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=135; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+		}
+		
+		if(cashDisList.size()>=180 && cashDisList.size()<225) {
+			
+			for(int i=0; i<=44; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=45; i<88; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=90; i<135; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=136; i<225; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=136; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 44 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+		}
+		/////////////////////////////////152//////////////////////182/////////////////////
+		/*if(cashDisList.size()>=152 && cashDisList.size()<182) {
+			
+			for(int i=0; i<=30; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=31; i<61; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=61; i<91; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=91; i<121; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=121; i<151; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			count = 0;
+			
+			for(int i=151; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+		}
+		*/
+		////////////////////////////////182/////////////////212//////////////
+		/*if(cashDisList.size()>=182 && cashDisList.size()<212) {
+			
+			for(int i=0; i<=30; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=31; i<61; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=61; i<91; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=91; i<121; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=121; i<151; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			count = 0;
+			
+			for(int i=151; i<181; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=181; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+		}
+		*/
+		/////////212///////242
+		
+		/*if(cashDisList.size()>=212 && cashDisList.size()<242) {
+			
+			for(int i=0; i<=30; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				CheckRpt cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			
+			CheckRpt cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			
+			 cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=31; i<61; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=61; i<91; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=91; i<121; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=121; i<151; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			count = 0;
+			
+			for(int i=151; i<181; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=181; i<211; i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Sub-Total Carried Forward")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+			
+			count = 0;
+			
+			for(int i=211; i<cashDisList.size(); i++) {
+				CashDisbursement cs = cashDisList.get(i);
+				 cpt = CheckRpt.builder()
+						.visible("show")
+						.f1(cs.getDateTrans())
+						.f2(cs.getDvPayroll())
+						.f3(cs.getCafoaNo())
+						.f4(cs.getPayee())
+						.f5(cs.getNaturePay())
+						.f6(Currency.formatAmount(cs.getAmount()))
+						.build();
+				reports.add(cpt);
+				count++;
+				amount += cs.getAmount();
+			}
+			count = 30 - count;
+			for(int i=1; i<=count; i++) {
+				cpt = CheckRpt.builder()
+						.visible("show")
+						.f1("")
+						.f2("")
+						.f3("")
+						.f4("")
+						.f5("")
+						.f6("")
+						.build();
+				reports.add(cpt);
+			}
+			
+			//total
+			cpt = CheckRpt.builder()
+					.visible("hide")
+					.f1("")
+					.f2("")
+					.f3("")
+					.f4("")
+					.f7("Total")
+					.f8(Currency.formatAmount(amount))
+					.build();
+			reports.add(cpt);
+		}*/
 		
 		
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);

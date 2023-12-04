@@ -24,7 +24,6 @@ import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.xml.RCDFormDetails;
 import com.italia.municipality.lakesebu.xml.RCDFormSeries;
 import com.italia.municipality.lakesebu.xml.RCDReader;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;

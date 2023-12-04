@@ -47,7 +47,6 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 import net.sf.jasperreports.engine.JasperExportManager;

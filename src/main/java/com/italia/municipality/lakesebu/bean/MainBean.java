@@ -3,7 +3,6 @@ package com.italia.municipality.lakesebu.bean;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.controller.Chequedtls;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.TaxPayorTrans;
@@ -11,7 +10,6 @@ import com.italia.municipality.lakesebu.controller.UserAccessLevel;
 import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;

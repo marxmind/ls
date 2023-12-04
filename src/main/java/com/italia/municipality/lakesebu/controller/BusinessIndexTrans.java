@@ -6,19 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.BusinessQtrType;
 import com.italia.municipality.lakesebu.enm.BusinessType;
-import com.italia.municipality.lakesebu.enm.FormStatus;
-import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.licensing.controller.Barangay;
-import com.italia.municipality.lakesebu.licensing.controller.Customer;
 import com.italia.municipality.lakesebu.licensing.controller.Municipality;
 import com.italia.municipality.lakesebu.licensing.controller.Province;
 import com.italia.municipality.lakesebu.licensing.controller.Regional;
 import com.italia.municipality.lakesebu.utils.LogU;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

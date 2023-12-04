@@ -18,7 +18,7 @@
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.json-api-2.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/jakarta.validation-api-3.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/mariadb-java-client-2.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/mariadb-java-client-3.2.0.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/primefaces-12.0.0-jakarta.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/primeflex-3.3.0.jar"/>
 	<classpathentry kind="lib" path="C:/workspace-june-2022/lsportal/ls/src/main/webapp/WEB-INF/lib/weld-servlet-shaded-4.0.0.Final.jar"/>

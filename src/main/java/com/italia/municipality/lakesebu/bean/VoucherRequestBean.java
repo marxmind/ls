@@ -2,13 +2,10 @@ package com.italia.municipality.lakesebu.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.controller.VoucherRequest;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.DateUtils;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import lombok.Data;

@@ -3,12 +3,10 @@ package com.italia.municipality.lakesebu.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.italia.municipality.lakesebu.security.ApplicationFixes;
 import com.italia.municipality.lakesebu.security.ApplicationVersionController;
 import com.italia.municipality.lakesebu.security.Copyright;
 import com.italia.municipality.lakesebu.security.License;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;

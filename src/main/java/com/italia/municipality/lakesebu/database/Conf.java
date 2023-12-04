@@ -3,10 +3,8 @@ package com.italia.municipality.lakesebu.database;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
-
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.security.SecureChar;
-
 import lombok.Getter;
 import lombok.Setter;
 

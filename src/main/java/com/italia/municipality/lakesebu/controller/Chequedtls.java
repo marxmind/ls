@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
-import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Currency;
@@ -1007,6 +1006,60 @@ public class Chequedtls {
 		
 	}
 	
+	public static void compileReport(Chequedtls reportFields, String reportName){
+		try{
+		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
+				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
+		String REPORT_NAME = reportName;//ReadConfig.value(AppConf.CHEQUE_REPORT_NAME);
+		String JRXMLFILE= reportName;//ReadConfig.value(AppConf.CHEQUE_JRXML_FILE);
+		
+		System.out.println("CheckReport path: " + REPORT_PATH);
+		HashMap paramMap = new HashMap();
+		Chequedtls rpt = reportFields;
+		ReportCompiler compiler = new ReportCompiler();
+		System.out.println("REPORT_NAME: " +REPORT_NAME + " REPORT_PATH: " + REPORT_PATH);
+		String jasperreportLocation = compiler.compileReport(JRXMLFILE, REPORT_NAME, REPORT_PATH);
+		System.out.println("Check report path: " + jasperreportLocation);
+		HashMap params = new HashMap();
+		
+		params.put("PARAM_ACCOUNT_NUMBER", rpt.getAccntNumber());
+		params.put("PARAM_CHECK_NUMBER", rpt.getCheckNo());
+		params.put("PARAM_DATE_DISBURSEMENT", rpt.getDate_disbursement());
+		params.put("PARAM_BANK_NAME", rpt.getBankName().toUpperCase());
+		params.put("PARAM_ACCOUNT_NAME", rpt.getAccntName().toUpperCase());
+		params.put("PARAM_AMOUNT", Currency.formatAmount(rpt.getAmount()));
+		params.put("PARAM_PAYTOORDEROF", rpt.getPayToTheOrderOf().toUpperCase());
+		
+		params.put("PARAM_AMOUNT_INWORDS", rpt.getAmountInWOrds().toUpperCase());
+		
+		String sql = "select * from tbl_signatory";
+		Map<String, Signatory> sigs = Signatory.retrieveSig(sql, new String[0]);
+		
+		params.put("PARAM_SIGNATORY1", sigs.get(rpt.getSignatory1()+"").getSigName());
+		params.put("PARAM_SIGNATORY2", sigs.get(rpt.getSignatory2()+"").getSigName());
+		
+		
+		
+		JasperPrint print = compiler.report(jasperreportLocation, params);
+		File pdf = null;
+		
+		pdf = new File(REPORT_PATH+REPORT_NAME+".pdf");
+		pdf.createNewFile();
+		JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+		System.out.println("pdf successfully created...");
+		System.out.println("Creating a backup copy....");
+		pdf = new File(REPORT_PATH+REPORT_NAME+"_copy"+".pdf");
+		pdf.createNewFile();
+		JasperExportManager.exportReportToPdfStream(print, new FileOutputStream(pdf));
+		
+		System.out.println("Done creating a backup copy....");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+			
+	}
+	
+	@Deprecated
 	public static void compileReport(Chequedtls reportFields){
 		try{
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 

@@ -1,12 +1,8 @@
 package com.italia.municipality.lakesebu.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import com.italia.municipality.lakesebu.enm.ClientTransactionType;
 import com.italia.municipality.lakesebu.licensing.controller.Words;
-
-import jakarta.faces.model.SelectItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

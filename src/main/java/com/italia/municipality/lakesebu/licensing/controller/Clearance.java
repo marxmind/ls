@@ -6,18 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import com.italia.municipality.lakesebu.controller.Employee;
 import com.italia.municipality.lakesebu.controller.MultiLivelihood;
 import com.italia.municipality.lakesebu.controller.MultiPurpose;
-import com.italia.municipality.lakesebu.controller.Purpose;
 import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.DocTypes;
-import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

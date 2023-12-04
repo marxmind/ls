@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import com.italia.municipality.lakesebu.bean.CalendarBean;
 import com.italia.municipality.lakesebu.controller.CalendarDate;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import lombok.AllArgsConstructor;
