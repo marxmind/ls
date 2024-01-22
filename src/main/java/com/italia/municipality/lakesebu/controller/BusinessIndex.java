@@ -47,16 +47,47 @@ public class BusinessIndex {
 	private BusinessMapping map;
 	private int isEssential;
 	private int category;
+	private String natureOfBusiness;
 	
 	private Date dateTmp;
 	private String address;
 	private int type;
 	
+	public static List<String> retrieveNatureOfBusiness(String sql, String[] params){
+		List<String> results = new ArrayList<String>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			results.add(rs.getString("natureofbusiness"));
+		}
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException sl){}
+		
+		return results;
+	}
+	
 	public static List<BusinessIndex> retrieveName(String columnName, String name){
 		List<BusinessIndex> bns = new ArrayList<BusinessIndex>();
 		
 		
-		String sql = "SELECT bnid,bnname,bnowner,isessentail,category FROM businessindex WHERE isactivebn=1 AND bnstatus=0 AND  "+columnName+" like '%"+ name +"%'";
+		String sql = "SELECT bnid,bnname,bnowner,isessentail,category,natureofbusiness FROM businessindex WHERE isactivebn=1 AND bnstatus=0 AND  "+columnName+" like '%"+ name +"%'";
 		
 		
 		Connection conn = null;
@@ -78,6 +109,7 @@ public class BusinessIndex {
 					.owner(rs.getString("bnowner"))
 					.isEssential(rs.getInt("isessentail"))
 					.category(rs.getInt("category"))
+					.natureOfBusiness(rs.getString("natureofbusiness"))
 					.build();
 			
 			bns.add(index);
@@ -169,6 +201,7 @@ public class BusinessIndex {
 					.statusId(rs.getInt("bnstatus"))
 					.isActive(rs.getInt("isactivebn"))
 					.purok(rs.getString("purok"))
+					.natureOfBusiness(rs.getString("natureofbusiness"))
 					.barangay(bar)
 					.municipal(mun)
 					.provincial(prov)
@@ -245,8 +278,9 @@ public class BusinessIndex {
 				+ "purok,"
 				+ "bzid,"
 				+ "isessentail,"
-				+ "category)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "category,"
+				+ "natureofbusiness)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -282,6 +316,7 @@ public class BusinessIndex {
 		ps.setLong(cnt++, st.getMap().getId());
 		ps.setInt(cnt++, st.getIsEssential());
 		ps.setInt(cnt++, st.getCategory());
+		ps.setString(cnt++, st.getNatureOfBusiness());
 		
 		LogU.add(st.getDateTrans());
 		LogU.add(st.getBusinessName());
@@ -296,6 +331,7 @@ public class BusinessIndex {
 		LogU.add(st.getMap().getId());	
 		LogU.add(st.getIsEssential());
 		LogU.add(st.getCategory());
+		LogU.add(st.getNatureOfBusiness());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -323,7 +359,8 @@ public class BusinessIndex {
 				+ "purok=?,"
 				+ "bzid=?,"
 				+ "isessentail=?,"
-				+ "category=?" 
+				+ "category=?,"
+				+ "natureofbusiness=?" 
 				+ " WHERE bnid=?";
 		
 		PreparedStatement ps = null;
@@ -349,6 +386,7 @@ public class BusinessIndex {
 		ps.setLong(cnt++, st.getMap().getId());
 		ps.setInt(cnt++, st.getIsEssential());
 		ps.setInt(cnt++, st.getCategory());
+		ps.setString(cnt++, st.getNatureOfBusiness());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDateTrans());
@@ -363,6 +401,7 @@ public class BusinessIndex {
 		LogU.add(st.getMap().getId());
 		LogU.add(st.getIsEssential());
 		LogU.add(st.getCategory());
+		LogU.add(st.getNatureOfBusiness());
 		LogU.add(st.getId());
 		
 		

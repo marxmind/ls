@@ -16,7 +16,10 @@ public enum BusinessCategory {
 		SKYLAB_PERMIT(12, "Skylab Permit"),
 		SWIMMING_POOL(13, "Swimming Pool"),
 		TRADER(14, "Trader"),
-		SALON(15, "Salon");
+		SALON(15, "Salon"),
+		RESORT(16, "Resort"),
+		MINING(17, "Mining"),
+		MOTORCYCLE_SHOP(18, "Motorcycle Shop");
 		
 		private int id;
 		private String name;

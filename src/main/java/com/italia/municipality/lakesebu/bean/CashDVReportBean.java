@@ -4053,6 +4053,25 @@ public class CashDVReportBean implements Serializable{
 		
 	}
 	
+	public void loadAll() {
+		rpts = new ArrayList<CashDisbursementReport>();
+		String[] params = new String[0];
+		String sql = "";
+		if(getUserLogin().getAccessLevel().getLevel()>1) {
+			sql = " AND user.logid="+ getUserLogin().getLogid();
+		}
+		
+		sql += " ORDER BY cz.zid DESC";
+		for(CashDisbursementReport cd : CashDisbursementReport.retrieve(sql, params)) {
+			cd.setFundName(getMapBankAccounts().get(cd.getFundId()).getBankAccntName());
+			rpts.add(cd);
+		}
+		if(rpts!=null && rpts.size()==1) {
+			clickItemRpt(rpts.get(0));
+		}
+		
+	}
+	
 	public void searchItem() {
 		clear();
 		rpts = new ArrayList<CashDisbursementReport>();

@@ -1,31 +1,58 @@
 package com.italia.municipality.lakesebu.bean;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CellEditEvent;
+
+import com.italia.municipality.lakesebu.controller.BusinessBilling;
+import com.italia.municipality.lakesebu.controller.BusinessBillingRpt;
 import com.italia.municipality.lakesebu.controller.BusinessIndex;
 import com.italia.municipality.lakesebu.controller.BusinessIndexTrans;
+import com.italia.municipality.lakesebu.controller.Login;
+import com.italia.municipality.lakesebu.controller.NumberToWords;
+import com.italia.municipality.lakesebu.controller.OR51;
 import com.italia.municipality.lakesebu.controller.ORNameList;
 import com.italia.municipality.lakesebu.controller.PaymentName;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
+import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.BusinessCategory;
 import com.italia.municipality.lakesebu.enm.BusinessQtrType;
 import com.italia.municipality.lakesebu.enm.BusinessType;
+import com.italia.municipality.lakesebu.enm.CivilStatus;
+import com.italia.municipality.lakesebu.enm.FormType;
+import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
+import com.italia.municipality.lakesebu.licensing.controller.Customer;
+import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
+import com.italia.municipality.lakesebu.reports.ReportCompiler;
+import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.Numbers;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  * 
@@ -59,7 +86,7 @@ public class BusinessRegBean implements Serializable{
 	private String businessNameTmp;
 	private String ownerNameTmp;
 	
-	private String billSeries;
+	//private String billSeries;
 	private List<BusinessIndex> business;
 	private BusinessIndex selectedBusinessData;
 	
@@ -73,6 +100,219 @@ public class BusinessRegBean implements Serializable{
 	private List names;
 	private double amountNew;
 	
+	private List<String> regulatories;
+	private double basicTax;
+	private List<BusinessBilling> billings;
+	private String searchBilling;
+	private double grandTotal;
+	private double regulatoryFee;
+	
+	public void saveBilling() {
+		if(getSelectedBusinessData()!=null && getPayments().size()>0) {
+			String data = BusinessBilling.regulatoriesCollection(getPayments());
+			BusinessBilling bill = BusinessBilling.builder()
+					.billDate(DateUtils.getCurrentDateYYYYMMDD())
+					.billSeries(BusinessBilling.getLatestBillSeries())
+					.billType(getTypeId())
+					.basicTax(getBasicTax())
+					.isActive(1)
+					.regulatories(data)
+					.regulatoryFee(getRegulatoryFee())
+					.capital(getAmountCapitalGross())
+					.grossEssential(getEssentialId()==1? getAmountCapitalGross() : 0)
+					.grossNonEssential(getEssentialId()==0? getAmountCapitalGross() : 0)
+					.grandTotal(getGrandTotal())
+					.businessIndex(getSelectedBusinessData())
+					.build();
+			
+			bill.save();
+			Application.addMessage(1, "Success", "Successfully saved");
+			//setDtls("Your billing was successfully saved!!!!");
+			clearFields();
+			init();
+		}
+	}
+	
+	public void selectedBilling(BusinessBilling bill) {
+		try{
+			
+			String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
+					AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
+			
+			String REPORT_NAME = GlobalVar.BUSINESS_BILLING;
+			
+			BusinessIndex bz = bill.getBusinessIndex();
+					
+				try{//the purpose of this is to supply null values	
+					bz = BusinessIndex.retrieve(" AND bn.bnid="+ bill.getBusinessIndex().getId(), new String[0]).get(0);
+					bill.setBusinessIndex(bz);
+				}catch(IndexOutOfBoundsException io) {}
+			
+			ReportCompiler compiler = new ReportCompiler();
+			HashMap param = new HashMap();
+	  		param.put("PARAM_BILL_DATE", DateUtils.convertDateToMonthDayYear(bill.getBillDate()));
+	  		param.put("PARAM_CONTROL_NO", bill.getBillSeries());
+	  		param.put("PARAM_TAXPAYER", bill.getBusinessIndex().getOwner());
+	  		param.put("PARAM_TRADENAME", bill.getBusinessIndex().getBusinessName());
+	  		param.put("PARAM_REPRESENTATIVE", bill.getBusinessIndex().getOwner());
+	  		
+	  		String address = bill.getBusinessIndex().getAddress().replace("N/A,", "").trim();
+	  		address = address.replace(" ,", "");
+	  		param.put("PARAM_BUSINESS_ADDRESS", address);
+	  		try{param.put("PARAM_BARANGAY", bill.getBusinessIndex().getBarangay().getName().toUpperCase());}catch(Exception e) {}
+	  		param.put("PARAM_HOME_ADDRESS", address);
+	  		
+	  		if(bill.getBillType()==0) {//NEW
+	  			param.put("PARAM_GROSS_ESSENTIAL", "");
+		  		param.put("PARAM_GROSS_NON_ESSENTIAL", "");
+		  		param.put("PARAM_CAPITAL", Currency.formatAmount(bill.getCapital()));
+	  		}else {//RENEW
+	  			param.put("PARAM_GROSS_ESSENTIAL", Currency.formatAmount(bill.getGrossEssential()));
+		  		param.put("PARAM_GROSS_NON_ESSENTIAL", Currency.formatAmount(bill.getGrossNonEssential()));
+		  		param.put("PARAM_CAPITAL", "");
+	  		}
+	  		
+	  		param.put("PARAM_NATURE_OF_BUSINESS", bill.getBusinessIndex().getNatureOfBusiness());
+	  		param.put("PARAM_PIN", "");
+	  		param.put("PARAM_PERMIT_TYPE", BusinessType.val(bill.getBillType()).getName());
+	  		param.put("PARAM_CATEGORY", BusinessCategory.val(bill.getBusinessIndex().getCategory()).getName());
+	  		param.put("PARAM_MEMO", "");
+	  		param.put("PARAM_PRIV_PERMIT", "");
+	  		double perQtr = bill.getBasicTax() / 4;
+	  		param.put("PARAM_1QTR", Currency.formatAmount(perQtr));
+	  		param.put("PARAM_2QTR", Currency.formatAmount(perQtr));
+	  		param.put("PARAM_3QTR", Currency.formatAmount(perQtr));
+	  		param.put("PARAM_4QTR", Currency.formatAmount(perQtr));
+	  		
+	  		
+	  		param.put("PARAM_BASIC_TAX", Currency.formatAmount(bill.getBasicTax()));
+	  		param.put("PARAM_DEFICIENCY", "");
+	  		param.put("PARAM_DELINQUENCY", "");
+	  		
+	  		param.put("PARAM_AD_PAYMENT", "");
+	  		param.put("PARAM_TAX_CREDIT", "");
+	  		param.put("PARAM_PROMISORY", "");
+	  		
+	  		UserDtls user = getUser().getUserDtls();
+	  		
+	  		param.put("PARAM_GRAND_TOTAL", Currency.formatAmount(bill.getGrandTotal()));
+	  		param.put("PARAM_PREPARED_BY", user.getFirstname() + " " + user.getLastname());
+	  		param.put("PARAM_VERIFIED_BY", "Henry E. Magbanua");
+	  		
+	  		
+	  		
+	  		List<OR51> rpts = new ArrayList<OR51>();
+	  		for(String s : BusinessBilling.regulatoriesData(bill.getRegulatories())) {
+	  			String[] vals = s.split("-");
+	  			String amount = vals[1].replace("<*>", "");
+	  			amount = amount.replace("<*", "");
+	  			long id = Long.valueOf(vals[0]);
+	  			String name = getMapPaynames().get(id).getName();
+	  			
+	  			OR51 or = OR51.builder()
+	  					.code("")
+	  					.description(name)
+	  					.amount(amount)
+	  					.build();
+	  			
+	  			if(225==id) {//business interest 
+	  				param.put("PARAM_INTEREST", amount);
+	  			}else if( 91==id) {//business surcharge
+	  				param.put("PARAM_SURCHARGE", amount);
+	  			}else if( 1==id || 87==id || 219==id) {//retailer, wholesaler and business tax
+	  				//retailer
+	  			}else {
+	  				rpts.add(or);
+	  			}
+	  			
+	  		}
+	  		
+	  		param.put("PARAM_REGULATORY_FEE", Currency.formatAmount(bill.getRegulatoryFee()));
+	  		
+	  		
+	  		
+			String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
+	  		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(rpts);
+	  		
+	  		
+	  		String jrprint = JasperFillManager.fillReportToFile(jrxmlFile, param, beanColl);
+	  	    JasperExportManager.exportReportToPdfFile(jrprint,REPORT_PATH+ REPORT_NAME +".pdf");
+	  	    
+	  	    File file = new File(REPORT_PATH, REPORT_NAME + ".pdf");
+			 FacesContext faces = FacesContext.getCurrentInstance();
+			 ExternalContext context = faces.getExternalContext();
+			 HttpServletResponse response = (HttpServletResponse)context.getResponse();
+				
+		     BufferedInputStream input = null;
+		     BufferedOutputStream output = null;
+	  	    try {
+		  // Open file.
+	            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+	            // Init servlet response.
+	            response.reset();
+	            response.setHeader("Content-Type", "application/pdf");
+	            response.setHeader("Content-Length", String.valueOf(file.length()));
+	            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
+	            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+	            // Write file contents to response.
+	            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
+	            int length;
+	            while ((length = input.read(buffer)) > 0) {
+	                output.write(buffer, 0, length);
+	                //System.out.println("printReportAll read : " + length);
+	            }
+
+	            // Finalize task.
+	            output.flush();
+		    }finally {
+		    	 close(output);
+		         close(input);
+		    }	
+	            
+			
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+	}
+	
+	private Login getUser() {
+		return Login.getUserLogin();
+	}
+	
+	private void close(Closeable resource) {
+	    if (resource != null) {
+	        try {
+	            resource.close();
+	        } catch (IOException e) {
+	            // Do your thing with the exception. Print it, log it or mail it. It may be useful to 
+	            // know that this will generally only be thrown when the client aborted the download.
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+	public void loadBilling() {
+		billings = new ArrayList<BusinessBilling>();
+		String sql = "";
+		if(getSearchBilling()!=null && !getSearchBilling().isEmpty() && getSearchBilling().length()>0) {
+			sql = " AND (bl.billseries like '%"+ getSearchBilling().trim() +"%' OR bn.bnname like '%"+ getSearchBilling().trim()+"%' OR bn.bnowner like '%"+ getSearchBilling().trim() +"%')";
+			sql += " ORDER BY bl.billid DESC";
+		}else {
+			sql = " ORDER BY bl.billid DESC LIMIT 10";
+		}
+		
+		
+		billings = BusinessBilling.retrieve(sql, null);
+		//Collections.reverse(billings);
+	}
+	
+	public void clearFields() {
+		setBusinessName(null);
+		setOwnerName(null);
+	}
+	
 	public List getNames() {
 		mapPaynames = new HashMap<Long, PaymentName>();
 		names = new ArrayList<>();
@@ -83,14 +323,19 @@ public class BusinessRegBean implements Serializable{
 		return names;
 	}
 	
+	private String getSeries() {
+		return BusinessBilling.getLatestBillSeries();
+	}
+	
 	@PostConstruct
 	public void init() {
 		payments = new ArrayList<PaymentName>();
 		payments.add(PaymentName.builder().id(0).name("Add here").build());//add default
 		
+		billings = new ArrayList<BusinessBilling>();
 		
+		//setBillSeries("BILL-" + DateUtils.getCurrentYear()+"-00001");
 		
-		setBillSeries("BILL-" + DateUtils.getCurrentYear()+"-00001");
 		
 		String val = ReadConfig.value(AppConf.SERVER_LOCAL);
         HttpSession session = SessionBean.getSession();
@@ -125,6 +370,7 @@ public class BusinessRegBean implements Serializable{
 	}
 	
 	public void selectedBusiness(BusinessIndex in) {
+		
 		String text = "";
 		in.setType(BusinessType.RENEW.getId());
 		setTypeId(in.getType());
@@ -430,7 +676,7 @@ public class BusinessRegBean implements Serializable{
 		String text = "";
 		if(getTmpCalculated()!=null) {text += getTmpCalculated(); text +="<br/>";}
 		text += "<h2>TAXDUE WORKSHEET</h2>";
-		text += "<p>Bill No: <b>"+ getBillSeries() +"</b></p>";
+		text += "<p>Bill No: <b>"+ getSeries() +"</b></p>";
 		text += "<p>Bill Date: <b>"+ DateUtils.getCurrentDateMMMMDDYYYY() +"</b></p>";
 		text += "<p>Business Name: <b>"+ getBusinessName().toUpperCase() +"</b></p>";
 		text += "<p>Owner Name: <b>"+getOwnerName().toUpperCase()+"</b></p>";
@@ -459,7 +705,7 @@ public class BusinessRegBean implements Serializable{
 		String text = "";
 		if(getTmpCalculated()!=null) {text += getTmpCalculated(); text +="<br/>";}
 		text += "<h2>TAXDUE WORKSHEET</h2>";
-		text += "<p>Bill No: <b>"+ getBillSeries() +"</b></p>";
+		text += "<p>Bill No: <b>"+ getSeries() +"</b></p>";
 		text += "<p>Bill Date: <b>"+ DateUtils.getCurrentDateMMMMDDYYYY() +"</b></p>";
 		text += "<p>Business Name: <b>"+ getBusinessName().toUpperCase() +"</b></p>";
 		text += "<p>Owner Name: <b>"+getOwnerName().toUpperCase()+"</b></p>";
@@ -490,6 +736,7 @@ public class BusinessRegBean implements Serializable{
 		String text = "";
 		int[] ids = new int[0];
 		double[] amounts = {5.00};
+		int index = 0;
 		if(getBusinessTypeId()==BusinessCategory.RETAILER.getId() 
 				|| getBusinessTypeId()==BusinessCategory.FINANCIAL_INSTITUTION.getId()
 				|| getBusinessTypeId()==BusinessCategory.AMUSEMENT.getId()
@@ -501,114 +748,117 @@ public class BusinessRegBean implements Serializable{
 				|| getBusinessTypeId()==BusinessCategory.OTHER_RETAILER.getId()
 				|| getBusinessTypeId()==BusinessCategory.OTHER.getId()
 				|| getBusinessTypeId()==BusinessCategory.TRADER.getId()
-				|| getBusinessTypeId()==BusinessCategory.SALON.getId()) {
-			ids = new int[14];
-			amounts = new double[14];
+				|| getBusinessTypeId()==BusinessCategory.SALON.getId()
+				|| getBusinessTypeId()==BusinessCategory.RESORT.getId()
+				|| getBusinessTypeId()==BusinessCategory.MINING.getId()
+				|| getBusinessTypeId()==BusinessCategory.MOTORCYCLE_SHOP.getId()) {
+			ids = new int[15];
+			amounts = new double[15];
 			//sanitary fee
-			ids[0] = 33;
-			amounts[0] = 40.00;
+			ids[index] = 33;
+			amounts[index++] = 40.00;
 			//mayor's permit
-			ids[1] = 4;
-			amounts[1] = 0.00;
+			ids[index] = 4;
+			amounts[index++] = 0.00;
 			//police clearance
-			ids[2] = 19;
-			amounts[2] = 40.00;
+			ids[index] = 19;
+			amounts[index++] = 40.00;
 			//other misc income
-			ids[3] = 37;
-			amounts[3] = 40.00;
+			ids[index] = 37;
+			amounts[index++] = 40.00;
 			//business plate fee
-			//ids[4] = 38;
-			//amounts[4] = 350.00;
+			ids[index] = 38;
+			amounts[index++] = 350.00;
 			//zonal
-			ids[4] = 9;
-			amounts[4] = 100.00;
+			ids[index] = 9;
+			amounts[index++] = 100.00;
 			//occupation tax fee
-			ids[5] = 48;
-			amounts[5] = 100.00;
+			ids[index] = 48;
+			amounts[index++] = 100.00;
 			//inspection fees
-			ids[6] = 18;
-			amounts[6] = 40.00;
+			ids[index] = 18;
+			amounts[index++] = 40.00;
 			//secretary fee
-			ids[7] = 20;
-			amounts[7] = 50.00;
+			ids[index] = 20;
+			amounts[index++] = 50.00;
 			//retailer business
-			ids[8] = 1;
-			amounts[8] = 00.00;
+			ids[index] = 1;
+			amounts[index++] = 00.00;
 			//wholesaler business
-			ids[9] = 87;
-			amounts[9] = 00.00;
+			ids[index] = 87;
+			amounts[index++] = 00.00;
 			//business tax
-			//ids[11] = 219;
-			//amounts[11] = 00.00;
+			//ids[index] = 219;
+			//amounts[index++] = 00.00;
 			//garbage
-			ids[10] = 28;
-			amounts[10] = 275.00;
+			ids[index] = 28;
+			amounts[index++] = 275.00;
 			//MENRO
-			ids[11] = 24;
-			amounts[11] = 50.00;
+			ids[index] = 24;
+			amounts[index++] = 50.00;
 			//Interest
-			ids[12] = 225;
-			amounts[12] = 0.00;
-			ids[13] = 91;
-			amounts[13] = 0.00;
+			ids[index] = 225;
+			amounts[index++] = 0.00;
+			ids[index] = 91;
+			amounts[index++] = 0.00;
 		
 		}else if(BusinessCategory.FISHERY_RENTAL.getId()==getBusinessTypeId()) {
 			ids = new int[9];
 			amounts = new double[9];
 			//sanitary fee
-			ids[0] = 33;
-			amounts[0] = 40.00;
+			ids[index] = 33;
+			amounts[index++] = 40.00;
 			//inspection fees
-			ids[1] = 18;
-			amounts[1] = 40.00;
+			ids[index] = 18;
+			amounts[index++] = 40.00;
 			//water rental
-			ids[2] = 3;
-			amounts[2] = 0.00;
+			ids[index] = 3;
+			amounts[index++] = 0.00;
 			//police clearance
-			ids[3] = 19;
-			amounts[3] = 40.00;
+			ids[index] = 19;
+			amounts[index++] = 40.00;
 			//mayor's permit
-			ids[4] = 4;
-			amounts[4] = 0.00;
+			ids[index] = 4;
+			amounts[index++] = 0.00;
 			//secretary fee
-			ids[5] = 20;
-			amounts[5] = 50.00;
+			ids[index] = 20;
+			amounts[index++] = 50.00;
 			//dst
-			ids[6] = 53;
-			amounts[6] = 30.00;
+			ids[index] = 53;
+			amounts[index++] = 30.00;
 			//zonal
-			ids[7] = 9;
-			amounts[7] = 100.00;
+			ids[index] = 9;
+			amounts[index++] = 100.00;
 			//banca registration
-			ids[8] = 14;
-			amounts[8] = 75.00;
+			ids[index] = 14;
+			amounts[index++] = 75.00;
 		}else if(BusinessCategory.SKYLAB_PERMIT.getId()==getBusinessTypeId()) {
 			ids = new int[8];
 			amounts = new double[8];
 			//Skylab Registration Permit Fee
-			ids[0] = 10;
-			amounts[0] = 50.00;
+			ids[index] = 10;
+			amounts[index++] = 50.00;
 			//Skylab Filling Permit Fees
-			ids[1] = 11;
-			amounts[1] = 180.00;
+			ids[index] = 11;
+			amounts[index++] = 180.00;
 			//Skylab Sticker
-			ids[2] = 12;
-			amounts[2] = 50.00;
+			ids[index] = 12;
+			amounts[index++] = 50.00;
 			//Fines and Penalty (Permit and License)
-			ids[3] = 13;
-			amounts[3] = 0.00;
+			ids[index] = 13;
+			amounts[index++] = 0.00;
 			//Secretary Fee
-			ids[4] = 20;
-			amounts[4] = 50.00;
+			ids[index] = 20;
+			amounts[index++] = 50.00;
 			//DST
-			ids[5] = 53;
-			amounts[5] = 30.00;
+			ids[index] = 53;
+			amounts[index++] = 30.00;
 			//Skylab ID
-			ids[6] = 81;
-			amounts[6] = 50.00;
+			ids[index] = 81;
+			amounts[index++] = 50.00;
 			//LRF /  MFHOR
-			ids[7] = 92;
-			amounts[7] = 0.00;
+			ids[index] = 92;
+			amounts[index++] = 0.00;
 		}
 		
 		
@@ -627,6 +877,7 @@ public class BusinessRegBean implements Serializable{
 		double amount = 0d;
 		String sql = "";
 		String[] params = new String[0];
+		double amountDeductionForRegulatory=0d;
 		try {
 			text += "Regulatory Fees";
 			text += "<ul>";
@@ -647,11 +898,16 @@ public class BusinessRegBean implements Serializable{
 							|| getBusinessTypeId()==BusinessCategory.OTHER_RETAILER.getId()
 							|| getBusinessTypeId()==BusinessCategory.OTHER.getId()
 							|| getBusinessTypeId()==BusinessCategory.TRADER.getId()
-							|| getBusinessTypeId()==BusinessCategory.SALON.getId()) {
+							|| getBusinessTypeId()==BusinessCategory.SALON.getId()
+							
+							|| getBusinessTypeId()==BusinessCategory.RESORT.getId()
+							|| getBusinessTypeId()==BusinessCategory.MINING.getId()
+							|| getBusinessTypeId()==BusinessCategory.MOTORCYCLE_SHOP.getId()) {
 						text += "<li><b>"+py.getName()+ "\t" + Currency.formatAmount(firstQuarter) + " (first quarter) </b></li>";
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 						payments.add(py);
+						amountDeductionForRegulatory += firstQuarter;
 					}
 				}else if(py.getId()==87 && BusinessType.RENEW.getId()==getTypeId()) {//wholesaler
 					if(getBusinessTypeId()==BusinessCategory.WHOLESALER.getId()) {
@@ -659,6 +915,7 @@ public class BusinessRegBean implements Serializable{
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 						payments.add(py);
+						amountDeductionForRegulatory += firstQuarter;
 					}
 				}else if(py.getId()==219 && BusinessType.RENEW.getId()==getTypeId()) {//Business Tax
 					if(getBusinessTypeId()!=BusinessCategory.RETAILER.getId() || getBusinessTypeId()!=BusinessCategory.WHOLESALER.getId()) {
@@ -666,6 +923,7 @@ public class BusinessRegBean implements Serializable{
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
 						payments.add(py);
+						amountDeductionForRegulatory += firstQuarter;
 					}
 				}else if(py.getId()==4) {//mayor permit
 					double mayor = mayorPermitTrarif(getAmountCapitalGross());
@@ -678,6 +936,11 @@ public class BusinessRegBean implements Serializable{
 					amount += amounts[i];
 					py.setAmount(Numbers.formatDouble(amounts[i]));
 					payments.add(py);
+					
+					if(91==py.getId() || 225==py.getId()) {//business surcharge and business interest
+						amountDeductionForRegulatory += amounts[i];
+					}
+					
 				}
 				
 			}
@@ -689,6 +952,7 @@ public class BusinessRegBean implements Serializable{
 		text += "<br/><br/>";
 		
 		text += "<h2>Basic Tax : "+ Currency.formatAmount(tarifAnnual) +"</h2>";
+		setBasicTax(tarifAnnual);
 		//double quarter = tarif/4;
 		text += "<p><b>1ST QUARTER : "+Currency.formatAmount(perQuarter)+"</b></p>";
 		text += "<p><b>2ND QUARTER : "+Currency.formatAmount(perQuarter)+"</b></p>";
@@ -708,6 +972,12 @@ public class BusinessRegBean implements Serializable{
 		//add for new payment
 		payments.add(PaymentName.builder().id(0).name("Add here").build());
 		
+		//business interest
+		//business surcharge
+		//retailer or wholesaler (busines tax)
+		
+		setRegulatoryFee(amount-amountDeductionForRegulatory);
+		setGrandTotal(threeQuarter+amount);
 		return text;
 	}
 	
@@ -751,7 +1021,11 @@ public class BusinessRegBean implements Serializable{
 							|| getBusinessTypeId()==BusinessCategory.OTHER_RETAILER.getId()
 							|| getBusinessTypeId()==BusinessCategory.OTHER.getId()
 							|| getBusinessTypeId()==BusinessCategory.TRADER.getId()
-							|| getBusinessTypeId()==BusinessCategory.SALON.getId()) {
+							|| getBusinessTypeId()==BusinessCategory.SALON.getId()
+							
+							|| getBusinessTypeId()==BusinessCategory.RESORT.getId()
+							|| getBusinessTypeId()==BusinessCategory.MINING.getId()
+							|| getBusinessTypeId()==BusinessCategory.MOTORCYCLE_SHOP.getId()) {
 						text += "<li><b>"+py.getName()+ "\t" + Currency.formatAmount(firstQuarter) + " (first quarter) </b></li>";
 						amount += firstQuarter;
 						py.setAmount(Numbers.formatDouble(firstQuarter));
@@ -829,7 +1103,8 @@ private String reCalculatePayment() {
 		}
 		
 		double amount = 0d;
-		
+		double amountDeductionForRegulatory = 0d;
+		double basicTax = 0d;
 		try {
 			text += "Regulatory Fees";
 			text += "<ul>";
@@ -838,6 +1113,21 @@ private String reCalculatePayment() {
 				if(py.getId()>0) {
 					text += "<li>"+py.getName()+ "\t" + Currency.formatAmount(py.getAmount()) + "</li>";
 					amount += py.getAmount();
+					
+					if(91==py.getId() || 225==py.getId()) {//business surcharge and business interest
+						amountDeductionForRegulatory += py.getAmount();
+					}
+					
+					if(1==py.getId() || 87==py.getId() || 219==py.getId()) {//retailer, wholesaler and business tax
+						amountDeductionForRegulatory += py.getAmount();
+						basicTax = py.getAmount();
+					}
+					
+					//else if(91==py.getId() || 225==py.getId()) {//business surcharge and business interest
+						
+					//}
+					
+					
 				}
 				pays.add(py);
 			}	
@@ -845,6 +1135,17 @@ private String reCalculatePayment() {
 			text += "</ul>";
 			
 		}catch(Exception e) {e.printStackTrace();}
+		
+		double tmpAnnual = basicTax * 4;
+		//if annual suggested basic tax override by user
+		//system will change base on the user input basic tax
+		if(tarifAnnual!=tmpAnnual) {
+			tarifAnnual = tmpAnnual;
+			perQuarter = tarifAnnual/4;
+			threeQuarter = perQuarter * 3;
+			firstQuarter = tarifAnnual - threeQuarter;// only first quarter is charge
+			setBasicTax(tarifAnnual);
+		}
 		
 		if(getTypeId()==1) {//RENEW
 			text += "<br/><br/>";
@@ -856,7 +1157,14 @@ private String reCalculatePayment() {
 		}
 		
 		text += "<br/><br/>";
-		text += "<h2>Total : Php"+ Currency.formatAmount(amount) +"</h2>";
+		text += "<h2>First Quarter Payable Total : Php"+ Currency.formatAmount(amount) +"</h2>";
+		text += "<h2>First and Second Quarter Payable Total : Php"+ Currency.formatAmount(amount+perQuarter) +"</h2>";
+		text += "<h2>First to Third Quarter Payable Total : Php"+ Currency.formatAmount(amount+perQuarter+perQuarter) +"</h2>";
+		text += "<h2>First to Fourth Quarter Payable Total : Php"+ Currency.formatAmount(amount+perQuarter+perQuarter+perQuarter) +"</h2>";
+		
+		
+		setRegulatoryFee(amount-amountDeductionForRegulatory);
+		setGrandTotal(amount+perQuarter+perQuarter+perQuarter);
 		
 		return text;
 	}
@@ -928,26 +1236,39 @@ private String reCalculatePayment() {
 				|| getBusinessTypeId()==BusinessCategory.OTHER.getId()
 				|| getBusinessTypeId()==BusinessCategory.TRADER.getId()
 				|| getBusinessTypeId()==BusinessCategory.SALON.getId()
-				|| getBusinessTypeId()==BusinessCategory.WHOLESALER.getId()) {	
+				|| getBusinessTypeId()==BusinessCategory.WHOLESALER.getId()
+				|| getBusinessTypeId()==BusinessCategory.MOTORCYCLE_SHOP.getId()) {	
+			
 			if(getAmountCapitalGross()<=tarifAmount) {
 				if(getEssentialId()==0) {//non-essential
-					amount = getAmountCapitalGross() * 0.01;
+					//amount = getAmountCapitalGross() * 0.01;
+					amount = getAmountCapitalGross() * 0.02;
 				}else{ //essential
-					 amount = getAmountCapitalGross() * 0.01;
+					 //amount = getAmountCapitalGross() * 0.01;
+					amount = getAmountCapitalGross()/2;
 				}
-				
+			//more than 400,000.00	
 			}else if(getAmountCapitalGross()>tarifAmount) {
-				if(getEssentialId()==0) {//non-essential
+				//calculation for non-essential
+				//ex gross 8,000,000.00
+				//8,000,000.00
+				//-400,000.00
+				//============
+				//7,600,000.00 x 0.01=76,000.00
+				if(getEssentialId()==0) {
 					amount = getAmountCapitalGross() - tarifAmount;
 					amount = amount * 0.01;
 					amount += defaultAmountAdd;
-				}else{ //essential
+				//calculation for essential	
+				}else{ 
 					amount = getAmountCapitalGross() /2;
-					amount = amount - tarifAmount;
-					amount = amount * 0.01;
-					amount += defaultAmountAdd;
+					//amount = amount - tarifAmount;
+					//amount = amount * 0.01;
+					//amount += defaultAmountAdd;
 				}
 			}
+		}else if(getBusinessTypeId()==BusinessCategory.RESORT.getId()) {
+			amount = getAmountCapitalGross() * 0.02;
 		}
 		
 		return amount;

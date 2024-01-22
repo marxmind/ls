@@ -2035,8 +2035,12 @@ public class ORListingBean implements Serializable{
 		
 		
 		if(getOrNumber()==null || getOrNumber().isEmpty()) {
-			isOk = false;
-			Application.addMessage(3, "Error", "Please provide official receipt");
+			if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+				//do nothing...
+			}else {
+				isOk = false;
+				Application.addMessage(3, "Error", "Please provide official receipt");
+			}
 		}
 		if(getPayorName()==null || getPayorName().isEmpty()) {
 			isOk = false;
@@ -2050,6 +2054,8 @@ public class ORListingBean implements Serializable{
 		
 		if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 			isCashTicket = true;
+			isOk = true;
+			setPayorName("N/A");
 		}
 		
 		if(isOk && customer==null && !isCashTicket) {

@@ -318,6 +318,7 @@
 	                    	<p:ajax event="keyup" listener="#{chkIssued.searchItem}" update="dataId itemData fieldId" delay="800" />
 	                    </p:inputText>
 	                    </span>
+	                    <p:commandButton value="Load All" icon="pi pi-search" actionListener="#{chkIssued.loadAll}" update="dataId" />
                     </div>
 	    		</div>
 	    		
@@ -344,7 +345,7 @@
 									</p:commandLink>
             						</p:column>
 		            				
-		            				<p:column headerText="Covered" width="50" sortable="false">
+		            				<p:column headerText="Covered" width="120" sortable="false">
 		            						<p:outputLabel  value="#{rpt.periodCovered}"/>
 		            				</p:column>
 		            				

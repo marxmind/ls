@@ -221,7 +221,11 @@ public class BusinessIndexBean implements Serializable {
 		}
 		
 		business = BusinessIndex.retrieve(sql, new String[0]);
-		Collections.reverse(business);
+		if(business!=null && business.size()==1) {
+			clickItem(business.get(0));
+		}else {
+			Collections.reverse(business);
+		}
 	}
 	
 	public void loadBusiness() {
@@ -341,6 +345,13 @@ public class BusinessIndexBean implements Serializable {
 	public List<String> autoOwnerName(String query){
 		return BusinessCustomer.names(query);
 	}
+	
+	public List<String> autoNatureOfBusiness(String query){
+		System.out.println("business query: " + query);
+		String sql = "SELECT DISTINCT natureofbusiness FROM businessindex WHERE  natureofbusiness like '%" + query + "%' LIMIT 20";
+		return BusinessIndex.retrieveNatureOfBusiness(sql, new String[0]);
+	}
+	
 	public List<String> autoBusinessName(String query){
 		System.out.println("business query: " + query);
 		String sql = "SELECT DISTINCT livename FROM livelihood WHERE  livename like '%" + query + "%' LIMIT 20";

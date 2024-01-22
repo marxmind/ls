@@ -259,6 +259,7 @@
                     <p:inputText value="#{cashDv.searchParam}" placeholder="Search..." style="width: 30em">
                     	<p:ajax event="keyup" listener="#{cashDv.searchItem}" update="dataId itemData fieldId" delay="800" />
                     </p:inputText>
+                    <p:commandButton value="Load All" icon="pi pi-search" actionListener="#{cashDv.loadAll}" update="dataId" />
                     </span>
                     
                     </div>
@@ -290,7 +291,7 @@
 									</p:commandLink>
             						</p:column>
 		            				
-		            				<p:column headerText="Covered" width="50" sortable="false">
+		            				<p:column headerText="Covered" width="120" sortable="false">
 		            						<p:outputLabel  value="#{rpt.periodCovered}"/>
 		            				</p:column>
 		            				

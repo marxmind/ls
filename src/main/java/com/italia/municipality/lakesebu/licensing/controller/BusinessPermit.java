@@ -60,6 +60,87 @@ public class BusinessPermit {
 	
 	//select datetrans,controlno,year from businesspermit where bid = (select bid from businesspermit where (datetrans>='2023-01-01' and datetrans<='2023-01-31') order by controlno asc limit 1) or bid = (select bid from businesspermit where (datetrans>='2023-01-01' and datetrans<='2023-01-31') order by controlno desc  limit 1) and (datetrans>='2023-01-01' and datetrans<='2023-01-31')
 	
+	public static Map<String, BusinessPermit> mapBusiness(long customerId, int year){
+		Map<String, BusinessPermit> bzs = new LinkedHashMap<String, BusinessPermit>();
+		
+		String sql = " SELECT businessname,issuedon,memotype,validuntil,businessplateno,controlno,year FROM businesspermit WHERE isactivebusiness=1 AND year=" + year + " AND customerid=" + customerId;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		System.out.println("mapBusiness : "+ps.toString());
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			BusinessPermit p = BusinessPermit.builder()
+					.businessName(rs.getString("businessname"))
+					.issuedOn(rs.getString("issuedon"))
+					.memoType(rs.getString("memotype"))
+					.validUntil(rs.getString("validuntil"))
+					.plateNo(rs.getString("businessplateno"))
+					.controlNo(rs.getString("controlno"))
+					.year(rs.getString("year"))
+					.build();
+			
+			bzs.put(p.getBusinessName(), p);
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return bzs;
+	}
+	
+	//this method is to get all used official receipt number
+	//the purpose of this method is to filter the official receipt so that it could not display on the current selection of business OR of the customer
+	public static Map<String, String> getCustomerUsedORS(long customerId, int year){
+		Map<String, String> ors = new LinkedHashMap<String, String>();
+		
+		String sql = " SELECT ors,businessname FROM businesspermit WHERE isactivebusiness=1 AND year=" + year + " AND customerid=" + customerId;
+		String orNumbers = null;
+		String businessName = "";
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		System.out.println("ors : "+ps.toString());
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			orNumbers = rs.getString("ors");
+			businessName = rs.getString("businessname");
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		
+		if(orNumbers!=null) {
+			if(orNumbers.contains("/")){
+				String[] orss = orNumbers.split("/");
+				for(String s : orss) {
+					ors.put(s, businessName);
+				}
+			}else {
+				ors.put(orNumbers, businessName);
+			}
+		}else {
+			ors = null;
+		}
+		
+		
+		return ors;
+	}
+	
 	public static Map<String, Integer> dailyTransaction(int year, int month, String typeOf){
 		Map<String, Integer> days = new LinkedHashMap<String, Integer>();
 		
@@ -178,7 +259,7 @@ public class BusinessPermit {
 				  b = findIfPermitExist(val);
 				  
 				  if(b==null) {
-					 b = BusinessPermit.builder().controlNo(val).dateTrans("Not Found").style("color: red").businessName("****").customer(BusinessCustomer.builder().fullname("****").build()).build();
+					 b = BusinessPermit.builder().controlNo(val).issuedOn("Not Found").style("color: red").businessName("****").build();
 				  }else {
 					  b.setStyle("color: red");
 				  }
@@ -241,9 +322,10 @@ public class BusinessPermit {
 		int size = len.length();
 		
 		switch(size) {
-		case 1: val= "00" + num; break;
-		case 2: val= "0" + num; break;
-		case 3: val= "" + num; break;
+		case 1: val= "000" + num; break;
+		case 2: val= "00" + num; break;
+		case 3: val= "0" + num; break;
+		case 4: val= "" + num; break;
 		}
 		
 		return val;
@@ -252,7 +334,7 @@ public class BusinessPermit {
 	public static Map<String,BusinessPermit> currentControlNumber(String fromDate, String toDate){
 		Map<String,BusinessPermit> nums = new LinkedHashMap<String,BusinessPermit>();
 		
-		String sql = "SELECT bid,datetrans,businessplateno,validuntil,issuedon,controlno,year FROM businesspermit WHERE isactivebusiness=1 AND (datetrans>='"+ fromDate +"' AND datetrans<='"+ toDate +"') ORDER BY controlno	";
+		String sql = "SELECT bid,datetrans,businessplateno,validuntil,issuedon,controlno,year,businessname FROM businesspermit WHERE isactivebusiness=1 AND (datetrans>='"+ fromDate +"' AND datetrans<='"+ toDate +"') ORDER BY controlno	";
 		
 		Connection conn = null;
 		ResultSet rs = null;
@@ -272,6 +354,7 @@ public class BusinessPermit {
 					.issuedOn(rs.getString("issuedon"))
 					.controlNo(rs.getString("controlno"))
 					.year(rs.getString("year"))
+					.businessName(rs.getString("businessname"))
 					.build();
 			nums.put(rs.getString("controlno"), p);
 		}
@@ -485,7 +568,7 @@ public class BusinessPermit {
 		String controlNo = "0";
 		String year = null;
 		String yearToday = DateUtils.getCurrentYear()+"";
-		String result = yearToday + "-" + "001";
+		String result = yearToday + "-" + "0001";
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -509,12 +592,14 @@ public class BusinessPermit {
 		int no = Integer.valueOf(controlNo)+1;
 		String newNo = no+"";
 		int size = newNo.length();
-		if(size==3) {
+		if(size==4) {
 			result = year +"-"+ no;
+		}else if(size==3) {
+			result = year +"-0"+ no;
 		}else if(size==2) {
-			result = year +"-0"+no;
-		}else if(size==1) {
 			result = year +"-00"+no;
+		}else if(size==1) {
+			result = year +"-000"+no;
 		}
 		
 		rs.close();

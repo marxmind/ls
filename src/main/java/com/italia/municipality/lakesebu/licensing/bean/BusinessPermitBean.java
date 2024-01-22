@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -294,6 +295,7 @@ public class BusinessPermitBean implements Serializable{
 			types.add(new SelectItem(t, t));
 			businessStatus.add(new SelectItem(t, t));
 		}
+		setTypeId("RENEW");
 	}
 	
 	public void loadMemos() {
@@ -301,6 +303,31 @@ public class BusinessPermitBean implements Serializable{
 		String[] types = Words.getTagName("memotype").split(",");
 		for(String t : types) {
 				memos.add(new SelectItem(t, t));
+		}
+	}
+	
+	public void handleMemoChange() {
+		String year = "" + DateUtils.getCurrentYear();
+		if("ANNUALLY".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("December 31, " + year);
+		}else if("1st SEMI-ANNUAL".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("June 31, " + year);
+		}else if("2nd SEMI-ANNUAL".equalsIgnoreCase(getMemoTypeId())) {
+				setValidUntil("December 31, " + year);
+		}else if("1st QUARTER".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("March 31, " + year);
+		}else if("2nd QUARTER".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("June 30, " + year);
+		}else if("3rd QUARTER".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("October 31, " + year);
+		}else if("4th QUARTER".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("December 31, " + year);
+		}else if("1st to 3rd Qtr".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("October 31, " + year);
+		}else if("2nd to 3rd Qtr".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("October 31, " + year);
+		}else if("2nd to 4th Qtr".equalsIgnoreCase(getMemoTypeId())) {
+			setValidUntil("December 31, " + year);
 		}
 	}
 	
@@ -348,7 +375,7 @@ public class BusinessPermitBean implements Serializable{
 	public void clickItemOwner(BusinessCustomer cuz){
 		
 		clearFields();
-		
+		int yearNow = DateUtils.getCurrentYear();
 		setTaxPayer(cuz);
 		setCustomerName(cuz.getFirstname() + " " + cuz.getMiddlename().substring(0, 1) + ". " + cuz.getLastname());
 		setPhotoId(cuz.getPhotoid());
@@ -360,9 +387,38 @@ public class BusinessPermitBean implements Serializable{
 		params[0] = cuz.getId()+"";
 		params[1] = year + "-01-01";
 		params[2] = year + "-12-31";
-		ors = BusinessORTransaction.retrieve(sql, params);
+		List<BusinessORTransaction> tmpOrs = BusinessORTransaction.retrieve(sql, params);
+		
+		//removing Official Receipt used
+		ors = new ArrayList<BusinessORTransaction>();
+		Map<String, String> ORused = BusinessPermit.getCustomerUsedORS(cuz.getId(),yearNow);
+		
+		if(ORused!=null && ORused.size()>0) {
+			for(BusinessORTransaction ss : tmpOrs) {
+				if(ORused.containsKey(ss.getOrNumber())){
+					//do not add to the list
+				}else {
+					ors.add(ss);				}
+			}
+		}else {// if no data found
+			ors = tmpOrs;
+		}
 		
 		loadBusiness();
+		Map<String, BusinessPermit> bzs = BusinessPermit.mapBusiness(cuz.getId(),yearNow);
+		
+		if(bzs!=null && bzs.size()>0) {
+			for(int index=0; index<business.size(); index++) {
+				String name = business.get(index).getBusinessName();
+				if(bzs.containsKey(name)) {
+					BusinessPermit bz = bzs.get(name);
+					business.get(index).setBusinessName(name + " ("+ bz.getIssuedOn() +"/"+ bz.getMemoType() +"/valid "+ bz.getValidUntil() +"/"+bz.getControlNo()+"/"+bz.getPlateNo()+" )");
+				}else {
+					business.get(index).setBusinessName(name + " - For Renewal");
+				}
+			}
+		}
+		
 	}
 	
 	public void clickItem(BusinessPermit permit) {
@@ -577,6 +633,7 @@ public class BusinessPermitBean implements Serializable{
 			taxpayers =  Customer.retrieve(sql, new String[0]);
 		}
 		*/
+		Map<Long, BusinessCustomer> filterTaxpayer = new LinkedHashMap<Long, BusinessCustomer>();
 		String sql = " AND live.isactivelive=1 AND cuz.cusisactive=1 ";
 		if(getSearchTaxpayer()!=null && !getSearchTaxpayer().isEmpty()){
 			int size = getSearchTaxpayer().length();
@@ -590,16 +647,50 @@ public class BusinessPermitBean implements Serializable{
 					setSearchTaxpayer("");
 				}else {
 					for(Livelihood lv : lvs) {
-						taxpayers.add(lv.getTaxPayer());
+						long id = lv.getTaxPayer().getId();
+						//taxpayers.add(lv.getTaxPayer());
+						if(filterTaxpayer!=null && filterTaxpayer.size()>1) {
+							if(filterTaxpayer.containsKey(id)) {
+								//do nothing
+							}else {
+								filterTaxpayer.put(id,lv.getTaxPayer());
+								//taxpayers.add(lv.getTaxPayer());
+							}
+						}else {
+							filterTaxpayer.put(id,lv.getTaxPayer());
+							//taxpayers.add(lv.getTaxPayer());
+						}
 					}
 				}
 			}
+			taxpayers = new ArrayList<BusinessCustomer>();
+			if(filterTaxpayer!=null && filterTaxpayer.size()==1) {
+				for(BusinessCustomer c : filterTaxpayer.values()) {
+					clickItemOwner(c);
+				}
+				PrimeFaces pf = PrimeFaces.current();
+				pf.executeScript("PF('multiDialogOwner').hide();");
+				setSearchTaxpayer("");
+				
+			}else {
+				
+				for(BusinessCustomer c : filterTaxpayer.values()) {
+					taxpayers.add(c);
+
+				}
+				
+			}
+				
+			
 		}else {
 			sql += " ORDER BY live.livelihoodid DESC LIMIT 10";
 			for(Livelihood lv : Livelihood.retrieve(sql, new String[0])){
 				taxpayers.add(lv.getTaxPayer());
 			}
 		}
+		
+		
+		
 		
 	}
 	
@@ -608,7 +699,7 @@ public class BusinessPermitBean implements Serializable{
 	}
 	
 	public void clearFields(){
-		setTypeId(null);
+		setTypeId("RENEW");
 		setMemoTypeId(null);
 		setIssuedDate(null);
 		setPhotoId("camera");
@@ -1532,6 +1623,10 @@ public void printPermit(BusinessPermit permit) {
 		seriesData = BusinessPermit.getAscendingOrderOfControlNumber(dateFrom, dateTo, isCheckBoxSeries());
 	}
 	
+	public void handleDateSelect() {
+		setIssuedOn(DateUtils.convertDateToMonthDayYear(DateUtils.convertDate(getIssuedDate(), "yyyy-MM-dd")));
+	}
+	
 	public void printAll() {
 				
 		String REPORT_NAME = BUSINESS_REPORT;
@@ -2025,14 +2120,14 @@ public void printPermit(BusinessPermit permit) {
 	}
 	
 	public void loadBusiness(){
-		business = Collections.synchronizedList(new ArrayList<Livelihood>());
+		business = new ArrayList<Livelihood>();
 		String[] params = new String[0];
 		String sql = " AND live.isactivelive=1";
 		
 		if(getTaxPayer()!=null) {
 			params = new String[1];
 			
-			sql += " AND live.livelihoodtype!=1 AND cuz.customerid=?";
+			sql += " AND live.livelihoodtype!=1 AND cuz.customerid=? AND live.livestatus=1";
 			params[0] = getTaxPayer().getId()+"";
 			
 			List<Livelihood> lvs = Livelihood.retrieve(sql, params); 

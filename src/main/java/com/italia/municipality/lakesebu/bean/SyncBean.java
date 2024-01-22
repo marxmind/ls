@@ -113,22 +113,22 @@ public class SyncBean implements Serializable {
 		    	
 		    	if(file.getName().equalsIgnoreCase(WEBTIS+".sql")) {
 		    		ispresentweb = true;
-		    		System.out.println(file.getName() + " is present...");
+		    		//System.out.println(file.getName() + " is present...");
 		    		sb.append(file.getName() + " is present.....\n");
 		    	}
 		    	if(file.getName().equalsIgnoreCase(TAXATION+".sql")) {
 		    		ispresenttax = true;
-		    		System.out.println(file.getName() + " is present...");
+		    		//System.out.println(file.getName() + " is present...");
 		    		sb.append(file.getName() + " is present.....\n");
 		    	}
 		    	if(file.getName().equalsIgnoreCase(CHEQUE+".sql")) {
 		    		ispresentcheck = true;
-		    		System.out.println(file.getName() + " is present...");
+		    		//System.out.println(file.getName() + " is present...");
 		    		sb.append(file.getName() + " is present.....\n");
 		    	}
 		    	if(file.getName().equalsIgnoreCase(CASHBOOK+".sql")) {
 		    		ispresentcash = true;
-		    		System.out.println(file.getName() + " is present...");
+		    		//System.out.println(file.getName() + " is present...");
 		    		sb.append(file.getName() + " is present.....\n");
 		    	}
 		    	

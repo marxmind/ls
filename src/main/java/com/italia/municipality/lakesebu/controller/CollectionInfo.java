@@ -11,6 +11,7 @@ import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
+import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -412,8 +413,9 @@ public class CollectionInfo {
 	
 	public static int getNewReportGroup(long colloctorId, int fundId) {
 		int rpt=0;
-		
-		String sql = "SELECT rptgroup FROM collectioninfo WHERE isactivecol=1 AND isid="+ colloctorId +" AND fundid="+ fundId +" ORDER BY colid DESC limit 1";
+		String yearLast="";
+		String yearNow = DateUtils.getCurrentYear()+"";
+		String sql = "SELECT rptgroup,receiveddate FROM collectioninfo WHERE isactivecol=1 AND isid="+ colloctorId +" AND fundid="+ fundId +" ORDER BY colid DESC limit 1";
 		
 		Connection conn = null;
 		ResultSet rs = null;
@@ -426,9 +428,17 @@ public class CollectionInfo {
 		
 		while(rs.next()){
 			rpt = rs.getInt("rptgroup");
+			yearLast = rs.getString("receiveddate").split("-")[0];
 		}
+		System.out.println("Year Now: " + yearNow);
+		System.out.println("Year Last: " + yearLast);
+		if(yearNow.equalsIgnoreCase(yearLast)) {
+			rpt +=1;
+		}else {
+			rpt = 1; //reset group to 1
+		}
+		System.out.println("Checking rpt group number: " + rpt);
 		
-		rpt +=1;
 		
 		rs.close();
 		ps.close();

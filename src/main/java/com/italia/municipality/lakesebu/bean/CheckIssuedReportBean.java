@@ -605,6 +605,31 @@ public class CheckIssuedReportBean implements Serializable{
 		
 	}
 	
+	public void loadAll() {
+		rpts = new ArrayList<CheckIssuedReport>();
+		String[] params = new String[0];
+		String sql = "";
+		
+		if(getUserLogin().getAccessLevel().getLevel()>1) {
+			sql = " AND user.logid="+ getUserLogin().getLogid();
+		}
+		
+		if(getSearchParam()!=null) {
+			sql = " AND cz.periodcovered like '%"+ getSearchParam() +"%'";
+		}
+		
+		sql += " ORDER BY cz.cpid DESC";
+		//rpts = CashDisbursementReport.retrieve(sql, params);
+		for(CheckIssuedReport cd : CheckIssuedReport.retrieve(sql, params)) {
+			cd.setFundName(getMapBankAccounts().get(cd.getFundId()).getBankAccntName());
+			rpts.add(cd);
+		}
+		if(rpts!=null && rpts.size()==1) {
+			clickItemRpt(rpts.get(0));
+		}
+		
+	}
+	
 	public void searchItem() {
 		clear();
 		rpts = new ArrayList<CheckIssuedReport>();

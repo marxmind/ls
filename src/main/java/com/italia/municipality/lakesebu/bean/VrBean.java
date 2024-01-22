@@ -127,7 +127,23 @@ public class VrBean implements Serializable{
 		sql += " AND vr.vrdate<='"+ monthT +"') ";
 		sql += " ORDER BY vr.vrid DESC LIMIT 10";
 		
-		
+		reloadSeriesMonthsSearchPer();
+		/*
+		seriesMonthsSearchPer = new ArrayList<>();
+		for(int months=1; months<=DateUtils.getCurrentMonth(); months++) {
+			
+			String monthTrim = DateUtils.getMonthName(months).toUpperCase().substring(0, 3);
+			
+			String ser1 = "101-100-17-" + monthTrim + "-" + DateUtils.getCurrentYear();
+			String ser2 = "101-200-18-" + monthTrim + "-" + DateUtils.getCurrentYear();
+			String ser3 = "101-300-17-" + monthTrim + "-" + DateUtils.getCurrentYear();
+			
+			seriesMonthsSearchPer.add(new SelectItem(ser1, ser1));
+			seriesMonthsSearchPer.add(new SelectItem(ser2, ser2));
+			seriesMonthsSearchPer.add(new SelectItem(ser3, ser3));
+			
+		}
+		*/
 		
 		createReport(VRData.retrieve(sql,params));
 		loadSeries();
@@ -1532,24 +1548,36 @@ public void printExpense() {
 
 	public List getSeriesMonthsSearchPer() {
 		
-		seriesMonthsSearchPer = new ArrayList<>();
-		for(int month=1; month<=DateUtils.getCurrentMonth(); month++) {
-			
-			String monthTrim = DateUtils.getMonthName(month).toUpperCase().substring(0, 3);
-			
-			String ser1 = "101-100-17-" + monthTrim + "-" + DateUtils.getCurrentYear();
-			String ser2 = "101-200-18-" + monthTrim + "-" + DateUtils.getCurrentYear();
-			String ser3 = "101-300-17-" + monthTrim + "-" + DateUtils.getCurrentYear();
-			
-			seriesMonthsSearchPer.add(new SelectItem(ser1, ser1));
-			seriesMonthsSearchPer.add(new SelectItem(ser2, ser2));
-			seriesMonthsSearchPer.add(new SelectItem(ser3, ser3));
-			
-		}
-		
 		return seriesMonthsSearchPer;
 	}
-
+	
+	public void reloadSeriesMonthsSearchPer() {
+		//int yearCurrent = DateUtils.getCurrentYear();
+		//System.out.println("selected year: " + getYearIdR());
+		//if(getYearIdR()!= yearCurrent) {
+			//System.out.println("Pasok dito: " + getYearIdR());
+			seriesMonthsSearchPer = new ArrayList<>();
+			for(int month=1; month<=12; month++) {
+				if(month==getMondIdR()) {
+					String monthTrim = DateUtils.getMonthName(month).toUpperCase().substring(0, 3);
+					
+					String ser1 = "101-100-17-" + monthTrim + "-" + getYearIdR();
+					String ser2 = "101-200-18-" + monthTrim + "-" + getYearIdR();
+					String ser3 = "101-300-17-" + monthTrim + "-" + getYearIdR();
+					//System.out.println(ser1);
+					//System.out.println(ser2);
+					//System.out.println(ser3);
+					seriesMonthsSearchPer.add(new SelectItem(ser1, ser1));
+					seriesMonthsSearchPer.add(new SelectItem(ser2, ser2));
+					seriesMonthsSearchPer.add(new SelectItem(ser3, ser3));
+				}
+				
+			}
+		
+		//}
+		
+	}
+	
 	public void setSeriesMonthsSearchPer(List seriesMonthsSearchPer) {
 		this.seriesMonthsSearchPer = seriesMonthsSearchPer;
 	}

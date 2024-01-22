@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/resources/reports/businesspermitV7.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/bzbilling.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/cash-disbursement2.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/cashintreasury.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/check-issued-report-long-extended.jrxml=UTF-8
@@ -16,4 +18,5 @@ encoding//src/main/webapp/resources/reports/rcdperMonthly.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcdsummary.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/summaryonly2.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/voucher2.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/water_rental_reg.jrxml=UTF-8
 encoding/<project>=UTF-8

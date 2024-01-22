@@ -79,4 +79,5 @@ public class GlobalVar {
 	public static final String BACKUP_ZIP_FILE_NAME="data_backup";
 	public static final String EPSON_L220="chk_L220";
 	public static final String EPSON_L3110="chk_L3110";
+	public static final String BUSINESS_BILLING="bzbilling";
 }

@@ -481,14 +481,17 @@
             						<p:outputLabel value="#{rn.fundName}"/>
             			 </p:column>
                          
-                         <p:column headerText="Reference" width="200" >
-            					<p:outputLabel value="#{rn.individualSeries}"/>
-            			 </p:column>
-            			 
             			 <p:column headerText="Amount" width="70" >
+            			 	<p:cellEditor>
+							<f:facet name="output">
             						<p:outputLabel value="#{rn.amount}">
             							<f:convertNumber currencySymbol="" type="currency"/>
             						</p:outputLabel>
+            				</f:facet>
+            				<f:facet name="input">
+								<p:inputNumber  value="#{rn.amount}"/>
+							</f:facet>
+							</p:cellEditor>
             			 </p:column>
                          
                       
@@ -547,14 +550,17 @@
             						<p:outputLabel value="#{rn.fundName}"/>
             			 </p:column>
                          
-                         <p:column headerText="Reference" width="200" >
-            					<p:outputLabel value="#{rn.individualSeries}"/>
-            			 </p:column>
-            			 
             			 <p:column headerText="Amount" width="70" >
+            				<p:cellEditor>
+							<f:facet name="output">
             						<p:outputLabel value="#{rn.amount}">
             							<f:convertNumber currencySymbol="" type="currency"/>
             						</p:outputLabel>
+            				</f:facet>
+            				<f:facet name="input">
+								<p:inputNumber  value="#{rn.amount}"/>
+							</f:facet>
+							</p:cellEditor>
             			 </p:column>
                          
                       

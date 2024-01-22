@@ -103,7 +103,9 @@
 						<p:outputLabel value="Issued">
 							<div class="ui-inputgroup">
 							<div class="p-field">
-								<p:calendar  value="#{businessPermitBean.issuedDate}"  required="true" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
+								<p:calendar  value="#{businessPermitBean.issuedDate}" required="true" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em">
+									<p:ajax event="dateSelect" listener="#{businessPermitBean.handleDateSelect}" update="d000" />
+								</p:calendar>
 							</div>
 							</div>
 						</p:outputLabel>	
@@ -111,9 +113,8 @@
 						<p:outputLabel value="Requestor">
 							<div class="ui-inputgroup">
 							<div class="p-field">
-			            	<p:outputLabel value="#{businessPermitBean.customerName}">
-			            	<p:commandButton style="width: 15em" update="idSearchTax ownerId" icon="pi pi-search" actionListener="#{businessPermitBean.loadTaxpayer}" onclick="PF('multiDialogOwner').show()"/>
-			            	</p:outputLabel>
+			            	<p:commandButton value="#{businessPermitBean.customerName}" style="width: 15em" update="idSearchTax ownerId" icon="pi pi-search" actionListener="#{businessPermitBean.loadTaxpayer}" onclick="PF('multiDialogOwner').show()"/>
+			            	
 			            	</div>
 			            	</div>
 						</p:outputLabel>
@@ -142,13 +143,7 @@
 						 	</div>
 						 </p:outputLabel>		
 						 
-						 <p:outputLabel value="Valid Until">
-						 	<div class="ui-inputgroup">
-							<div class="p-field">
-						 		<p:inputText id="d0000" value="#{businessPermitBean.validUntil}" style="width: 15em;"/>
-						 	</div>
-						 	</div>	
-		        		 </p:outputLabel>
+						 
 		        		 
 		        		 <p:outputLabel value="Type">
 		        		 	<div class="ui-inputgroup">
@@ -165,10 +160,19 @@
 							<div class="p-field">
 				        		 <p:selectOneMenu id="d2" value="#{businessPermitBean.memoTypeId}" style="width: 15em;">
 				                	<f:selectItems value="#{businessPermitBean.memos}"/>
+				                	<p:ajax event="change" listener="#{businessPermitBean.handleMemoChange}" update="d0000"/>
 				            	</p:selectOneMenu>
 		            		</div>
 		            		</div>
 		            	</p:outputLabel>
+		            	
+		            	<p:outputLabel value="Valid Until">
+						 	<div class="ui-inputgroup">
+							<div class="p-field">
+						 		<p:inputText id="d0000" value="#{businessPermitBean.validUntil}" style="width: 15em;"/>
+						 	</div>
+						 	</div>	
+		        		 </p:outputLabel>
 		            	
 		        		 <p:outputLabel value="Business Name">
 		        		 	<div class="ui-inputgroup">
@@ -218,7 +222,7 @@
 						 	</div>
 						 </p:outputLabel>
 						 	
-						 <p:outputLabel value="OIC Licensing">
+						 <p:outputLabel value="Licensing Officer">
 						 	<div class="ui-inputgroup">
 							<div class="p-field">
 						 	<p:inputText id="d7" value="#{businessPermitBean.oic}" style="width: 15em;"/>
@@ -226,7 +230,7 @@
 						 	</div>
 						 </p:outputLabel>	
 						 	
-						 <p:outputLabel value="Mayor">
+						 <p:outputLabel value="Executive Officer">
 						 	<div class="ui-inputgroup">
 							<div class="p-field">
 						 	<p:inputText id="d8" value="#{businessPermitBean.mayor}" style="width: 15em;"/>
@@ -397,7 +401,7 @@
 		<p:toolbar id="tbTax">
     		<f:facet name="left">
         		<p:inputText id="idSearchTax" value="#{businessPermitBean.searchTaxpayer}" placeholder="Search Name" >
-    					<p:ajax event="keyup" listener="#{businessPermitBean.loadTaxpayer}" update="ownerId clearFldId pictureId orId bzId idSearchTax"/>
+    					<p:ajax event="keyup" listener="#{businessPermitBean.loadTaxpayer}" delay="800" update="ownerId clearFldId pictureId orId bzId idSearchTax"/>
     			</p:inputText>
     		</f:facet>
     			
@@ -436,7 +440,7 @@
 		    			<p:calendar  value="#{businessPermitBean.calendarFromCon}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 8em"/>
 			    	<p:calendar  value="#{businessPermitBean.calendarToCon}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 8em"/>
 			    	<p:selectBooleanCheckbox value="#{businessPermitBean.checkBoxSeries}" itemLabel="Only not Found Series"/>
-			    	<p:commandButton update="dataCon" icon="fa fa-search" actionListener="#{businessPermitBean.checkControlSeries}"/>
+			    	<p:commandButton update="dataCon" icon="pi pi-search" actionListener="#{businessPermitBean.checkControlSeries}"/>
 		    		</f:facet>
 				</p:toolbar>
 				
@@ -446,8 +450,8 @@
                          scrollable="false" paginatorAlwaysVisible="false" paginatorPosition="top" lazy="false"
                          >
                          
-                        <p:column headerText="Date" width="70">
-            				<p:outputLabel  value="#{rt.dateTrans}" style="#{rt.style}"/>
+                        <p:column headerText="Issued" width="100">
+            				<p:outputLabel  value="#{rt.issuedOn}" style="#{rt.style}"/>
             			</p:column>
             			
             			<p:column headerText="Control No" width="100">
@@ -457,11 +461,7 @@
             			<p:column headerText="Business Name" width="150">
             				<p:outputLabel  value="#{rt.businessName}" style="#{rt.style}"/>
             			</p:column>
-            			
-            			<p:column headerText="Owner" width="150">
-            				<p:outputLabel  value="#{rt.customer.fullname}" style="#{rt.style}"/>
-            			</p:column>
-                         
+            			 
                   </p:dataTable>       
 		</p:dialog>
 		

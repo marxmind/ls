@@ -314,6 +314,18 @@ public class MenuBean implements Serializable{
 		return "bni.xhtml";
 	}
 	
+	public String bnIndexlic() {
+		return "bnilic.xhtml";
+	}
+	
+	public String bnreg() {
+		return "businessreg.xhtml";
+	}
+	
+	public String bnreglic() {
+		return "businessreglic.xhtml";
+	}
+	
 	private static boolean checkdate(String dbLicense){
 		
 		String systemDate = DateUtils.getCurrentDateMMDDYYYY();

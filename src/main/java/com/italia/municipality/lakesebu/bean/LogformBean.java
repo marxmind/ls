@@ -208,6 +208,7 @@ public class LogformBean implements Serializable{
 		//int totalDataSize = rcds.size() + deposits.size();
 		RCDDeposit beginning =  null;
 		Map<Integer, DepositTransaction> data = new LinkedHashMap<Integer, DepositTransaction>();
+		Map<Integer, Object> indexData = new LinkedHashMap<Integer, Object>();
 		try{
 			beginning = deposits.get(0); 
 			DepositTransaction t = DepositTransaction.builder()
@@ -224,6 +225,7 @@ public class LogformBean implements Serializable{
 			//record balance
 			balance = beginning.getAmount();
 			data.put(0, t);
+			indexData.put(0, t);
 		}catch(Exception e) {
 			RCDDeposit rcd = RCDDeposit.builder()
 					.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
@@ -240,10 +242,18 @@ public class LogformBean implements Serializable{
 					.data(rcd)	
 					.build();
 			data.put(0, t);
+			indexData.put(0, t);
 		}
 		
 		//get all rcd summary with index
 		int index = 1;
+		int totalData = rcds.size();
+			totalData += deposits.size();
+			
+			if(totalData>0) {
+				totalData-=1;
+			}
+			
 		for(RCDAllController d : rcds) {
 			if(d.getIndex()>0) {
 				String day = d.getDateTrans().split("-")[2];
@@ -257,7 +267,17 @@ public class LogformBean implements Serializable{
 						//.balance(balance)
 						.data(d)
 						.build();
-				data.put(d.getIndex(), t);
+				
+				//checking index if found increment 1
+				if(indexData!=null && indexData.containsKey(d.getIndex())) {
+					indexData.put(totalData, t);
+					data.put(totalData, t);
+					totalData++;
+				}else {
+					data.put(d.getIndex(), t);
+					indexData.put(d.getIndex(), t);
+				}
+				
 				index++;
 			}
 		}
@@ -276,7 +296,18 @@ public class LogformBean implements Serializable{
 					//.balance(balance)
 					.data(c)				
 					.build();
-					data.put(c.getIndexId(), t);
+					
+					if(indexData!=null && indexData.containsKey(c.getIndexId())) {
+						t.setIndex(totalData);
+						data.put(totalData, t);
+						indexData.put(totalData, t);
+						
+						totalData++;
+					}else {
+						data.put(c.getIndexId(), t);
+						indexData.put(c.getIndexId(), t);
+					}
+					
 					index++;
 			}
 		}
@@ -287,7 +318,7 @@ public class LogformBean implements Serializable{
 				String day = d.getDateTrans().split("-")[2];
 				//balance += d.getAmount();
 				DepositTransaction t = DepositTransaction.builder()
-						.index(index)
+						.index(totalData)
 						.day(day)
 						.particular("RCD-COLLECTION")
 						.reference(d.getControlNumber())
@@ -295,12 +326,25 @@ public class LogformBean implements Serializable{
 						//.balance(balance)
 						.data(d)
 						.build();
-				data.put(index, t);
 				
-				//save new index
-				d.setIndex(index);
+				if(indexData!=null && indexData.containsKey(totalData)) {
+					totalData +=1;
+					data.put(totalData, t);
+					
+					//save new index
+					d.setIndex(totalData);
+					indexData.put(totalData, t);
+				}else {
+					data.put(totalData, t);
+					
+					//save new index
+					d.setIndex(totalData);
+					indexData.put(totalData, t);
+				}
+				
+				
 				d.save();
-				
+				totalData++;
 				index++;
 			}
 		}
@@ -383,10 +427,14 @@ public class LogformBean implements Serializable{
         String month = getMonthDepositId()<10? "0"+getMonthDepositId() : getMonthDepositId()+"";
         int index = event.getRowIndex();
         String column =  event.getColumn().getHeaderText();
+        
+        System.out.println("Columg touch: " + column + " value: " + newValue);
+        
         //beginning balance only
         if("Credit".equalsIgnoreCase(column)) {
         	double amount = (Double)newValue;
         	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	
         	double balance = getDepTrans().get(index-1).getBalance();
         	DepositTransaction tr = getDepTrans().get(index);
         	dp.setAmount(amount);
@@ -395,60 +443,105 @@ public class LogformBean implements Serializable{
         	dp.setRemarks(tr.getParticular());
         	dp.setReference(tr.getReference());
         	dp.setIsActive(1);
-        	dp.setIndexId(index);
-        	dp.save();
+        	if(dp.getId()==0) {
+        		dp.setIndexId(index+1);
+        	}
+        	
+        	//dp.save();
+        	RCDDeposit orData = RCDDeposit.save(dp);
+        	viewDeposit();
         	//update balance field
         	double newBal = balance>0? balance-amount : amount;
         	getDepTrans().get(index).setBalance(newBal);
-        	viewDeposit();
+        	getDepTrans().get(index).setId(orData.getId());
+        	getDepTrans().get(index).setData(orData);
         }else if("Debit".equalsIgnoreCase(column)) {
         	double amount = (Double)newValue;
         	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
-        	double balance = getDepTrans().get(index-1).getBalance();
+        	
+        	double balance = 0;
+        	try{balance = getDepTrans().get(index-1).getBalance();}catch(IndexOutOfBoundsException i) {balance = getDepTrans().get(index).getBalance();}
+        	//System.out.println("Debit checking : " + dp.getRemarks() + " new amount: " + amount);
         	DepositTransaction tr = getDepTrans().get(index);
-        	dp.setAmount(amount);
-        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+tr.getDay());
-        	dp.setFundType(getDepositFundTypeId());
-        	dp.setRemarks(tr.getParticular());
-        	dp.setReference(tr.getReference());
-        	dp.setIsActive(1);
-        	dp.setIndexId(index);
-        	dp.save();
+        	RCDDeposit orData = null;
+        	if("BEGINNING BALANCE".equalsIgnoreCase(dp.getRemarks().trim())) {
+        		dp.setAmount(amount);
+	        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-01");
+	        	dp.setFundType(getDepositFundTypeId());
+	        	dp.setReference("");
+	        	dp.setIsActive(1);
+	        	dp.setIndexId(0);
+	        	//dp.save();
+	        	orData = RCDDeposit.save(dp);
+        	}else {
+	        	dp.setAmount(amount);
+	        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+tr.getDay());
+	        	dp.setFundType(getDepositFundTypeId());
+	        	dp.setRemarks(tr.getParticular());
+	        	dp.setReference(tr.getReference());
+	        	dp.setIsActive(1);
+	        	if(dp.getId()==0) {
+	        		dp.setIndexId(index+1);
+	        	}
+	        	//dp.save();
+	        	orData = RCDDeposit.save(dp);
+        	}
+        	
+        	viewDeposit();
         	//update balance field
         	double newBal = balance>0? balance+amount : amount;
         	getDepTrans().get(index).setBalance(newBal);
-        	viewDeposit();
+        	getDepTrans().get(index).setId(orData.getId());
+        	getDepTrans().get(index).setData(orData);
         }else if("Reference".equalsIgnoreCase(column)) {
         	
         	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	
         	DepositTransaction tr = getDepTrans().get(index);
         	if("RCD-DEPOSIT".equalsIgnoreCase(tr.getParticular())) {
-        	dp.setAmount(amount);
+        	//dp.setAmount(amount);
         	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+tr.getDay());
         	dp.setFundType(getDepositFundTypeId());
         	dp.setRemarks(tr.getParticular());
         	dp.setReference(newValue+"");
         	dp.setIsActive(1);
-        	dp.setIndexId(index);
-        	dp.save();
+        	if(dp.getId()==0) {
+        		dp.setIndexId(index+1);
+        	}
+        	//dp.save();
+        	RCDDeposit orData = RCDDeposit.save(dp);
         	viewDeposit();
+        	getDepTrans().get(index).setId(orData.getId());
+        	getDepTrans().get(index).setData(orData);
         	}
         }else if("Date".equalsIgnoreCase(column)) {
         	RCDDeposit dp = (RCDDeposit) getDepTrans().get(index).getData();
+        	
         	DepositTransaction tr = getDepTrans().get(index);
         	String day = (String)newValue;
         	if("RCD-DEPOSIT".equalsIgnoreCase(tr.getParticular())) {
         	//dp.setAmount(amount);
+        	
+        	if(day.length()==1) {
+        		day = "0" + day;
+        	}
+        		
         	dp.setDateTrans(getYearDepositId()+"-"+ month +"-"+day);
         	dp.setFundType(getDepositFundTypeId());
         	//dp.setRemarks(tr.getParticular());
         	//dp.setReference(newValue+"");
         	dp.setIsActive(1);
-        	dp.setIndexId(index);
-        	dp.save();
-        	getDepTrans().get(index).setDay(day);
-        	//System.out.println("On cell edit day: " + day);
+        	if(dp.getId()==0) {
+        		dp.setIndexId(index+1);
+        	}
+        	//dp.save();
+        	RCDDeposit orData = RCDDeposit.save(dp);
         	viewDeposit();
+        	getDepTrans().get(index).setDay(day);
+        	getDepTrans().get(index).setId(orData.getId());
+        	getDepTrans().get(index).setData(orData);
+        	//System.out.println("On cell edit day: " + day);
+        	
         	}
         }
         
@@ -3965,6 +4058,7 @@ public class LogformBean implements Serializable{
 	
 	public void createRCDALL() {
 		System.out.println("createRCDALL()......");
+		Map<String, String> mapSeries = new LinkedHashMap<String,String>();
 		if(getSelectedCollection()!=null && getSelectedCollection().size()>0 && getFundSearchId()>0) {
 			String ids=null;
 			String indSeries=null;
@@ -3982,6 +4076,10 @@ public class LogformBean implements Serializable{
 						ids=in.getId()+"";
 						indSeries=formatIndividualSeries(in);
 						mapIds.put(in.getId(), in);
+						mapSeries.put(indSeries, indSeries);
+						
+						amnt+=in.getAmount();
+						
 					}else {
 						if(mapIds!=null && mapIds.size()>0) {
 							if(mapIds.containsKey(in.getId())) {
@@ -3989,25 +4087,42 @@ public class LogformBean implements Serializable{
 							}else {
 								ids +="<*>"+in.getId();
 								mapIds.put(in.getId(), in);
+								
+								amnt+=in.getAmount();
 							}
+							
 						}
-						indSeries+="<*>"+formatIndividualSeries(in);
+						
+						String seriesId = formatIndividualSeries(in);
+						if(mapSeries!=null && mapSeries.size()>0 && mapSeries.containsKey(seriesId)) {
+							//removing duplicated series
+						}else {
+							indSeries+="<*>"+seriesId;
+							mapSeries.put(seriesId, seriesId);
+						}
+						
 					}
-					amnt+=in.getAmount();
+					
 					in.setIsAll(1);
 					in.save();
 					count++;
-					//getSelectedCollection().add(in);
 				}
 			}
 			
 			int cc=1;
 			String isIds="";
+			Map<Integer, CollectionInfo> mapColl = new LinkedHashMap<Integer, CollectionInfo>();
 			for(CollectionInfo c : getSelectedCollection()) {
 				if(cc==1) {
 					isIds=c.getCollector().getId()+"";
+					mapColl.put(c.getCollector().getId(), c);
 				}else {
-					isIds+="<*>"+c.getCollector().getId();
+					if(mapColl!=null && mapColl.size()>0 && mapColl.containsKey(c.getCollector().getId())) {
+						//do not add the same collector id
+					}else {
+						isIds+="<*>"+c.getCollector().getId();
+						mapColl.put(c.getCollector().getId(), c);
+					}
 				}
 				cc++;
 			}
@@ -4194,6 +4309,7 @@ public class LogformBean implements Serializable{
 	/////////////////////////
 	
 	public void createRCDSum() {
+		Map<String, String> mapSeries = new LinkedHashMap<String,String>();
 		if(getSelectedCollection()!=null && getSelectedCollection().size()>0 && getFundSearchId()>0) {
 			String ids=null;
 			String indSeries=null;
@@ -4208,6 +4324,10 @@ public class LogformBean implements Serializable{
 						ids=in.getId()+"";
 						indSeries=formatIndividualSeries(in);
 						mapIds.put(in.getId(), in);
+						mapSeries.put(indSeries, indSeries);
+						
+						amnt+=in.getAmount();
+						
 					}else {
 						if(mapIds!=null && mapIds.size()>0) {
 							if(mapIds.containsKey(in.getId())) {
@@ -4215,11 +4335,21 @@ public class LogformBean implements Serializable{
 							}else {
 								ids +="<*>"+in.getId();
 								mapIds.put(in.getId(), in);
+								
+								amnt+=in.getAmount();
+								
 							}
 						}
-						indSeries+="<*>"+formatIndividualSeries(in);
+						//indSeries+="<*>"+formatIndividualSeries(in);
+						String seriesId = formatIndividualSeries(in);
+						if(mapSeries!=null && mapSeries.size()>0 && mapSeries.containsKey(seriesId)) {
+							//removing duplicated series
+						}else {
+							indSeries+="<*>"+seriesId;
+							mapSeries.put(seriesId, seriesId);
+						}
 					}
-					amnt+=in.getAmount();
+					//amnt+=in.getAmount();
 					in.setIsSummary(1);
 					in.save();
 					count++;
@@ -4229,11 +4359,19 @@ public class LogformBean implements Serializable{
 			
 			int cc=1;
 			String isIds="";
+			Map<Integer, CollectionInfo> mapColl = new LinkedHashMap<Integer, CollectionInfo>();
 			for(CollectionInfo c : getSelectedCollection()) {
 				if(cc==1) {
 					isIds=c.getCollector().getId()+"";
+					mapColl.put(c.getCollector().getId(), c);
 				}else {
-					isIds+="<*>"+c.getCollector().getId();
+					//isIds+="<*>"+c.getCollector().getId();
+					if(mapColl!=null && mapColl.size()>0 && mapColl.containsKey(c.getCollector().getId())) {
+						//do not add the same collector id
+					}else {
+						isIds+="<*>"+c.getCollector().getId();
+						mapColl.put(c.getCollector().getId(), c);
+					}
 				}
 				cc++;
 			}

@@ -302,12 +302,14 @@
     	<p:toolbar id="tbMsg">
 			    		<f:facet name="left">
 			    				<p:selectOneMenu value="#{vrBean.mondIdR}" style="width: 9em" filter="true" filterMatchMode="contains">
-			            		<f:selectItems value="#{vrBean.monthsR}"/>
-						        	</p:selectOneMenu>
+			            			<f:selectItems value="#{vrBean.monthsR}"/>
+			            			<p:ajax listener="#{vrBean.reloadSeriesMonthsSearchPer}" update="idRec"/>
+						        </p:selectOneMenu>
 						        <p:selectOneMenu value="#{vrBean.yearIdR}" style="width: 6em" filter="true" filterMatchMode="contains">
 						            <f:selectItems value="#{vrBean.yearsR}"/>
+						            <p:ajax listener="#{vrBean.reloadSeriesMonthsSearchPer}" update="idRec"/>
 						        </p:selectOneMenu>
-						        <p:selectOneMenu value="#{vrBean.seriesMonthIdSearchPer}" style="width:10em;" filter="true" filterMatchMode="contains">
+						        <p:selectOneMenu id="idRec" value="#{vrBean.seriesMonthIdSearchPer}" style="width:20em;" filter="true" filterMatchMode="contains">
 									<f:selectItems value="#{vrBean.seriesMonthsSearchPer}"/>
 								</p:selectOneMenu>
 			    			   <p:commandButton value="Retrieve New Info" actionListener="#{vrBean.loadDepartmentExpense}" update="dataVP"/>

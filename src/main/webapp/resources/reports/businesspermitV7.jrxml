@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bizclearance" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="794e2d42-7ab1-4c21-a802-1faf95600b92">
 	<property name="com.jaspersoft.studio.unit." value="inch"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
@@ -431,7 +431,7 @@
 			<staticText>
 				<reportElement x="200" y="642" width="200" height="14" uuid="fe4ef27e-838e-4eb5-8665-119ab0d2f3ea"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Acting Licensing Officer]]></text>
+				<text><![CDATA[Licensing Officer I]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="431" y="664" width="96" height="14" uuid="829a95c0-4eb5-4471-b1c5-a6f14f2efb6d"/>

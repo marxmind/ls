@@ -991,34 +991,13 @@ public class ChkBean implements Serializable{
 			}else {
 				rpt.setF3(c.getRemarks());
 			}
-			rpt.setF4(getOfficeData().get(c.getOffice().getId()).getName());
-			rpt.setF5(c.getPayToTheOrderOf());
-			rpt.setF6(mapMooe.get(c.getMoe().getId()).getDescription());
-			rpt.setF7(Currency.formatAmount(c.getAmount()));
+			try{rpt.setF4(getOfficeData().get(c.getOffice().getId()).getName());}catch(NullPointerException e) {}
+			try{rpt.setF5(c.getPayToTheOrderOf());}catch(NullPointerException e) {}
+			try{rpt.setF6(mapMooe.get(c.getMoe().getId()).getDescription());}catch(NullPointerException e) {}
+			try{rpt.setF7(Currency.formatAmount(c.getAmount()));}catch(NullPointerException e) {}
 			reports.add(rpt);
 			total += c.getAmount();
 		}
-		/*
-		for(Chequedtls c : selectedData) {
-			
-			Reports rpt = new Reports();
-			rpt.setF1(c.getDate_disbursement());
-			rpt.setF2(c.getCheckNo());
-			//rpt.setF4(tran.getDepartmentCode());
-			String stat = c.getRemarks();
-			if("RECEIVED".equalsIgnoreCase(stat) || stat.isEmpty()) {
-				rpt.setF3("Posted Check");
-			}else {
-				rpt.setF3(c.getRemarks());
-			}
-			rpt.setF4(getOfficeData().get(c.getOffice().getId()).getName());
-			rpt.setF5(c.getPayToTheOrderOf());
-			rpt.setF6(mapMooe.get(c.getMoe().getId()).getDescription());
-			rpt.setF7(Currency.formatAmount(c.getAmount()));
-			reports.add(rpt);
-			total += c.getAmount();
-			
-		}*/
 		
 		//compiling report
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
