@@ -379,11 +379,11 @@
 				<text><![CDATA[CERTIFICATION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="36" width="301" height="14" uuid="3635e2a6-ac36-489f-bd20-01e4d517f3ef"/>
+				<reportElement x="3" y="36" width="334" height="14" uuid="3635e2a6-ac36-489f-bd20-01e4d517f3ef"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[I CERTIFY that the report issued in one sheet(s) is full, true and]]></text>
+				<text><![CDATA[I hereby CERTIFY that the foregoing Report of Collection and Deposits,]]></text>
 			</staticText>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
 				<reportElement x="15" y="113" width="160" height="17" uuid="2776038b-e09d-4a28-ab84-25e4275ddd42">
@@ -409,7 +409,7 @@
 				<textElement textAlignment="Left">
 					<font isBold="false"/>
 				</textElement>
-				<text><![CDATA[correct statement of all checks released by me in payment for obligation]]></text>
+				<text><![CDATA[and accountability for accountable forms is true and correct.]]></text>
 			</staticText>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
 				<reportElement x="214" y="113" width="108" height="17" uuid="765331fb-3c6a-41cc-b486-d8f8d9f0f3e1">
@@ -430,29 +430,6 @@
 			<line>
 				<reportElement x="217" y="130" width="100" height="1" uuid="769054b2-1eb7-493f-a9b8-2b773c15e0eb"/>
 			</line>
-			<textField textAdjust="ScaleFont" evaluationTime="Page" isBlankWhenNull="true">
-				<reportElement x="31" y="65" width="164" height="13" uuid="201f165c-10f1-4391-931c-eabc9f08c891">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{PARAM_LGU_NAME}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="195" y="65" width="142" height="14" uuid="3ea5ae15-92ec-4a57-8ae6-40b70c79fbf3"/>
-				<textElement textAlignment="Left">
-					<font isBold="false"/>
-				</textElement>
-				<text><![CDATA[for the period stated and shown ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="3" y="78" width="334" height="14" uuid="d005a1a3-dbd7-4c56-8b70-1922c30d3311"/>
-				<textElement textAlignment="Left">
-					<font isBold="false"/>
-				</textElement>
-				<text><![CDATA[in the attached disbursement voucher.]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="343" y="0" width="70" height="14" uuid="4d8a1ad4-5267-4b1c-87f0-27b679a29423"/>
 				<textElement textAlignment="Left">
@@ -481,16 +458,6 @@
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Date]]></text>
-			</staticText>
-			<line>
-				<reportElement x="30" y="78" width="165" height="1" uuid="a0388d81-6e51-4e0f-93d3-46d343e61a90"/>
-			</line>
-			<staticText>
-				<reportElement x="2" y="65" width="31" height="14" uuid="aedee635-2150-417c-ab5a-c16f4d8422c4"/>
-				<textElement textAlignment="Left">
-					<font isBold="false"/>
-				</textElement>
-				<text><![CDATA[of the]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="347" y="78" width="235" height="14" uuid="6eddc0ba-4a28-4982-a8ab-dca00c5ce447"/>

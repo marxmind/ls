@@ -263,7 +263,7 @@
                          	
                       
                          	
-                         	<p:column selectionMode="multiple" width="15"/>
+                         	<p:column selectionMode="multiple" width="10"/>
                          	
                          	<p:column headerText="Edit" width="30" exportable="false">
 								<p:commandButton icon="pi pi-pencil" update="gridId listForm tbFormNew" actionListener="#{logformBean.clickItem(in)}"/>
@@ -275,6 +275,10 @@
 								</p:commandLink>
 							</p:column>
                          	
+                         	<p:column headerText="Forms" width="40" exportable="false" rendered="#{logformBean.userAccess}">
+                         		<p:commandButton icon="pi pi-pencil" actionListener="#{formChange.loadFormDetails(in)}" update="collId repId funderId totId"/>
+                         	</p:column>
+                         	
                          	<p:column headerText="Created" width="70">
             						<p:outputLabel value="#{in.receivedDate}" />
             				</p:column>
@@ -283,11 +287,11 @@
             						<p:outputLabel value="#{in.rptFormat}"/>
             				</p:column>
             				
-            				<p:column headerText="Collector" width="100">
+            				<p:column headerText="Collector" width="200">
             						<p:outputLabel value="#{in.collector.name}"/>
             				</p:column>
             				
-            				<p:column headerText="Fund" width="70">
+            				<p:column headerText="Fund" width="120">
             						<p:outputLabel value="#{in.fundName}"/>
             				</p:column>
             				
@@ -568,7 +572,7 @@
 	
 	</p:dialog>
 	
-	<p:dialog widgetVar="dlgPrint">
+	<p:dialog widgetVar="dlgPrint" closeOnEscape="true">
 		<p:panelGrid id="idPrintDate" columns="1" layout="grid">
 			<p:selectBooleanCheckbox value="#{logformBean.useModifiedDate}" itemLabel="Use below date">
 				<p:ajax event="change" listener="#{logformBean.changeBehaviorCalendarDatePrint}" update="idPrintCal"/>
@@ -581,7 +585,7 @@
 		</p:panelGrid>
 	</p:dialog>
 	
-	<p:dialog widgetVar="dlgCSeries" showHeader="false" width="1200" height="850" position="center top">
+	<p:dialog widgetVar="dlgCSeries" showHeader="false" width="1200" height="850" position="center top" closeOnEscape="true">
 		
 			<p:toolbar id="tblFrm">
 			
@@ -590,8 +594,8 @@
     		<f:facet name="left">
     				<span class="ui-input-icon-left">
 				        <i class="pi pi-search" />
-				        <p:inputText id="idSearchSeries" value="#{logformBean.searchSeries}" placeholder="Search Started Series">
-				        	<p:ajax event="keyup" listener="#{logformBean.loadSearchSeries}" update="dataSeries dataIssued idAvail"/>
+				        <p:inputText id="idSearchSeries" value="#{logformBean.searchSeries}" placeholder="Search Series">
+				        	<p:ajax event="keyup" listener="#{logformBean.loadSearchSeries}" delay="800" update="dataSeries dataIssued idAvail"/>
 				        </p:inputText>
 				    </span>
     				
@@ -959,8 +963,16 @@
 	
 	<p:commandButton title="Graph" icon="pi pi-chart-pie"  actionListener="#{graphIssuanceBean.loadGraph}" update="graphLineId graphBardId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
 	<ui:include src="graphissuance.xhtml" />
+	<ui:include src="formchange.xhtml" />
 	<ui:include src="loader.xhtml" />
 	<ui:include src="menu.xhtml" /> 	
+	
+	<script>
+		//part of formchange.xhtml
+     	function buttonClick(){
+     		$( "#updateId" ).trigger( "click" );
+     	}
+     </script>
 </h:form>
 </h:body>
 </html>	

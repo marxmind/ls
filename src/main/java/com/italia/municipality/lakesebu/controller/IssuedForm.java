@@ -53,6 +53,7 @@ public class IssuedForm {
 	private int newSeries;//use for updating series
 	
 	private List formStatus;
+	private List fundList;
 	
 	public List getFormStatus() {
 		formStatus = new ArrayList<>();
@@ -757,6 +758,28 @@ public class IssuedForm {
 		WebTISDatabaseConnect.close(conn);
 		}catch(SQLException s){}
 		
+	}
+	
+	public static void openUpdate(String sql, String[] params) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		ps.executeUpdate();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException s){}
 	}
 	
 }

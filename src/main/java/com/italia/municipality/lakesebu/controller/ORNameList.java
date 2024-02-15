@@ -39,6 +39,7 @@ public class ORNameList {
 	private ORListing orList;
 	private Customer customer;
 	private PaymentName paymentName;
+	private TaxAccountGroup groupId;
 	
 	public static Map<Integer, Double> retrieveYear(int year){
 		Map<Integer, Double> mapData = new LinkedHashMap<Integer, Double>();
@@ -229,16 +230,26 @@ public class ORNameList {
 		
 		return mapYear;
 	}
-	
-	public static Object[] retrieveORNames(long orId) {
+	/**
+	 * 
+	 * @param orId
+	 * @param showActive
+	 * @return
+	 */
+	public static Object[] retrieveORNames(long orId, boolean showActive) {
 		Object[] obj = new Object[2];
 		List<ORNameList> orns = new ArrayList<ORNameList>();
 		double amount = 0d;
 		String tableNameList = "nameL";
 		String tableName = "pay";
-		String sql = "SELECT * FROM ornamelist "+ tableNameList +" ,paymentname "+ tableName +"  WHERE  "+tableNameList+".isactiveol=1 AND " + 
-				tableNameList +".pyid=" + tableName + ".pyid AND " + 
-				tableNameList + ".orid=" + orId; 
+		String sql = "SELECT * FROM ornamelist "+ tableNameList +" ,paymentname "+ tableName +"  WHERE  ";
+				
+				if(showActive) {
+					sql += tableNameList+".isactiveol=1 AND ";
+				}
+		
+				sql += tableNameList +".pyid=" + tableName + ".pyid AND ";
+				sql += tableNameList + ".orid=" + orId; 
 		
 		Connection conn = null;
 		ResultSet rs = null;
@@ -313,6 +324,125 @@ public class ORNameList {
 		return 0.0;
 	}
 	
+	public static List<ORNameList> getTopTax(int year, int limit){
+		String sql = "select accid,sum(olamount) as amount from ornamelist where isactiveol=1 and year(timestampol)="+year+" group by accid order by amount desc limit " + limit;
+		List<ORNameList> data = new ArrayList<ORNameList>();
+		
+
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			ORNameList orn = new ORNameList();
+			try{orn.setAmount(rs.getDouble("amount"));}catch(NullPointerException e){}
+			orn.setGroupId(TaxAccountGroup.builder().id(rs.getLong("accid")).build());
+			data.add(orn);		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return data;
+	}
+	
+	public static Map<Long, Map<Integer, Map<Integer, Double>>> retrieveCollection(int yearSelected, boolean withFiltered, List<String> valIds){
+		
+		String sql = "SELECT year(o.timestampol) as year,month(o.timestampol) as month,sum(o.olamount) as total,o.accid as groupId FROM ornamelist o WHERE o.accid IN (SELECT a.accid FROM taxaccntgroup a WHERE a.accisactive=1) AND year(o.timestampol)="+yearSelected+" AND o.isactiveol=1 ";
+		
+		if(withFiltered) {
+			int size = valIds.size();
+			if(size==1) {
+				sql += " AND o.accid="+valIds.get(0);
+			}else {
+				int count = 1;
+				sql += " AND ( ";
+				for(Object val : valIds) {
+					if(count==1) {
+						sql += " o.accid=" + val.toString();
+					}else {
+						sql += " OR o.accid=" + val.toString();
+					}
+					count++;
+				}
+				sql += " ) ";
+			}
+		}
+		if(valIds!=null && valIds.size()>0) {
+			sql += " GROUP BY MONTH(o.timestampol),o.accid";
+		}else {
+			sql += " GROUP BY MONTH(o.timestampol),o.accid LIMIT 3";
+		}
+		
+		
+		//Year - Month - groupid - amount
+		//Group year month amount
+		Map<Long, Map<Integer, Map<Integer, Double>>> mapYear = new LinkedHashMap<Long, Map<Integer, Map<Integer, Double>>>();
+		//month
+		Map<Integer, Map<Integer, Double>> mapMonth = new LinkedHashMap<Integer, Map<Integer, Double>>();
+		//amount
+		Map<Integer, Double> mapPay = new LinkedHashMap<Integer, Double>();
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			int year = rs.getInt("year");
+			int month = rs.getInt("month");
+			long pymentId = rs.getLong("groupId"); 
+			double amount = rs.getDouble("total");
+			
+			if(mapYear!=null && mapYear.size()>0) {
+				if(mapYear.containsKey(pymentId)) {
+					if(mapYear.get(pymentId).containsKey(year)) {
+						if(mapYear.get(pymentId).get(year).containsKey(month)) {
+							double oldAmount = mapYear.get(pymentId).get(year).get(month);
+							  amount += oldAmount;
+							  mapYear.get(pymentId).get(year).put(month, amount);
+						}else {
+							mapYear.get(pymentId).get(year).put(month, amount);
+						}
+					}else {
+						mapPay = new LinkedHashMap<Integer, Double>();
+						mapPay.put(month, amount);;
+						mapYear.get(pymentId).put(year, mapPay);
+					}
+				}else {
+					mapPay = new LinkedHashMap<Integer, Double>();
+					mapMonth = new LinkedHashMap<Integer, Map<Integer, Double>>();
+					mapPay.put(month, amount);
+					mapMonth.put(year, mapPay);
+					mapYear.put(pymentId, mapMonth);
+				}
+			}else {
+				mapPay.put(month, amount);
+				mapMonth.put(year, mapPay);
+				mapYear.put(pymentId, mapMonth);
+			}
+			
+			
+		}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}
+		
+		return mapYear;
+	}
+	
 	public static List<ORNameList> retrieve(String sqlAdd, String[] params){
 		List<ORNameList> orns = new ArrayList<ORNameList>();
 		
@@ -320,10 +450,12 @@ public class ORNameList {
 		String tableOr = "orl";
 		String tableCus = "cuz";
 		String tableName = "pay";
-		String sql = "SELECT * FROM ornamelist "+ tableNameList +", orlisting "+tableOr+", customer "+ tableCus +",paymentname "+ tableName +"  WHERE  "+tableOr+".isactiveor=1 AND " + 
+		String tableAccGroup = "grp";
+		String sql = "SELECT * FROM ornamelist "+ tableNameList +", orlisting "+tableOr+", customer "+ tableCus +",paymentname "+ tableName +", taxaccntgroup "+ tableAccGroup +"  WHERE  "+tableOr+".isactiveor=1 AND " + 
 				tableNameList +".customerid=" + tableCus + ".customerid AND " + 
 				tableNameList +".orid=" + tableOr + ".orid AND " +
-				tableNameList +".pyid=" + tableName + ".pyid"; 
+				tableNameList +".pyid=" + tableName + ".pyid AND " +
+				tableNameList + ".accid=" + tableAccGroup + ".accid"; 
 		
 		sql += sqlAdd;
 		
@@ -373,6 +505,13 @@ public class ORNameList {
 			
 			orn.setCustomer(cus);
 			
+			TaxAccountGroup tax = TaxAccountGroup.builder()
+					.id(rs.getLong("accid"))
+					.name(rs.getString("accname"))
+					.isActive(rs.getInt("accisactive"))
+					.build();
+			orn.setGroupId(tax);
+			
 			PaymentName name = new PaymentName();
 			try{name.setId(rs.getLong("pyid"));}catch(NullPointerException e){}
 			try{name.setDateTrans(rs.getString("pydatetrans"));}catch(NullPointerException e){}
@@ -380,7 +519,12 @@ public class ORNameList {
 			try{name.setName(rs.getString("pyname"));}catch(NullPointerException e){}
 			try{name.setAmount(rs.getDouble("pyamount"));}catch(NullPointerException e){}
 			try{name.setIsActive(rs.getInt("isactivepy"));}catch(NullPointerException e){}
+			name.setTaxGroupId(rs.getLong("accntgrpid"));
 			orn.setPaymentName(name);
+			
+			
+			
+			
 			
 			orns.add(orn);
 			
@@ -438,8 +582,9 @@ public class ORNameList {
 				+ "pyid,"
 				+ "customerid,"
 				+ "olamount,"
-				+ "isactiveol)" 
-				+ "values(?,?,?,?,?,?)";
+				+ "isactiveol,"
+				+ "accid)" 
+				+ "values(?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -467,12 +612,14 @@ public class ORNameList {
 		ps.setLong(cnt++, name.getCustomer().getId());
 		ps.setDouble(cnt++, name.getAmount());
 		ps.setInt(cnt++, name.getIsActive());
+		ps.setLong(cnt++, name.getGroupId().getId());
 		
 		LogU.add(name.getOrList().getId());
 		LogU.add(name.getPaymentName().getId());
 		LogU.add(name.getCustomer().getId());
 		LogU.add(name.getAmount());
 		LogU.add(name.getIsActive());
+		LogU.add(name.getGroupId().getId());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -494,8 +641,9 @@ public class ORNameList {
 				+ "pyid,"
 				+ "customerid,"
 				+ "olamount,"
-				+ "isactiveol)" 
-				+ "values(?,?,?,?,?,?)";
+				+ "isactiveol,"
+				+ "accid)" 
+				+ "values(?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -523,12 +671,14 @@ public class ORNameList {
 		ps.setLong(cnt++, getCustomer().getId());
 		ps.setDouble(cnt++, getAmount());
 		ps.setInt(cnt++, getIsActive());
+		ps.setLong(cnt++, getGroupId().getId());
 		
 		LogU.add(getOrList().getId());
 		LogU.add(getPaymentName().getId());
 		LogU.add(getCustomer().getId());
 		LogU.add(getAmount());
 		LogU.add(getIsActive());
+		LogU.add(getGroupId().getId());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -547,7 +697,8 @@ public class ORNameList {
 				+ "orid=?,"
 				+ "pyid=?,"
 				+ "customerid=?,"
-				+ "olamount=?" 
+				+ "olamount=?,"
+				+ "accid=?" 
 				+ " WHERE olid=?";
 		
 		PreparedStatement ps = null;
@@ -565,12 +716,14 @@ public class ORNameList {
 		ps.setLong(cnt++, name.getPaymentName().getId());
 		ps.setLong(cnt++, name.getCustomer().getId());
 		ps.setDouble(cnt++, name.getAmount());
+		ps.setLong(cnt++, name.getGroupId().getId());
 		ps.setLong(cnt++, name.getId());
 		
 		LogU.add(name.getOrList().getId());
 		LogU.add(name.getPaymentName().getId());
 		LogU.add(name.getCustomer().getId());
 		LogU.add(name.getAmount());
+		LogU.add(name.getGroupId().getId());
 		LogU.add(name.getId());
 		
 		LogU.add("executing for saving...");
@@ -591,7 +744,8 @@ public class ORNameList {
 				+ "orid=?,"
 				+ "pyid=?,"
 				+ "customerid=?,"
-				+ "olamount=?" 
+				+ "olamount=?,"
+				+ "accid=?" 
 				+ " WHERE olid=?";
 		
 		PreparedStatement ps = null;
@@ -609,12 +763,14 @@ public class ORNameList {
 		ps.setLong(cnt++, getPaymentName().getId());
 		ps.setLong(cnt++, getCustomer().getId());
 		ps.setDouble(cnt++, getAmount());
+		ps.setLong(cnt++, getGroupId().getId());
 		ps.setLong(cnt++, getId());
 		
 		LogU.add(getOrList().getId());
 		LogU.add(getPaymentName().getId());
 		LogU.add(getCustomer().getId());
 		LogU.add(getAmount());
+		LogU.add(getGroupId().getId());
 		LogU.add(getId());
 		
 		LogU.add("executing for saving...");

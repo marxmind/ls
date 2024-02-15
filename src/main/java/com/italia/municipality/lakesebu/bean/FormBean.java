@@ -1530,7 +1530,7 @@ public class FormBean implements Serializable{
 	public List getCollectors() {
 		collectors = new ArrayList<>();
 		collectors.add(new SelectItem(0, "Select Collector"));
-		for(Collector col : Collector.retrieve("", new String[0])) {
+		for(Collector col : Collector.retrieve(" AND cl.isresigned=0", new String[0])) {
 			collectors.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()));
 		}
 		
@@ -1657,7 +1657,8 @@ public class FormBean implements Serializable{
 		collectorsMap.add(new SelectItem(0, "All Collectors"));
 		
 		for(Collector col : Collector.retrieve("", new String[0])) {
-			collectorsMap.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()));
+			String stat = col.getIsResigned()==1? "-Resigned":"";
+			collectorsMap.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()+stat));
 		}
 		return collectorsMap;
 	}

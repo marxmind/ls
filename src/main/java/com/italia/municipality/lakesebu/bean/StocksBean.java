@@ -629,8 +629,8 @@ public class StocksBean implements Serializable{
 	public void positionUpdate() {
 		
 		Department dep = getMapCollector().get(slip.getCollector().getId()).getDepartment();
-		slip.setCodeNo(getMapDeps().get(dep.getDepid()).getCode());
-		slip.setOffice(Offices.builder().id(getMapDeps().get(dep.getDepid()).getId()).build());
+		try{slip.setCodeNo(getMapDeps().get(dep.getDepid()).getCode());}catch(Exception e) {}
+		try{slip.setOffice(Offices.builder().id(getMapDeps().get(dep.getDepid()).getId()).build());}catch(Exception e) {}
 		if(slip!=null && dep.getDepid()>1) {//((slip.getCollector().getId()>=1 && slip.getCollector().getId()<=20) || (slip.getCollector().getId()==38) || (slip.getCollector().getId()==41) )) {
 			slip.setPosition("Barangay Treasurer");
 			slip.setDivision(Division.builder().id(9).build());
@@ -717,8 +717,8 @@ public class StocksBean implements Serializable{
 		 
 		 List reqs = new ArrayList<>();
 		 mapCollector = new LinkedHashMap<Integer, Collector>();
-		 for(Collector c : Collector.retrieve(" ORDER BY cl.collectorname", new String[0])) {
-			 reqs.add(new SelectItem(c.getId(), c.getName()));
+		 for(Collector c : Collector.retrieve(" AND cl.isresigned=0 ORDER BY cl.collectorname", new String[0])) {
+			 reqs.add(new SelectItem(c.getId(), c.getDepartment().getDepartmentName() +"/"+ c.getName()));
 			 mapCollector.put(c.getId(), c);
 		 }
 		 List divs = new ArrayList<>();

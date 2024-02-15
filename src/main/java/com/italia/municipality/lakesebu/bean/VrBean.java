@@ -632,7 +632,7 @@ public class VrBean implements Serializable{
 	
 	public void clickItem(VRData vr) {
 		setVrData(vr);
-		setSeriesMonthId(vr.getMonthGroup());
+		
 		setVoucherNo(vr.getVoucherSeries());
 		setAccountNo(vr.getAccounts().getBankId());
 		setCheckNo(vr.getCheckNo());
@@ -646,6 +646,9 @@ public class VrBean implements Serializable{
 		setSig2(vr.getSignatory2());
 		setResId(vr.getResponsibility().getId());
 		setDepartmentId(vr.getDepartment().getDepid());
+		//do not transfer below codes
+		onSeriesChange();
+		setSeriesMonthId(vr.getMonthGroup());
 	}
 	
 	public void deleteRow(VRData vr) {
@@ -725,6 +728,8 @@ public class VrBean implements Serializable{
 		
 		vrsPer = new ArrayList<VRData>();//Collections.synchronizedList(new ArrayList<VRData>());
 		for(VRData v : vrMap.values()) {
+			String head = v.getDepartment().getDepartmentHead()==null? "" : "-"+v.getDepartment().getDepartmentHead();
+			v.getDepartment().setDepartmentName(v.getDepartment().getDepartmentName()+head);
 			vrsPer.add(v);
 		}
 		
@@ -1061,8 +1066,9 @@ public class VrBean implements Serializable{
 	public List getDepartment() {
 		
 		department = new ArrayList<>();
-		for(Department dep : Department.retrieve("SELECT * FROM department order by departmentname", new String[0])){
-			department.add(new SelectItem(dep.getDepid(), dep.getCode() + "-" + dep.getDepartmentName()));
+		for(Department dep : Department.retrieve("SELECT * FROM department WHERE isactivedep=1 order by departmentname", new String[0])){
+			String head = dep.getDepartmentHead()==null? "" : "-"+dep.getDepartmentHead();
+			department.add(new SelectItem(dep.getDepid(), dep.getCode() + "-" + dep.getDepartmentName() + head));
 		}
 		
 		return department;
@@ -1079,7 +1085,7 @@ public class VrBean implements Serializable{
 	public List getSigs1() {
 		
 		sigs1 = new ArrayList<>();
-		for(Signatories sig : Signatories.retrieve("SELECT * FROM signatory WHERE isofficial=0", new String[0])) {
+		for(Signatories sig : Signatories.retrieve("SELECT * FROM signatory WHERE isactivesig=1 AND isofficial=0", new String[0])) {
 			sigs1.add(new SelectItem(sig.getId(), sig.getName()));
 		}
 		
@@ -1091,7 +1097,7 @@ public class VrBean implements Serializable{
 	public List getSigs2() {
 		
 		sigs2 = new ArrayList<>();
-		for(Signatories sig : Signatories.retrieve("SELECT * FROM signatory WHERE isofficial=1", new String[0])) {
+		for(Signatories sig : Signatories.retrieve("SELECT * FROM signatory WHERE isactivesig=1 AND isofficial=1", new String[0])) {
 			sigs2.add(new SelectItem(sig.getId(), sig.getName()));
 		}
 		
@@ -1364,7 +1370,8 @@ public void printExpense() {
 	public List getDepartmentSearch() {
 		departmentSearch = new ArrayList<>();
 		for(Department dep : Department.retrieve("SELECT * FROM department order by departmentname", new String[0])){
-			departmentSearch.add(new SelectItem(dep.getDepid(), dep.getCode() + "-" + dep.getDepartmentName()));
+			String head = dep.getDepartmentHead()==null? "" : "-" + dep.getDepartmentHead();
+			departmentSearch.add(new SelectItem(dep.getDepid(), dep.getCode() + "-" + dep.getDepartmentName() + head));
 		}
 		return departmentSearch;
 	}

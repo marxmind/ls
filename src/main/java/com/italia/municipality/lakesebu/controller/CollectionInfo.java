@@ -65,6 +65,28 @@ public class CollectionInfo {
 	
 	private int isRts;
 	
+	//use in FormChangeBean.class
+	private int inputQty;
+	private int available;
+	
+	public static CollectionInfo retrieveLastTransaction(long id) {
+		CollectionInfo info = null;
+		
+		try{info = CollectionInfo.retrieve(" AND frm.isactivecol=1 AND frm.logid="+id + " ORDER BY frm.colid DESC limit 1", new String[0]).get(0);}catch(IndexOutOfBoundsException e) {}
+		
+		return info;
+	}
+	
+	public static List<IssuedForm> retrieveFormForChangeSearch(long series){
+		List<IssuedForm> issuedForms = new ArrayList<IssuedForm>();
+		
+		//String sql = "SELECT * FROM logissuedform WHERE isactivelog=1 AND logid  IN (SELECT DISTINCT logid FROM collectioninfo WHERE isactivecol=1 AND (beginningNoCol=" + series + " OR endingNoLog="+ series + "))";
+		String sql = " AND frm.logid  IN (SELECT DISTINCT logid FROM collectioninfo WHERE isactivecol=1 AND (beginningNoCol=" + series + " OR endingNoCol="+ series + "))";
+		issuedForms = IssuedForm.retrieve(sql, new String[0]);
+		
+		return issuedForms;
+	}
+	
 	public static List<CollectionInfo> retrieveDoubleCheck(List<CollectionInfo> ldata){
 		List<CollectionInfo> data = new ArrayList<CollectionInfo>();
 		//return empty if list is zero
@@ -554,6 +576,9 @@ public class CollectionInfo {
 			try{issued.setStatus(rs.getInt("formstatus"));}catch(NullPointerException e){}
 			try{issued.setFormTypeName(FormType.nameId(rs.getInt("formtypelog")));}catch(NullPointerException e){}
 			try{issued.setStatusName(FormStatus.nameId(rs.getInt("formstatus")));}catch(NullPointerException e){}
+			try{issued.setStock(Stocks.builder().id(rs.getLong("stockid")).build());}catch(NullPointerException e){}
+			try{issued.setFundId(rs.getInt("fundid"));}catch(NullPointerException e){}
+			try{issued.setFundName(FundType.typeName(rs.getInt("fundid")));}catch(NullPointerException e){}
 			form.setIssuedForm(issued);
 			
 			Collector col = new Collector();

@@ -61,6 +61,7 @@ import com.italia.municipality.lakesebu.controller.PoblacionCustomer;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.controller.ReportFields;
 import com.italia.municipality.lakesebu.controller.Reports;
+import com.italia.municipality.lakesebu.controller.TaxAccountGroup;
 import com.italia.municipality.lakesebu.controller.TaxCodeGroup;
 import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.enm.AccessLevel;
@@ -507,10 +508,11 @@ public class ORListingBean implements Serializable{
 		}
 		
 		for(Collector c : Collector.retrieve(sql, new String[0])) {
+			String stat = c.getIsResigned()==1? " (In-Active)":"";
 			if(c.getId()==0) {
 				collectorsSearch.add(new SelectItem(0, "All Collector"));
 			}else {
-				collectorsSearch.add(new SelectItem(c.getId(), c.getName()));
+				collectorsSearch.add(new SelectItem(c.getId(), c.getName()+stat));
 			}
 		}
 		
@@ -525,6 +527,7 @@ public class ORListingBean implements Serializable{
 			sql = " AND cl.isid="+ getIssuedCollectorId();
 		}
 		collectors = new ArrayList<>();
+		sql += " AND cl.isresigned=0";
 		for(Collector c : Collector.retrieve(sql, new String[0])) {
 			if(c.getId()>0) {
 				collectors.add(new SelectItem(c.getId(), c.getName()));
@@ -2129,7 +2132,7 @@ public class ORListingBean implements Serializable{
 			or.setCollector(col);
 			
 			or = ORListing.save(or);
-			
+			boolean isCancelled = or.getStatus()==5? true : false;//for cancelled Official Receipt
 			//delete first paynames attached in orlisting table
 			//this will ensure for duplication of data
 			ORNameList.delete("DELETE FROM ornamelist WHERE orid=" + or.getId(), new String[0]);
@@ -2144,8 +2147,9 @@ public class ORListingBean implements Serializable{
 					o.setAmount(name.getAmount());
 					o.setOrList(or);
 					o.setCustomer(customer);
-					o.setIsActive(1);
+					o.setIsActive(isCancelled==true? 0 : 1);
 					o.setPaymentName(name);
+					o.setGroupId(TaxAccountGroup.builder().id(name.getTaxGroupId()).build());
 					o.save();
 					
 					name.setAmount(0);
@@ -2376,7 +2380,8 @@ public class ORListingBean implements Serializable{
 			namesDataSelected.add(name);
 			amount += on.getAmount();
 		}*/
-		String sql = " AND nameL.isactiveol=1 AND nameL.orid="+or.getId();
+		//String sql = " AND nameL.isactiveol=1 AND nameL.orid="+or.getId();
+		String sql = " AND nameL.orid="+or.getId();
 		ctcFlds(false);
 		if(FormType.CTC_INDIVIDUAL.getId()==or.getFormType() || FormType.CTC_CORPORATION.getId()==or.getFormType()) {
 			

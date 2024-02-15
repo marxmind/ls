@@ -24,6 +24,7 @@ import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
+import com.italia.municipality.lakesebu.controller.ORNameList;
 import com.italia.municipality.lakesebu.controller.TaxAccountGroup;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.FormType;
@@ -80,6 +81,9 @@ public class GraphIssuanceBean implements Serializable {
 	private List funds;
 	private BarChartModel barModel4;
 	
+	private Map<Long, TaxAccountGroup> groupMapData;
+	private boolean includeMonths;
+	
 	@PostConstruct
 	public void init() {
 		
@@ -113,9 +117,11 @@ public class GraphIssuanceBean implements Serializable {
 		}
 		accounts = new ArrayList<>();
 		mapAccounts = new LinkedHashMap<String, String>();
+		groupMapData = new LinkedHashMap<Long, TaxAccountGroup>();
 		for(TaxAccountGroup acc : TaxAccountGroup.retrieve(" ORDER BY st.accname ", new String[0])) {
 			accounts.add(new SelectItem(acc.getId(), acc.getName()));
 			mapAccounts.put(acc.getName(), acc.getName());
+			groupMapData.put(acc.getId(), acc);
 		}
 		
 		funds = new ArrayList<>();
@@ -892,6 +898,10 @@ public class GraphIssuanceBean implements Serializable {
 	
 	public void reportAcc() {
 		
+		if(isIncludeMonths()) {
+			reportAccDetailed();
+		}else {
+		
 		String sql = "SELECT YEAR(o.timestampol) as year, aa.accname,sum(o.olamount) as amount FROM taxaccntgroup  aa, paymentname pp, ornamelist o "
 				+ "WHERE aa.accisactive=1 AND pp.isactivepy=1 AND o.isactiveol=1 AND aa.accid=pp.accntgrpid AND pp.pyid=o.pyid ";
 				
@@ -984,6 +994,7 @@ public class GraphIssuanceBean implements Serializable {
 		
 		accountGrpah(mapData);
 		
+		}
 		
 	}
 	
@@ -998,6 +1009,7 @@ public class GraphIssuanceBean implements Serializable {
 	    	isMorethanOneYearSelected=true;
 	    }
 	    Map<String, Double> amounts = new LinkedHashMap<>();
+	    double amount = 0d;
 		for(int year : mapData.keySet()) {
 			for(String name : mapData.get(year).keySet()) {
 
@@ -1008,6 +1020,7 @@ public class GraphIssuanceBean implements Serializable {
 	        	
 	        	for(String nem : getMapAccounts().values()) {
 	        		if(name.equalsIgnoreCase(nem)) {
+	        			amount += mapData.get(year).get(nem);
 	        			values.add(mapData.get(year).get(nem));
 	        			amounts.put(nem, mapData.get(year).get(nem));
 	        		}else {
@@ -1068,7 +1081,7 @@ public class GraphIssuanceBean implements Serializable {
 
 	    Title title = new Title();
 	    title.setDisplay(true);
-	    title.setText("Year Collection Data" + (isMorethanOneYearSelected==true? "" : " " +  getAccountSelectedYear().toString()));
+	    title.setText("Year Collection Data" + (isMorethanOneYearSelected==true? "" : " " +  getAccountSelectedYear().toString()) + " = " + Currency.formatAmount(amount));
 	    options.setTitle(title);
 	    
 	    
@@ -1084,7 +1097,108 @@ public class GraphIssuanceBean implements Serializable {
 	    
 	    barModel3.setOptions(options);
 	}
+
+@SuppressWarnings("unchecked")
+public void reportAccDetailed() {
+		
+		
+		Map<Long, Map<Integer, Map<Integer, Double>>> mapData = new LinkedHashMap<Long, Map<Integer, Map<Integer, Double>>>();
+		if(getAccountSelected()!=null && getAccountSelected().size()==0) {
+			for(ORNameList aa : ORNameList.getTopTax(Integer.valueOf(getAccountSelectedYear().get(0)+""), 5)) {
+				getAccountSelected().add(aa.getGroupId().getId());
+			}
+		}
 	
+		if(getAccountSelectedYear()!=null) {
+			mapData = ORNameList.retrieveCollection(Integer.valueOf(getAccountSelectedYear().get(0)+""), getAccountSelected().size()>0? true : false,getAccountSelected());
+		}
+		
+		accountGrpahDetailed(mapData);
+		
+		
+	}
+	
+private void accountGrpahDetailed(Map<Long, Map<Integer, Map<Integer, Double>>> mapData) {
+	System.out.println("accountGrpah.............................");
+	barModel3 = new BarChartModel();
+    ChartData data = new ChartData();
+    int color = 1;
+    
+    boolean isMorethanOneYearSelected=false;
+    if(getAccountSelectedYear()!=null && getAccountSelectedYear().size()>1) {
+    	isMorethanOneYearSelected=true;
+    }
+    
+    int year = Integer.valueOf(getAccountSelectedYear().get(0)+"");
+    
+    List<String> labels = new ArrayList<>();
+    
+    double grandTotal = 0d;
+	
+	
+		for(long group : mapData.keySet()) {
+			
+			
+			BarChartDataSet barDataSet = new BarChartDataSet();
+			List<Number> values = new ArrayList<>();
+			double total = 0d;
+			for(int mm=1; mm<=12; mm++) {
+				double amountTax = 0d;
+				if(mapData.get(group).get(year).containsKey(mm)) {
+					amountTax = mapData.get(group).get(year).get(mm);
+					values.add(amountTax);
+					total += amountTax;
+				}else {
+					values.add(amountTax);
+				}
+			}
+			grandTotal += total;
+			barDataSet.setData(values);
+			barDataSet.setLabel(getGroupMapData().get(group).getName() + "=" + Currency.formatAmount(total));
+		    barDataSet.setBackgroundColor(GraphColorWithBorder.valueId(color));
+		    barDataSet.setBorderColor(GraphColor.valueId(color));
+		    barDataSet.setBorderWidth(1);
+		    data.addChartDataSet(barDataSet);
+			color++;
+		}
+	
+	//month labels
+	for(int m=1; m<=12; m++) {	
+		labels.add(DateUtils.getMonthName(m));	
+	}
+    data.setLabels(labels);
+    barModel3.setData(data);
+    
+    
+    BarChartOptions options = new BarChartOptions();
+    CartesianScales cScales = new CartesianScales();
+    CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+    linearAxes.setOffset(true);
+    CartesianLinearTicks ticks = new CartesianLinearTicks();
+    //ticks.setBeginAtZero(true);
+    linearAxes.setTicks(ticks);
+    cScales.addYAxesData(linearAxes);
+    options.setScales(cScales);
+
+    Title title = new Title();
+    title.setDisplay(true);
+    title.setText("Year Collection Data" + (isMorethanOneYearSelected==true? "" : " " +  getAccountSelectedYear().toString()) + " = " + Currency.formatAmount(grandTotal));
+    options.setTitle(title);
+    
+    
+    Legend legend = new Legend();
+    legend.setDisplay(true);
+    legend.setPosition("bottom");
+    LegendLabel legendLabels = new LegendLabel();
+    legendLabels.setFontStyle("bold");
+    legendLabels.setFontColor("#2980B9");
+    legendLabels.setFontSize(12);
+    legend.setLabels(legendLabels);
+    options.setLegend(legend);
+    
+    barModel3.setOptions(options);
+}
+
 	public void loadCashDeposit() {
 		String sql = "SELECT DATE_FORMAT(alldatetrans,'%Y') as year,DATE_FORMAT(alldatetrans,'%m') as month, amount as total FROM rcdallcontroller WHERE isactiveall=1 AND fundtype=? ";//AND (alldatetrans>=? AND alldatetrans<=?)";
 		String[] params = new String[1];
@@ -1096,20 +1210,19 @@ public class GraphIssuanceBean implements Serializable {
 				int i=1;
 				for(Object s : getCashYearSelected()) {
 					if(i==1) {
-						sql += "(alldatetrans>='"+ s +"-01-01' AND alldatetrans<='"+ s +"-12-31')";
+						sql += "(alldatetrans>='"+ s.toString() +"-01-01' AND alldatetrans<='"+ s.toString() +"-12-31')";
 					}else {
-						sql += " OR (alldatetrans>='"+ s +"-01-01' AND alldatetrans<='"+ s +"-12-31')";
+						sql += " OR (alldatetrans>='"+ s.toString() +"-01-01' AND alldatetrans<='"+ s.toString() +"-12-31')";
 					}
 					i++;
 				}
 				sql += " ) ";
 			}else {
-				/*sql += " AND (";
-				for(Object s : getCashYearSelected()) {
-					sql += "alldatetrans>='"+ s +"-01-01' AND alldatetrans<='"+ s +"-12-31'";
+				if(getCashYearSelected().size()==1) {
+					sql += " AND (alldatetrans>='"+ Integer.valueOf(getCashYearSelected().get(0).toString())+"-01-01' AND alldatetrans<='"+ Integer.valueOf(getCashYearSelected().get(0).toString()) +"-12-31')";
+				}else {
+					sql += " AND (alldatetrans>='"+ nowYear +"-01-01' AND alldatetrans<='"+ nowYear +"-12-31')";
 				}
-				sql += " ) ";*/
-				sql += " AND (alldatetrans>='"+ nowYear +"-01-01' AND alldatetrans<='"+ nowYear +"-12-31')";
 			}
 		}else {
 			sql += " AND (alldatetrans>='"+ nowYear +"-01-01' AND alldatetrans<='"+ nowYear +"-12-31')";
@@ -1168,15 +1281,17 @@ public class GraphIssuanceBean implements Serializable {
 			BarChartDataSet barDataSet = new BarChartDataSet();
         	List<Number> values = new ArrayList<>();
         	List<String> labels = new ArrayList<>();
+        	double grandTotal = 0d;
 			for(int month : mapData.get(year).keySet()) {
 				String name = Months.getMonthName(month);
 				double total = mapData.get(year).get(month);
 				values.add(total);
 				labels.add(name);
+				grandTotal += total;
 			}
 			barDataSet.setData(values);
  	        //barDataSet.setLabel((isMorethanOneYearSelected==true?  "("+ year +")" : ""));
-			barDataSet.setLabel(year+"");
+			barDataSet.setLabel(year+" = " + Currency.formatAmount(grandTotal));
 		    barDataSet.setBackgroundColor(GraphColorWithBorder.valueId(color));
 		    barDataSet.setBorderColor(GraphColor.valueId(color));
 		    barDataSet.setBorderWidth(1);
@@ -1186,31 +1301,6 @@ public class GraphIssuanceBean implements Serializable {
 		}
 		
 		
-		/*
-		 * for(int month=1; month<=12; month++) {
-		 * labels.add(DateUtils.getMonthName(month)); }
-		 */
-		System.out.println("amount size: " + amounts.size());
-		/*
-		if(getCashYearSelected()!=null && getCashYearSelected().size()==1) {
-    		if(getCashYearSelected()!=null && getCashYearSelected().size()>0) {
-    			for(int n : amounts.keySet()) {
-    				labels.add(n + "("+ Currency.formatAmount(amounts.get(n)) +")");
-    			}
-    		}else {
-    			for(String name : getMapAccounts().values()) {
-	    			labels.add(name);
-	    }
-    		}
-		}else {	
-		
-		    for(String name : getMapAccounts().values()) {
-		    			labels.add(name);
-		    }
-	    
-		}*/
-	    
-	    
 	    barModel4.setData(data);
 	    
 	    

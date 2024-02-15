@@ -1,31 +1,25 @@
-<html 
-	  xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:faces="jakarta.faces"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:pt="jakarta.faces.passthrough"
-      xmlns:cc="jakarta.faces.composite"
-      xmlns:c="jakarta.tags.core"
-    xmlns:fn="jakarta.tags.functions"
-    xmlns:my="jakarta.faces.component"
-    >
-    
-     <ui:composition>
-     
-     <style type="text/css">
-			    .ui-chart {
-			        margin-bottom: 50px;
-			    }
-			</style>
-    		
-    		<p:dialog widgetVar="dlgGraph" fitViewport="true" position="center top" header="Graph" closable="true" modal="true" closeOnEscape="true">
-    		<p:card style="width: 120em">
-    		<p:scrollPanel style="width:120em;height:650px" mode="native">
-    		
-    		
-    		<p:tabView prependId="false">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+    	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+    </h:head>
+
+<style>
+
+
+</style>
+
+
+    <h:body>
+        
+        
+    <div class="card">
+    <h:form prependId="false" id="formId">
+    	<p:growl id="msg" showDetail="true" life="2000" />
+        <p:tabView prependId="false">
     		
     		<p:tab title="Collection Deposit">
     			
@@ -114,7 +108,7 @@
 				
     			</div>
     			
-    			<p:barChart id="graphAccBardId" model="#{graphIssuanceBean.barModel3}" style="width: 100%; height: 500px;"/>
+    			<p:barChart id="graphAccBardId" model="#{graphIssuanceBean.barModel3}" style="width: 200%; height: 1000px;"/>
     			
     		</f:facet>
     		<f:facet name="right"/>
@@ -123,11 +117,9 @@
 	        	
 	        </p:tab>
 	        
-	        </p:tabView>
-	        	
-    		</p:scrollPanel>
-    		</p:card>
-    		</p:dialog>
-     
-     </ui:composition>
+	        </p:tabView>       
+    </h:form>
+</div>
+        
+    </h:body>
 </html>

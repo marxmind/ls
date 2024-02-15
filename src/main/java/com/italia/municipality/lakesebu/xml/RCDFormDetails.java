@@ -1,5 +1,11 @@
 package com.italia.municipality.lakesebu.xml;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 /**
  * 
  * @author Mark Italia
@@ -7,13 +13,20 @@ package com.italia.municipality.lakesebu.xml;
  * @since 06/19/2019
  *
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
+@ToString
 public class RCDFormDetails {
 
-	private String formId;
-	private String name;
-	private String seriesFrom;
-	private String seriesTo;
-	private String amount;
+	private String formId="";
+	private String name="";
+	private String seriesFrom="";
+	private String seriesTo="";
+	private String amount="";
+	private String style;
+	/*
 	public String getFormId() {
 		if(formId==null) {
 			formId="";
@@ -59,5 +72,5 @@ public class RCDFormDetails {
 	public void setAmount(String amount) {
 		this.amount = amount;
 	}
-	
+	*/
 }

@@ -1,0 +1,798 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     
+     <style type="text/css">
+			    .ui-chart {
+			        margin-bottom: 50px;
+			    }
+			</style>
+    		
+    		<p:dialog widgetVar="dlgFormChange"  height="700" width="1200" minimizable="true" maximizable="true" position="center top" header="Report of Collection and Deposit (Developer Maintainance)" closable="true" modal="true" closeOnEscape="true">
+    		
+    		
+    		
+    		<p:separator/>   
+    		<p:outputLabel value="Collector Name :" style="font-weight: bold;font-size: large;width: 10em"/><p:inputText id="collId" value="#{formChange.collectorName}" readonly="true" style="font-weight: bold;font-size: large;width: 50em"/>
+    		<p:separator/>   
+    		<p:outputLabel value="Report Series No :" style="font-weight: bold;font-size: large;width: 10em"/><p:inputText id="repId" value="#{formChange.reportSeriesNo}" style="font-weight: bold;font-size: large;width: 50em"/>
+    		<p:separator/>   
+    		<p:outputLabel value="Fund Name :" style="font-weight: bold;font-size: large;width: 10em"/><p:inputText id="funderId" value="#{formChange.fundName}" readonly="true" style="font-weight: bold;font-size: large;width: 50em"/>
+    		<p:separator/>   
+    		<p:outputLabel value="Total :" style="font-weight: bold;font-size: large;width: 10em"/><p:inputText id="totId" value="#{formChange.total}" style="color: red;font-weight: bold;font-size: large;width: 50em"/>
+    		
+    		<p:separator/>
+    		
+    		<div class="ui-inputgroup">
+    		<p:commandButton id="updateId" icon="pi pi-sync" title="Sync" update="listColData listFormData listFormDataSeries listColIssuedData listStockData sumData totId" />
+    		<p:commandButton id="saveDataId" icon="pi pi-save" title="Save" actionListener="#{formChange.saveDataXml}" update="sumData listFormData listFormDataSeries collId repId funderId totId msg" />
+    		
+    		<p:commandLink title="Print in PDF"  actionListener="#{formChange.printForm}" target="_blank" ajax="false" immediate="false">
+            				<i class="pi pi-file-pdf" style="font-size: 2rem;float: left;"></i>
+			</p:commandLink>
+    		</div>
+    		<p:separator/>
+    		
+    		<p:outputLabel value="SUMMARY TABLE"/>
+    		<p:dataTable id="sumData" value="#{formChange.summaryData}" var="sm" stickyHeader="false"
+							rows="13" paginator="false" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="26,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" editable="true" editMode="cell" reflow="true">
+    			     
+            	     <p:ajax event="cellEdit"  listener="#{formChange.onSummary}" update="sumData msg" />
+            			
+            		<p:column headerText="Id" width="20">
+ 							<p:outputLabel value="#{sm.id}"/>
+            	     </p:column>
+            		
+            		<p:column headerText="" width="15" exportable="false">
+            				 	<p:commandLink title="Print" target="_blank" action="#{logformBean.printSummary(sm.objectData)}" ajax="false" immediate="false">
+            				 			<i class="pi pi-print" style="font-size: 2rem;float: left"></i>
+								</p:commandLink>
+				      </p:column> 
+            				     
+            	     <p:column headerText="Table" width="50">
+ 							<p:outputLabel value="#{sm.tableName}"/>
+            	     </p:column>
+            	     
+            	     <p:column headerText="Date" width="70">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{sm.dateTrans}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{sm.dateTrans}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+            	     
+            	     
+            	     
+            	     <p:column headerText="Control Number" width="70">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{sm.controlNumber}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{sm.controlNumber}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+            	     
+            	     <p:column headerText="Col Ids" width="600">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{sm.colIds}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{sm.colIds}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+            	     
+            	     <p:column headerText="Fund" width="70">
+ 							<p:outputLabel value="#{sm.fundName}"/>
+            	     </p:column>
+    				
+    				 <p:column headerText="Series" width="300">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{sm.individualSeries}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{sm.individualSeries}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+            	     
+            	     <p:column headerText="Amount" width="200">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{sm.amount}">
+ 								<f:convertNumber currencySymbol="" type="currency" />
+ 							</p:outputLabel>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputNumber  value="#{sm.amount}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+    				
+    				<p:column headerText="CollectorId" width="200">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{sm.collectorIDs}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{sm.collectorIDs}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+    				
+    		</p:dataTable>
+    		<p:separator/>
+    		<p:outputLabel value="STOCK TABLE"/>
+    		<p:dataTable id="listStockData" value="#{formChange.stocksData}" var="it" stickyHeader="false"
+							rows="13" paginator="false" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="26,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" editable="true" editMode="cell" reflow="true">
+                         
+                        		<p:columnGroup type="header">
+									<p:row>
+										<p:column rowspan="2" headerText="Stock Id" width="20"/>
+										<p:column rowspan="2" headerText="Collector ID" width="70"/>
+										<p:column rowspan="2" headerText="Date" width="50"/>
+										<p:column rowspan="2" headerText="Stab No" width="50"/>
+										<p:column rowspan="2" headerText="Form" width="100"/>
+										<p:column colspan="3" headerText="Series" width="150"/>
+										<p:column rowspan="2" headerText="Deleted" width="50"/>
+										<p:column rowspan="2" headerText="Status" width="100"/>
+										
+									</p:row>
+									<p:row>
+										 <p:column colspan="1" headerText="Pieces" width="50"/>
+										 <p:column colspan="1" headerText="From" width="50"/>
+					                     <p:column colspan="1" headerText="To" width="50"/>
+				                	</p:row>
+								</p:columnGroup> 
+                         
+                         <p:ajax event="cellEdit"  listener="#{formChange.onStockInfo}" update="listStockData listColIssuedData msg" />
+                         
+                         <p:column headerText="Id" width="20">
+ 							<p:outputLabel value="#{it.id}"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Collector Id" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.collector.name}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:selectOneMenu value="#{it.collector.id}" style="width: 12em">
+									<f:selectItems value="#{it.collectors}"/>
+								</p:selectOneMenu>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Date" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.dateTrans}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{it.dateTrans}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Stab No" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.stabNo}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{it.stabNo}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Form" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.formTypeName}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:selectOneMenu value="#{it.formType}" style="width: 12em">
+									<f:selectItems value="#{it.forms}"/>
+								</p:selectOneMenu>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Pieces" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.quantity}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{it.quantity}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="From" width="50">
+			                 <p:commandButton icon="pi pi-pencil" value="#{it.seriesFrom}" style="width: 7em" actionListener="#{logformBean.loadSearchStock(it)}" oncomplete="PF('dlgCSeries').show()" update="idSearchSeries dataSeries dataIssued idAvail"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="To" width="50">
+			                  	<p:outputLabel  value="#{it.seriesTo}"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Deleted" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.isActive==0? 'Yes':'No'}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{it.isActive}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Status" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{it.statusName}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:selectOneMenu value="#{it.status}" style="width: 12em">
+									<f:selectItems value="#{it.statusList}"/>
+								</p:selectOneMenu>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 
+                         
+            </p:dataTable> 
+    		
+    		<p:separator/>
+    		<p:outputLabel value="ISSUED TABLE"/>
+    		<p:dataTable id="listColIssuedData" value="#{formChange.issuedData}" var="iss" stickyHeader="false"
+							rows="13" paginator="false" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="26,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" editable="true" editMode="cell" reflow="true">
+                         
+                        		<p:columnGroup type="header">
+									<p:row>
+										<p:column rowspan="2" headerText="Issued Id" width="70"/>
+										<p:column rowspan="2" headerText="Stock Id" width="70"/>
+										<p:column rowspan="2" headerText="Date" width="50"/>
+										<p:column rowspan="2" headerText="Form" width="100"/>
+										<p:column colspan="3" headerText="Series" width="150"/>
+										<p:column rowspan="2" headerText="Status" width="100"/>
+										<p:column rowspan="2" headerText="Fund" width="100"/>
+									</p:row>
+									<p:row>
+										 <p:column colspan="1" headerText="Pieces" width="50"/>
+										 <p:column colspan="1" headerText="Beginning" width="50"/>
+					                     <p:column colspan="1" headerText="Ending" width="50"/>
+				                	</p:row>
+								</p:columnGroup> 
+                         
+                         <p:ajax event="cellEdit"  listener="#{formChange.onIssuedInfo}" update="listColIssuedData msg" />
+                         
+                         <p:column headerText="Issued Id" width="70">
+ 							<p:outputLabel value="#{iss.id}"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Stock Id" width="70">
+	            				<p:outputLabel value="#{iss.stock.id}"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Date" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{iss.issuedDate}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{iss.issuedDate}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Form" width="50">
+	            				<p:outputLabel value="#{iss.formTypeName}"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Pieces" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{iss.pcs}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{iss.pcs}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Beginning" width="50">
+			                 <p:commandButton icon="pi pi-pencil" value="#{iss.beginningNo}" style="width: 7em" actionListener="#{logformBean.loadSearchSissued(iss)}" oncomplete="PF('dlgCSeries').show()" update="idSearchSeries dataSeries dataIssued idAvail"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Ending" width="50">
+	            				<p:outputLabel value="#{iss.endingNo}"/>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Status" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{iss.statusName}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:selectOneMenu value="#{iss.status}" style="width: 12em">
+									<f:selectItems value="#{iss.formStatus}"/>
+								</p:selectOneMenu>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 <p:column headerText="Fund" width="50">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            				<p:outputLabel value="#{iss.fundName}"/>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:selectOneMenu value="#{iss.fundId}" style="width: 12em">
+									<f:selectItems value="#{iss.fundList}"/>
+								</p:selectOneMenu>
+			                  </f:facet>
+							</p:cellEditor>
+            	  		 </p:column>
+            	  		 
+            	  		 
+                         
+            </p:dataTable>             
+    		
+    		<p:separator/>
+    		<p:outputLabel value="COLLECTIONINFO TABLE"/>
+    		<p:dataTable id="listColData" value="#{formChange.colData}" var="rc" stickyHeader="false"
+							rows="13" paginator="false" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="26,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" editable="true" editMode="cell" reflow="true">
+                   
+                   				<p:columnGroup type="header">
+									<p:row>
+										<p:column rowspan="2" headerText="Edit" width="20"/>
+										<p:column rowspan="2" headerText="Id" width="20"/>
+										<p:column rowspan="2" headerText="Issued Id" width="70"/>
+										<p:column rowspan="2" headerText="Date" width="70"/>
+										<p:column rowspan="2" headerText="Form" width="100"/>
+										<p:column colspan="5" headerText="Issued Series (available + issued qty if change request qty)" width="250"/>
+										<p:column rowspan="2" headerText="Deleted" width="50"/>
+										<p:column rowspan="2" headerText="Status" width="100"/>
+										<p:column rowspan="2" headerText="Amount" width="50"/>
+										<p:column rowspan="2" headerText="Group" width="50"/>
+										<p:column rowspan="2" headerText="Account" width="100"/>
+										<p:column rowspan="2" headerText="RTS?" width="50"/>
+										<p:column colspan="2" headerText="RCD Reported" width="100"/>
+										
+									</p:row>
+									<p:row>
+										 <p:column colspan="1" headerText="Available" width="50"/>
+					                     <p:column colspan="1" headerText="Request" width="50"/>
+					                     <p:column colspan="1" headerText="Issued" width="50"/>
+					                     <p:column colspan="1" headerText="Beginning"  width="50"/>
+					                     <p:column colspan="1" headerText="Ending" width="50"/>
+					                     <p:column colspan="1" headerText="All"  width="50"/>
+					                     <p:column colspan="1" headerText="Summary" width="50"/>
+				                	</p:row>
+								</p:columnGroup>
+                   
+                   <p:ajax event="cellEdit"  listener="#{formChange.onCollectionInfo}" update="listColData totId msg" />
+                  
+                  <p:column headerText="Edit" width="20">
+                  	<p:commandButton icon="pi pi-pencil" actionListener="#{logformBean.loadSearch(rc)}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}" oncomplete="PF('dlgCSeries').show()" update="idSearchSeries dataSeries dataIssued idAvail"/> 
+                  </p:column>
+                         
+                  <p:column headerText="Id" width="20">
+ 						<p:outputLabel value="#{rc.id}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column> 
+            	  
+            	  <p:column headerText="Issued Id" width="70">
+ 						<p:outputLabel value="#{rc.issuedForm.id}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column> 
+            	  
+            	  <p:column headerText="Date" width="70">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.receivedDate}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rc.receivedDate}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  </p:column> 
+            	  
+            	   <p:column headerText="Form" width="70">
+ 						<p:outputLabel value="#{rc.formTypeName}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column>
+            	  
+            	  <p:column headerText="Available" width="50">
+            			<p:outputLabel value="#{rc.available}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column> 
+            	  
+            	  <p:column headerText="Request" width="70">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.inputQty}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rc.inputQty}" disabled="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? true:false}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  </p:column>
+            	  
+            	  <p:column headerText="Issued" width="50">
+            			<p:outputLabel value="#{rc.pcs}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column>
+            	  
+            	  <p:column headerText="Beginning" width="70">
+            	  			<p:outputLabel value="#{rc.beginningNo}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column>
+            	  
+            	  <p:column headerText="Ending" width="70">
+            				<p:outputLabel value="#{rc.endingNo}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column>
+            	  
+            	  <p:column headerText="Deleted" width="70">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.isActive==0? 'Yes':'No'}" style="#{rc.isActive==0? 'color:red;font-weight:bold':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputNumber placeholder="0-deleted 1-active"  value="#{rc.isActive}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  </p:column>
+            	  
+                  <p:column headerText="Status" width="70">
+ 						<p:outputLabel value="#{rc.statusName}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column>
+            	  
+                  <p:column headerText="Amount" width="70">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rc.amount}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}">
+            						<f:convertNumber currencySymbol="" type="currency" />
+            					</p:outputLabel>
+            				</f:facet>
+						 	<f:facet name="input">
+		                  		<p:inputNumber  value="#{rc.amount}"/>
+		                    </f:facet>
+						</p:cellEditor>
+            	  </p:column>
+                  
+                  <p:column headerText="Group" width="50">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.rptGroup}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputNumber  value="#{rc.rptGroup}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  </p:column>
+            	  
+            	  <p:column headerText="Account" width="70">
+ 						<p:outputLabel value="#{rc.fundName}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            	  </p:column> 
+            	  
+            	  <p:column headerText="RTS?" width="70">
+            	  	<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.isRts==1? 'Yes':'No'}" style="#{rc.statusName.equalsIgnoreCase('ALL ISSUED')? 'color:red':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputNumber  value="#{rc.isRts}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  	    
+                  </p:column>
+                  
+                  <p:column headerText="All" width="70">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.isAll==1? 'Yes':'No'}" style="#{rc.isAll==0? 'color:red;font-weight:bold':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputNumber placeholder="0-draft 1-reported"  value="#{rc.isAll}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  </p:column>
+                  
+                  <p:column headerText="Summary" width="70">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rc.isSummary==1? 'Yes':'No'}" style="#{rc.isSummary==0? 'color:red;font-weight:bold':''}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputNumber placeholder="0-draft 1-reported"  value="#{rc.isSummary}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            	  </p:column>
+                  
+                  
+                  
+            </p:dataTable>             
+    		
+    		<p:separator/>
+    		<p:outputLabel value="COLLECTION REPORT"/>
+    		<p:dataTable id="listFormData" value="#{formChange.formsData}" var="rps" stickyHeader="false"
+							rows="13" paginator="false" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="26,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" editable="true" editMode="cell" reflow="true">
+                    
+                    			<p:columnGroup type="header">
+									<p:row>
+										<p:column rowspan="2" headerText="Form" width="50"/>
+										<p:column colspan="3" headerText="Series" width="150"/>
+									</p:row>
+									<p:row>
+					                     <p:column colspan="1" headerText="From" width="50"/>
+					                     <p:column colspan="1" headerText="To"  width="50"/>
+					                     <p:column colspan="1" headerText="Amount" width="50"/>
+					                    
+				                	</p:row>
+								</p:columnGroup>
+                    
+                         
+                    <p:ajax event="cellEdit"  listener="#{formChange.onCellEdit}" update="listFormData msg" />
+ 					
+ 					
+ 					<p:column headerText="Form" width="50">
+ 						<p:cellEditor>
+							<f:facet name="output">
+            				<p:outputLabel value="#{rps.name}" style="#{rps.style}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rps.name}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="From" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rps.seriesFrom}" style="#{rps.style}"/>
+            			</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rps.seriesFrom}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="To" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rps.seriesTo}" style="#{rps.style}"/>
+            			 </f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rps.seriesTo}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="Amount" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rps.amount}" style="#{rps.style}"/>
+            			 </f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rps.amount}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+ 					                        
+             </p:dataTable>       
+             
+             <p:separator/>   
+             
+             
+    		<p:dataTable id="listFormDataSeries" value="#{formChange.formSeriesData}" var="rt" stickyHeader="false"
+							rows="13" paginator="false" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="26,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" editable="true" editMode="cell" reflow="true" style="font-weight: bold">  
+    		
+    				<p:columnGroup type="header">
+									<p:row>
+										<p:column rowspan="2" headerText="Form" width="50"/>
+										<p:column colspan="3" headerText="Beginning" width="150"/>
+										<p:column colspan="3" headerText="Receipt" width="150"/>
+										<p:column colspan="3" headerText="Issued" width="150"/>
+										<p:column colspan="3" headerText="Ending" width="150"/>
+									</p:row>
+									<p:row>
+					                     <p:column colspan="1" headerText="Qty" width="50"/>
+					                     <p:column colspan="1" headerText="From"  width="50"/>
+					                     <p:column colspan="1" headerText="To" width="50"/>
+					                     <p:column colspan="1" headerText="Qty" width="50"/>
+					                     <p:column colspan="1" headerText="From"  width="50"/>
+					                     <p:column colspan="1" headerText="To" width="50"/>
+					                     <p:column colspan="1" headerText="Qty" width="50"/>
+					                     <p:column colspan="1" headerText="From"  width="50"/>
+					                     <p:column colspan="1" headerText="To" width="50"/>
+					                     <p:column colspan="1" headerText="Qty" width="50"/>
+					                     <p:column colspan="1" headerText="From"  width="50"/>
+					                     <p:column colspan="1" headerText="To" width="50"/>
+				                	</p:row>
+								</p:columnGroup>
+    				
+    				<p:ajax event="cellEdit"  listener="#{formChange.onCellEditSeries}" update="listFormDataSeries msg" />
+    				
+    				<p:column headerText="Form" width="50">
+    					<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.name}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.name}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="Qty(B)" width="20">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.beginningQty}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.beginningQty}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="From(B)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.beginningFrom}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.beginningFrom}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="To(B)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.beginningTo}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.beginningTo}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="Qty(R)" width="20">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.receiptQty}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.receiptQty}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="From(R)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.receiptFrom}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.receiptFrom}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="To(R)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.receiptTo}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.receiptTo}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="Qty(I)" width="20">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.issuedQty}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.issuedQty}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="From(I)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.issuedFrom}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.issuedFrom}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="To(I)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.issuedTo}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.issuedTo}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="Qty(E)" width="20">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.endingQty}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.endingQty}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="From(E)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.endingFrom}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.endingFrom}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+            		
+            		<p:column headerText="To(E)" width="50">
+            			<p:cellEditor>
+							<f:facet name="output">
+            					<p:outputLabel value="#{rt.endingTo}" style="#{rt.endingFrom.equalsIgnoreCase('All Issued')? 'color:red':''}"/>
+            				</f:facet>
+						 <f:facet name="input">
+		                  	<p:inputText  value="#{rt.endingTo}"/>
+		                  </f:facet>
+						</p:cellEditor>
+            		</p:column>
+    		
+    		 </p:dataTable>   
+    		
+    		
+    		</p:dialog>
+     
+     </ui:composition>
+     
+     
+     
+</html>

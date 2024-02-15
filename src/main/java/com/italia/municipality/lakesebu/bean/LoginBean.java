@@ -95,6 +95,18 @@ public class LoginBean implements Serializable{
 					  	}
 			  		}
 			  		break;
+			  	case 5:
+			  		//result="monitoring.xhtml";
+			  		result="overview.xhtml";
+			  		if(in.getLogid()>1) {
+			  			setThemeId("saga");
+			  			session.setAttribute("theme", getThemeId());
+				  		det = License.dbLicense(AppModule.MAIN_APP);
+					  	if(checkdate(det)) {
+					  		result=expired;
+					  	}
+			  		}
+			  		break;
 			    case 8:
 			    	result="vr.xhtml"; 
 			    	det = License.dbLicense(AppModule.VOUCHER_RECORDING);

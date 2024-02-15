@@ -48,6 +48,10 @@ public class Stocks {
 	
 	private String remarks;
 	
+	private List collectors;
+	private List forms;
+	private List statusList;
+	
 	public static boolean isExistedSeries(String seriesFrom, int formType) {
 		
 		if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
@@ -678,5 +682,28 @@ public class Stocks {
 		}catch(SQLException s){}
 		
 	}
+	
+	public static void openUpdate(String sql, String[] params) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		ps.executeUpdate();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException s){}
+	}
+	
 	
 }

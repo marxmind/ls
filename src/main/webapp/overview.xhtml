@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="jakarta.faces.facelets">
+
+    <h:head>
+    	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+    	
+    	<f:facet name="middle">
+    		<h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+    	</f:facet>
+    	
+    	
+    	
+    </h:head>
+	
+	<style>
+    .box,
+    .sample-layout > div {
+        background-color: #cce4f7;
+        text-align: center;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        border-radius: 4px;
+        color: #30383c;
+    }
+
+    .box-stretched {
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .sample-layout {
+        margin: 0;
+    }
+
+    .sample-layout > div {
+        border: 1px solid #ffffff;
+    }
+
+    .vertical-container {
+        margin: 0;
+        height: 200px;
+        background: #efefef;
+        border-radius: 4px;
+    }
+
+    .nested-grid .col-4 {
+        padding-bottom: 1em;
+    }
+
+    .doc-table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .doc-table th {
+        background-color: #cce4f7;
+    }
+
+    .doc-table td,
+    .doc-table th {
+        border: 1px solid #e5ebf0;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .doc-table tr:nth-child(odd) {
+        background-color: #f3f6f9;
+    }
+</style>
+
+
+    <h:body>
+ <h:form prependId="false" id="formId">       
+    <p:growl id="msg" showDetail="true" life="2000" />
+    <div class="card">
+    <div class="grid">
+        <div class="col">
+            <p:panel header="Summary Report">
+            	 
+                 <p:textEditor widgetVar="checkId" value="#{overviewBean.summaryInfo}" readonly="false" toolbarVisible="true" height="600"/>
+                 	
+            </p:panel>
+        </div>
+        
+    </div>
+	</div>
+     
+     
+     <script>
+     	
+     
+     
+     </script>
+     <ui:include src="menu.xhtml" /> 
+    </h:form>    
+    </h:body>
+</html>

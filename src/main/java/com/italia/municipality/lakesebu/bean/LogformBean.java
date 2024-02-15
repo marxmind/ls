@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,6 +31,8 @@ import com.italia.municipality.lakesebu.controller.RCDAllController;
 import com.italia.municipality.lakesebu.controller.RCDDeposit;
 import com.italia.municipality.lakesebu.controller.RCDSummaryController;
 import com.italia.municipality.lakesebu.controller.Stocks;
+import com.italia.municipality.lakesebu.controller.UserAccessLevel;
+import com.italia.municipality.lakesebu.enm.AccessLevel;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
@@ -186,6 +189,8 @@ public class LogformBean implements Serializable{
 	private List<DepositTransaction> depTrans;
 	private int depositFundTypeId;
 	private List depositFundTypes;
+	
+	private boolean userAccess;
 	
 	public void deleteDeposit(DepositTransaction tran) {
 		if(tran.getData() instanceof RCDDeposit) {
@@ -368,6 +373,17 @@ public class LogformBean implements Serializable{
 			depTrans.add(d);
 		}
 		
+		/*
+		Collections.sort(depTrans, new Comparator<DepositTransaction>() {
+			@Override
+		    public int compare(DepositTransaction p1, DepositTransaction p2) {
+				String index1 = p1.getIndex()+"";
+				String index2 = p2.getIndex()+"";
+		        return index1.compareTo(index2);
+		    }
+		});*/
+		
+		
 		//adding new deposit field
 				RCDDeposit rcd = RCDDeposit.builder()
 						.dateTrans(DateUtils.getCurrentDateYYYYMMDD())
@@ -464,7 +480,8 @@ public class LogformBean implements Serializable{
         	//System.out.println("Debit checking : " + dp.getRemarks() + " new amount: " + amount);
         	DepositTransaction tr = getDepTrans().get(index);
         	RCDDeposit orData = null;
-        	if("BEGINNING BALANCE".equalsIgnoreCase(dp.getRemarks().trim())) {
+        	//if("BEGINNING BALANCE".equalsIgnoreCase(dp.getRemarks().trim())) {
+        	if("BEGINNING BALANCE".equalsIgnoreCase(tr.getParticular().trim())) {
         		dp.setAmount(amount);
 	        	dp.setDateTrans(getYearDepositId()+"-"+ month +"-01");
 	        	dp.setFundType(getDepositFundTypeId());
@@ -559,8 +576,9 @@ public class LogformBean implements Serializable{
 		collectorSearch = new ArrayList<>();
 		collectorSearch.add(new SelectItem(0, "All Collector"));
 		for(Collector col : Collector.retrieve(" AND cl.isactivecollector=1 ORDER BY cl.collectorname", new String[0])) {
+			String stat = col.getIsResigned()==1? "-Resigned":"";
 			if(col.getId()!=0) {
-				collectorSearch.add(new SelectItem(col.getId(), col.getName()));
+				collectorSearch.add(new SelectItem(col.getId(), col.getName()+stat));
 			}
 		}
 		
@@ -649,17 +667,38 @@ public class LogformBean implements Serializable{
 		}
 	}
 	
-	public void loadSearchSeries() {
-		String sql = " AND frm.isactivelog=1 ";
-		String[] params = new String[0];
-		issuedForms = new ArrayList<IssuedForm>();
-		if(getSearchSeries()!=null) {
-				sql += "  AND frm.beginningNoLog=" + getSearchSeries();
+	public void loadSearchStock(Stocks stock) {
+		issuedForms = IssuedForm.retrieve(" AND frm.isactivelog=1 AND frm.stockid="+stock.getId(), new String[0]);
+		PrimeFaces pf = PrimeFaces.current();
+		if(issuedForms!=null && issuedForms.size()==1) {
+			loadIssuedSeries(issuedForms.get(0));
+		}else {
+			pf.executeScript("$('#issuedId').hide();$('#fixId').hide()");
 		}
-		
-		sql +=" ORDER BY frm.issueddate ASC";
-		
-		issuedForms = IssuedForm.retrieve(sql, params);
+	}
+	
+	public void loadSearchSissued(IssuedForm form) {
+		issuedForms = IssuedForm.retrieve(" AND frm.isactivelog=1 AND frm.logid="+form.getId(), new String[0]);
+		PrimeFaces pf = PrimeFaces.current();
+		if(issuedForms!=null && issuedForms.size()==1) {
+			loadIssuedSeries(issuedForms.get(0));
+		}else {
+			pf.executeScript("$('#issuedId').hide();$('#fixId').hide()");
+		}
+	}
+	
+	public void loadSearch(CollectionInfo info) {
+		issuedForms = IssuedForm.retrieve(" AND frm.isactivelog=1 AND frm.logid="+info.getIssuedForm().getId(), new String[0]);
+		PrimeFaces pf = PrimeFaces.current();
+		if(issuedForms!=null && issuedForms.size()==1) {
+			loadIssuedSeries(issuedForms.get(0));
+		}else {
+			pf.executeScript("$('#issuedId').hide();$('#fixId').hide()");
+		}
+	}
+	
+	public void loadSearchSeries() {
+		issuedForms = CollectionInfo.retrieveFormForChangeSearch(Long.valueOf(getSearchSeries().trim()));
 		PrimeFaces pf = PrimeFaces.current();
 		if(issuedForms!=null && issuedForms.size()==1) {
 			loadIssuedSeries(issuedForms.get(0));
@@ -832,6 +871,13 @@ public class LogformBean implements Serializable{
 		
 	}
 	
+	private void checkUserAccess(Login in) {
+		if(AccessLevel.DEVELOPER.getId()==in.getAccessLevel().getLevel() ||
+				AccessLevel.ADMIN.getId()==in.getAccessLevel().getLevel()) {
+			userAccess=true;
+		}
+	}
+	
 	@PostConstruct
 	public void init() {
 		selectedCollection = new ArrayList<CollectionInfo>();
@@ -879,7 +925,9 @@ public class LogformBean implements Serializable{
 		
 		
 		if(!alreadyRetrieve) {
-			issuedCollectorId = Login.getUserLogin().getCollectorId();
+			Login in = Login.getUserLogin();
+			issuedCollectorId = in.getCollectorId();
+			checkUserAccess(in);
 			setCollectorId(issuedCollectorId);
 			setCollectorMapId(issuedCollectorId);
 			alreadyRetrieve=true;
@@ -3874,6 +3922,8 @@ public class LogformBean implements Serializable{
 			sql = " AND cl.isid="+issuedCollectorId;
 		}
 		
+		sql += " AND cl.isresigned=0 ";//not resigned
+		
 		for(Collector col : Collector.retrieve(sql, new String[0])) {
 			collectors.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()));
 		}
@@ -4031,7 +4081,8 @@ public class LogformBean implements Serializable{
 			sql = " AND cl.isid="+issuedCollectorId;
 		}
 		for(Collector col : Collector.retrieve(sql, new String[0])) {
-			collectorsMap.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()));
+			String stat = col.getIsResigned()==1? "-Resigned":"";
+			collectorsMap.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()+stat));
 			collectotData.put(col.getId(), col);
 		}
 		return collectorsMap;
@@ -4431,6 +4482,16 @@ public class LogformBean implements Serializable{
 		String sql = " AND sm.fundtype=" + getRcdSumFundTypeId();
 		rcdSum = new ArrayList<RCDSummaryController>();
 		rcdSum = RCDSummaryController.retrieve(sql + " ORDER BY sm.sumid DESC", new String[0]);
+	}
+	
+	public void printSummary(Object obj) {
+		if(obj instanceof RCDSummaryController) {
+			RCDSummaryController rcd = (RCDSummaryController)obj;
+			printRCDSum(rcd);
+		}else if(obj instanceof RCDAllController) {
+			RCDAllController all = (RCDAllController)obj;
+			printRCDAll(all);
+		}
 	}
 	
 	public void printRCDSum(RCDSummaryController rcd) {
@@ -5246,6 +5307,14 @@ public class LogformBean implements Serializable{
 
 	public void setDepositFundTypes(List depositFundTypes) {
 		this.depositFundTypes = depositFundTypes;
+	}
+
+	public boolean isUserAccess() {
+		return userAccess;
+	}
+
+	public void setUserAccess(boolean userAccess) {
+		this.userAccess = userAccess;
 	}
 
 }

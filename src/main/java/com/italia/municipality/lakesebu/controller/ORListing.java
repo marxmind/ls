@@ -551,7 +551,7 @@ public class ORListing {
 			or.setCustomer(cus);
 			
 			
-			Object[] obj = ORNameList.retrieveORNames(or.getId());
+			Object[] obj = ORNameList.retrieveORNames(or.getId(),true);
 			double amount = (Double)obj[0];
 			List<ORNameList> orn = (ArrayList<ORNameList>)obj[1];
 			or.setAmount(amount);
@@ -643,19 +643,7 @@ public class ORListing {
 			
 			or.setCustomer(cus);
 			
-			/*
-			sql = " AND nameL.isactiveol=1 AND nameL.orid="+or.getId();
-			params = new String[0];
-			List<ORNameList> orn = Collections.synchronizedList(new ArrayList<ORNameList>());
-			double amount = 0d;
-			for(ORNameList o : ORNameList.retrieve(sql, params)) {
-				amount += o.getAmount();
-				orn.add(o);
-			}
-			or.setAmount(amount);
-			or.setOrNameList(orn);
-			*/
-			Object[] obj = ORNameList.retrieveORNames(or.getId());
+			Object[] obj = ORNameList.retrieveORNames(or.getId(),false);
 			double amount = (Double)obj[0];
 			List<ORNameList> orn = (ArrayList<ORNameList>)obj[1];
 			or.setAmount(amount);
@@ -1099,7 +1087,11 @@ public class ORListing {
 	}
 	
 	
-	
+	/**
+	 * Please note that when deleteting deleting also the data in ornamelist
+	 * @param sql
+	 * @param params
+	 */
 	public static void delete(String sql, String[] params){
 		
 		Connection conn = null;
@@ -1148,6 +1140,24 @@ public class ORListing {
 		WebTISDatabaseConnect.close(conn);
 		}catch(SQLException s){}
 		
+		//deleting connected ORNAmelist
+		deleteORNAMeList(getId());
+	}
+	
+	private void deleteORNAMeList(long orId) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		String sql = "UPDATE ornamelist SET isactiveol=0 WHERE orid=" + orId;
+
+		String[] params = new String[1];
+		params[0] = getId()+"";
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		ps.executeUpdate();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(SQLException s){}
 	}
 	
 	/**
@@ -1177,6 +1187,5 @@ public class ORListing {
 		}
 		
 	}
-	
 	
 }
