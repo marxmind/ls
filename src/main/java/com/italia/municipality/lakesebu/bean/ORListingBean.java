@@ -722,12 +722,14 @@ public class ORListingBean implements Serializable{
 			params = new String[2];
 			if(getMonthId()>0) {
 				
-				monthFrom = "0000-" + (getMonthId()<10? "0"+getMonthId() : ""+getMonthId()) + "-01";
+				//monthFrom = "0000-" + (getMonthId()<10? "0"+getMonthId() : ""+getMonthId()) + "-01";
+				monthFrom = DateUtils.getCurrentYear() + "-" + (getMonthId()<10? "0"+getMonthId() : ""+getMonthId()) + "-01";
 				monthTo = DateUtils.getCurrentYear() +"-" + (getMonthId()<10? "0"+getMonthId() : ""+getMonthId()) + "-31";
 				
 			}else {
 				
-				monthFrom = "0000-01-01";
+				//monthFrom = "0000-01-01";
+				monthFrom = DateUtils.getCurrentYear() + "-01-01";
 				monthFrom = DateUtils.getCurrentYear() +"-12-31";
 				
 			}
@@ -906,12 +908,14 @@ public class ORListingBean implements Serializable{
 			//revise above condition for barangay
 			Department dep = or.getCollector().getDepartment();
 			boolean isbarangayCtc = false;
-			if(dep.getDepid()>=62 && dep.getDepid()<=80) {//barangay cedula
+			//if(dep.getDepid()>=62 && dep.getDepid()<=80) {//barangay cedula
+			if(dep.getDepid()>1) { //barangay cedula update condition 02/23/2024
 				isbarangayCtc = true;
 			}
 			
 			
 			for(ORNameList n : or.getOrNameList()) {
+				boolean isActive=false;
 				rpt = new Reports();
 				rpt.setF1("");
 				rpt.setF2("");
@@ -922,7 +926,9 @@ public class ORListingBean implements Serializable{
 				rpt.setF7("");
 				dtls.add(rpt);
 				rpts.add(rpt);
-				if(FormStatus.CANCELLED.getId()!=or.getStatus()) {
+				//if(FormStatus.CANCELLED.getId()!=or.getStatus()) {
+				if(n.getIsActive()==1) {//if not cancelled change condition 02/23/2024 due to not corrected counting cancelled OR
+					isActive=true;
 					amount += n.getAmount();
 					if(isCTC) {
 						ctctotal += n.getAmount();
@@ -933,9 +939,12 @@ public class ORListingBean implements Serializable{
 						}
 					}
 				}else {
+					if(FormStatus.CANCELLED.getId()==or.getStatus()) {
+					isActive=false;//addd 2/23/2024 due to not corrected counting cancelled OR
 					//removing code 11/13/2023
 					grandcancelledAmnt += n.getAmount();
 					canAmount += n.getAmount();
+					}
 				}
 				
 				
@@ -945,7 +954,8 @@ public class ORListingBean implements Serializable{
 				long key = n.getPaymentName().getId();	
 				if(mapData!=null && mapData.containsKey(key)) {
 					//adding condition 11/13/2023
-					if(FormStatus.CANCELLED.getId()!=or.getStatus()) {
+					//if(FormStatus.CANCELLED.getId()!=or.getStatus()) {removed 2/23/2024 due to not corrected counting cancelled OR
+					if(isActive) {
 						double amnt = mapData.get(key).getAmount();
 						amnt += n.getAmount();
 						PaymentName na = n.getPaymentName();
@@ -954,7 +964,8 @@ public class ORListingBean implements Serializable{
 					}
 				}else {
 					//adding condition 11/13/2023
-					if(FormStatus.CANCELLED.getId()!=or.getStatus()) {
+					//if(FormStatus.CANCELLED.getId()!=or.getStatus()) { removed 2/23/2024 due to not corrected counting cancelled OR
+					if(isActive) {
 						PaymentName na = n.getPaymentName();
 						na.setAmount(n.getAmount());
 						mapData.put(key, na);

@@ -81,6 +81,8 @@ public class FormChangeBean implements Serializable {/**
 	private List statusList;
 	private List fundList;
 	
+	private Map<Integer,CollectionInfo> collectionDataRemove;
+	
 	@PostConstruct
 	public void init() {
 		System.out.println("start......");
@@ -548,6 +550,28 @@ public class FormChangeBean implements Serializable {/**
         }
 	}    
 	
+	public void deleteCollectionInfo(String type) {
+		if(getCollectionDataRemove()!=null && getCollectionDataRemove().size()>0) {
+			if("DELETE".equalsIgnoreCase(type)) {
+				/*
+				for(int index : getCollectionDataRemove().keySet()) {
+					getColData().get(index).setIsActive(0);	
+					getColData().get(index).save();
+				}*/
+				Application.addMessage(1, "Success", "Successfully deleted.");
+			}else {
+				for(int index : getCollectionDataRemove().keySet()) {
+					getColData().get(index).setIsActive(1);	
+					getColData().get(index).save();
+				}
+				Application.addMessage(1, "Success", "Successfully active.");
+			}
+			
+		}else {
+			Application.addMessage(3, "Error", "No item has been selected. Please select the item for deletion");
+		}
+	}
+	
 	public void onCollectionInfo(CellEditEvent event) {
 		Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -562,10 +586,20 @@ public class FormChangeBean implements Serializable {/**
 	        if("Date".equalsIgnoreCase(column)) {
 		        getColData().get(index).save();
 		        Application.addMessage(1, "Success", "Successfully saved.");
-		    }else if("Deleted".equalsIgnoreCase(column)) {    
-	        	getColData().get(index).setIsActive(1);	
-	        	getColData().get(index).save();
-	        	Application.addMessage(1, "Success", "Successfully saved.");
+		    }else if("Deleted".equalsIgnoreCase(column)) {
+		    	int val = Integer.valueOf(newValue.toString());
+		    	if(val==1) {
+			    	getColData().get(index).setIsActive(val);	
+		        	getColData().get(index).save();
+		        	Application.addMessage(1, "Success", "Successfully saved.");
+		    	}else if(val==0) {
+		    		PrimeFaces pf = PrimeFaces.current();
+		    		pf.executeScript("PF('dlgConfirmRemoving').show(1000)");
+		    		setCollectionDataRemove(new LinkedHashMap<Integer, CollectionInfo>());
+		    		getCollectionDataRemove().put(index, getColData().get(index));
+		    	}else {
+		    		Application.addMessage(3, "Error", "Only 0-deleted, 1-active is acceptable.");
+		    	}
 	        }else if("Amount".equalsIgnoreCase(column)) { 
 	        	if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
 	        		//editing is not allowed for the amount. Because Cash Ticket is based on number of ticket

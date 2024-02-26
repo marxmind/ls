@@ -87,7 +87,8 @@ public class LoginBean implements Serializable{
 			String det="";
 			  switch(in.getAccessLevel().getLevel()){ 
 			  	case 1:
-			  		result="main.xhtml";
+			  		//result="main.xhtml";
+			  		result="overview.xhtml";
 			  		if(in.getLogid()>1) {
 				  		det = License.dbLicense(AppModule.MAIN_APP);
 					  	if(checkdate(det)) {
@@ -178,6 +179,7 @@ public class LoginBean implements Serializable{
 			  
 			  case 20: {
 				  result="logform.xhtml";
+				  //result="overview.xhtml";
 				  det = License.dbLicense(AppModule.COLLECTORS_RECORDING);
 				  	if(checkdate(det)) {
 				  		result=expired;

@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -102,6 +104,8 @@ public class ApplicationBackupBean implements Serializable {
 				if(isCompleted) {
 					//ready for update database data
 					updateDatabaseData();
+					PrimeFaces pf = PrimeFaces.current();
+					pf.executeScript("PF('dlgUpload').hide(1000)");
 				}
 			}
 			

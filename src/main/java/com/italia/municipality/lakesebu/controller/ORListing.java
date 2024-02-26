@@ -642,7 +642,7 @@ public class ORListing {
 			cus.setUserDtls(user);
 			
 			or.setCustomer(cus);
-			
+			//have problem
 			Object[] obj = ORNameList.retrieveORNames(or.getId(),false);
 			double amount = (Double)obj[0];
 			List<ORNameList> orn = (ArrayList<ORNameList>)obj[1];

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"  
+  >
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>Penalty Table</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+           <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+           <h:outputStylesheet name="primeflex/primeflex.min.css" />
+			<h:outputStylesheet name="primeflex/layout.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.js" target="head"/>
+            
+    </f:facet>
+        
+    <f:facet name="last">
+ 		<h:outputStylesheet name="css/font-awesome.css" />
+    </f:facet>
+    <title>Penalty Table</title>
+ 
+ <style>
+<!-- 
+
+ -->
+ </style>
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Penalty Table</title>
+
+</h:head>
+<h:body>
+
+<ui:include src="header.xhtml" />
+
+<h:form prependId="false" id="formId" style="background-color: #8fdbf5">
+	<p:growl id="msg" life="2000" />
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    	 </p:confirmDialog>
+	<p:focus context="tb"/>
+	
+	<div class="card">
+    <div class="p-grid sample-layout">
+    
+    	
+        <div class="p-col-12 p-md-12 p-col-nogutter">
+            <div class="p-grid">
+                <div class="p-col-12 p-col-nogutter">
+                    <p:toolbar id="tb" style="#{skin.toolbar}">
+			    		<f:facet name="left">
+			    				
+			    				<p:outputLabel  value="Search From Year to Year "/>
+			    				<div class="ui-inputgroup">
+			    				<p:selectOneMenu  value="#{penaltyBean.idFromYear}" style="color: black">
+			                       <f:selectItems value="#{penaltyBean.fromYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                   </p:selectOneMenu>
+			                   <p:selectOneMenu  value="#{penaltyBean.idToYear}" style="color: black">
+			                       <f:selectItems value="#{penaltyBean.toYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                   </p:selectOneMenu>
+			                   <p:commandButton id="findId" update="formDataId"  icon="pi pi-search" actionListener="#{penaltyBean.init}"/>
+			                   </div>
+			    		</f:facet>
+			    		<f:facet name="right">
+			    			<p:commandButton update="formId" value="Return Form56" icon="ui-icon-document" action="form56.xhtml"/>
+			    		</f:facet>
+					</p:toolbar>
+                </div>
+                <div class="p-col-12">
+                    <div class="p-grid">
+                        <p:dataTable id="formDataId" var="rpt" value="#{penaltyBean.pens}" editable="true" 
+					       editMode="cell" widgetVar="cellTrans" rowKey="#{rpt.cnt}" scrollable="true" selection="#{penaltyBean.penaltyTableData}" selectionMode="single" 
+					       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					                         rowsPerPageTemplate="5,10,15,20,50,100" style="#{skin.table}" paginatorPosition="top" paginatorAlwaysVisible="false"
+					       >
+					       <f:facet name="header">
+					           SCHEDULE OF PENALTIES AND DISCOUNTS ON REAL PROPERTY TAX
+					       </f:facet>
+					       
+					      						 <f:facet name="{Exporters}">
+					            						<h:commandLink title="Export in excel format">
+					                						    <p:graphicImage name="img/xls.jpg" width="24" height="24"/>
+					                							<p:dataExporter type="xls" target="formDataId" fileName="PenaltyRate" />
+					            						</h:commandLink>
+					            						<h:commandLink title="Export in pdf format">
+					                						    <p:graphicImage name="img/pdf.jpg" width="24" height="24"/>
+					                						    <p:dataExporter type="pdf" target="formDataId" fileName="PenaltyRate" />
+					            						</h:commandLink>
+					            						
+					            				</f:facet>
+					       
+					       <p:ajax event="cellEdit"  listener="#{penaltyBean.onCellEdit}" update=":formId:formDataId" />	
+					       
+					       <p:column>
+					       		<f:facet name="header">Year</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.year}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText id="modelInput" a:placeholder="YYYY" value="#{rpt.year}" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					            <f:facet name="footer">#{penaltyBean.cntYear}</f:facet> 
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">January</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.january}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.january}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalJan}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">February</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.february}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.february}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					             <f:facet name="footer">#{penaltyBean.totalFeb}</f:facet> 
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">March</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.march}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.march}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalMar}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">April</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.april}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.april}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalApr}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">May</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.may}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.may}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					               <f:facet name="footer">#{penaltyBean.totalMay}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">June</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.june}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.june}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					             <f:facet name="footer">#{penaltyBean.totalJun}</f:facet> 
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">July</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.july}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.july}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalJul}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">August</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.august}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.august}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					             <f:facet name="footer">#{penaltyBean.totalAug}</f:facet> 
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">September</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.september}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.september}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalSep}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">October</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.october}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.october}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalOct}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">November</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.november}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.november}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalNov}</f:facet>
+					       </p:column>
+					       
+					       <p:column>
+					       		<f:facet name="header">December</f:facet>
+					              <p:cellEditor>
+					              	  <f:facet name="output"><h:outputText value="#{rpt.december}"/></f:facet>
+					                  <f:facet name="input">
+					                  <p:inputText  a:placeholder="00.00" value="#{rpt.december}" a:type="number" style="width:96%;color:black"/>
+					                  </f:facet>
+					              </p:cellEditor>
+					              <f:facet name="footer">#{penaltyBean.totalDec}</f:facet>
+					       </p:column>
+					       
+					   </p:dataTable> 
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    
+    
+    
+    </div>
+	
+	</div><!-- card -->	
+ 
+ 	<p:contextMenu for="formDataId" widgetVar="cMenu">
+       <p:menuitem value="Add Cell" icon="ui-icon-search" actionListener="#{penaltyBean.addNew}" onclick="PF('cMenu').hide()" update="formDataId"/>
+       <p:menuitem value="Copy Paste Cell" icon="ui-icon-search" actionListener="#{penaltyBean.copyPasteCell}" onclick="PF('cMenu').hide()" update="formDataId"/>
+       <p:menuitem value="Save" icon="ui-icon-search" actionListener="#{penaltyBean.save}" onclick="PF('cMenu').hide()" update="formDataId"/>
+       <p:menuitem value="Delete" update="formDataId" icon="ui-icon-close" actionListener="#{penaltyBean.deleteCell}"/>
+       <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('cMenu').hide()"/>  
+   </p:contextMenu>
+ 
+ 	<ui:include src="loader.xhtml" />	
+	<ui:include src="menu.xhtml" />  
+ </h:form>
+ </h:body>
+ </html>    

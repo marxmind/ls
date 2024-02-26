@@ -9,6 +9,7 @@
     	
     	<f:facet name="middle">
     		<h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+    		<h:outputStylesheet name="css/bodyconf.css"/>
     	</f:facet>
     	
     	
@@ -16,59 +17,40 @@
     </h:head>
 	
 	<style>
-    .box,
-    .sample-layout > div {
-        background-color: #cce4f7;
-        text-align: center;
-        padding-top: 1em;
-        padding-bottom: 1em;
-        border-radius: 4px;
-        color: #30383c;
+    
+    
+    h2 {
+	  background-color: black;
+	  color: white;
+	  text-align: center;
+	}
+	.div-table
+    {
+      display: table;         
+	  width: auto;         
+	  background-color: #eee;         
+	  border: 1px solid #666666;         
+	  border-spacing: 5px; /* cellspacing:poor IE support for  this */
     }
 
-    .box-stretched {
-        height: 100%;
-        box-sizing: border-box;
+    .div-table-row
+    {
+      display: table-row;
+	  width: auto;
+	  clear: both;
     }
 
-    .sample-layout {
-        margin: 0;
+    .div-table-col
+    {
+      float: left; /* fix for  buggy browsers */
+	  display: table-column;         
+	  width: 200px;         
+	  background-color: #ccc;
     }
-
-    .sample-layout > div {
-        border: 1px solid #ffffff;
-    }
-
-    .vertical-container {
-        margin: 0;
-        height: 200px;
-        background: #efefef;
-        border-radius: 4px;
-    }
-
-    .nested-grid .col-4 {
-        padding-bottom: 1em;
-    }
-
-    .doc-table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
+    
+    .ui-filter-column .ui-column-customfilter .custom-filter {
         width: 100%;
-    }
-
-    .doc-table th {
-        background-color: #cce4f7;
-    }
-
-    .doc-table td,
-    .doc-table th {
-        border: 1px solid #e5ebf0;
-        text-align: left;
-        padding: 8px;
-    }
-
-    .doc-table tr:nth-child(odd) {
-        background-color: #f3f6f9;
+        box-sizing: border-box;
     }
 </style>
 
@@ -79,9 +61,441 @@
     <div class="card">
     <div class="grid">
         <div class="col">
-            <p:panel header="Summary Report">
+            <p:panel header="Transaction Report">
             	 
-                 <p:textEditor widgetVar="checkId" value="#{overviewBean.summaryInfo}" readonly="false" toolbarVisible="true" height="600"/>
+            	 <p:outputLabel value="Please select year to monitor : "/>
+                 <p:selectOneMenu value="#{ovBean.year}" style="width: 20em" disabled="false">
+						<f:selectItems value="#{ovBean.years}"/>
+						<p:ajax event="change" listener="#{ovBean.reloadTab}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId"/>
+				 </p:selectOneMenu>
+                 
+         <p:tabView prependId="false" widgetVar="tabSelection">
+            
+            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId"/>
+            
+            <p:tab title="Running Collections">
+            	
+            	<p:dataTable id="monthlyColId" var="pk" value="#{ovBean.collections}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar" emptyMessage="No match data found with given criteria">
+		            
+		            <f:facet name="header">
+			            <p:outputPanel>
+			                <h:outputText value="Grand Total: #{ovBean.grandTotalRunningCollection}" style="font-weight: bold; font-size: 2em"/>
+			            </p:outputPanel>
+			        </f:facet>
+		            
+		            
+		            <p:column headerText="Description" filterBy="#{pk.f1}"  filterMatchMode="contains" width="200" style="text-align: left; font-weight: bold">
+		                <p:outputLabel value="#{pk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="Total" width="100" style="text-align: right; font-weight: bold">
+		                <p:outputLabel value="#{pk.f14}" />
+		            </p:column>
+		            
+		            <p:column headerText="January" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f2}" rendered="#{pk.f2.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print January Report" rendered="#{pk.f2.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(1)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="February" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f3}" rendered="#{pk.f3.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print February Report" rendered="#{pk.f3.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(2)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="March" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f4}" rendered="#{pk.f4.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print March Report" rendered="#{pk.f4.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(3)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="April" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f5}" rendered="#{pk.f5.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print April Report" rendered="#{pk.f5.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(4)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="May" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f6}" rendered="#{pk.f6.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print May Report" rendered="#{pk.f6.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(5)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="June" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f7}" rendered="#{pk.f7.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print June Report" rendered="#{pk.f7.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(6)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="July" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f8}" rendered="#{pk.f8.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print July Report" rendered="#{pk.f8.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(7)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="August" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f9}" rendered="#{pk.f9.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print August Report" rendered="#{pk.f9.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(8)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="September" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f10}" rendered="#{pk.f10.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print September Report" rendered="#{pk.f10.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(9)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="October" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f11}" rendered="#{pk.f11.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print October Report" rendered="#{pk.f11.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(10)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="November" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f12}" rendered="#{pk.f12.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print November Report" rendered="#{pk.f12.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(11)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		            <p:column headerText="December" width="100" style="text-align: right;#{pk.f15}">
+		                <p:outputLabel value="#{pk.f13}" rendered="#{pk.f13.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink title="Print December Report" rendered="#{pk.f13.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(12)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
+		            </p:column>
+		            
+		           
+		            
+		        </p:dataTable>  
+            
+            </p:tab>
+            
+            <p:tab title="RCD">
+            
+            	<p:dataTable id="monthlyRCDId" var="pk" value="#{ovBean.rcds}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            
+		            <p:column headerText="Fund" width="200">
+		                <p:outputLabel value="#{pk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="Description" width="200">
+		                <p:outputLabel value="#{pk.f2}" />
+		            </p:column>
+		            
+		            <p:column headerText="January" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f3}" />
+		            </p:column>
+		            
+		            <p:column headerText="February" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f4}" />
+		            </p:column>
+		            
+		            <p:column headerText="March" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="April" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f6}" />
+		            </p:column>
+		            
+		            <p:column headerText="May" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f7}" />
+		            </p:column>
+		            
+		            <p:column headerText="June" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f8}" />
+		            </p:column>
+		            
+		            <p:column headerText="July" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f9}" />
+		            </p:column>
+		            
+		            <p:column headerText="August" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f10}" />
+		            </p:column>
+		            
+		            <p:column headerText="September" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f11}" />
+		            </p:column>
+		            
+		            <p:column headerText="October" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f12}" />
+		            </p:column>
+		            
+		            <p:column headerText="November" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f13}" />
+		            </p:column>
+		            
+		            <p:column headerText="December" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f14}" />
+		            </p:column>
+		            
+		           
+		            
+		        </p:dataTable>  
+            
+            </p:tab>
+            
+            <p:tab title="Recent Issued Check">
+             
+                <p:dataTable id="issuedCheckId" var="ck" value="#{ovBean.rptRecentChecksIssueds}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            <p:column headerText="Date" width="100" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f1}" />
+		            </p:column>
+		
+		            <p:column headerText="Check No" filterBy="#{ck.f2}"  filterMatchMode="contains" width="70" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f2}" />
+		            </p:column>
+		
+		            <p:column headerText="Payee" filterBy="#{ck.f8}"  filterMatchMode="contains" width="150" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f8}" />
+		            </p:column>
+		
+		            <p:column headerText="Amount" width="70" style="text-align: right;#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f4}" style="font-weight: bold">
+		                	<f:convertNumber currencySymbol="" type="currency"/>
+		                </p:outputLabel>
+		            </p:column>
+		            
+		            <p:column headerText="Fund" filterBy="#{ck.f5}"  filterMatchMode="contains" width="100" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="Office" width="100" filterBy="#{ck.f6}"  filterMatchMode="contains" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f6}" />
+		            </p:column>
+		            
+		            <p:column headerText="MOOE" filterBy="#{ck.f7}"  filterMatchMode="contains" width="100" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f7}" />
+		            </p:column>
+		            
+		            <p:column headerText="Remarks" filterBy="#{ck.f10}"  filterMatchMode="contains" width="100" style="#{ck.f9.equalsIgnoreCase('CANCELLED')? 'color: red' : ''}">
+		                <p:outputLabel value="#{ck.f10}" />
+		            </p:column>
+		        </p:dataTable>
+            </p:tab>
+            
+            <p:tab title="Multiple Payee Check Issued">
+            	
+            	<p:dataTable id="multipleCheckId" var="kk" value="#{ovBean.rptMultipleCheckIssueds}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            <p:column headerText="Name" width="100" style="font-weight: bold">
+		                <p:outputLabel value="#{kk.f3}" />
+		            </p:column>
+		            
+		            <p:column headerText="Date" width="70">
+		                <p:outputLabel value="#{kk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="Check No" filterBy="#{kk.f2}"  filterMatchMode="contains" width="70">
+		                <p:outputLabel value="#{kk.f2}" />
+		            </p:column>
+		
+		            <p:column headerText="Amount" width="70" style="text-align: right">
+		                <p:outputLabel value="#{kk.f4}" style="font-weight: bold">
+		                	<f:convertNumber currencySymbol="" type="currency"/>
+		                </p:outputLabel>
+		            </p:column>
+		            
+		            <p:column headerText="Fund" filterBy="#{kk.f5}"  filterMatchMode="contains" width="100">
+		                <p:outputLabel value="#{kk.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="Office" filterBy="#{kk.f6}"  filterMatchMode="contains" width="100">
+		                <p:outputLabel value="#{kk.f6}" />
+		            </p:column>
+		            
+		            <p:column headerText="MOOE" filterBy="#{kk.f7}"  filterMatchMode="contains" width="100">
+		                <p:outputLabel value="#{kk.f7}" />
+		            </p:column>
+		            
+		        </p:dataTable>    
+            	
+            </p:tab>
+            
+            <p:tab title="Monthly Check Issued">
+            	
+            	<p:dataTable id="monthlyCheckId" var="pk" value="#{ovBean.rptMonthCheckIssuedsPerAccounts}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            
+		            <p:column headerText="" width="250" style="font-weight: bold">
+		                <p:outputLabel value="#{pk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f2}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f3}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f4}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f6}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f7}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f8}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f9}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f10}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f11}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f12}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f13}" />
+		            </p:column>
+		            
+		            
+		            
+		           
+		            
+		        </p:dataTable>  
+            	
+            </p:tab>
+            
+            <p:tab title="Highest Issued Check">
+            
+            	<p:dataTable id="highestissuedCheckId" var="ck" value="#{ovBean.rptHighestIssuedChecks}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            <p:column headerText="Date" width="100">
+		                <p:outputLabel value="#{ck.f1}" />
+		            </p:column>
+		
+		            <p:column headerText="Check No" filterBy="#{ck.f2}"  filterMatchMode="contains" width="70">
+		                <p:outputLabel value="#{ck.f2}" />
+		            </p:column>
+		
+		            <p:column headerText="Payee" filterBy="#{ck.f3}"  filterMatchMode="contains" width="150">
+		                <p:outputLabel value="#{ck.f3}" />
+		            </p:column>
+		
+		            <p:column headerText="Amount" width="70" style="text-align: right">
+		                <p:outputLabel value="#{ck.f4}" style="font-weight: bold">
+		                	<f:convertNumber currencySymbol="" type="currency"/>
+		                </p:outputLabel>
+		            </p:column>
+		            
+		            <p:column headerText="Fund" filterBy="#{ck.f5}"  filterMatchMode="contains" width="100">
+		                <p:outputLabel value="#{ck.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="Office" filterBy="#{ck.f6}"  filterMatchMode="contains" width="100">
+		                <p:outputLabel value="#{ck.f6}" />
+		            </p:column>
+		            
+		            <p:column headerText="MOOE" filterBy="#{ck.f7}"  filterMatchMode="contains" width="100">
+		                <p:outputLabel value="#{ck.f7}" />
+		            </p:column>
+		        </p:dataTable>
+            
+            </p:tab>
+            
+            
+            <p:tab title="Monthly Collector Collection">
+            	<p:dataTable id="monthlyCollectorId" var="pk" value="#{ovBean.collectors}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            
+		            <p:column headerText="Collector" width="150" style="font-weight: bold">
+		                <p:outputLabel value="#{pk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="Department/Barangay" width="110" style="text-align: right">
+		                <p:outputLabel value="#{pk.f15}" />
+		            </p:column>
+		            
+		            <p:column headerText="Form" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f2}" />
+		            </p:column>
+		            
+		            <p:column headerText="January" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f3}" />
+		            </p:column>
+		            
+		            <p:column headerText="February" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f4}" />
+		            </p:column>
+		            
+		            <p:column headerText="March" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="April" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f6}" />
+		            </p:column>
+		            
+		            <p:column headerText="May" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f7}" />
+		            </p:column>
+		            
+		            <p:column headerText="June" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f8}" />
+		            </p:column>
+		            
+		            <p:column headerText="July" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f9}" />
+		            </p:column>
+		            
+		            <p:column headerText="August" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f10}" />
+		            </p:column>
+		            
+		            <p:column headerText="September" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f11}" />
+		            </p:column>
+		            
+		            <p:column headerText="October" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f12}" />
+		            </p:column>
+		            
+		            <p:column headerText="November" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f13}" />
+		            </p:column>
+		            
+		            <p:column headerText="December" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f14}" />
+		            </p:column>
+		             
+		        </p:dataTable>  
+            </p:tab>
+            
+            
+            
+            
+        </p:tabView>
+                 
                  	
             </p:panel>
         </div>

@@ -790,6 +790,15 @@
     		
     		
     		</p:dialog>
+    		
+    		
+    		<p:dialog widgetVar="dlgConfirmRemoving" closeOnEscape="true">
+    			<p:outputLabel value="Removing Collection from this list will also remove in Summary report. Please click yes to proceed for removing." />
+				<p:panelGrid id="idRemoving" columns="2" layout="grid">
+					<p:commandButton value="Yes" actionListener="#{formChange.deleteCollectionInfo('DELETE')}" onclick="PF('dlgConfirmRemoving').hide()" update="listColData msg"/>
+					<p:commandButton value="No" actionListener="#{formChange.deleteCollectionInfo('VOID')}" onclick="PF('dlgConfirmRemoving').hide()" update="listColData msg"/>
+				</p:panelGrid>
+			</p:dialog>
      
      </ui:composition>
      
