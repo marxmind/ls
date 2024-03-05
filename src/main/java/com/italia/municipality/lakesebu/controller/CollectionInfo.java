@@ -13,6 +13,8 @@ import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.LogU;
+import com.italia.municipality.lakesebu.utils.OpenTableAccess;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -68,6 +70,20 @@ public class CollectionInfo {
 	//use in FormChangeBean.class
 	private int inputQty;
 	private int available;
+	
+	public static Map<Integer, Double> monthlyIncomeRealPropertyTax(int year){
+		Map<Integer, Double> data = new LinkedHashMap<Integer, Double>();
+		ResultSet rs = OpenTableAccess.query("SELECT month(receiveddate) as month, sum(amount) as amount FROM collectioninfo WHERE isactivecol=1 AND formtypecol= "+ FormType.AF_56.getId() +" AND YEAR(receiveddate)=" + year + " GROUP BY month", new String[0], new WebTISDatabaseConnect());
+		try {
+			while(rs.next()) {
+				data.put(rs.getInt("month"), rs.getDouble("amount"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
+	}
 	
 	public static CollectionInfo retrieveLastTransaction(long id) {
 		CollectionInfo info = null;

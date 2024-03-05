@@ -58,6 +58,24 @@
     <h:body>
  <h:form prependId="false" id="formId">       
     <p:growl id="msg" showDetail="true" life="2000" />
+    
+    
+    <p:overlayPanel widgetVar="productOP" style="width:400px" dismissable="true" showCloseIcon="true" dynamic="true">
+   		<p:dataTable id="pyId" var="py" value="#{ovBean.paymentViews}">
+   		
+   			<f:facet name="header">
+                <p:outputLabel value="#{ovBean.labelNamePayment}" />
+            </f:facet>
+   		         
+            <p:column headerText="Name">
+                <h:outputText value="#{py.f1}"/>
+            </p:column>
+            <p:column headerText="Amount">
+                <h:outputText value="#{py.f2}"/>
+            </p:column>
+        </p:dataTable>    
+   </p:overlayPanel>
+    
     <div class="card">
     <div class="grid">
         <div class="col">
@@ -75,7 +93,7 @@
             
             <p:tab title="Running Collections">
             	
-            	<p:dataTable id="monthlyColId" var="pk" value="#{ovBean.collections}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar" emptyMessage="No match data found with given criteria">
+            	<p:dataTable id="monthlyColId" rowHover="true" showGridlines="false" var="pk" value="#{ovBean.collections}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar" emptyMessage="No match data found with given criteria">
 		            
 		            <f:facet name="header">
 			            <p:outputPanel>
@@ -84,93 +102,97 @@
 			        </f:facet>
 		            
 		            
+		            
 		            <p:column headerText="Description" filterBy="#{pk.f1}"  filterMatchMode="contains" width="200" style="text-align: left; font-weight: bold">
 		                <p:outputLabel value="#{pk.f1}" />
 		            </p:column>
 		            
 		            <p:column headerText="Total" width="100" style="text-align: right; font-weight: bold">
-		                <p:outputLabel value="#{pk.f14}" />
+		                <p:commandLink  style="width: 100px" value="#{pk.f14}" rendered="#{pk.f14.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f14,0,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
+		                <p:commandLink title="Print Summary Report" rendered="#{pk.f14.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(0)}" target="_blank" ajax="false" immediate="false">
+            				 <i class="pi pi-file-pdf"/>
+						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="January" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f2}" rendered="#{pk.f2.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f2}" rendered="#{pk.f2.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f2,1,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print January Report" rendered="#{pk.f2.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(1)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="February" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f3}" rendered="#{pk.f3.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f3}" rendered="#{pk.f3.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f3,2,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print February Report" rendered="#{pk.f3.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(2)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="March" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f4}" rendered="#{pk.f4.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f4}" rendered="#{pk.f4.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f4,3,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print March Report" rendered="#{pk.f4.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(3)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="April" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f5}" rendered="#{pk.f5.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f5}" rendered="#{pk.f5.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f5,4,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print April Report" rendered="#{pk.f5.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(4)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="May" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f6}" rendered="#{pk.f6.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f6}" rendered="#{pk.f6.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f6,5,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print May Report" rendered="#{pk.f6.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(5)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="June" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f7}" rendered="#{pk.f7.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f7}" rendered="#{pk.f7.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f7,6,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print June Report" rendered="#{pk.f7.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(6)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="July" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f8}" rendered="#{pk.f8.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f8}" rendered="#{pk.f8.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f8,7,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print July Report" rendered="#{pk.f8.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(7)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="August" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f9}" rendered="#{pk.f9.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f9}" rendered="#{pk.f9.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f9,8,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print August Report" rendered="#{pk.f9.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(8)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="September" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f10}" rendered="#{pk.f10.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f10}" rendered="#{pk.f10.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f10,9,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print September Report" rendered="#{pk.f10.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(9)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="October" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f11}" rendered="#{pk.f11.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f11}" rendered="#{pk.f11.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f11,10,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print October Report" rendered="#{pk.f11.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(10)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="November" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f12}" rendered="#{pk.f12.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f12}" rendered="#{pk.f12.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f12,11,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print November Report" rendered="#{pk.f12.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(11)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>
 		            </p:column>
 		            
 		            <p:column headerText="December" width="100" style="text-align: right;#{pk.f15}">
-		                <p:outputLabel value="#{pk.f13}" rendered="#{pk.f13.equalsIgnoreCase('PRINT')? false:true}"/>
+		                <p:commandLink style="width: 100px" value="#{pk.f13}" rendered="#{pk.f13.equalsIgnoreCase('PRINT')? false:true}" update="pyId" actionListener="#{ovBean.loadPayment(pk.f1,pk.f13,12,pk.f16)}" oncomplete="PF('productOP').show('#{component.clientId}')"/>
 		                <p:commandLink title="Print December Report" rendered="#{pk.f13.equalsIgnoreCase('PRINT')? true:false}" actionListener="#{ovBean.printCollection(12)}" target="_blank" ajax="false" immediate="false">
             				 <i class="pi pi-file-pdf"/>
 						</p:commandLink>

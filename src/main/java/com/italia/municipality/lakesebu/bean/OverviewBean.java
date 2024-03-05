@@ -22,11 +22,14 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
 
 import com.italia.municipality.lakesebu.controller.BankAccounts;
+import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.Mooe;
 import com.italia.municipality.lakesebu.controller.Offices;
+import com.italia.municipality.lakesebu.controller.PaymentName;
 import com.italia.municipality.lakesebu.controller.Reports;
+import com.italia.municipality.lakesebu.controller.TaxAccountGroup;
 import com.italia.municipality.lakesebu.controller.UserDtls;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
@@ -86,9 +89,20 @@ public class OverviewBean implements Serializable {
 	private String tabSelected;
 	private int tabIndex;
 	
+	private double[] totalCancelledOR;
+	private double[] totalCTCCollection;
+	private double[] totalMTOCTCCollection;
+	private double[] totalBarangayCTCCollection;
+	
+	private List<Reports> paymentViews;
+	private Map<Long,PaymentName> payMapData;
+	private String labelNamePayment;
+	
 	@PostConstruct
 	public void init() {
 		
+		//TaxAccountGroup.loadAcctountPayment();
+		paymentViews = new ArrayList<Reports>();
 		rptRecentChecksIssueds = new ArrayList<Reports>();
 		rptMultipleCheckIssueds = new ArrayList<Reports>();
 		rptMonthCheckIssuedsPerAccounts = new ArrayList<Reports>();
@@ -116,6 +130,8 @@ public class OverviewBean implements Serializable {
 		
 		collections = new ArrayList<Reports>();
 		loadCollection();
+		
+		payMapData = PaymentName.retrieveAllInMap();
 	}
 	
 	public void reloadTab() {
@@ -174,6 +190,108 @@ public class OverviewBean implements Serializable {
 		setTabSelected(event.getTab().getTitle());
     }
 	
+	public void loadPayment(String labelName,String taxAmount, String month,String id) {
+		paymentViews = new ArrayList<Reports>();
+		
+		setLabelNamePayment(labelName + " "+ DateUtils.getMonthName(Integer.valueOf(month)) + " " + getYear() + " : " + taxAmount);
+		
+		
+		if("Land Tax Collection".equalsIgnoreCase(labelName)) {
+			
+			double taxes = Double.valueOf(taxAmount.replace(",", ""));
+			double basic = taxes/2;
+			double prov = 0.35 * basic;
+			double mun = 0.40 * basic;
+			double brgy = 0.25 * basic;
+			
+			Reports r = Reports.builder()
+					.f1("Basic (50%)")
+					.f2(Currency.formatAmount(basic))
+					.build();
+			paymentViews.add(r);
+			
+			r = Reports.builder()
+					.f1("SEF (50%)")
+					.f2(Currency.formatAmount(basic))
+					.build();
+			paymentViews.add(r);
+			
+			r = Reports.builder()
+					.f1("Below are the sharing")
+					.f2("BASIC")
+					.build();
+			paymentViews.add(r);
+			
+			r = Reports.builder()
+					.f1("Province (35%)")
+					.f2(Currency.formatAmount(prov))
+					.build();
+			paymentViews.add(r);
+			
+			r = Reports.builder()
+					.f1("Municipal (40%)")
+					.f2(Currency.formatAmount(mun))
+					.build();
+			paymentViews.add(r);
+			
+			r = Reports.builder()
+					.f1("Barangay (25%)")
+					.f2(Currency.formatAmount(brgy))
+					.build();
+			paymentViews.add(r);
+		}else {
+		
+		
+		String sql = "SELECT o.olamount as amount,o.pyid as id FROM ornamelist o, orlisting p WHERE o.isactiveol=1 AND p.orstatus=4 AND  p.isactiveor=1 and o.orid=p.orid AND month(p.ordatetrans)=" + month + " AND year(p.ordatetrans)=" + getYear() + " AND o.accid="+id;
+		
+		if("0".equalsIgnoreCase(month)) {
+			sql = "SELECT o.olamount as amount,o.pyid as id FROM ornamelist o, orlisting p WHERE o.isactiveol=1 AND p.orstatus=4 AND  p.isactiveor=1 and o.orid=p.orid AND year(p.ordatetrans)=" + getYear() + " AND o.accid="+id;
+		}
+		
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
+		Map<Long, Double> data = new LinkedHashMap<Long, Double>();
+		try {
+			while(rs.next()) {
+				long pyid = rs.getLong("id");
+				double amount = rs.getDouble("amount");
+				if(data!=null && data.size()>0) {
+					if(data.containsKey(pyid)) {
+						double newAmount = data.get(pyid) + amount;
+						data.put(pyid, newAmount);
+					}else {
+						data.put(pyid, amount);
+					}
+				}else {
+					data.put(pyid, amount);
+				}
+			}
+			
+			double total = 0d;
+			for(long i : data.keySet()) {
+				String name = payMapData.get(i).getName();
+				double amnt = data.get(i);
+				total += amnt;
+				Reports r = Reports.builder()
+						.f1(name)
+						.f2(Currency.formatAmount(amnt))
+						.build();
+				paymentViews.add(r);
+			}
+			/*Reports r = Reports.builder()
+					.f1("Total")
+					.f2(Currency.formatAmount(total))
+					.build();
+			paymentViews.add(r);*/
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+	}
+	
 	public void loadCollectorCollection() {
 		String sql = "SELECT month(receiveddate) as month,sum(amount) as amount,formtypecol,isid "
 				+ "FROM collectioninfo WHERE isactivecol=1 AND (receiveddate>='"+ year +"-01-01' AND receiveddate<='"+ year +"-12-31')"
@@ -187,33 +305,33 @@ public class OverviewBean implements Serializable {
 			while(rs.next()) {
 				
 				int col = rs.getInt("isid");
-				int frm = rs.getInt("formtypecol");
+				int formType = rs.getInt("formtypecol");
 				int mnth = rs.getInt("month");
 				double amount = rs.getDouble("amount");
 				
 				if(collector!=null && collector.size()>0) {
 					if(collector.containsKey(col)) {
-						if(collector.get(col).containsKey(frm)) {
-							if(collector.get(col).get(frm).containsKey(mnth)){
-								double newAmount = collector.get(col).get(frm).get(mnth) + amount;
-								collector.get(col).get(frm).put(mnth, newAmount);	
+						if(collector.get(col).containsKey(formType)) {
+							if(collector.get(col).get(formType).containsKey(mnth)){
+								double newAmount = collector.get(col).get(formType).get(mnth) + amount;
+								collector.get(col).get(formType).put(mnth, newAmount);	
 							}else {
-								collector.get(col).get(frm).put(mnth, amount);							}
+								collector.get(col).get(formType).put(mnth, amount);							}
 						}else {
 							month = new LinkedHashMap<Integer, Double>();
 							month.put(mnth, amount);
-							collector.get(col).put(frm, month);
+							collector.get(col).put(formType, month);
 						}
 					}else {
 						form = new LinkedHashMap<Integer, Map<Integer, Double>>();
 						month = new LinkedHashMap<Integer, Double>();
 						month.put(mnth, amount);
-						form.put(mnth, month);
+						form.put(formType, month);
 						collector.put(col, form);
 					}
 				}else {
-					month.put(frm, amount);
-					form.put(frm, month);
+					month.put(mnth, amount);
+					form.put(formType, month);
 					collector.put(col, form);
 				}
 			}
@@ -224,7 +342,7 @@ public class OverviewBean implements Serializable {
 					Collector col = getMapCollector().get(id);
 					try {dep = col.getDepartment().getDepartmentName();}catch(Exception e) {}
 					Reports rss = Reports.builder()
-							.f1(getMapCollector().get(id).getName())
+							.f1(col.getName())
 							.f15(dep)
 							.build();
 					
@@ -294,22 +412,35 @@ public class OverviewBean implements Serializable {
 	
 	public void loadCollection() {
 		
+		totalCancelledOR = new double[13];
+		totalCTCCollection = new double[13];
+		totalMTOCTCCollection = new double[13];
+		totalBarangayCTCCollection = new double[13];
+		
+		
+		totalCancelledOR[0]=0;
+		totalCTCCollection[0]=0;
+		totalMTOCTCCollection[0]=0;
+		totalBarangayCTCCollection[0]=0;
+		
+		
 		Map<Integer, String> mapAccount =  accountingGroup();
 		
 		//String sql = "SELECT month(b.timestampol) as month, a.accname as name, b.olamount as amount FROM taxaccntgroup a,ornamelist b WHERE b.accid=a.accid AND b.orid IN(select o.orid from orlisting o where o.isactiveor=1 AND (o.ordatetrans>='"+ year +"-01-01' AND o.ordatetrans<='"+ year +"-12-31')) ORDER BY amount DESC";
 		//o.isactiveol=1 and remove to inclued cancelled
 		String sql = "SELECT o.isactiveol as stat,p.orstatus, o.olamount as amount,o.accid as id,month(p.ordatetrans) as month,p.aform,p.isid from ornamelist o, orlisting p WHERE  p.isactiveor=1 and o.orid=p.orid AND (p.ordatetrans>='"+ year +"-01-01' AND p.ordatetrans<='"+ year +"-12-31')";
 		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
-		Map<String, Map<Integer, Double>> mapColl = new LinkedHashMap<String, Map<Integer, Double>>();
+		Map<Integer, Map<Integer, Double>> mapColl = new LinkedHashMap<Integer, Map<Integer, Double>>();
 		Map<Integer, Double> mapMonth = new LinkedHashMap<Integer, Double>();
 		double grandTotal = 0d;
-		double totalcancelled = 0d;
-		double barangayctcamount = 0d;
-		double mtoctcamount = 0d;
-		double ctctotal = 0d;
+		//double totalcancelled = 0d;
+		//double barangayctcamount = 0d;
+		//double mtoctcamount = 0d;
+		//double ctctotal = 0d;
 		try {
 			while(rs.next()) {
-				String name =  mapAccount.get(rs.getInt("id"));
+				//String name =  mapAccount.get(rs.getInt("id"));
+				int name = rs.getInt("id");
 				int month = rs.getInt("month");
 				int formType = rs.getInt("aform");
 				int status = rs.getInt("orstatus"); //==FormStatus.CANCELLED.getId()? true : false;
@@ -320,7 +451,7 @@ public class OverviewBean implements Serializable {
 				boolean isCTC = false;
 				boolean isbarangayCtc = false;
 				
-				if(FormType.CTC_INDIVIDUAL.getId()==formType) {
+				if(formType==FormType.CTC_INDIVIDUAL.getId()) {
 					isCTC = true;
 				}
 				
@@ -329,21 +460,26 @@ public class OverviewBean implements Serializable {
 				}
 				
 				//if(isCancelled) {
-				if(FormStatus.CANCELLED.getId()==status) {
+				if(status==FormStatus.CANCELLED.getId()) {
 					//isCancelledPayment) {
 					if(isCancelledPayment) {
-						totalcancelled += amount;
+						//totalcancelled += amount;
+						
+						totalCancelledOR[month] += amount;
 					}
-				}else if(FormStatus.ENCODED.getId()==status){
+				}else if(status==FormStatus.ENCODED.getId()){
 					//not cancelled or
 					grandTotal += amount;
 				
 					if(isCTC) {
-						ctctotal += amount;
+						//ctctotal += amount;
+						totalCTCCollection[month] += amount;
 						if(isbarangayCtc) {
-							barangayctcamount += amount;
+							//barangayctcamount += amount;
+							totalBarangayCTCCollection[month] += amount;
 						}else {
-							mtoctcamount += amount;
+							//mtoctcamount += amount;
+							totalMTOCTCCollection[month] += amount;
 						}
 					}
 					
@@ -353,17 +489,29 @@ public class OverviewBean implements Serializable {
 							if(mapColl.get(name).containsKey(month)) {
 								double newAmount = mapColl.get(name).get(month) + amount;
 								mapColl.get(name).put(month, newAmount);
+								/*if(name==8 && month==1) {
+									System.out.println("iv Cedula:\t" + newAmount);
+								}*/
 							}else {
 								mapColl.get(name).put(month, amount);
+								/*if(name==8 && month==1) {
+									System.out.println("xxx Cedula:\t" + amount);
+								}*/
 							}
 						}else {
 							mapMonth = new LinkedHashMap<Integer, Double>();
 							mapMonth.put(month, amount);
 							mapColl.put(name, mapMonth);
+							/*if(name==8 && month==1) {
+								System.out.println("xx Cedula:\t" + amount);
+							}*/
 						}
 					}else {
 						mapMonth.put(month, amount);
 						mapColl.put(name, mapMonth);
+						/*if(name==8 && month==1) {
+							System.out.println("x Cedula:\t" + amount);
+						}*/
 					}
 				
 				}
@@ -372,13 +520,13 @@ public class OverviewBean implements Serializable {
 			
 			setGrandTotalRunningCollection(Currency.formatAmount(grandTotal));
 			
-			String[][] data = new String[mapColl.size()][14];
+			String[][] data = new String[mapColl.size()][15];
 			int x = 0;
 			double[] totalPerPayment = new double[12];
 			//int monthNow = DateUtils.getCurrentMonth();
-			for(String name : mapColl.keySet()) {
+			for(int name : mapColl.keySet()) {
 				
-				data[x][0] = name;
+				data[x][0] =  mapAccount.get(name);//name;
 				int month = 1;
 				double total = 0d;
 				for(int m=1; m<=12; m++) {
@@ -391,7 +539,7 @@ public class OverviewBean implements Serializable {
 								double amount = mapColl.get(name).get(m);
 								try{total += amount;
 								data[x][month] = Currency.formatAmount(amount);}catch(Exception e){System.out.println("Empty: " + amount);}
-								totalPerPayment[m-1] = totalPerPayment[m-1] + amount;
+								totalPerPayment[m-1] += amount;
 							}else {
 								//if(isMonthBelowOrEqualNow) {data[x][month] = "0.00";}
 								//totalPerPayment[m-1] = 0.00;
@@ -407,8 +555,8 @@ public class OverviewBean implements Serializable {
 					month++;
 				}
 				//add total
-				data[x][13]=Currency.formatAmount(total);
-				
+				data[x][13]= Currency.formatAmount(total);
+				data[x][14]=name+"";
 				x++;
 			}
 			
@@ -427,33 +575,74 @@ public class OverviewBean implements Serializable {
 					.f11("PRINT")
 					.f12("PRINT")
 					.f13("PRINT")
-					.f14("")
+					.f14("PRINT")
 					.f15("")
 					.build();
 			collections.add(rss);
 			
+			//add land tax reported collection amount
+			Map<Integer, Double> taxData = CollectionInfo.monthlyIncomeRealPropertyTax(Integer.valueOf(getYear()));
+			
+			if(taxData!=null && taxData.size()>0) {
+				for(int mx : taxData.keySet()) {
+					totalPerPayment[mx-1] += taxData.get(mx);
+				}
+			}
+			
 			//add total
 			rss = Reports.builder()
 					.f1("TOTAL")
-					.f2(Currency.formatAmount(totalPerPayment[0]))
-					.f3(Currency.formatAmount(totalPerPayment[1]))
-					.f4(Currency.formatAmount(totalPerPayment[2]))
-					.f5(Currency.formatAmount(totalPerPayment[3]))
-					.f6(Currency.formatAmount(totalPerPayment[4]))
-					.f7(Currency.formatAmount(totalPerPayment[5]))
-					.f8(Currency.formatAmount(totalPerPayment[6]))
-					.f9(Currency.formatAmount(totalPerPayment[7]))
-					.f10(Currency.formatAmount(totalPerPayment[8]))
-					.f11(Currency.formatAmount(totalPerPayment[9]))
-					.f12(Currency.formatAmount(totalPerPayment[10]))
-					.f13(Currency.formatAmount(totalPerPayment[11]))
-					.f14(Currency.formatAmount(grandTotal))
+					.f2(totalPerPayment[0]==0? "" : Currency.formatAmount(totalPerPayment[0]))
+					.f3(totalPerPayment[1]==0? "" : Currency.formatAmount(totalPerPayment[1]))
+					.f4(totalPerPayment[2]==0? "" : Currency.formatAmount(totalPerPayment[2]))
+					.f5(totalPerPayment[3]==0? "" : Currency.formatAmount(totalPerPayment[3]))
+					.f6(totalPerPayment[4]==0? "" : Currency.formatAmount(totalPerPayment[4]))
+					.f7(totalPerPayment[5]==0? "" : Currency.formatAmount(totalPerPayment[5]))
+					.f8(totalPerPayment[6]==0? "" : Currency.formatAmount(totalPerPayment[6]))
+					.f9(totalPerPayment[7]==0? "" : Currency.formatAmount(totalPerPayment[7]))
+					.f10(totalPerPayment[8]==0? "" : Currency.formatAmount(totalPerPayment[8]))
+					.f11(totalPerPayment[9]==0? "" : Currency.formatAmount(totalPerPayment[9]))
+					.f12(totalPerPayment[10]==0? "" : Currency.formatAmount(totalPerPayment[10]))
+					.f13(totalPerPayment[11]==0? "" : Currency.formatAmount(totalPerPayment[11]))
+					.f14(grandTotal==0? "" : Currency.formatAmount(grandTotal))
 					.f15("font-weight: bold")
 					.build();
 			collections.add(rss);
 			
 			collectionPrintData = new ArrayList<Reports>();
-			for(int b=0; b<mapColl.size(); b++) {
+				
+			//add land tax label
+			if(taxData!=null && taxData.size()>0) {
+					double landTaxTotal = 0d;
+					Reports r = new Reports();
+					r.setF1("Land Tax Collection");
+					for(int mo : taxData.keySet()) {
+						landTaxTotal += taxData.get(mo);
+						switch (mo) {
+							case 1: r.setF2(Currency.formatAmount(taxData.get(mo))); break;
+							case 2: r.setF3(Currency.formatAmount(taxData.get(mo))); break;
+							case 3: r.setF4(Currency.formatAmount(taxData.get(mo))); break;
+							case 4: r.setF5(Currency.formatAmount(taxData.get(mo))); break;
+							case 5: r.setF6(Currency.formatAmount(taxData.get(mo))); break;
+							case 6: r.setF7(Currency.formatAmount(taxData.get(mo))); break;
+							case 7: r.setF8(Currency.formatAmount(taxData.get(mo))); break;
+							case 8: r.setF9(Currency.formatAmount(taxData.get(mo))); break;
+							case 9: r.setF10(Currency.formatAmount(taxData.get(mo))); break;
+							case 10: r.setF11(Currency.formatAmount(taxData.get(mo))); break;
+							case 11: r.setF12(Currency.formatAmount(taxData.get(mo))); break;
+							case 12: r.setF13(Currency.formatAmount(taxData.get(mo))); break;
+						}
+					
+					}
+					r.setF14(Currency.formatAmount(landTaxTotal));;
+					collectionPrintData.add(r);
+					collections.add(r);
+				
+			}
+			
+			
+			
+				for(int b=0; b<mapColl.size(); b++) {
 				Reports r = Reports.builder()
 						.f1(data[b][0])
 						.f2(data[b][1])
@@ -469,39 +658,16 @@ public class OverviewBean implements Serializable {
 						.f12(data[b][11])
 						.f13(data[b][12])
 						.f14(data[b][13])
+						.f16(data[b][14])
 						.build();
 				
 				collectionPrintData.add(r);
 				collections.add(r);
 			}
 			
+				
 			
-			Reports aa = new Reports();
-			aa.setF1("Total Cancelled OR");
-			aa.setF2("("+Currency.formatAmount(totalcancelled)+")");
-			collectionPrintData.add(aa);
-			
-			aa = new Reports();
-			aa.setF1("CTC Collection" + "("+Currency.formatAmount(ctctotal)+")");
-			aa.setF2("");
-			collectionPrintData.add(aa);
-			
-			aa = new Reports();
-			aa.setF1("MTO CTC Collection" + "("+Currency.formatAmount(mtoctcamount)+")");
-			aa.setF2("");
-			collectionPrintData.add(aa);
-			
-			aa = new Reports();
-			aa.setF1("Barangay CTC Collection" + "("+Currency.formatAmount(barangayctcamount)+")");
-			aa.setF2("");
-			collectionPrintData.add(aa);
-			
-			double sharedAmount = barangayctcamount * 0.50;
-			aa = new Reports();
-			aa.setF1("Barangay Shared CTC Amount(50%) (" + Currency.formatAmount(sharedAmount)+")");
-			aa.setF2("");
-			collectionPrintData.add(aa);
-			
+				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1084,6 +1250,13 @@ public class OverviewBean implements Serializable {
 				double amount = 0d;
 				String val = "0.00";
 				switch(month) {
+					case 0 : 
+						a.setF1(r.getF1()); 
+						a.setF2(r.getF14()); 
+						try {val = r.getF14().replace(",", ""); val=val.isEmpty()? "0.00":val;}catch(Exception e) {}
+						try{amount = Double.valueOf(val);
+						totalAmount += amount;}catch(NumberFormatException n) {}
+						break;
 					case 1 : 
 						a.setF1(r.getF1()); 
 						a.setF2(r.getF2()); 
@@ -1175,6 +1348,51 @@ public class OverviewBean implements Serializable {
 			}
 			
 			
+			if(month==0) {
+				//summary report
+				double cancelledOR = 0d;
+				double ctcCollection = 0d;
+				double mtoCtcCollection = 0d;
+				double barangayCTCCollection = 0d;
+				for(int m=1; m<=12; m++) {
+					cancelledOR +=totalCancelledOR[m];
+					ctcCollection += totalCTCCollection[m];
+					mtoCtcCollection += totalMTOCTCCollection[m];
+					barangayCTCCollection += totalBarangayCTCCollection[m];
+				}
+				totalCancelledOR[month] = cancelledOR;
+				totalCTCCollection[month] = ctcCollection;
+				totalMTOCTCCollection[month] = mtoCtcCollection;
+				totalBarangayCTCCollection[month] = barangayCTCCollection;
+			}
+			
+			///ADDED INFO
+			Reports aa = new Reports();
+			aa.setF1("Total Cancelled OR");
+			aa.setF2("("+Currency.formatAmount(totalCancelledOR[month])+")");
+			data.add(aa);
+			
+			aa = new Reports();
+			aa.setF1("CTC Collection" + "("+Currency.formatAmount(totalCTCCollection[month])+")");
+			aa.setF2("");
+			data.add(aa);
+			
+			aa = new Reports();
+			aa.setF1("MTO CTC Collection" + "("+Currency.formatAmount(totalMTOCTCCollection[month])+")");
+			aa.setF2("");
+			data.add(aa);
+			
+			aa = new Reports();
+			aa.setF1("Barangay CTC Collection" + "("+Currency.formatAmount(totalBarangayCTCCollection[month])+")");
+			aa.setF2("");
+			data.add(aa);
+			
+			double sharedAmount = totalBarangayCTCCollection[month] * 0.50;
+			aa = new Reports();
+			aa.setF1("Barangay Shared CTC Amount(50%) (" + Currency.formatAmount(sharedAmount)+")");
+			aa.setF2("");
+			data.add(aa);
+			
 			
 			if(size>35) {
 				int cnt=1;
@@ -1245,7 +1463,11 @@ public class OverviewBean implements Serializable {
 	  		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(rss);
 	  		HashMap param = new HashMap();
 	  		UserDtls user = Login.getUserLogin().getUserDtls();
-	  		param.put("PARAM_TITLE", "SUMMARY OF COLLECTION FOR THE MONTH OF "+DateUtils.getMonthName(month).toUpperCase() + " " + getYear());
+	  		if(month==0) {
+	  			param.put("PARAM_TITLE", "SUMMARY OF COLLECTION FOR THE YEAR " + getYear() + " AS OF " + DateUtils.getMonthName(DateUtils.getCurrentMonth())	.toUpperCase());
+	  		}else {	
+	  			param.put("PARAM_TITLE", "SUMMARY OF COLLECTION FOR THE MONTH OF "+DateUtils.getMonthName(month).toUpperCase() + " " + getYear());
+	  		}
 	  		param.put("PARAM_TOTAL", "Php"+Currency.formatAmount(totalAmount));
 	  		param.put("PARAM_PRINTED_DATE", DateUtils.getCurrentDateMMMMDDYYYY());
 	  		

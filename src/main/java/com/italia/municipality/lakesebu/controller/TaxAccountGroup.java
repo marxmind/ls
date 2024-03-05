@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
+import com.italia.municipality.lakesebu.utils.OpenTableAccess;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +30,45 @@ public class TaxAccountGroup {
 	private String name;
 	private int isActive;
 	private List<PaymentName> groups;
+	
+	public static void loadAcctountPayment() {
+		
+		Map<String, List<String>> mapData = new LinkedHashMap<String, List<String>>();
+		List<String> data = new ArrayList<String>();
+		ResultSet rs = OpenTableAccess.query("SELECT t.accname,p.pyname FROM taxaccntgroup t, paymentname p WHERE t.accisactive=1 AND t.accid=p.accntgrpid", new String[0], new WebTISDatabaseConnect());
+		try {
+			while(rs.next()) {
+				String name = rs.getString("accname");
+				String pay = rs.getString("pyname");
+				
+				if(mapData!=null && mapData.size()>0) {
+					if(mapData.containsKey(name)) {
+						mapData.get(name).add(pay);
+					}else {
+						data = new ArrayList<String>();
+						data.add(pay);
+						mapData.put(name, data);
+					}
+				}else {
+					data.add(pay);
+					mapData.put(name, data);
+				}
+				
+			}
+			
+			for(String a : mapData.keySet()) {
+				System.out.println(a);
+				for(String b : mapData.get(a)) {
+					System.out.println("\t"+b);
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public static Map<Long, TaxAccountGroup> retrieveMap(String sqlAdd, String[] params){
 		Map<Long, TaxAccountGroup>  taxes = new LinkedHashMap<Long, TaxAccountGroup>();
