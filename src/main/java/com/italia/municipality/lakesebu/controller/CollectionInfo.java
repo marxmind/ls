@@ -595,6 +595,7 @@ public class CollectionInfo {
 			try{issued.setStock(Stocks.builder().id(rs.getLong("stockid")).build());}catch(NullPointerException e){}
 			try{issued.setFundId(rs.getInt("fundid"));}catch(NullPointerException e){}
 			try{issued.setFundName(FundType.typeName(rs.getInt("fundid")));}catch(NullPointerException e){}
+			try{issued.setStabNo(rs.getInt("stabno"));}catch(NullPointerException e){}
 			form.setIssuedForm(issued);
 			
 			Collector col = new Collector();

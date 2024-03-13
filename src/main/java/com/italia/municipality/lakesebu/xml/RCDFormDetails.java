@@ -26,51 +26,5 @@ public class RCDFormDetails {
 	private String seriesTo="";
 	private String amount="";
 	private String style;
-	/*
-	public String getFormId() {
-		if(formId==null) {
-			formId="";
-		}
-		return formId;
-	}
-	public String getName() {
-		if(name==null) {
-			name="";
-		}
-		return name;
-	}
-	public String getSeriesFrom() {
-		if(seriesFrom==null) {
-			seriesFrom="";
-		}
-		return seriesFrom;
-	}
-	public String getSeriesTo() {
-		if(seriesTo==null) {
-			seriesTo="";
-		}
-		return seriesTo;
-	}
-	public String getAmount() {
-		if(amount==null) {
-			amount="";
-		}
-		return amount;
-	}
-	public void setFormId(String formId) {
-		this.formId = formId;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setSeriesFrom(String seriesFrom) {
-		this.seriesFrom = seriesFrom;
-	}
-	public void setSeriesTo(String seriesTo) {
-		this.seriesTo = seriesTo;
-	}
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-	*/
+	private String stabNo;
 }

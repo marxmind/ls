@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    xmlns:pe="http://primefaces.org/ui/extensions"  
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Permit Registration</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+            <h:outputScript name="zxing/zxing.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	
+		 <p:growl id="msg" showDetail="true" life="2000" />
+		 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    	 
+    	 <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    	</p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+		    	<div class="col-12">
+		    		<p:dataTable id="bzId" value="#{bzchk.rpts}" var="bz" stickyHeader="false"
+							rows="100" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" lazy="false"
+                         paginatorPosition="top" paginatorAlwaysVisible="false"
+                         >
+                         	
+                         	<f:facet name="{Exporters}">
+                         			
+            						<h:commandLink title="Export Business in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="bzId" fileName="Business" options="#{exporter.excelOpt}"/>
+            						</h:commandLink>
+            						<p:commandLink title="Export Business in pdf format">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+                						    <p:dataExporter type="xls" target="bzId" fileName="Business" options="#{exporter.excelOpt}"/>
+            						</p:commandLink>
+            				</f:facet>
+                         	
+                         	<p:column headerText="Plate No" width="50" filterBy="#{bz.plateNo}"  filterMatchMode="contains" sortable="false">
+            						<p:outputLabel  value="#{bz.plateNo}"/>
+            				</p:column>
+                         	
+            				<p:column headerText="Business Name" filterBy="#{bz.businessName}"  filterMatchMode="contains" width="200" sortable="false">
+            						<p:outputLabel  value="#{bz.businessName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Owner" filterBy="#{bz.customer.fullname}"  filterMatchMode="contains" width="100" sortable="false">
+            						<p:outputLabel  value="#{bz.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Memo" filterBy="#{bz.memoType}"  filterMatchMode="contains" width="100" sortable="false">
+            						<p:outputLabel  value="#{bz.memoType}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Line of Business" filterBy="#{bz.businessEngage}"  filterMatchMode="contains" width="100" sortable="false">
+            						<p:outputLabel  value="#{bz.businessEngage}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Address" width="200" filterBy="#{bz.businessAddress}"  filterMatchMode="contains" sortable="false">
+            						<p:outputLabel  value="#{bz.businessAddress}"/>
+            				</p:column>
+            				
+     					</p:dataTable>
+	    		</div>
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menulic.xhtml" />
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

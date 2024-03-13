@@ -251,6 +251,10 @@ public class MenuBean implements Serializable{
 		return "collection-deposit";
 	}
 	
+	public String bzchk() {
+		return "bzchecker";
+	}
+	
 	public String getUserFullName() {
 		
 		UserDtls user = Login.getUserLogin().getUserDtls();

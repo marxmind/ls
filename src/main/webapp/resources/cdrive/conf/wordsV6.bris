@@ -10,15 +10,15 @@ activate-motorcycle-loan=on
 activate-multipurpose=on
 activate-all=on
 
-mayor=FLORO S. GANDAM
+mayor=REMIE M. UNGGOL
 official-position=Municipal Mayor
-oic=CHARLOTTE LOUISE J. LUCERO
-license-officer-pos=Acting Licensing Officer
+oic=MELVER A. VERGARA
+license-officer-pos=Licensing Officer 1
 types=NEW,RENEW,ADDITIONAL
 memotype=ANNUALLY,1st SEMI-ANNUAL,2nd SEMI-ANNUAL,1st QUARTER,2nd QUARTER,3rd QUARTER,4th QUARTER,1st to 3rd Qtr,2nd to 3rd Qtr,2nd to 4th Qtr
 
 menro=CYRIL DONGON
-menro-officer-pos=Acting Menro Officer
+menro-officer-pos=Menro Officer
 preparedby=ERNANE BLONTO
 preparedby-pos=DATA ENCODER
 
@@ -30,7 +30,10 @@ check issued recording
 treasurer-name=FERDINAND L. LOPEZ
 official-designation=MUNICIPAL TREASURER
 receiving-person=APRIL MARK T. MEYEN, CPA
-receiving-position=Accountant II
+receiving-position=Accountant III
+revenue collection
+rcd-recieving-person=EMMANUEL S. FACTORA
+rcd-receiving-position=Mgt. and Audit Analyst III
 
 MUNICPAL TAG LINE
 tagline=KEMDOL LAKE SEBU

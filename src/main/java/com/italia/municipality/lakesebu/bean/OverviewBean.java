@@ -98,6 +98,8 @@ public class OverviewBean implements Serializable {
 	private Map<Long,PaymentName> payMapData;
 	private String labelNamePayment;
 	
+	private List<Reports> todaysCollections;
+	private List<Reports> accountableForms;
 	@PostConstruct
 	public void init() {
 		
@@ -162,7 +164,13 @@ public class OverviewBean implements Serializable {
 			collectors = new ArrayList<Reports>();
 			loadCollectorCollection();
 			pf.executeScript("PF('tabSelection').select(6)");
-		}	
+		}else if("Reported TO LO (Today)".equalsIgnoreCase(getTabSelected())) {
+			todaysCollections = new ArrayList<Reports>();
+			loadTodayReportedCollection();
+		}else if("Accountable Form Status".equalsIgnoreCase(getTabSelected())) {
+			accountableForms = new ArrayList<Reports>();
+			loadAccountableForms();
+		}		
 	}
 	
 	public void onTabChange(TabChangeEvent event) {
@@ -186,9 +194,90 @@ public class OverviewBean implements Serializable {
 		}else if("Monthly Collector Collection".equalsIgnoreCase(event.getTab().getTitle())) {
 			collectors = new ArrayList<Reports>();
 			loadCollectorCollection();
-		}	
+		}else if("Reported TO LO (Today)".equalsIgnoreCase(event.getTab().getTitle())) {
+			todaysCollections = new ArrayList<Reports>();
+			loadTodayReportedCollection();
+		}else if("Accountable Form Status".equalsIgnoreCase(event.getTab().getTitle())) {
+			accountableForms = new ArrayList<Reports>();
+			loadAccountableForms();
+		}
 		setTabSelected(event.getTab().getTitle());
     }
+	
+	public void loadAccountableForms() {
+		ResultSet rs = OpenTableAccess.query("SELECT issueddate,formtypelog,beginningNoLog,endingNoLog,logpcs,isid,fundid FROM logissuedform WHERE isactivelog=1 AND formstatus=" + FormStatus.HANDED.getId() +" ORDER BY isid", new String[0], new WebTISDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				String days = DateUtils.getNumberyDaysNow(rs.getString("issueddate"))+"";
+				String dateIssued = DateUtils.convertDateToMonthDayYear(rs.getString("issueddate"));
+				String formName = FormType.nameId(rs.getInt("formtypelog"));
+				long start = rs.getLong("beginningNoLog");
+				long last = rs.getLong("endingNoLog");
+				String qty = rs.getString("logpcs");
+				String collector = getMapCollector().get(rs.getInt("isid")).getName();
+				String fund = FundType.typeName(rs.getInt("fundid"));
+				
+				String beg = correctingDigitOfSeries(start, rs.getInt("formtypelog"));
+				String end = correctingDigitOfSeries(last, rs.getInt("formtypelog"));
+				
+				Reports rpt = Reports.builder()
+						.f1(collector)
+						.f2(formName)
+						.f3(dateIssued)
+						.f4(beg+"-"+end)
+						.f5(qty)
+						.f6(fund)
+						.f7(days)
+						.build();
+				
+				accountableForms.add(rpt);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private String correctingDigitOfSeries(long num, int formType) {
+		String val = "";
+		String valNum = num+"";
+		int len = valNum.length();
+		if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
+			val = num+"";
+		}else if(FormType.AF_51.getId()==formType || FormType.AF_52.getId()==formType || FormType.AF_56.getId()==formType || FormType.AF_53.getId()==formType) {
+			
+			switch(len) {
+				case 1 : val = "000000"+num; break;
+				case 2 : val = "00000"+num; break;
+				case 3 : val = "0000"+num; break;
+				case 4 : val = "000"+num; break;
+				case 5 : val = "00"+num; break;
+				case 6 : val = "0"+num; break;
+				case 7 : val = ""+num; break;
+			}
+		
+
+		}else if(FormType.CTC_INDIVIDUAL.getId()==formType || FormType.CTC_CORPORATION.getId()==formType) {
+			
+			switch(len) {
+				case 1 : val = "0000000"+num; break;
+				case 2 : val = "000000"+num; break;
+				case 3 : val = "00000"+num; break;
+				case 4 : val = "0000"+num; break;
+				case 5 : val = "000"+num; break;
+				case 6 : val = "00"+num; break;
+				case 7 : val = "0"+num; break;
+				case 8 : val = ""+num; break;
+			}
+		
+		}
+		
+		
+		return val;
+	}
 	
 	public void loadPayment(String labelName,String taxAmount, String month,String id) {
 		paymentViews = new ArrayList<Reports>();
@@ -289,6 +378,87 @@ public class OverviewBean implements Serializable {
 			e.printStackTrace();
 		}
 		
+		}
+	}
+	
+	public void loadTodayReportedCollection() {
+		String sql = "SELECT day(receiveddate) as day,sum(amount) as amount,formtypecol,isid "
+				+ "FROM collectioninfo WHERE isactivecol=1 AND receiveddate>='"+ dateToday +"'"
+						+ " GROUP BY day,formtypecol,isid ";
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
+		//collector form day amount
+		Map<Integer, Map<Integer, Map<Integer, Double>>> collector = new LinkedHashMap<Integer, Map<Integer, Map<Integer, Double>>>();
+		Map<Integer, Map<Integer, Double>> form = new LinkedHashMap<Integer, Map<Integer, Double>>();
+		Map<Integer, Double> days = new LinkedHashMap<Integer, Double>();
+		try {
+			while(rs.next()) {
+				
+				int col = rs.getInt("isid");
+				int formType = rs.getInt("formtypecol");
+				int day = rs.getInt("day");
+				double amount = rs.getDouble("amount");
+				
+				if(collector!=null && collector.size()>0) {
+					if(collector.containsKey(col)) {
+						if(collector.get(col).containsKey(formType)) {
+							if(collector.get(col).get(formType).containsKey(day)){
+								double newAmount = collector.get(col).get(formType).get(day) + amount;
+								collector.get(col).get(formType).put(day, newAmount);	
+							}else {
+								collector.get(col).get(formType).put(day, amount);							}
+						}else {
+							days = new LinkedHashMap<Integer, Double>();
+							days.put(day, amount);
+							collector.get(col).put(formType, days);
+						}
+					}else {
+						form = new LinkedHashMap<Integer, Map<Integer, Double>>();
+						days = new LinkedHashMap<Integer, Double>();
+						days.put(day, amount);
+						form.put(formType, days);
+						collector.put(col, form);
+					}
+				}else {
+					days.put(day, amount);
+					form.put(formType, days);
+					collector.put(col, form);
+				}
+			}
+			
+			if(collector!=null && collector.size()>0) {
+				for(int id : collector.keySet()) {
+					String dep = "";
+					Collector col = getMapCollector().get(id);
+					try {dep = col.getDepartment().getDepartmentName();}catch(Exception e) {}
+					Reports rss = Reports.builder()
+							.f1(col.getName())
+							.f15(dep)
+							.build();
+					
+					todaysCollections.add(rss);
+					
+						for(int frm : collector.get(id).keySet()) {
+							rss = Reports.builder()
+									.f2(FormType.nameId(frm))
+									.build();
+							
+							for(int m=1; m<=31; m++) {
+								String amnt = "";
+								if(collector.get(id).get(frm).containsKey(m)) {
+									amnt = Currency.formatAmount(collector.get(id).get(frm).get(m));
+									rss.setF3(amnt);
+								}
+							}
+							todaysCollections.add(rss);
+						}
+					
+					}
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -764,7 +934,7 @@ public class OverviewBean implements Serializable {
 			}
 			int size = (FundType.values().length*FundType.values().length) + FundType.values().length;
 			
-			String[][] data = new String[size][14];
+			String[][] data = new String[size][15];
 			/*data[0][0] = "Fund";
 			data[0][1] = "Description";
 			int x = 2;
@@ -777,6 +947,9 @@ public class OverviewBean implements Serializable {
 			double beginning [] = new double[12];
 			double collection [] = new double[12];
 			double deposit [] = new double[12];
+			
+			double totalYearlyCollection = 0d;
+			double totalYearlyDeposit = 0d;
 			
 			for(FundType f : FundType.values()) {
 				
@@ -796,13 +969,17 @@ public class OverviewBean implements Serializable {
 				data[xx][1] = "BEGINNING BALANCE";
 				int a=2;
 				int index = 0;
-				
+				double totalYearlyBeginning = 0d;
 				for(int m=1; m<=12; m++) {//month
+					
 					if(mapBeginningBal!=null && mapBeginningBal.size()>0) {
 						if(mapBeginningBal.containsKey(f.getName())) {
 							if(mapBeginningBal.get(f.getName()).containsKey(m)) {
 								data[xx][a] = Currency.formatAmount(mapBeginningBal.get(f.getName()).get(m));
 								beginning[index] = mapBeginningBal.get(f.getName()).get(m);
+								if(m==1) {
+									totalYearlyBeginning = mapBeginningBal.get(f.getName()).get(m);
+								}
 							}else {
 								data[xx][a] = "";
 								beginning[index] = 0.00;
@@ -818,6 +995,7 @@ public class OverviewBean implements Serializable {
 					a++;
 					index++;
 				}
+				data[xx][14] = Currency.formatAmount(totalYearlyBeginning);
 				
 				
 				
@@ -834,6 +1012,7 @@ public class OverviewBean implements Serializable {
 							if(mapCollection.get(f.getName()).containsKey(m)) {
 								data[xx][a] = Currency.formatAmount(mapCollection.get(f.getName()).get(m));
 								collection[index] = mapCollection.get(f.getName()).get(m);
+								totalYearlyCollection += mapCollection.get(f.getName()).get(m);
 							}else {
 								data[xx][a] = "";
 								collection[index] = 0.00;
@@ -850,6 +1029,9 @@ public class OverviewBean implements Serializable {
 					index++;
 				}
 				
+				//total collection
+				data[xx][14] = totalYearlyCollection==0? "" : Currency.formatAmount(totalYearlyCollection);
+				
 				
 				//deposit
 				xx += 1;
@@ -864,6 +1046,7 @@ public class OverviewBean implements Serializable {
 							if(mapDeposit.get(f.getName()).containsKey(m)) {
 								data[xx][a] = Currency.formatAmount(mapDeposit.get(f.getName()).get(m));
 								deposit[index] = mapDeposit.get(f.getName()).get(m);
+								totalYearlyDeposit += mapDeposit.get(f.getName()).get(m);
 							}else {
 								data[xx][a] = "";
 								deposit[index] = 0.00;
@@ -880,6 +1063,9 @@ public class OverviewBean implements Serializable {
 					index++;
 				}
 				
+				data[xx][14] = totalYearlyDeposit==0? "" : Currency.formatAmount(totalYearlyDeposit);
+				
+				
 				
 				//Ending
 				xx += 1;
@@ -887,7 +1073,7 @@ public class OverviewBean implements Serializable {
 				data[xx][1] = "ENDING BALANCE";
 				a=2;
 				index=0;
-				
+				double totalYearlyEnding = 0d;
 				for(int i=0; i<12; i++) {//month
 					boolean isNotZero=false;
 					isNotZero = collection[i]>0? true : false;
@@ -898,9 +1084,16 @@ public class OverviewBean implements Serializable {
 					data[xx][a] = isNotZero==false? "" : Currency.formatAmount(amount);
 					a++;
 				}
-				
+				totalYearlyEnding = (totalYearlyBeginning + totalYearlyCollection) - totalYearlyDeposit;
+				data[xx][14] = totalYearlyEnding==0? "" : Currency.formatAmount(totalYearlyEnding);
+				totalYearlyBeginning = 0d;
+				totalYearlyEnding = 0d;
+				totalYearlyDeposit = 0d;
+				totalYearlyCollection = 0d;
 				xx++;
 			}
+			
+			
 			
 			for(int b=0; b<size; b++) {
 				
@@ -919,6 +1112,7 @@ public class OverviewBean implements Serializable {
 							.f12(data[b][11])
 							.f13(data[b][12])
 							.f14(data[b][13])
+							.f15(data[b][14])
 							.build();
 					rcds.add(r);
 			}

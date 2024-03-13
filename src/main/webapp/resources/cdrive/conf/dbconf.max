@@ -15,4 +15,4 @@ DATABASE_SSL=useSSL=false
 DATABASE_SERVER_TIME_ZONE=serverTimezone=UTC
 DATABASE_SERVER_DB_URL=jdbc:mariadb://mto-server:3306/webtis?serverTimezone=UTC&useSSL=false
 DATABASE_SERVER_IP=mto-server
-DATABASE_HOME_PATH=C:\\Program Files\\MariaDB 10.6\\bin\\
+DATABASE_HOME_PATH=C:\\Program Files\\MariaDB 11.1\\bin\\

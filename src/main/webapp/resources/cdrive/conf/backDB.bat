@@ -4,7 +4,7 @@ set dt=%date:~7,2%-%date:~4,2%-%date:~10,4%_%time:~0,2%_%time:~3,2%_%time:~6,2%
 echo Backup database.....
 echo %dt%
 C:
-cd C:\Program Files\MariaDB 10.6\bin 
+cd C:\Program Files\MariaDB 11.3\bin 
 
 echo Creating dir if not exist
 if not exist "C:\webtis\databasebackup" mkdir C:\webtis\databasebackup

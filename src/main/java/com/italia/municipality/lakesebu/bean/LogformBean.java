@@ -1963,9 +1963,11 @@ public class LogformBean implements Serializable{
 				Form11Report frm = reportCollectionInfo(i);
 				String ctc = frm.getF1();
 				//System.out.println("after form11..ctc= " + ctc);
+				String stabNo="";
+				try {stabNo=i.getIssuedForm().getStabNo()+"";}catch(Exception e) {}
 				dt.setFormId(cnt+"");
 				dt.setName(i.getFormTypeName());
-				
+				dt.setStabNo(stabNo);				
 				if(FormType.CT_2.getId()== i .getFormType() || FormType.CT_5.getId() == i .getFormType()) {
 					dt.setSeriesFrom(Currency.formatAmount(i.getAmount()));
 					dt.setSeriesTo("");
@@ -2150,6 +2152,9 @@ public class LogformBean implements Serializable{
 				//if(form.getName().trim().equalsIgnoreCase(s.getName())) {
 				if(form.getDescription().equalsIgnoreCase(s.getName())) {
 					System.out.println("Details >> " + s.getName());
+					if(!"0".equalsIgnoreCase(s.getStabNo())){
+						s.setName("#"+s.getStabNo() + " " + s.getName());
+					}
 					dts.add(s);
 				}
 			}
@@ -2174,6 +2179,7 @@ public class LogformBean implements Serializable{
 			rcd.getRcdFormDtls().add(rx);
 			for(RCDFormDetails r : rs) {
 				rx = new RCDFormDetails();
+				
 				if((r.getAmount()!=null || !r.getAmount().isEmpty()) && (r.getName()!=null || !r.getName().isEmpty())) {
 					rx.setName(r.getName() + " ("+ Currency.formatAmount(r.getAmount()) +")");
 					rx.setAmount("");

@@ -57,6 +57,7 @@
 
     <h:body>
  <h:form prependId="false" id="formId">       
+ 
     <p:growl id="msg" showDetail="true" life="2000" />
     
     
@@ -84,12 +85,12 @@
             	 <p:outputLabel value="Please select year to monitor : "/>
                  <p:selectOneMenu value="#{ovBean.year}" style="width: 20em" disabled="false">
 						<f:selectItems value="#{ovBean.years}"/>
-						<p:ajax event="change" listener="#{ovBean.reloadTab}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId"/>
+						<p:ajax event="change" listener="#{ovBean.reloadTab}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId"/>
 				 </p:selectOneMenu>
                  
          <p:tabView prependId="false" widgetVar="tabSelection">
             
-            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId"/>
+            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId"/>
             
             <p:tab title="Running Collections">
             	
@@ -214,6 +215,10 @@
 		            
 		            <p:column headerText="Description" width="200">
 		                <p:outputLabel value="#{pk.f2}" />
+		            </p:column>
+		            
+		            <p:column headerText="Total" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f15}" />
 		            </p:column>
 		            
 		            <p:column headerText="January" width="100" style="text-align: right">
@@ -513,6 +518,89 @@
 		        </p:dataTable>  
             </p:tab>
             
+            <p:tab title="Reported TO LO (Today)">
+            	
+            	<p:dataTable id="dailyCollectorId" var="pk" value="#{ovBean.todaysCollections}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            
+		            <p:column headerText="Collector" width="150" style="font-weight: bold">
+		                <p:outputLabel value="#{pk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="Department/Barangay" width="110" style="text-align: right">
+		                <p:outputLabel value="#{pk.f15}" />
+		            </p:column>
+		            
+		            <p:column headerText="Form" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f2}" />
+		            </p:column>
+		            
+		            <p:column headerText="Amount" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f3}" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="" />
+		            </p:column>
+		            
+		            <p:column headerText="" width="100" style="text-align: right">
+		                <p:outputLabel value="" />
+		            </p:column>
+		            
+		            
+		             
+		        </p:dataTable> 
+            	
+            </p:tab>
+            
+            <p:tab title="Accountable Form Status">
+            	
+            	<p:dataTable id="accId" var="sk" value="#{ovBean.accountableForms}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
+		            
+		            <p:column headerText="Collector" width="150" filterBy="#{sk.f1}"  filterMatchMode="contains" style="font-weight: bold">
+		                <p:outputLabel value="#{sk.f1}" />
+		            </p:column>
+		            
+		            <p:column headerText="Form" width="70">
+		                <p:outputLabel value="#{sk.f2}" />
+		            </p:column>
+		            
+		            <p:column headerText="Issued (# of Days)" width="200">
+		                <p:outputLabel value="#{sk.f3} -----> (#{sk.f7})" />
+		            </p:column>
+		            
+		            <p:column headerText="Series" width="100" filterBy="#{sk.f4}"  filterMatchMode="contains">
+		                <p:outputLabel value="#{sk.f4}" />
+		            </p:column>
+		            
+		            <p:column headerText="Qty" width="70">
+		                <p:outputLabel value="#{sk.f5}" />
+		            </p:column>
+		            
+		            <p:column headerText="Fund" width="70">
+		                <p:outputLabel value="#{sk.f6}" />
+		            </p:column>
+		            
+		           
+		             
+		        </p:dataTable> 
+            	
+            </p:tab>
             
             
             

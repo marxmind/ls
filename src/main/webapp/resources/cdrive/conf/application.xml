@@ -21,7 +21,7 @@
 	<includeLog>yes</includeLog>
 	<logPath>C:\webtis\log\</logPath>
 	<license-img>C:\webtis\license\img\</license-img>
-	<chequeJrxml>Format2</chequeJrxml>
+	<chequeJrxml>chk_L3110</chequeJrxml>
 	<chequePdfName>BankChequeReport</chequePdfName>
 	<dispenseChequePdfName>Dispense</dispenseChequePdfName>
 	<form56>form56</form56>
