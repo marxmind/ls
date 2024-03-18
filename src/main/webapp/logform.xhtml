@@ -65,6 +65,7 @@
 			    				<div class="ui-inputgroup">
 			    				<p:commandButton value="Form Series History" onclick="PF('dlgCSeries').show()"/>
 			    				<p:commandButton value="Show Income Per Forms" actionListener="#{logformBean.loadFormDetails}" update="tbFormPer formData"/>
+			    				<p:commandButton value="Create Bank Deposit" actionListener="#{bankdp.openBankTransaction}" update="depositId"/>
 			    				</div>
 			    		</f:facet>
 			    		<f:facet name="right">
@@ -962,6 +963,7 @@
 	</p:dialog>
 	
 	<p:commandButton title="Graph" icon="pi pi-chart-pie"  actionListener="#{graphIssuanceBean.loadGraph}" update="graphLineId graphBardId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<ui:include src="bankdeposit.xhtml" />
 	<ui:include src="graphissuance.xhtml" />
 	<ui:include src="formchange.xhtml" />
 	<ui:include src="loader.xhtml" />

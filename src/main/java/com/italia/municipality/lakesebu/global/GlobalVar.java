@@ -80,4 +80,6 @@ public class GlobalVar {
 	public static final String EPSON_L220="chk_L220";
 	public static final String EPSON_L3110="chk_L3110";
 	public static final String BUSINESS_BILLING="bzbilling";
+	public static final String RCD_SUMMARY = "rcdsummary";
+	public static final String BANK_DEPOSIT = "rcdbankdeposit";
 }

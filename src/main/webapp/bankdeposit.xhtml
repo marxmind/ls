@@ -1,0 +1,109 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     
+     <style type="text/css">
+			    .ui-chart {
+			        margin-bottom: 50px;
+			    }
+			</style>
+    		
+    		<p:dialog widgetVar="dlgBankDeposit"  height="700" width="1200" minimizable="true" maximizable="true" position="center top" header="Bank Deposit" closable="true" modal="true" closeOnEscape="true">
+    		
+    		
+    		<p:dataTable id="depositId" value="#{bankdp.deposits}" var="dp" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,20,30,40,50,100" lazy="false"
+                         scrollable="true" paginatorPosition="top" paginatorAlwaysVisible="true">
+                        
+                        <f:facet name="{Exporters}">
+                        	
+                        	
+							
+							<p:menuButton id="exeRcd" value="Exports" style="float: right">
+										<p:menuitem value="Download Excel" ajax="false" immediate="true" icon="pi pi-file-excel" target="_blank">
+											<p:dataExporter type="xls" target="depositId" fileName="DepositTransaction" pageOnly="false"/>
+										</p:menuitem>
+										<p:menuitem value="Print Report" ajax="false" immediate="true" icon="pi pi-file-pdf" actionListener="#{bankdp.printDeposit}" target="_blank"/>
+									</p:menuButton>
+							
+							
+							
+                        </f:facet>
+                        
+                        <f:facet name="header">
+                        	<div class="ui-inputgroup">
+                        	<p:selectOneMenu value="#{bankdp.depositFundTypeId}" style="width: 15em; float: left">
+									<f:selectItems value="#{bankdp.depositFundTypes}"/>
+									<p:ajax event="change" listener="#{bankdp.loadBankTransaction}" update="depositId"/>
+							</p:selectOneMenu>
+	                        <p:selectOneMenu value="#{bankdp.yearDepositId}" style="width: 15em; float: left">
+									<f:selectItems value="#{bankdp.yearDeposits}"/>
+									<p:ajax event="change" listener="#{bankdp.loadBankTransaction}" update="depositId"/>
+							</p:selectOneMenu>
+							<p:selectOneMenu value="#{bankdp.monthDepositId}" style="width: 15em; float: left">
+									<f:selectItems value="#{bankdp.monthDeposits}"/>
+									<p:ajax event="change" listener="#{bankdp.loadBankTransaction}" update="depositId"/>
+							</p:selectOneMenu>
+                        	<p:calendar value="#{bankdp.rcdData.dateDeposited}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 12em"/>
+                        	<p:inputText value="#{bankdp.rcdData.reference}" placeholder="Reference No"/>
+                        	<p:inputNumber value="#{bankdp.rcdData.amount}" placeholder="00.00"/>
+                        	<p:commandButton icon="pi pi-save" value="Save" actionListener="#{bankdp.saveDeposit}" update="msg depositId">
+                        		<p:confirm type="popup" header="Confirmation" message="Are you sure you want to update this deposit?" icon="pi pi-info-circle" />
+                        	</p:commandButton>
+                        	</div>
+                        </f:facet>
+                        
+                        <p:column headerText="Edit" width="20" exportable="false">
+								<p:commandButton icon="pi pi-pencil" update="depositId" actionListener="#{bankdp.clickItem(dp)}"/>
+						</p:column>
+                         	
+                         <p:column headerText="PDF" width="20" exportable="false">
+								<p:commandLink title="Print in PDF"  actionListener="#{bankdp.printDeposit(dp)}" target="_blank" ajax="false" immediate="false">
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left; #{in.color}"></i>
+								</p:commandLink>
+						</p:column>
+                        
+                        <p:column headerText="[*]" width="20" exportable="false">
+		            			<p:commandButton update="depositId msg" icon="pi pi-trash" actionListener="#{bankdp.deleteItem(dp)}">
+		            				<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            			</p:commandButton>
+		            	</p:column>
+                        
+                        <p:column headerText="Date" width="50" >
+	            			<p:outputLabel value="#{dp.dateTrans}"/>
+						</p:column>
+						
+						<p:column headerText="Reference" width="70" >
+	            			<p:outputLabel value="#{dp.reference}"/>
+						</p:column>
+						
+						<p:column headerText="Amount" width="70" >
+	            			<p:outputLabel value="#{dp.amount}">
+	            				<f:convertNumber currencySymbol="" type="currency"/>
+	            			</p:outputLabel>
+						</p:column>
+                        
+                        
+             </p:dataTable>
+    		
+    		
+    		</p:dialog>
+     
+     </ui:composition>
+     
+     
+     
+</html>

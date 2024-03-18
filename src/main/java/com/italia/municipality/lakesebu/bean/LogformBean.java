@@ -2398,7 +2398,7 @@ public class LogformBean implements Serializable{
 		  		param.put("PARAM_PRINTED_DATE", DateUtils.convertDateToMonthDayYear(in.getReceivedDate()));
 		  		param.put("PARAM_VERIFIED_DATE", dates[1]+"/"+dates[2]+"/"+dates[0]);
 		  		param.put("PARAM_VERIFIED_PERSON", doc.getTagName("verified-person"));
-		  		param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+		  		param.put("PARAM_TREASURER", doc.getTagName("treasurer-name").toUpperCase());
 		  		
 		  		String sql = " AND frm.isactivecol=1 AND cl.isid=? AND frm.rptgroup=?";
 				String[] params = new String[2];
@@ -3796,7 +3796,7 @@ public class LogformBean implements Serializable{
 		if(getSelectedCollection()!=null && getSelectedCollection().size()>0) {
 			String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 					AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
-			String REPORT_NAME ="rcdsummary";
+			String REPORT_NAME = GlobalVar.RCD_SUMMARY;
 			
 			ReportCompiler compiler = new ReportCompiler();
 			String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);

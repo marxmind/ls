@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
+import com.italia.municipality.lakesebu.utils.OpenTableAccess;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +34,24 @@ public class RCDDeposit {
 	private String bankName;
 	private int fundType;
 	private int isActive;
+	
+	private Date dateDeposited;
+	
+	public static int lastIndex(int fundType, int year, int month) {
+		
+		ResultSet rs = OpenTableAccess.query("SELECT indexid FROM rcddeposit WHERE isactivercd=1 AND fundtype=" + fundType + " AND year(datetrans)=" + year + " AND month(datetrans)=" + month + " ORDER BY indexid DESC LIMIT 1", new String[0], new WebTISDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				return rs.getInt("indexid");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
 	
 	public static List<RCDDeposit> retrieve(String sql, String[] params){
 		List<RCDDeposit> vrs = new ArrayList<RCDDeposit>();

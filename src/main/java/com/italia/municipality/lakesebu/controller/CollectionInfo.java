@@ -71,6 +71,21 @@ public class CollectionInfo {
 	private int inputQty;
 	private int available;
 	
+	public static int remainingQty(int formTypeId, int collectorId, long logId) {
+		
+		String st = "SELECT sum(colpcs) as qty FROM collectioninfo WHERE isactivecol=1 AND formtypecol="+formTypeId + " AND isid="+ collectorId + " AND logid=" + logId;
+		ResultSet rs = OpenTableAccess.query(st, new String[0], new WebTISDatabaseConnect());
+		try {
+			while(rs.next()) {
+				return rs.getInt("qty");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public static Map<Integer, Double> monthlyIncomeRealPropertyTax(int year){
 		Map<Integer, Double> data = new LinkedHashMap<Integer, Double>();
 		ResultSet rs = OpenTableAccess.query("SELECT month(receiveddate) as month, sum(amount) as amount FROM collectioninfo WHERE isactivecol=1 AND formtypecol= "+ FormType.AF_56.getId() +" AND YEAR(receiveddate)=" + year + " GROUP BY month", new String[0], new WebTISDatabaseConnect());

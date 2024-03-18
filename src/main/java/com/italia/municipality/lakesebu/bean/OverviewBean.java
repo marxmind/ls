@@ -100,6 +100,10 @@ public class OverviewBean implements Serializable {
 	
 	private List<Reports> todaysCollections;
 	private List<Reports> accountableForms;
+	
+	private List<Reports> seriesHisDtls;
+	private String remainingQty;
+	
 	@PostConstruct
 	public void init() {
 		
@@ -205,7 +209,7 @@ public class OverviewBean implements Serializable {
     }
 	
 	public void loadAccountableForms() {
-		ResultSet rs = OpenTableAccess.query("SELECT issueddate,formtypelog,beginningNoLog,endingNoLog,logpcs,isid,fundid FROM logissuedform WHERE isactivelog=1 AND formstatus=" + FormStatus.HANDED.getId() +" ORDER BY isid", new String[0], new WebTISDatabaseConnect());
+		ResultSet rs = OpenTableAccess.query("SELECT issueddate,formtypelog,beginningNoLog,endingNoLog,logpcs,isid,fundid,logid FROM logissuedform WHERE isactivelog=1 AND formstatus=" + FormStatus.HANDED.getId() +" ORDER BY isid", new String[0], new WebTISDatabaseConnect());
 		
 		try {
 			while(rs.next()) {
@@ -214,21 +218,36 @@ public class OverviewBean implements Serializable {
 				String formName = FormType.nameId(rs.getInt("formtypelog"));
 				long start = rs.getLong("beginningNoLog");
 				long last = rs.getLong("endingNoLog");
-				String qty = rs.getString("logpcs");
+				int qty = rs.getInt("logpcs");
 				String collector = getMapCollector().get(rs.getInt("isid")).getName();
 				String fund = FundType.typeName(rs.getInt("fundid"));
 				
 				String beg = correctingDigitOfSeries(start, rs.getInt("formtypelog"));
 				String end = correctingDigitOfSeries(last, rs.getInt("formtypelog"));
 				
+				int issQty = CollectionInfo.remainingQty(rs.getInt("formtypelog"), rs.getInt("isid"), rs.getLong("logid"));
+				int remQty = qty - issQty;
+				
+				String style="";
+				int numOfDays = Integer.valueOf(days);
+				if(numOfDays>50) {
+					style = "background-color: red; font-color: black";
+				}
+				
 				Reports rpt = Reports.builder()
 						.f1(collector)
 						.f2(formName)
 						.f3(dateIssued)
 						.f4(beg+"-"+end)
-						.f5(qty)
+						.f5(qty+"")
 						.f6(fund)
 						.f7(days)
+						.f8(rs.getInt("isid")+"")
+						.f9(rs.getInt("formtypelog")+"")
+						.f10(rs.getLong("logid")+"")
+						.f11(issQty+"")
+						.f12(remQty+"")
+						.f13(style)
 						.build();
 				
 				accountableForms.add(rpt);
@@ -1749,4 +1768,105 @@ public class OverviewBean implements Serializable {
 	        }
 	    }
 	}
+	
+	
+	
+	public void seriesTransactionHistory(Reports rt) {
+		String valSeries = rt.getF4();
+		String collectorId = rt.getF8();
+		String formTypeId = rt.getF9();
+		String issuedQty = rt.getF5();
+		String logId = rt.getF10();
+		
+		seriesHisDtls = new ArrayList<Reports>();
+		if(valSeries!=null && !valSeries.isEmpty() && valSeries.contains("-")) {
+			
+			String[] val = valSeries.split("-");
+			long start = Long.valueOf(val[0]);
+			long end = Long.valueOf(val[1]);
+			
+			String st = "SELECT receiveddate,beginningNoCol,endingNoCol,colpcs,colstatus,formtypecol,amount,rptgroup,fundid,isid FROM collectioninfo WHERE isactivecol=1 AND formtypecol="+formTypeId + " AND isid="+ collectorId + " AND logid=" + logId;
+			int count = 1;
+			for(long i=start; i<=end; i++) {
+				if(count==1) {
+					st += " AND (beginningNoCol=" + i + " OR endingNoCol=" + i ;
+				}else {
+					st += " OR beginningNoCol=" + i + " OR endingNoCol=" + i ;
+				}
+				count++;
+			}
+			st += ")";
+			
+			
+			ResultSet rs = OpenTableAccess.query(st, new String[0], new WebTISDatabaseConnect());
+			int issued = Integer.valueOf(issuedQty);
+			
+			try {
+				while(rs.next()) {
+					
+					String name = mapCollector.get(rs.getInt("isid")).getName();
+					String fund = FundType.typeName(rs.getInt("fundid"));
+					String status = rs.getInt("colstatus")==FormStatus.NOT_ALL_ISSUED.getId()? "ISSUED" : FormStatus.nameId(rs.getInt("colstatus"));
+					
+					int pcs = rs.getInt("colpcs");
+					
+					issued -= pcs;
+					
+					String formName = FormType.nameId(rs.getInt("formtypecol"));		
+							seriesHisDtls.add(
+							Reports.builder()
+							.f1(rs.getString("receiveddate"))
+							.f2(name)
+							.f3(formName)
+							.f4(fund)
+							.f5(rs.getString("beginningNoCol")+"-" + rs.getString("endingNoCol"))
+							.f6(pcs+"")
+							.f7(status)
+							.f8(Currency.formatAmount(rs.getDouble("amount")))
+							.f9(rs.getString("rptgroup"))
+							.build()						
+							);	
+				}
+				setRemainingQty(issued+"");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

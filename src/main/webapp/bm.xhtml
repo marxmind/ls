@@ -212,7 +212,7 @@
 	
 		<p:dialog id="gmapDialog" widgetVar="dlg" width="800" height="600" modal="true" position="center top">
 		
-		    <p:gmap id="gmap" center="#{mapping.centerMap}" widgetVar="myMap" zoom="15" type="HYBRID" style="width:100%;height:100%" model="#{mapping.allBusiness}">
+		    <p:gmap id="gmap" center="#{mapping.centerMap}" widgetVar="myMap" zoom="15" type="ROADMAP" style="width:100%;height:100%" model="#{mapping.allBusiness}">
 		    	
 		    	<p:ajax event="overlaySelect" listener="#{mapping.onMarkerSelect}"/>
 		    	<p:gmapInfoWindow id="infoWindow">

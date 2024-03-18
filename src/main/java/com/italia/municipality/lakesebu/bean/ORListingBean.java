@@ -3694,7 +3694,7 @@ private void close(Closeable resource) {
 			if(FormType.CTC_INDIVIDUAL.getId()==getFormTypeId() || FormType.CTC_CORPORATION.getId()==getFormTypeId()) {
 				ctcFlds(true);
 			}
-			completNameOfClient(getPayorName());
+			//completNameOfClient(getPayorName());
 			
 		}
 		completNameOfClient(getPayorName());

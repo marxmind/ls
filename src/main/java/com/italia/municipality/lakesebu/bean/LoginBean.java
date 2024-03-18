@@ -178,8 +178,8 @@ public class LoginBean implements Serializable{
 			  }
 			  
 			  case 20: {
-				  result="logform.xhtml";
-				  //result="overview.xhtml";
+				  //result="logform.xhtml";
+				  result="overview.xhtml";
 				  det = License.dbLicense(AppModule.COLLECTORS_RECORDING);
 				  	if(checkdate(det)) {
 				  		result=expired;
