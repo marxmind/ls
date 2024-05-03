@@ -80,7 +80,7 @@ public class LoginBean implements Serializable{
 				
 			}
 			
-			LogU.add("The user has been successfully login to the application with the username : " + name + " and password " + password);
+			LogU.add("The user has been successfully login to the application with the username : " + name + " and password ******"); //+password);
 			
 			
 			//license checker

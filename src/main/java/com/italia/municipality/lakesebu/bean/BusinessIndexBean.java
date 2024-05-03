@@ -100,8 +100,17 @@ public class BusinessIndexBean implements Serializable {
 	private List essentials;
 	private List categories;
 	
+	private int mappingId;
+	private List mappings;
+	
 	@PostConstruct
 	public void init() {
+		
+		mappingId = 0; //default
+		mappings = new ArrayList<>();
+		mappings.add(new SelectItem(0, "All"));
+		mappings.add(new SelectItem(1, "Mapping Area"));
+		mappings.add(new SelectItem(2, "No Mapping Area"));
 		
 		typeOfSearchId = 3;//All
 		typesOf = new ArrayList<>();
@@ -215,6 +224,11 @@ public class BusinessIndexBean implements Serializable {
 			sql += " AND bgy.bgid=" + getBarId1();
 		}
 		
+		if(getMappingId()==1) {//mapping area
+			sql += " AND bn.bzid>0 ";
+		}else if(getMappingId()==2) {//no mapping area
+			sql += " AND bn.bzid=0 ";
+		}
 		
 		if("init".equalsIgnoreCase(type)) {
 			sql += " LIMIT 10";

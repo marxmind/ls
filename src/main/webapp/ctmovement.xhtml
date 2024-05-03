@@ -1,0 +1,165 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     <p:dialog widgetVar="dlgMovement" header="Cash Ticket Movement" width="1000" height="600" position="center center" closable="true" modal="true" closeOnEscape="true" visible="false">
+    	
+    	
+    	<p:tabView prependId="false">
+            
+            <p:tab title="Generate Collector Cash Ticket Beginning/Ending Balance">
+                
+                <p:dataTable id="dataCashId" value="#{ckBean.moves}" var="mt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true" editable="true" editMode="cell"
+                         lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+				            <div class="ui-inputgroup">
+						    	<p:selectOneMenu value="#{ckBean.collectorId}" filter="true" filterMatchMode="contains" style="width: 15em" disabled="false">
+										<f:selectItems value="#{ckBean.collectors}"/>
+										<p:ajax event="change" listener="#{ckBean.loadCashTicket}" update="dataCashId" />
+								</p:selectOneMenu>
+								<p:selectOneMenu value="#{ckBean.generateTypeId}" filter="true" filterMatchMode="contains" style="width: 15em" disabled="false">
+										<f:selectItems value="#{ckBean.generateTypes}"/>
+										<p:ajax event="change" listener="#{ckBean.updateFilter}" update="mId" />
+								</p:selectOneMenu>
+								<p:selectOneMenu id="yrId" value="#{ckBean.yearId}" filter="true" filterMatchMode="contains" style="width: 15em" disabled="false">
+										<f:selectItems value="#{ckBean.years}"/>
+								</p:selectOneMenu>
+								<p:selectOneMenu id="mId" value="#{ckBean.monthId}" disabled="#{ckBean.rendered}" filter="true" filterMatchMode="contains" style="width: 15em">
+										<f:selectItems value="#{ckBean.months}"/>
+								</p:selectOneMenu>
+								<p:commandButton actionListener="#{ckBean.generateCT}" update="dataCashId" value="Generate" icon="pi pi-sync"/>
+							</div>
+						</f:facet>
+                         
+                         <p:ajax event="cellEdit"  listener="#{ckBean.changeAmount}" update="dataCashId msg" />
+                         
+                         
+                         <p:column headerText="Month/Year" width="70">
+            						<p:outputLabel value="#{mt.monthName}/#{mt.year}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Type" width="100">
+            						<p:outputLabel value="#{mt.balanceName}"/>
+            		     </p:column>
+                         
+            		     <p:column headerText="Amount" width="70">
+ 							<p:cellEditor>
+							<f:facet name="output">
+	            					<p:outputLabel value="#{mt.balance}">
+            							<f:convertNumber currencySymbol="" type="currency"/>
+            						</p:outputLabel>
+	            			</f:facet>
+							 <f:facet name="input">
+			                  	<p:inputText  value="#{mt.balance}"/>
+			                  </f:facet>
+							</p:cellEditor>
+            	     </p:column>
+            		 
+            		 <p:column headerText="Action" width="50">
+            					<p:commandButton update="dataCashId msg" icon="pi pi-trash" actionListener="#{ckBean.deleteItem(mt)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            		 </p:column>    
+                          
+            </p:dataTable>
+                
+            </p:tab>
+            
+            
+            <p:tab title="Generate Collector Cash Ticket Movement">
+                
+                <p:dataTable id="dataMoveId" value="#{ckBean.movements}" var="mv" stickyHeader="false"
+							rows="50" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true" 
+                         lazy="false"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+				            <div class="ui-inputgroup">
+						    	<p:selectOneMenu value="#{ckBean.collectorMvId}" filter="true" filterMatchMode="contains" style="width: 15em" disabled="false">
+										<f:selectItems value="#{ckBean.collectorMvs}"/>
+								</p:selectOneMenu>
+								<p:selectOneMenu value="#{ckBean.yearMvId}" filter="true" filterMatchMode="contains" style="width: 15em" disabled="false">
+										<f:selectItems value="#{ckBean.yearMvs}"/>
+								</p:selectOneMenu>
+								<p:selectOneMenu id="mId" value="#{ckBean.monthMvId}" filter="true" filterMatchMode="contains" style="width: 15em">
+										<f:selectItems value="#{ckBean.monthMvs}"/>
+								</p:selectOneMenu>
+								<p:commandButton actionListener="#{ckBean.generateMovement}" update="dataMoveId" value="Generate Balance" icon="pi pi-sync"/>
+							</div>
+						</f:facet>
+                         
+                         <p:columnGroup type="header">
+									<p:row>
+										<p:column colspan="4" headerText="Requested Cash Ticket" width="250"/>
+										<p:column colspan="2" headerText="Cash Ticket Issued" width="200"/>
+									</p:row>
+									<p:row>
+										 <p:column colspan="1" headerText="#" width="50"/>
+										 <p:column colspan="1" headerText="Date" width="50"/>
+					                     <p:column colspan="1" headerText="Control#" width="50"/>
+					                     <p:column colspan="1" headerText="Amount" width="50"/>
+					                     
+					                     <p:column colspan="1" headerText="Date" width="50"/>
+										 <p:column colspan="1" headerText="Amount" width="50"/>
+					                     <p:column colspan="1" headerText="Balance" width="50"/>
+				                	</p:row>
+								</p:columnGroup> 
+                        
+                         <p:column headerText="#" width="50">
+            						<p:outputLabel value="#{mv.f1}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Date" width="50">
+            						<p:outputLabel value="#{mv.f2}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Control" width="50">
+            						<p:outputLabel value="#{mv.f3}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Amount" width="100">
+            						<p:outputLabel value="#{mv.f4}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Date" width="50">
+            						<p:outputLabel value="#{mv.f5}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Amount" width="50">
+            						<p:outputLabel value="#{mv.f6}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Balance" width="100">
+            						<p:outputLabel value="#{mv.f7}"/>
+            		     </p:column>
+            		     
+            		 </p:dataTable>    
+                
+            </p:tab>
+            
+         </p:tabView>   
+    	
+    	
+    		
+    	
+    </p:dialog>
+     </ui:composition>
+</html>

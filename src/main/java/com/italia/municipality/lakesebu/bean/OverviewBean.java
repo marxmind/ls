@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
 
@@ -39,6 +40,7 @@ import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.licensing.controller.BusinessPermit;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
@@ -103,6 +105,8 @@ public class OverviewBean implements Serializable {
 	
 	private List<Reports> seriesHisDtls;
 	private String remainingQty;
+	
+	private List<BusinessPermit> bzs;
 	
 	@PostConstruct
 	public void init() {
@@ -174,7 +178,9 @@ public class OverviewBean implements Serializable {
 		}else if("Accountable Form Status".equalsIgnoreCase(getTabSelected())) {
 			accountableForms = new ArrayList<Reports>();
 			loadAccountableForms();
-		}		
+		}else if("List Of No Business Renewal".equalsIgnoreCase(getTabSelected())) {
+			loadNoBusinessRenewal();
+		}
 	}
 	
 	public void onTabChange(TabChangeEvent event) {
@@ -204,6 +210,8 @@ public class OverviewBean implements Serializable {
 		}else if("Accountable Form Status".equalsIgnoreCase(event.getTab().getTitle())) {
 			accountableForms = new ArrayList<Reports>();
 			loadAccountableForms();
+		}else if("List Of No Business Renewal".equalsIgnoreCase(event.getTab().getTitle())) {
+			loadNoBusinessRenewal();
 		}
 		setTabSelected(event.getTab().getTitle());
     }
@@ -213,45 +221,49 @@ public class OverviewBean implements Serializable {
 		
 		try {
 			while(rs.next()) {
-				String days = DateUtils.getNumberyDaysNow(rs.getString("issueddate"))+"";
-				String dateIssued = DateUtils.convertDateToMonthDayYear(rs.getString("issueddate"));
-				String formName = FormType.nameId(rs.getInt("formtypelog"));
-				long start = rs.getLong("beginningNoLog");
-				long last = rs.getLong("endingNoLog");
-				int qty = rs.getInt("logpcs");
-				String collector = getMapCollector().get(rs.getInt("isid")).getName();
-				String fund = FundType.typeName(rs.getInt("fundid"));
 				
-				String beg = correctingDigitOfSeries(start, rs.getInt("formtypelog"));
-				String end = correctingDigitOfSeries(last, rs.getInt("formtypelog"));
-				
-				int issQty = CollectionInfo.remainingQty(rs.getInt("formtypelog"), rs.getInt("isid"), rs.getLong("logid"));
-				int remQty = qty - issQty;
-				
-				String style="";
-				int numOfDays = Integer.valueOf(days);
-				if(numOfDays>50) {
-					style = "background-color: red; font-color: black";
+				boolean isDoNotTrack = getMapCollector().get(rs.getInt("isid")).getDoNotTrace()==0? true : false; 
+				if(isDoNotTrack) {
+					String collector = getMapCollector().get(rs.getInt("isid")).getName();
+					String days = DateUtils.getNumberyDaysNow(rs.getString("issueddate"))+"";
+					String dateIssued = DateUtils.convertDateToMonthDayYear(rs.getString("issueddate"));
+					String formName = FormType.nameId(rs.getInt("formtypelog"));
+					long start = rs.getLong("beginningNoLog");
+					long last = rs.getLong("endingNoLog");
+					int qty = rs.getInt("logpcs");
+					
+					String fund = FundType.typeName(rs.getInt("fundid"));
+					
+					String beg = correctingDigitOfSeries(start, rs.getInt("formtypelog"));
+					String end = correctingDigitOfSeries(last, rs.getInt("formtypelog"));
+					
+					int issQty = CollectionInfo.remainingQty(rs.getInt("formtypelog"), rs.getInt("isid"), rs.getLong("logid"));
+					int remQty = qty - issQty;
+					
+					String style="";
+					int numOfDays = Integer.valueOf(days);
+					if(numOfDays>50) {
+						style = "background-color: red; font-color: black";
+					}
+					
+					Reports rpt = Reports.builder()
+							.f1(collector)
+							.f2(formName)
+							.f3(dateIssued)
+							.f4(beg+"-"+end)
+							.f5(qty+"")
+							.f6(fund)
+							.f7(days)
+							.f8(rs.getInt("isid")+"")
+							.f9(rs.getInt("formtypelog")+"")
+							.f10(rs.getLong("logid")+"")
+							.f11(issQty+"")
+							.f12(remQty+"")
+							.f13(style)
+							.build();
+					
+					accountableForms.add(rpt);
 				}
-				
-				Reports rpt = Reports.builder()
-						.f1(collector)
-						.f2(formName)
-						.f3(dateIssued)
-						.f4(beg+"-"+end)
-						.f5(qty+"")
-						.f6(fund)
-						.f7(days)
-						.f8(rs.getInt("isid")+"")
-						.f9(rs.getInt("formtypelog")+"")
-						.f10(rs.getLong("logid")+"")
-						.f11(issQty+"")
-						.f12(remQty+"")
-						.f13(style)
-						.build();
-				
-				accountableForms.add(rpt);
-				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -874,7 +886,7 @@ public class OverviewBean implements Serializable {
 		Map<String, Map<Integer, Double>> mapDeposit = new LinkedHashMap<String, Map<Integer, Double>>();
 		Map<Integer, Double> mapDepMonth = new LinkedHashMap<Integer, Double>();
 		
-		ResultSet rs = OpenTableAccess.query("SELECT  month(datetrans) as month,fundtype, amount,remarks FROM rcddeposit WHERE isactivercd=1 AND (datetrans>='"+  year  +"-01-01' AND datetrans<='"+  year +"-12-31')", new String[0],new WebTISDatabaseConnect());
+		ResultSet rs = OpenTableAccess.query("SELECT  month(datetrans) as month,fundtype, amount,remarks FROM rcddeposit WHERE isactivercd=1 AND (datetrans>='"+  year  +"-01-01' AND datetrans<='"+  year +"-12-31') ", new String[0],new WebTISDatabaseConnect());
 		
 		try {
 			while(rs.next()) {
@@ -1835,6 +1847,35 @@ public class OverviewBean implements Serializable {
 			
 		}
 		
+		
+	}
+	
+	
+	public void loadNoBusinessRenewal() {
+		bzs = new ArrayList<BusinessPermit>();
+		Map<String, BusinessPermit> mapData = new LinkedHashMap<String, BusinessPermit>();
+		int yearNow = Integer.valueOf(getYear());
+		int prevYear = yearNow - 1;
+		
+		List<BusinessPermit> ps = BusinessPermit.retrieve(" AND YEAR(bz.datetrans)="+prevYear + " ORDER BY bz.businessname", new String[0]);
+		for(BusinessPermit p : ps) {
+				String val  = StringUtils.normalizeSpace(p.getBusinessName());
+				mapData.put(val, p);
+		}
+		 ps = BusinessPermit.retrieve(" AND YEAR(bz.datetrans)="+yearNow + " ORDER BY bz.businessname", new String[0]);
+		
+		for(BusinessPermit s : ps) {
+			if(mapData!=null && mapData.size()>0) {
+				String val  = StringUtils.normalizeSpace(s.getBusinessName());
+				if(mapData.containsKey(val)) {
+					mapData.remove(val);//removing renewed business
+				}
+			}
+		}
+		
+		for(BusinessPermit bz : mapData.values()) {
+			bzs.add(bz);
+		}
 		
 	}
 	

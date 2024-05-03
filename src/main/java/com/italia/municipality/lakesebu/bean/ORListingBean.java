@@ -2356,6 +2356,12 @@ public class ORListingBean implements Serializable{
 		
 	}
 	
+	public void clickOpen() {
+		if(ors!=null && ors.size()>0) {
+			clickItem(ors.get(0));
+		}
+	}
+	
 	public void clickItem(ORListing or) {
 		
 		if(or.getGenCollection()==0) {

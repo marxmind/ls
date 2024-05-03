@@ -208,7 +208,7 @@ public class LogformBean implements Serializable{
 		String paramFrom = getYearDepositId() + "-" + (getMonthDepositId()<10? "0" + getMonthDepositId() : getMonthDepositId()) + "-01";
 		String paramTo = getYearDepositId() + "-" + (getMonthDepositId()<10? "0" + getMonthDepositId() : getMonthDepositId()) + "-31";
 		List<RCDAllController> rcds = RCDAllController.retrieve(" AND ct.fundtype="+ getDepositFundTypeId() +" AND (ct.alldatetrans>='"+ paramFrom+"' AND ct.alldatetrans<='"+ paramTo +"') ORDER BY ct.alldatetrans", new String[0]);
-		List<RCDDeposit> deposits = RCDDeposit.retrieve(" AND ct.fundtype="+ getDepositFundTypeId() +" AND (ct.datetrans>='"+ paramFrom+"' AND ct.datetrans<='"+ paramTo +"') ORDER BY ct.datetrans", new String[0]);
+		List<RCDDeposit> deposits = RCDDeposit.retrieve(" AND ct.fundtype="+ getDepositFundTypeId() +" AND (ct.datetrans>='"+ paramFrom+"' AND ct.datetrans<='"+ paramTo +"') ORDER BY ct.datetrans, ct.indexid", new String[0]);
 		double balance = 0d;
 		//int totalDataSize = rcds.size() + deposits.size();
 		RCDDeposit beginning =  null;
@@ -1391,6 +1391,7 @@ public class LogformBean implements Serializable{
 		setTotalAmount("0.00");
 		selectedCollection = new ArrayList<CollectionInfo>();//Collections.synchronizedList(new ArrayList<CollectionInfo>());
 		setCollectionPrint(null);
+		setRtsId(0);
 	}
 	
 	public void clearBelowFormList() {
@@ -4565,6 +4566,7 @@ public class LogformBean implements Serializable{
 	}
 	
 	public void printCashInTreasury() {
+		System.out.println("printCashInTreasury=================");
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
 		String REPORT_NAME = GlobalVar.CASH_IN_TREASURY_RPT;
@@ -4576,6 +4578,7 @@ public class LogformBean implements Serializable{
 		double totalBalance = 0d;
 		double totalCredit = 0d;
 		double totalDebit = 0d;
+		double beginningBal = 0d;
 		for(DepositTransaction d : getDepTrans()) {
 			if("RCD-DEPOSIT".equalsIgnoreCase(d.getParticular().trim()) 
 					&& d.getReference().trim().isEmpty()) {
@@ -4589,9 +4592,24 @@ public class LogformBean implements Serializable{
 						.f5(Currency.formatAmount(d.getCredit()))
 						.f6(Currency.formatAmount(d.getBalance()))
 						.build();
-				totalDebit += d.getDebit();
+				if("BEGINNING BALANCE".equalsIgnoreCase(d.getParticular())) {
+					System.out.println("Beginning balance: " + d.getDebit() );
+					beginningBal = d.getDebit();
+					
+					c = Cash.builder()
+							.f1(d.getDay())
+							.f2(d.getParticular())
+							.f3(d.getReference())
+							.f4("0.00")
+							.f5(Currency.formatAmount(d.getCredit()))
+							.f6(Currency.formatAmount(d.getBalance()))
+							.build();
+					
+				}else {
+					totalDebit += d.getDebit();
+				}
 				totalCredit += d.getCredit();	
-				totalBalance = totalDebit - totalCredit;
+				totalBalance = (beginningBal + totalDebit) - totalCredit;
 				//System.out.println("cash : " + totalDebit + "\t " + totalCredit);
 				reports.add(c);	
 			}

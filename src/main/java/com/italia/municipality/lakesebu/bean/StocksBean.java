@@ -32,6 +32,7 @@ import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.enm.StockStatus;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.licensing.controller.Words;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.reports.RisRpt;
 import com.italia.municipality.lakesebu.utils.Application;
@@ -631,6 +632,7 @@ public class StocksBean implements Serializable{
 		Department dep = getMapCollector().get(slip.getCollector().getId()).getDepartment();
 		try{slip.setCodeNo(getMapDeps().get(dep.getDepid()).getCode());}catch(Exception e) {}
 		try{slip.setOffice(Offices.builder().id(getMapDeps().get(dep.getDepid()).getId()).build());}catch(Exception e) {}
+		System.out.println("dep.getDepid()>>> : " + dep.getDepid());
 		if(slip!=null && dep.getDepid()>1) {//((slip.getCollector().getId()>=1 && slip.getCollector().getId()<=20) || (slip.getCollector().getId()==38) || (slip.getCollector().getId()==41) )) {
 			slip.setPosition("Barangay Treasurer");
 			slip.setDivision(Division.builder().id(9).build());
@@ -1145,6 +1147,7 @@ public class StocksBean implements Serializable{
 		}
 		
 		
+		
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
   		HashMap param = new HashMap();
   		
@@ -1161,7 +1164,7 @@ public class StocksBean implements Serializable{
   		param.put("PARAM_REQUESTEDBY", slip.getCollector().getName().toUpperCase());
 		param.put("PARAM_REQUESTEDBY_DESIG", slip.getPosition().toUpperCase());
 		
-		param.put("PARAM_APPROVEDBY", "FERDINAND L. LOPEZ");
+		param.put("PARAM_APPROVEDBY", Words.getTagName("treasurer-name").toUpperCase());
 		param.put("PARAM_APPROVEDBY_DESIG", "MUNICIPAL TREASURER");
 		
 		param.put("PARAM_ISSUEDBY", slip.getIssuedBy().toUpperCase());

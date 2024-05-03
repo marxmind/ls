@@ -33,6 +33,7 @@ public class Collector {
 	private int isActive;
 	private int isResigned;
 	private Department department;
+	private int doNotTrace;
 	
 	public static List<Collector> retrieve(String sqlAdd, String[] params){
 		List<Collector> cols = new ArrayList<Collector>();
@@ -62,17 +63,23 @@ public class Collector {
 		
 		while(rs.next()){
 			
-			Collector col = new Collector();
-			try{col.setId(rs.getInt("isid"));}catch(NullPointerException e){}
-			try{col.setName(rs.getString("collectorname"));}catch(NullPointerException e){}
-			try{col.setIsActive(rs.getInt("isactivecollector"));}catch(NullPointerException e){}
-			try{col.setIsResigned(rs.getInt("isresigned"));}catch(NullPointerException e){}
 			
-			Department dep = new Department();
-			try{dep.setDepid(rs.getInt("departmentid"));}catch(NullPointerException e){}
-			try{dep.setDepartmentName(rs.getString("departmentname"));}catch(NullPointerException e){}
-			try{dep.setCode(rs.getString("code"));}catch(NullPointerException e){}
-			col.setDepartment(dep);
+			
+			Department dep = Department.builder()
+					.depid(rs.getInt("departmentid"))
+					.departmentName(rs.getString("departmentname"))
+					.departmentHead(rs.getString("dephead"))
+					.code(rs.getString("code"))
+					.build();
+			
+			Collector col	= Collector.builder()
+					.id(rs.getInt("isid"))
+					.name(rs.getString("collectorname"))
+					.isActive(rs.getInt("isactivecollector"))
+					.isResigned(rs.getInt("isresigned"))
+					.doNotTrace(rs.getInt("donottrace"))
+					.department(dep)
+					.build();
 			
 			cols.add(col);
 			
@@ -113,6 +120,7 @@ public class Collector {
 			try{col.setName(rs.getString("collectorname"));}catch(NullPointerException e){}
 			try{col.setIsActive(rs.getInt("isactivecollector"));}catch(NullPointerException e){}
 			try{col.setIsResigned(rs.getInt("isresigned"));}catch(NullPointerException e){}
+			col.setDoNotTrace(rs.getInt("donottrace"));
 			
 			Department dep = new Department();
 			try{dep.setDepid(rs.getInt("departmentid"));}catch(NullPointerException e){}
@@ -175,8 +183,9 @@ public class Collector {
 				+ "collectorname,"
 				+ "departmentid,"
 				+ "isactivecollector,"
-				+ "isresigned)" 
-				+ "values(?,?,?,?,?)";
+				+ "isresigned,"
+				+ "donottrace)" 
+				+ "values(?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -203,11 +212,13 @@ public class Collector {
 		ps.setInt(cnt++, col.getDepartment().getDepid());
 		ps.setInt(cnt++, col.getIsActive());
 		ps.setInt(cnt++, col.getIsResigned());
+		ps.setInt(cnt++, col.getDoNotTrace());
 		
 		LogU.add(col.getName());
 		LogU.add(col.getDepartment().getDepid());
 		LogU.add(col.getIsActive());
 		LogU.add(col.getIsResigned());
+		LogU.add(col.getDoNotTrace());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -228,7 +239,8 @@ public class Collector {
 				+ "collectorname,"
 				+ "departmentid,"
 				+ "isactivecollector,"
-				+ "isresigned)" 
+				+ "isresigned,"
+				+ "donottrace)" 
 				+ "values(?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
@@ -256,11 +268,13 @@ public class Collector {
 		ps.setInt(cnt++, getDepartment().getDepid());
 		ps.setInt(cnt++, getIsActive());
 		ps.setInt(cnt++, getIsResigned());
+		ps.setInt(cnt++, getDoNotTrace());
 		
 		LogU.add(getName());
 		LogU.add(getDepartment().getDepid());
 		LogU.add(getIsActive());
 		LogU.add(getIsResigned());
+		LogU.add(getDoNotTrace());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -279,7 +293,8 @@ public class Collector {
 		String sql = "UPDATE issuedcollector SET "
 				+ "collectorname=?,"
 				+ "departmentid=?,"
-				+ "isresigned=? " 
+				+ "isresigned=?,"
+				+ "donottrace=? " 
 				+ " WHERE isid=?";
 		
 		PreparedStatement ps = null;
@@ -297,11 +312,13 @@ public class Collector {
 		ps.setString(cnt++, col.getName());
 		ps.setInt(cnt++, col.getDepartment().getDepid());
 		ps.setInt(cnt++, col.getIsResigned());
+		ps.setInt(cnt++, col.getDoNotTrace());
 		ps.setInt(cnt++, col.getId());
 		
 		LogU.add(col.getName());
 		LogU.add(col.getDepartment().getDepid());
 		LogU.add(col.getIsResigned());
+		LogU.add(col.getDoNotTrace());
 		LogU.add(col.getId());
 		
 		LogU.add("executing for saving...");
@@ -321,7 +338,8 @@ public class Collector {
 		String sql = "UPDATE issuedcollector SET "
 				+ "collectorname=?,"
 				+ "departmentid=?,"
-				+ "isresigned=? " 
+				+ "isresigned=?,"
+				+ "donottrace=? " 
 				+ " WHERE isid=?";
 		
 		PreparedStatement ps = null;
@@ -339,11 +357,13 @@ public class Collector {
 		ps.setString(cnt++, getName());
 		ps.setInt(cnt++, getDepartment().getDepid());
 		ps.setInt(cnt++, getIsResigned());
+		ps.setInt(cnt++, getDoNotTrace());
 		ps.setInt(cnt++, getId());
 		
 		LogU.add(getName());
 		LogU.add(getDepartment().getDepid());
 		LogU.add(getIsResigned());
+		LogU.add(getDoNotTrace());
 		LogU.add(getId());
 		
 		LogU.add("executing for saving...");

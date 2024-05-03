@@ -65,7 +65,7 @@
     <p:growl id="msg" showDetail="true" life="2000" />
     
     
-    <p:overlayPanel widgetVar="productOP" style="width:400px" dismissable="true" showCloseIcon="true" dynamic="true">
+    <p:overlayPanel widgetVar="productOP" style="width:400px" dismissable="true" showCloseIcon="true" dynamic="true" modal="true">
    		<p:dataTable id="pyId" var="py" value="#{ovBean.paymentViews}">
    		
    			<f:facet name="header">
@@ -94,7 +94,7 @@
                  
          <p:tabView prependId="false" widgetVar="tabSelection">
             
-            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId"/>
+            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId bzId"/>
             
             <p:tab title="Running Collections">
             	
@@ -565,8 +565,6 @@
 		            <p:column headerText="" width="100" style="text-align: right">
 		                <p:outputLabel value="" />
 		            </p:column>
-		            
-		            
 		             
 		        </p:dataTable> 
             	
@@ -588,7 +586,7 @@
 		                <p:outputLabel value="#{sk.f3}" />
 		            </p:column>
 		            
-		            <p:column headerText="Days" width="200" style="#{sk.f13}">
+		            <p:column headerText="Days(red alert on above 50 days)" width="200" style="#{sk.f13}">
 		            	<p:progressBar value="#{sk.f7}" labelTemplate="{value}" displayOnly="true"/>
 		            </p:column>
 		            
@@ -611,13 +609,57 @@
 		            <p:column headerText="Fund" width="70">
 		                <p:outputLabel value="#{sk.f6}" />
 		            </p:column>
-		            
-		           
 		             
 		        </p:dataTable> 
             	
             </p:tab>
             
+            <p:tab title="List Of No Business Renewal">
+            	<p:dataTable id="bzId" value="#{ovBean.bzs}" var="bz" stickyHeader="false"
+							rows="100" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" lazy="false"
+                         paginatorPosition="top" paginatorAlwaysVisible="false"
+                         >
+                         	
+                         	<f:facet name="{Exporters}">
+                         			
+            						<h:commandLink title="Export Business in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="bzId" fileName="Business" options="#{exporter.excelOpt}"/>
+            						</h:commandLink>
+            						<p:commandLink title="Export Business in pdf format">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+                						    <p:dataExporter type="xls" target="bzId" fileName="Business" options="#{exporter.excelOpt}"/>
+            						</p:commandLink>
+            				</f:facet>
+                         	
+                         	<p:column headerText="Plate No" width="50" filterBy="#{bz.plateNo}"  filterMatchMode="contains" sortable="false">
+            						<p:outputLabel  value="#{bz.plateNo}"/>
+            				</p:column>
+                         	
+            				<p:column headerText="Business Name" filterBy="#{bz.businessName}"  filterMatchMode="contains" width="200" sortable="false">
+            						<p:outputLabel  value="#{bz.businessName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Owner" filterBy="#{bz.customer.fullname}"  filterMatchMode="contains" width="100" sortable="false">
+            						<p:outputLabel  value="#{bz.customer.fullname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Memo" filterBy="#{bz.memoType}"  filterMatchMode="contains" width="100" sortable="false">
+            						<p:outputLabel  value="#{bz.memoType}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Line of Business" filterBy="#{bz.businessEngage}"  filterMatchMode="contains" width="100" sortable="false">
+            						<p:outputLabel  value="#{bz.businessEngage}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Address" width="200" filterBy="#{bz.businessAddress}"  filterMatchMode="contains" sortable="false">
+            						<p:outputLabel  value="#{bz.businessAddress}"/>
+            				</p:column>
+            				
+     					</p:dataTable>
+            </p:tab>
             
             
         </p:tabView>
@@ -629,7 +671,7 @@
     </div>
 	</div>
      
-     <p:overlayPanel widgetVar="dlgSeriesHis" style="width:1100px" dismissable="false" showCloseIcon="true" dynamic="true">
+     <p:overlayPanel widgetVar="dlgSeriesHis" style="width:1100px" dismissable="false" showCloseIcon="true" dynamic="true" modal="true">
      	
      	<p:dataTable id="serId" var="ss" value="#{ovBean.seriesHisDtls}" lazy="false" stickyHeader="false" stickyTopAt=".layout-topbar" scrollable="true" scrollHeight="250">
 		            

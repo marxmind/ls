@@ -66,6 +66,7 @@
 			    				<p:commandButton value="Form Series History" onclick="PF('dlgCSeries').show()"/>
 			    				<p:commandButton value="Show Income Per Forms" actionListener="#{logformBean.loadFormDetails}" update="tbFormPer formData"/>
 			    				<p:commandButton value="Create Bank Deposit" actionListener="#{bankdp.openBankTransaction}" update="depositId"/>
+			    				<p:commandButton value="Cash Ticket" update="dataCashId" oncomplete="PF('dlgMovement').show()"/>
 			    				</div>
 			    		</f:facet>
 			    		<f:facet name="right">
@@ -968,7 +969,7 @@
 	<ui:include src="formchange.xhtml" />
 	<ui:include src="loader.xhtml" />
 	<ui:include src="menu.xhtml" /> 	
-	
+	<ui:include src="ctmovement.xhtml" /> 
 	<script>
 		//part of formchange.xhtml
      	function buttonClick(){

@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.Reports;
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
@@ -47,20 +49,16 @@ public class BzCheckerBean implements Serializable {
 		
 		List<BusinessPermit> ps = BusinessPermit.retrieve(" AND YEAR(bz.datetrans)="+prevYear + " ORDER BY bz.businessname", new String[0]);
 		for(BusinessPermit p : ps) {
-			/*if(mapData!=null && mapData.size()>0) {
-				if(!mapData.containsKey(p.getBusinessName())) {
-					mapData.put(p.getBusinessName(), p);
-				}
-			}else {*/
-				mapData.put(p.getBusinessName(), p);
-			//}
+				String val  = StringUtils.normalizeSpace(p.getBusinessName());
+				mapData.put(val, p);
 		}
 		 ps = BusinessPermit.retrieve(" AND YEAR(bz.datetrans)="+yearNow + " ORDER BY bz.businessname", new String[0]);
 		
 		for(BusinessPermit s : ps) {
 			if(mapData!=null && mapData.size()>0) {
-				if(mapData.containsKey(s.getBusinessName())) {
-					mapData.remove(s.getBusinessName());//removing renewed business
+				String val  = StringUtils.normalizeSpace(s.getBusinessName());
+				if(mapData.containsKey(val)) {
+					mapData.remove(val);//removing renewed business
 				}
 			}
 		}

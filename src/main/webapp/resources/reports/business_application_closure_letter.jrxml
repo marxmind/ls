@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="water_rental_certificate" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15ef2226-ab30-4d40-a13b-e761d1675b3c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="PARAM_LOGO_LAKESEBU" class="java.io.InputStream"/>
+	<parameter name="PARAM_SEALTRANSPARENT" class="java.io.InputStream"/>
+	<parameter name="PARAM_DATE" class="java.lang.String"/>
+	<parameter name="PARAM_CONTENT" class="java.lang.String"/>
+	<parameter name="PARAM_MAYOR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="f1" class="java.lang.String"/>
+	<field name="f2" class="java.lang.String"/>
+	<field name="f3" class="java.lang.String"/>
+	<field name="f4" class="java.lang.String"/>
+	<field name="f5" class="java.lang.String"/>
+	<field name="f6" class="java.lang.String"/>
+	<field name="f7" class="java.lang.String"/>
+	<field name="f8" class="java.lang.String"/>
+	<field name="f9" class="java.lang.String"/>
+	<field name="f11" class="java.lang.String"/>
+	<field name="f12" class="java.lang.String"/>
+	<field name="f15" class="java.lang.String"/>
+	<field name="f14" class="java.lang.String"/>
+	<field name="f13" class="java.lang.String"/>
+	<field name="f10" class="java.lang.String"/>
+	<field name="f17" class="java.lang.String"/>
+	<field name="f18" class="java.lang.String"/>
+	<field name="f19" class="java.lang.String"/>
+	<field name="f20" class="java.lang.String"/>
+	<field name="f16" class="java.lang.String"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="RetainShape" onErrorType="Blank">
+				<reportElement x="123" y="176" width="340" height="370" uuid="8d7730d5-ff34-491a-9f50-52a41092559b">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{PARAM_SEALTRANSPARENT}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="308" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="550" height="16" uuid="c156d803-2ae6-4240-9482-918eed533a02">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Republic of the Philippines]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="550" height="16" uuid="3ec52910-80c5-418c-b130-b23d2fe6af05">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Province of South Cotabato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="34" width="550" height="16" uuid="c9c0c356-faa0-4560-be95-01e2a3806a45">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Municipality of Lake Sebu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="55" width="550" height="16" uuid="a5b8fb6f-50f1-4229-a338-efba7d792f9c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFFICE OF THE MUNICIPAL TREASURER]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="101" width="126" height="16" uuid="cc3d7d23-14f8-4ea1-ad0e-fa908e41dba4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_DATE}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RealSize" onErrorType="Blank">
+				<reportElement x="48" y="2" width="78" height="75" uuid="b749ab42-28e8-4e94-84c2-92384a50b5ea"/>
+				<imageExpression><![CDATA[$P{PARAM_LOGO_LAKESEBU}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="115" width="125" height="16" uuid="33712033-d81e-448e-9030-03b3e7a6fe8e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[        Date]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="160" width="180" height="16" uuid="f8c0091d-a787-46ac-a395-427a673402e8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_MAYOR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="176" width="180" height="16" uuid="57a0506f-c125-4974-b8cb-996eeff4c5e8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Municipal Mayor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="192" width="180" height="16" uuid="823521ed-ebbf-4a46-8f67-ff3a41491e61">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Lake Sebu, South Cotabato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="220" width="264" height="40" uuid="22d874ec-47f5-4718-b0f8-28f1cecf78dd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THRU: Business Permit and Licensing Division and Municipal Treasurer's Office]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="280" width="30" height="16" uuid="dff6e04f-c4da-4bd3-9953-334d6c54e5e7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sir:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="279" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="550" height="30" uuid="edc946bb-e6c6-4039-a450-37478bd3f1f4"/>
+				<textElement textAlignment="Justified">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CONTENT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="252" width="210" height="16" uuid="b23fbfdf-ee8d-460c-bd50-d227e583b536">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Signature over printed name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="251" width="210" height="1" uuid="0f909e14-db9f-404a-8925-b207d2e2733e"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="268" width="210" height="11" uuid="67cd278f-6dbc-47c3-9dec-67728ca47146">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(by the business Owner/Duly Authorized Representative)]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

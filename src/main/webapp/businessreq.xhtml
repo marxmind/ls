@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<title>Business Request Transactions</title>
+	<f:facet name="middle">
+           <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="css/pageHeaderFooter.css"/>
+            <h:outputStylesheet name="css/growl.css"/>
+             <h:outputStylesheet name="css/bodyconf.css"/>
+             <h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js" target="head"/>
+    </f:facet>
+    
+<style>
+<!-- 
+	
+ -->
+ </style>
+
+</h:head>
+
+<h:body>
+
+<h:form prependId="false" id="formId">
+	<ui:include src="header.xhtml" />
+	
+	<p:growl id="msg" life="2000" showDetail="true"/>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+    <p:confirmPopup global="true">
+            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+    </p:confirmPopup>
+    	 	 
+	
+	<div class="card">
+    
+	    <div class="grid">
+	    	
+	    	
+		    	<div class="col-5">
+		    		<div class="ui-inputgroup" style="float:right">
+		            	<p:commandButton update="gridId" value="New" icon="pi pi-file-o" actionListener="#{bzreq.clear}"/>
+		    			<p:commandButton update="gridId" value="Clear" icon="pi pi-trash" action="#{bzreq.clear}"/>
+		    			<p:commandButton update="gridId businessDataId msg" value="Save" icon="pi pi-save" actionListener="#{bzreq.save}">
+		    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
+		    			</p:commandButton>
+		            </div>
+		            
+		            <p:panelGrid id="gridId" columns="2" layout="grid" styleClass="ui-noborder">
+						
+						<p:outputLabel value="Filing/Approved Date">
+						<div class="ui-inputgroup">
+							<p:calendar value="#{bzreq.businessData.dateFilingTmp}" placeholder="Filling" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em"/>
+							<p:calendar value="#{bzreq.businessData.dateApprovedTmp}" placeholder="Appoved" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Request Type">
+						<div class="ui-inputgroup">	
+					    <p:selectOneMenu id="frmId" value="#{bzreq.businessData.type}" style="width: 20em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{bzreq.types}"/>
+								<p:ajax event="change" listener="#{bzreq.updateFlds}" update="gridId"/>
+						</p:selectOneMenu>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Current Business Name">
+						<div class="ui-inputgroup">
+							<p:commandButton id="idBzOldName" value="#{bzreq.businessData.oldBusinessName}" icon="pi pi-search" style="width: 10em" actionListener="#{bzreq.searchBusiness}" update="formsDataId" oncomplete="PF('dlgBsusiness').show()"/>
+							<p:inputText id="idBzNewName" value="#{bzreq.businessData.newBusinessName}" placeholder="Proposed Business Name" style="width: 10em" disabled="#{bzreq.enableBusinessName}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Start of Operation/Line of Business">
+						<div class="ui-inputgroup">
+							<p:calendar  value="#{bzreq.businessData.dateStartOperationTmp}" placeholder="Start of Business" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+							<p:inputText  value="#{bzreq.businessData.lineOfBusiness}" placeholder="Line of Business" style="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Business Owner">
+						<div class="ui-inputgroup">
+							<p:inputText id="idBzOldOwner" value="#{bzreq.businessData.oldOwner}" placeholder="Current Owner" style="width: 10em" readonly="true"/>
+							<p:inputText id="idBzNewOwner" value="#{bzreq.businessData.newOwner}" placeholder="Proposed Owner" style="width: 10em" disabled="#{bzreq.enableOwner}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Ceased Operation/Effectivity">
+						<div class="ui-inputgroup">
+							<p:calendar id="idBzStopOp" value="#{bzreq.businessData.dateStopOperationTmp}" placeholder="Ceased" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+							<p:calendar value="#{bzreq.businessData.dateEffectityTmp}" placeholder="Effectivity" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 10em"/>
+						</div>
+						</p:outputLabel>
+						
+						
+						<p:outputLabel value="Business Location">
+						<div class="ui-inputgroup">
+							<p:inputText id="idBzOldLocName" value="#{bzreq.businessData.oldAddress}" placeholder="Current Location" style="width: 10em" readonly="true"/>
+							<p:inputText id="idBzNewLocName" value="#{bzreq.businessData.newAddress}"  placeholder="Proposed Location" style="width: 10em" disabled="#{bzreq.enableLocaton}"/>
+						</div>
+						</p:outputLabel>
+						
+						
+						<p:outputLabel value="Verifier">
+						<div class="ui-inputgroup">
+							<p:inputText value="#{bzreq.businessData.officer}" placeholder="Name" style="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+							<p:inputText value="#{bzreq.businessData.officerPosition}" placeholder="Position" style="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="BPLO Officer">
+						<div class="ui-inputgroup">
+							<p:inputText value="#{bzreq.businessData.bploApprover}" placeholder="Name" style="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+							<p:inputText value="#{bzreq.businessData.bploPosition}" placeholder="Position" style="width: 10em" disabled="#{bzreq.enableStopOperationDate}"/>
+						</div>
+						</p:outputLabel>
+						
+						
+						
+						<p:outputLabel value="Treasurer">
+						<div class="ui-inputgroup">
+						<p:inputText value="#{bzreq.businessData.treasurer}" placeholder="Treasurer" style="width: 20em" disabled="#{bzreq.enableStopOperationDate}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Inspector">
+						<div class="ui-inputgroup">
+						<p:inputText  value="#{bzreq.businessData.inspectorate}" placeholder="Inspectorate" style="width: 20em" disabled="#{bzreq.enableStopOperationDate}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Mayor">
+						<div class="ui-inputgroup">
+						<p:inputText id="idmayor" value="#{bzreq.businessData.mayor}" placeholder="Mayor" style="width: 20em" disabled="#{bzreq.enableStopOperationDate}"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Reason">
+						<div class="ui-inputgroup">
+						<p:inputTextarea  value="#{bzreq.businessData.reason}" style="width: 20em" placeholder="Please specify here the reason of the business request"/>
+						</div>
+						</p:outputLabel>
+						
+						<p:outputLabel value="Official Receipt No">
+						<div class="ui-inputgroup">
+						<p:inputText  value="#{bzreq.businessData.orNumber}" style="width: 20em" placeholder="0000000"/>
+						</div>
+						</p:outputLabel>
+						
+						</p:panelGrid>
+	    		</div>
+	    	
+	    	<div class="col-7">
+	    		
+	    		<p:dataTable id="businessDataId" value="#{bzreq.bzs}" var="rp" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true" 
+                         lazy="false"
+                         >
+                         
+                          <f:facet name="header">
+                          	<span class="ui-input-icon-left">
+				        			<i class="pi pi-search" />
+                         			<p:inputText value="#{bzreq.searchBusinessRequestParam}" style="width: 20em" placeholder="Search...">
+                         				<p:ajax event="keyup" delay="800" listener="#{bzreq.load}" update="businessDataId"/>
+                         			</p:inputText>
+                         			<p:datePicker id="date1" value="#{bzreq.dateFrom}" pattern="yyyy-MM-dd"/>
+									<p:datePicker id="date2" value="#{bzreq.dateTo}"  pattern="yyyy-MM-dd"/>
+									<p:commandButton value="Search" update="businessDataId"  icon="pi pi-search" actionListener="#{bzreq.load}"/>
+                         	</span>		
+            			 </f:facet>	
+            			 
+            			 <p:columnGroup type="header">
+									<p:row>
+										<p:column rowspan="2" headerText="[*]" width="30"/>
+										<p:column rowspan="2" headerText="Edit" width="30"/>
+										<p:column colspan="4" headerText="Print" width="120"/>
+										
+										<p:column colspan="2" headerText="Business" width="400"/>
+										<p:column rowspan="2" headerText="Request Type" width="150"/>
+										<p:column colspan="4" headerText="Date" width="400"/>
+										
+										<p:column colspan="2" headerText="Owner" width="400"/>
+										<p:column colspan="2" headerText="Location" width="400"/>
+										
+										<p:column rowspan="2" headerText="OR Number" width="70"/>
+									</p:row>
+									<p:row>
+										
+										<p:column colspan="1" headerText="" width="30"/>
+										 <p:column colspan="1" headerText="" width="30"/>
+										 <p:column colspan="1" headerText="" width="30"/>
+										 <p:column colspan="1" headerText="" width="30"/>
+										
+										<p:column colspan="1" headerText="Old Name" width="200"/>
+										 <p:column colspan="1" headerText="Proposed Name" width="200"/>
+										
+										 <p:column colspan="1" headerText="Filing" width="100"/>
+										 <p:column colspan="1" headerText="Approved" width="100"/>
+										 <p:column colspan="1" headerText="Ceased" width="100"/>
+										 <p:column colspan="1" headerText="Effectivity" width="100"/>
+										 
+										 
+										 
+										 <p:column colspan="1" headerText="Current" width="200"/>
+					                     <p:column colspan="1" headerText="Proposed" width="200"/>
+					                     
+					                     <p:column colspan="1" headerText="Current" width="200"/>
+					                     <p:column colspan="1" headerText="Proposed" width="200"/>
+				                	</p:row>
+								</p:columnGroup> 
+                         
+                          <p:column headerText="[*]" width="30" exportable="false">
+		            					<p:commandButton update="gridId businessDataId msg" icon="pi pi-trash"  actionListener="#{bzreq.deleteReq(rp)}" title="Click this button to delete">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            	  </p:column>
+                         
+                         <p:column headerText="Edit" width="30">
+            						<p:commandButton icon="pi pi-pencil" actionListener="#{bzreq.selectedReq(rp)}" update="gridId" />
+            		     </p:column>
+                         
+                         <p:column headerText="Cert" width="30" exportable="false">
+		            						<p:commandLink title="Print Certification" target="_blank" action="#{bzreq.printCert(rp,'cert')}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+											</p:commandLink>
+		            	  </p:column>
+		            	  
+		            	  <p:column headerText="Appl" width="30" exportable="false">
+		            						<p:commandLink title="Print Application" target="_blank" action="#{bzreq.printCert(rp,'app')}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+											</p:commandLink>
+		            	  </p:column>
+		            	  
+		            	  <p:column headerText="Letter" width="30" exportable="false">
+		            						<p:commandLink title="Print Letter" target="_blank" action="#{bzreq.printCert(rp,'letter')}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+											</p:commandLink>
+		            	  </p:column>
+		            	  
+		            	  <p:column headerText="Map Loc" width="30" exportable="false">
+		            						<p:commandLink title="Print Sketch Map" target="_blank" action="#{bzreq.printCert(rp,'loc')}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+											</p:commandLink>
+		            	  </p:column>
+                         
+                         <p:column headerText="Old Name" width="200">
+            						<p:outputLabel value="#{rp.oldBusinessName}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Proposed" width="200">
+            						<p:outputLabel value="#{rp.newBusinessName}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Request" width="150">
+            						<p:outputLabel value="#{rp.typeName}"/>
+            		     </p:column>
+                         
+                          <p:column headerText="Filing" width="70">
+            						<p:outputLabel value="#{rp.dateFilling}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Approved" width="70">
+            						<p:outputLabel value="#{rp.dateApproved}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Ceased" width="70">
+            						<p:outputLabel value="#{rp.dateStopOperation}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Effectivity" width="70">
+            						<p:outputLabel value="#{rp.effectivityDate}"/>
+            		     </p:column>
+            		     
+            		     
+                         
+                         
+            		     
+            		     <p:column headerText="Current" width="200">
+            						<p:outputLabel value="#{rp.oldOwner}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Proposed" width="200">
+            						<p:outputLabel value="#{rp.newOwner}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Current" width="200">
+            						<p:outputLabel value="#{rp.oldAddress}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Proposed" width="200">
+            						<p:outputLabel value="#{rp.newAddress}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="OR Number" width="70">
+            						<p:outputLabel value="#{rp.orNumber}"/>
+            		     </p:column>
+            		    
+            		     
+            </p:dataTable>	
+	    		
+	    		
+	    	</div>
+	
+		</div><!-- main grid -->
+	</div><!-- Card -->
+	
+	<p:dialog widgetVar="dlgBsusiness"  width="900" height="600" position="center top" header="Business List">
+		
+		<p:dataTable id="formsDataId" value="#{bzreq.businessList}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true" 
+                         lazy="false"
+                         >
+                         
+                          <f:facet name="header">
+                          	<span class="ui-input-icon-left">
+				        			<i class="pi pi-search" />
+                         			<p:inputText value="#{bzreq.searchBusinessName}" style="width: 20em" placeholder="Search Business Name here...">
+                         				<p:ajax event="keyup" delay="800" listener="#{bzreq.searchBusiness}" update="formsDataId"/>
+                         			</p:inputText>
+                         	</span>		
+            			 </f:facet>	
+                         
+                         <p:column headerText="Select" width="10">
+            						<p:commandButton icon="pi pi-thumbs-up" actionListener="#{bzreq.selectedBusiness(rpt)}" update="gridId" oncomplete="PF('dlgBsusiness').hide()" />
+            		     </p:column>
+                         
+                         <p:column headerText="Name" width="150">
+            						<p:outputLabel value="#{rpt.businessName}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Owner" width="100">
+            						<p:outputLabel value="#{rpt.taxPayer.fullname}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Line of Business" width="150">
+            						<p:outputLabel value="#{rpt.typeLineName}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Location" width="150">
+            						<p:outputLabel value="#{rpt.purokName}, #{rpt.barangay.name}, #{rpt.municipality.name},  #{rpt.province.name}"/>
+            		     </p:column>
+            		     
+            		    
+            		     
+            </p:dataTable>		     
+	
+	</p:dialog>
+	
+	<ui:include src="loader.xhtml" />
+	<ui:include src="menu.xhtml" /> 	
+</h:form>
+</h:body>
+</html>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

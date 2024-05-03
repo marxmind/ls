@@ -199,7 +199,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="10"/>
 				</textElement>
-				<text><![CDATA[No. of units motorized banca:]]></text>
+				<text><![CDATA[No. of units non-motorized:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="338" y="77" width="143" height="13" uuid="6fed6116-b4c8-47f4-a670-95085a59ad90">

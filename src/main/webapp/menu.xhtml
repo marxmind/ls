@@ -75,28 +75,29 @@
 								}  
 							</h:outputStylesheet>
 							
-							<p:commandButton icon="pi pi-money-bill" action="#{menuBean.writing}" value="Check Writing" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.citizenreg}" value="Citizen Registration" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-text" action="#{menuBean.form56}" value="RPTax" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.stocks}" value="Stocks Recording" styleClass="button" immediate="false" ajax="false"/>
-				              <p:commandButton icon="pi pi-file-o" action="#{menuBean.issuedForm}" value="Issued Form Recording" styleClass="button" immediate="false" ajax="false"/>
-				              <p:commandButton icon="pi pi-file-o" action="#{menuBean.logform}" value="Collector's Recording" styleClass="button" immediate="false" ajax="false"/>
-				              <p:commandButton icon="pi pi-file-o" action="#{menuBean.dtrReport}" value="DTR Generator" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.orlisting}" value="General Collections" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.uploadrcd}" value="Upload Forms" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.vr}" value="Vourcher Recording" styleClass="button" immediate="false" ajax="false"/>
+							<p:commandButton icon="pi pi-money-bill" action="#{menuBean.writing}" value="Check Writing (alt+w)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.citizenreg}" value="Citizen Registration (alt+r)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-text" action="#{menuBean.form56}" value="RPTax (alt+f)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.stocks}" value="Stocks Recording (alt+s)" styleClass="button" immediate="false" ajax="false"/>
+				              <p:commandButton icon="pi pi-file-o" action="#{menuBean.issuedForm}" value="Issued Form Recording (alt+i)" styleClass="button" immediate="false" ajax="false"/>
+				              <p:commandButton icon="pi pi-file-o" action="#{menuBean.logform}" value="Collector's Recording (alt+l)" styleClass="button" immediate="false" ajax="false"/>
+				              <p:commandButton icon="pi pi-file-o" action="#{menuBean.dtrReport}" value="DTR Generator (alt+d)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.orlisting}" value="General Collections (alt+o)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.uploadrcd}" value="Upload Forms (alt+u)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.vr}" value="Vourcher Recording (alt+v)" styleClass="button" immediate="false" ajax="false"/>
 				             
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.checkIssued}" value="Check Issued Recording" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.cashDv}" value="Cash Disbursement Recording" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.collectionDeposit}" value="Collection and Deposit Recording" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.checkIssued}" value="Check Issued Recording (alt+k)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.cashDv}" value="Cash Disbursement Recording (alt+c)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.collectionDeposit}" value="Collection and Deposit Recording (alt+e)" styleClass="button" immediate="false" ajax="false"/>
 				             <p:commandButton icon="pi pi-file-o" action="kobotoolbox.xhtml" value="Business Mapping 2022" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.bm}" value="Business Mapping" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.bnIndex}" value="Business Indexing" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.bm}" value="Business Mapping (alt+m)" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" action="#{menuBean.bnIndex}" value="Business Indexing (alt+b)" styleClass="button" immediate="false" ajax="false"/>
 				             <p:commandButton icon="pi pi-microsoft" action="#{menuBean.bnreg}" value="Business Calculation" styleClass="button" immediate="false" ajax="false"/>
-				             <p:commandButton icon="pi pi-file-o" onclick="PF('dlgMain').hide();" value="Hide This Window" styleClass="button"/>
-				             <p:commandButton icon="pi pi-download" onclick="PF('dlgBakup').show();" value="Backup Data" styleClass="button"/>
-				             <p:commandButton icon="pi pi-upload" onclick="PF('dlgUpload').show();" value="Upload Backup Data" styleClass="button"/>
-				             <p:commandButton icon="pi pi-power-off" action="portal" value="Logout" styleClass="button" actionListener="#{loginBean.logout}" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-microsoft" action="#{menuBean.businesReq}" value="Business Closure" styleClass="button" immediate="false" ajax="false"/>
+				             <p:commandButton icon="pi pi-file-o" onclick="PF('dlgMain').hide();" value="Hide This Window (alt+h)" styleClass="button"/>
+				             <p:commandButton icon="pi pi-download" onclick="PF('dlgBakup').show();" value="Backup Data (alt+p)" styleClass="button"/>
+				             <p:commandButton icon="pi pi-upload" onclick="PF('dlgUpload').show();" value="Upload Backup Data (alt+z)" styleClass="button"/>
+				             <p:commandButton icon="pi pi-power-off" action="portal" value="Logout (alt+x)" styleClass="button" actionListener="#{loginBean.logout}" immediate="false" ajax="false"/>
 				             <p:outputLabel/>
 				
 			</p:panelGrid>
@@ -107,5 +108,32 @@
    			<ui:include src="update.xhtml"/>
    			<ui:include src="backup.xhtml" />
    			<ui:include src="upload.xhtml" />
+   			 <p:hotkey bind="ctrl+m" handler="PF('dlgMain').show()"/>
+   			 <p:hotkey bind="ctrl+h" handler="PF('dlgMain').hide()"/>
+   			 
+   			 <p:hotkey bind="alt+w" action="#{menuBean.writing}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+r" action="#{menuBean.citizenreg}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+f" action="#{menuBean.form56}" immediate="false" async="false"/>
+   			 
+   			 <p:hotkey bind="alt+s" action="#{menuBean.stocks}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+i" action="#{menuBean.issuedForm}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+l" action="#{menuBean.logform}" immediate="false" async="false"/>
+   			 
+   			 <p:hotkey bind="alt+d" action="#{menuBean.dtrReport}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+o" action="#{menuBean.orlisting}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+u" action="#{menuBean.uploadrcd}" immediate="false" async="false"/>
+   			 
+   			 <p:hotkey bind="alt+v" action="#{menuBean.vr}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+k" action="#{menuBean.checkIssued}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+c" action="#{menuBean.cashDv}" immediate="false" async="false"/>
+   			 
+   			 <p:hotkey bind="alt+e" action="#{menuBean.collectionDeposit}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+m" action="#{menuBean.bm}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+b" action="#{menuBean.bnIndex}" immediate="false" async="false"/>
+   			 
+   			 <p:hotkey bind="alt+x" action="portal" actionListener="#{loginBean.logout}" immediate="false" async="false"/>
+   			 <p:hotkey bind="alt+p" handler="PF('dlgBakup').show()"/>
+   			 <p:hotkey bind="alt+z" handler="PF('dlgUpload').show()"/>
+   			 
      </ui:composition>
 </html>

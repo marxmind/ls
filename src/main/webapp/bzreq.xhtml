@@ -1,0 +1,65 @@
+<html 
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:faces="jakarta.faces"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:pt="jakarta.faces.passthrough"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:c="jakarta.tags.core"
+    xmlns:fn="jakarta.tags.functions"
+    xmlns:my="jakarta.faces.component"
+    >
+    
+     <ui:composition>
+     <p:dialog widgetVar="dlgBzApp" header="List of business for retirement approval" width="1000" height="600" position="center center" closable="true" modal="true" closeOnEscape="true" visible="true">
+    	
+    	<p:dataTable id="dataBzId" value="#{businessBean.bzReqs}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" paginatorPosition="top" reflow="true" 
+                         lazy="false"
+                         >
+                         
+                         <p:column headerText="Filling" width="70">
+            						<p:outputLabel value="#{rpt.dateFile}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Ceased" width="70">
+            						<p:outputLabel value="#{rpt.datestop}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Request" width="100">
+            						<p:outputLabel value="#{rpt.type}"/>
+            		     </p:column>
+                         
+                         <p:column headerText="Action" width="50">
+                         <p:commandButton update="dataBzId msg" icon="pi pi-thumbs-up" actionListener="#{businessBean.approval(rpt)}">
+		    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to approved this business?" icon="pi pi-info-circle" />
+		    			</p:commandButton>
+		    			</p:column>
+                         
+                         <p:column headerText="Name" width="200">
+            						<p:outputLabel value="#{rpt.name}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Owner" width="200">
+            						<p:outputLabel value="#{rpt.owner}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Line of Business" width="200">
+            						<p:outputLabel value="#{rpt.lineofbusiness}"/>
+            		     </p:column>
+            		     
+            		     <p:column headerText="Address" width="300">
+            						<p:outputLabel value="#{rpt.address}"/>
+            		     </p:column>
+            		     
+            		    
+            		     
+            </p:dataTable>	
+    	
+    </p:dialog>
+     </ui:composition>
+</html>

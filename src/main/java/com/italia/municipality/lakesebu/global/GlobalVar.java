@@ -82,4 +82,9 @@ public class GlobalVar {
 	public static final String BUSINESS_BILLING="bzbilling";
 	public static final String RCD_SUMMARY = "rcdsummary";
 	public static final String BANK_DEPOSIT = "rcdbankdeposit";
+	public static final String BUSINESS_CLOSURER_CERT = "business_closure_cert";
+	public static final String BUSINESS_APPLIACTION_CLOSURE = "business_application_closure";
+	public static final String BUSINESS_APPLIACTION_CLOSURE_LETTER = "business_application_closure_letter";
+	public static final String BUSINESS_CLOSURE_LOCATION = "business_closure_location";
+	public static final String CASH_TICKET_MOVEMENT_RPT = "ctmovement";
 }

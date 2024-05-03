@@ -152,6 +152,9 @@
 	    				<p:selectOneMenu value="#{bnIndex.barId1}" style="width: 12em" filterMatchMode="contains" filter="true">
 								<f:selectItems value="#{bnIndex.bars1}"/>
 						</p:selectOneMenu>
+						<p:selectOneMenu value="#{bnIndex.mappingId}" style="width: 12em" filterMatchMode="contains" filter="true">
+								<f:selectItems value="#{bnIndex.mappings}"/>
+						</p:selectOneMenu>
 	    				<p:commandButton update="dataForm"  icon="pi pi-search" actionListener="#{bnIndex.loadBusiness}"/>
 	    				</div>
 	    				<div id="idSearchSub" style="display: none">

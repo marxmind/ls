@@ -1,4 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/resources/reports/business_application_closure.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/business_application_closure_letter.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/business_closure_cert.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/business_closure_location.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/businesspermitV7.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/bzbilling.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/cash-disbursement2.jrxml=UTF-8

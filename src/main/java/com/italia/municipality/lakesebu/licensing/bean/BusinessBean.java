@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.primefaces.PrimeFaces;
+
+import com.italia.municipality.lakesebu.controller.BusinessApproval;
+import com.italia.municipality.lakesebu.controller.BusinessRequest;
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.enm.DateFormat;
@@ -89,6 +93,8 @@ public class BusinessBean implements Serializable{
 	private List purokList;
 	private Map<Long, Purok> purokMap = new HashMap<Long, Purok>();
 	
+	private List<BusinessApproval> bzReqs;
+	
 	@PostConstruct
 	public void init(){
 		
@@ -124,7 +130,59 @@ public class BusinessBean implements Serializable{
 			clearFields();
 		}
 		
+		checkBusinessReqForRetirement();
+	}
+	
+	private void checkBusinessReqForRetirement() {
+		bzReqs = new ArrayList<BusinessApproval>();
+		List<BusinessRequest> bz = BusinessRequest.retrieve(" AND st.iscompleted=0", new String[0]);
+		Map<String, BusinessRequest> mapReq = new LinkedHashMap<String, BusinessRequest>();
+		String name = "";
+		if(bz!=null && bz.size()>0) {
+			
+			
+			for(BusinessRequest b : bz) {mapReq.put(b.getOldBusinessName(), b);}
+			
+			
+			for(Livelihood l : Livelihood.retrieve(name, new String[0])) {
+				if(mapReq!=null && mapReq.size()>0) {
+					String bzName = l.getBusinessName();
+					if(mapReq.containsKey(bzName)) {
+						BusinessRequest b = mapReq.get(bzName);
+						
+						BusinessApproval app = BusinessApproval.builder()
+								.dateFile(b.getDateFilling())
+								.type(b.getTypeName())
+								.name(b.getOldBusinessName())
+								.owner(b.getOldOwner())
+								.address(b.getOldAddress())
+								.lineofbusiness(b.getLineOfBusiness())
+								.datestop(b.getDateStopOperation())
+								.requestData(b)
+								.businessData(l)
+								.build();
+							bzReqs.add(app);
+					}
+					
+				}
+			}
+			
+			
+			
+			PrimeFaces pf = PrimeFaces.current();
+			pf.executeScript("PF('dataBzId').show()");
+		}
+	}
+	
+	public void approval(BusinessApproval app) {
+		app.getRequestData().setIsCompleted(1);
+		app.getRequestData().save();
 		
+		app.getBusinessData().setDateRetired(app.getDatestop());
+		app.getBusinessData().setStatus(2);//closed
+		app.getBusinessData().save();
+		checkBusinessReqForRetirement();
+		Application.addMessage(1, "Success", "Successfully saved");
 	}
 	
 	public void loadAll(){
@@ -352,6 +410,8 @@ public class BusinessBean implements Serializable{
 			
 			if(getStatusId()==2){
 				li.setDateRetired(DateUtils.convertDate(getDateRetired(),DateFormat.YYYY_MM_DD()));
+			}else {
+				li.setDateRetired(null);
 			}
 			
 			li.setBarangay(getBarangaySelected());
@@ -391,6 +451,9 @@ public class BusinessBean implements Serializable{
 		
 		setCustomer(li.getTaxPayer());
 		setCustomerName(li.getTaxPayer().getFullname());
+		
+		
+		System.out.println("retired date:" + li.getDateRetired() + " stat: " + li.getStatus());
 	}
 	
 	public void deleteRow(Livelihood li){
@@ -676,5 +739,14 @@ public class BusinessBean implements Serializable{
 	public void setPurokMap(Map<Long, Purok> purokMap) {
 		this.purokMap = purokMap;
 	}
+
+	public List<BusinessApproval> getBzReqs() {
+		return bzReqs;
+	}
+
+	public void setBzReqs(List<BusinessApproval> bzReqs) {
+		this.bzReqs = bzReqs;
+	}
+
 	
 }

@@ -24,10 +24,32 @@
     </f:facet>
     
 <style>
-<!-- 
+    .speeddial-linear-demo .ui-speeddial-direction-up {
+        left: calc(50% - 2rem);
+        bottom: 0;
+    }
+
+    .speeddial-linear-demo .ui-speeddial-direction-down {
+        left: calc(50% - 2rem);
+        top: 0;
+    }
+
+    .speeddial-linear-demo .ui-speeddial-direction-left {
+        right: 0;
+        top: calc(50% - 2rem);
+    }
+
+    .speeddial-linear-demo .ui-speeddial-direction-right {
+        left: 0;
+        top: calc(50% - 2rem);
+    }
 	
- -->
- </style>
+	.speeddial-circle-demo .ui-speeddial-circle {
+        top: calc(50% - 2rem);
+        left: calc(50% - 2rem);
+    }
+    
+</style> 
 
 <script type="text/javascript">
     function handleDrop(event, ui) {
@@ -43,6 +65,9 @@
 <h:form prependId="false" id="formId">
 	<ui:include src="header.xhtml" />
 	<p:defaultCommand target="#{oRListingBean.keyPress}"/>
+	
+	
+	
 	<p:growl id="msg" showDetail="true" life="2000" />
 	
 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
@@ -612,7 +637,7 @@
 		</div><!-- main grid -->
 	</div><!-- Card -->
 	
-	<p:dialog position="center top" widgetVar="selectDialog" modal="false" draggable="true" closable="false" resizable="false" fitViewport="true" responsive="true" showHeader="false"  closeOnEscape="true">
+	<p:dialog position="center top" widgetVar="selectDialog" modal="true" draggable="true" closable="false" resizable="false" fitViewport="true" responsive="true" showHeader="false"  closeOnEscape="true">
     				<p:card style="width: 100em">
     				<p:toolbar id="tbAdd" style="width: 100em">
 			    		<f:facet name="left">
@@ -721,24 +746,32 @@
 		
 	</h:outputScript>
 	
-	<div id="settingId" style="display: block">
-	<p:commandButton title="Settings" icon="pi pi-slack" id="taxSettings" onclick="showOtherButton();" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 50px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	<div class="speeddial-linear-demo" style="top: 0px;left: 15px;float:right; position: fixed;z-index: 1500;font-size: 100% ">
+            <p:speedDial direction="down" ariaLabel="SpeedDial Up" showIcon="pi pi-cog">
+                 <p:menuitem title="Particular Settings" icon="pi pi-book" id="taxButton" actionListener="#{paymentTaxCodeBean.loadTaxCode}" oncomplete="PF('dlgTaxCode').show(1000);" update="dataTax" style="background-color: gray"/>
+                 <p:menuitem title="Sync" icon="pi pi-sync" id="syncButton" actionListener="#{oRListingBean.runUpdate}" update="dataSendOr dataFetch msg" style="background-color: gray"/>
+                 <p:menuitem title="Send" update="dataSendOr"  icon="pi pi-send" actionListener="#{sendOrServerBean.loadFiles}" style="background-color: gray"/>
+            </p:speedDial>
 	</div>
 	
-	<div id="otherButtonId" style="display: none">
-	<p:commandButton title="Settings" icon="pi pi-slack" id="taxSettings2" onclick="hideOtherButton();" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 50px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>	
-			
-	<p:commandButton widgetVar="widTaxCode" title="Particular Settings" icon="pi pi-book" id="taxButton" actionListener="#{paymentTaxCodeBean.loadTaxCode}" oncomplete="PF('dlgTaxCode').show(1000);" update="dataTax"  style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 250px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
-	<p:commandButton widgetVar="widSync" title="Sync" icon="pi pi-sync" id="syncButton" actionListener="#{oRListingBean.runUpdate}" update="dataSendOr dataFetch msg"  style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 280px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
-	<p:commandButton widgetVar="widSend" title="Send" update="dataSendOr"  icon="pi pi-send" actionListener="#{sendOrServerBean.loadFiles}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 310px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	 <div class="speeddial-circle-demo" style="bottom: 72px;left: 0px;float:left; position: fixed;z-index: 1500;font-size: 100% ">
+            <p:speedDial radius="120" direction="up-right" type="quarter-circle" showIcon="pi pi-align-justify" keepOpen="true">
+                <p:menuitem title="Open QRCode" icon="pi pi-qrcode" id="startQR" style="background-color: gray"/>
+                <p:menuitem title="Open Camera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();" style="background-color: gray"/>
+                <p:menuitem title="Click to Clear (ctrl+c)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="background-color: gray"/>
+                <p:menuitem title="Click to save (ctrl+shift+s)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="background-color: gray"/>
+                <p:menuitem title="Particular Name Lookup (ctrl+o)" icon="pi pi-search" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId dataGroupId" oncomplete="PF('selectDialog').show();" style="background-color: gray"/>
+              </p:speedDial>
+    </div>        
+    
+    <p:hotkey bind="ctrl+shift+s"  actionListener="#{oRListingBean.saveData}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg"/>
+    <p:hotkey bind="ctrl+o" handler="PF('selectDialog').show()" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId dataGroupId"/>
+    <p:hotkey bind="ctrl+c" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid"  actionListener="#{oRListingBean.clearAllFlds}"/>
+    <p:hotkey bind="ctrl+1" actionListener="#{oRListingBean.runUpdate}" update="dataSendOr dataFetch msg"/>
+    <p:hotkey bind="ctrl+2" actionListener="#{sendOrServerBean.loadFiles}" update="dataSendOr"/>
+    <p:hotkey bind="ctrl+e" actionListener="#{oRListingBean.clickOpen}" update="dataOrId dataSelectedId fldId fldId2 totalId fldNoteId msg"/>
+    
 	
-	</div>
-	<p:commandButton widgetVar="widCamera" title="Open Camera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();"  style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 400px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
-	<p:commandButton title="Particular Name Lookup" icon="pi pi-search-plus" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId dataGroupId" oncomplete="PF('selectDialog').show();" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 430px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
-	<p:commandButton title="Click to save" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 460px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; ">
-			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-exclamation-triangle" />
-	</p:commandButton>
-	<p:commandButton title="Open QRCode" icon="pi pi-qrcode" id="startQR"   style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 490px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
 	<p:overlayPanel for="startQR" style="width:350px">
             <p>Scan QRCode on TEKLEAD</p>
             <p>
@@ -753,9 +786,7 @@
    </p:overlayPanel>
 	
 			
-	<p:commandButton title="Click to Clear" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 80px;left: 0px;float:right; position: fixed;z-index: 1500;font-size: 100% ! important;font-weight: bold ! important;  text-transform: none ! important; ">
-			<p:confirm type="popup" header="Confirmation" message="Are you sure you want to clear this fields?" icon="ui-icon-alert" />
-	</p:commandButton>
+	
 	
 	
 	
@@ -1073,27 +1104,31 @@
 <ui:include src="sync.xhtml" />	
 <ui:include src="taxcode.xhtml" />	
 
+  
+
+<div class="speeddial-linear-demo" style="bottom: 50px;right: 10px;float:right; position: fixed;z-index: 1500;font-size: 70% ">
+	<p:speedDial direction="left" showIcon="pi pi-search-plus">
+                <p:menuitem id="taxRevenue" title="Tax Ordinance" icon="pi pi-book" actionListener="#{articleBean.openRevenue}" update="dataRevenue tabRevenue dataRev" style="background-color: gray"/>
+                <p:menuitem title="Fish Cage Billing" icon="pi pi-file" id="fishBill" actionListener="#{fishcageBillingBean.openBilling}" update="dataFishBill" style="background-color: gray"/>
+                <p:menuitem title="Business Lookup" icon="pi pi-credit-card" id="bizNess" actionListener="#{bizLookupBean.openLookup}" update="bizDataId" style="background-color: gray"/>
+                <p:menuitem title="Official Receipt" icon="pi pi-euro" oncomplete="PF('dlgAllOrs').show(1000);" actionListener="#{oRListingBean.loadAllOrs}" update="dataOrAllId rangeORDate" style="background-color: gray"/>
+                <p:menuitem title="Graph" icon="pi pi-chart-pie"  actionListener="#{graphCollectionBean.loadGraph}" update="graphId" style="background-color: gray"/>
+                <p:menuitem title="Reports" icon="pi pi-briefcase"  actionListener="#{oRListingBean.loadFinalSelectedRpt}" update="dataOrFinalId totalSelectedFinalId rptFinalId" style="background-color: gray"/>
+                <p:menuitem type="button" title="Check Series" icon="pi pi-sort-numeric-up" onclick="PF('dlgCheckSeries').show(1000)" style="background-color: gray"/>
+                <p:menuitem title="Duplicate Series" icon="pi pi-clone" actionListener="#{oRListingBean.viewDuplicate}" update="dataDupId msg" style="background-color: gray"/>
+     </p:speedDial>
+</div>
 
 
-<p:commandButton title="Tax Ordinance" icon="pi pi-book" id="taxRevenue" actionListener="#{articleBean.openRevenue}" update="dataRevenue tabRevenue dataRev" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 7px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
 <ui:include src="article.xhtml" />	
-
-<p:commandButton title="Fish Cage Billing" icon="pi pi-file" id="fishBill" actionListener="#{fishcageBillingBean.openBilling}" update="dataFishBill" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 40px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
-<ui:include src="fishcagebill.xhtml" />	
-
-<p:commandButton title="Business Lookup" icon="pi pi-credit-card" id="bizNess" actionListener="#{bizLookupBean.openLookup}" update="bizDataId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 72px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+<ui:include src="fishcagebill.xhtml" />
 <ui:include src="bizlookup.xhtml" />
-
-<p:commandButton title="Official Receipt" icon="pi pi-euro" oncomplete="PF('dlgAllOrs').show(1000);" actionListener="#{oRListingBean.loadAllOrs}" update="dataOrAllId rangeORDate" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 104px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>			
-<p:commandButton title="Graph" icon="pi pi-chart-pie"  actionListener="#{graphCollectionBean.loadGraph}" update="graphId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 135px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
 <ui:include src="graphcol.xhtml" />
 
 <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="dataOrSelectionId" onDrop="handleDrop" id="idDrop" >
         <p:ajax listener="#{oRListingBean.onORDrop}" update="dropArea dataOrSelectionId selectedCarsTable totalSelectedId msg" />
 </p:droppable>
 
-
-<p:commandButton title="Reports" icon="pi pi-briefcase"  actionListener="#{oRListingBean.loadFinalSelectedRpt}" update="dataOrFinalId totalSelectedFinalId rptFinalId" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 167px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
 <p:dialog widgetVar="dlgFinalRpt" position="top center" width="900" height="600" header="Reports Selected" closeOnEscape="true">
 		
 		
@@ -1251,7 +1286,7 @@
     	</f:facet>
     </p:dialog>
 	
-	<p:commandButton type="button" title="Check Series" icon="pi pi-sort-numeric-up" onclick="PF('dlgCheckSeries').show(1000)" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 198px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	
 	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Series Checking" widgetVar="dlgCheckSeries" width="800" height="500" position="center">
 		<div class="ui-inputgroup">
 		<p:inputText value="#{oRListingBean.checkSeriesForm}" placeholder="00000000-00000000" />
@@ -1288,7 +1323,7 @@
 		
 	</p:dialog>
 	
-	<p:commandButton title="Duplicate Series" icon="pi pi-clone" actionListener="#{oRListingBean.viewDuplicate}" update="dataDupId msg" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;bottom: 30px;right: 229px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+	
 	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="Duplicate Series" widgetVar="dlgDuplicateSeries" width="1000" height="550" position="center">
 		
 		<p:dataTable id="dataDupId" value="#{oRListingBean.orsDuplicate}" var="st" stickyHeader="false"

@@ -55,6 +55,7 @@ public class Livelihood {
 	private UserDtls userDtls;
 	
 	private String businessLabel;
+	private String typeLineName;
 	//private static final String WEBTIS = Database.WEBTIS.getName();
 	
 	public static Map<String,Livelihood> collecBusinessExist() {
