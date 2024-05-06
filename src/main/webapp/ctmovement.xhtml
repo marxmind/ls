@@ -103,6 +103,10 @@
 										<f:selectItems value="#{ckBean.monthMvs}"/>
 								</p:selectOneMenu>
 								<p:commandButton actionListener="#{ckBean.generateMovement}" update="dataMoveId" value="Generate Balance" icon="pi pi-sync"/>
+								
+								<p:commandLink title="Print in PDF"  actionListener="#{ckBean.print}" target="_blank" ajax="false" immediate="false">
+            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left; #{in.color}"></i>
+								</p:commandLink>
 							</div>
 						</f:facet>
                          

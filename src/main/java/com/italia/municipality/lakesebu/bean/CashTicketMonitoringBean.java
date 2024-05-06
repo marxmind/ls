@@ -11,7 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.primefaces.event.CellEditEvent;
 
@@ -76,10 +78,11 @@ public class CashTicketMonitoringBean implements Serializable {
 	private List yearMvs;
 	private int  monthMvId;
 	private List monthMvs;
+	private Map<Integer, String> collectorNames;
 	
 	@PostConstruct
 	public void init() {
-		
+		collectorNames = new LinkedHashMap<Integer, String>();
 		setRendered(false);
 		generateTypes = new ArrayList<>();
 		generateTypeId=0;
@@ -261,6 +264,7 @@ public class CashTicketMonitoringBean implements Serializable {
 		for(Collector c : Collector.retrieve(sql, new String[0])) {
 			collectors.add(new SelectItem(c.getId(), c.getName()));
 			collectorMvs.add(new SelectItem(c.getId(), c.getName()));
+			collectorNames.put(c.getId(), c.getName());
 		}
 	}
 	
@@ -485,13 +489,14 @@ public class CashTicketMonitoringBean implements Serializable {
 			String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
 			
 			List<CashTicketMovementRpt> reports = new ArrayList<CashTicketMovementRpt>();
-			CashTicketMovementRpt rpt = new CashTicketMovementRpt();
-			reports.add(rpt);
-			
+			//CashTicketMovementRpt rpt = new CashTicketMovementRpt();
+			for(CashTicketMovementRpt rpt : getMovements()) {
+				reports.add(rpt);
+			}
 			JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
 	  		HashMap param = new HashMap();
 	  		
-	  		param.put("PARAM_FUND","");
+	  		param.put("PARAM_COLLECTOR",getCollectorNames().get(getCollectorMvId()));
 	  		
 	  		
 	  		//logo
