@@ -544,6 +544,9 @@
 						                <h:commandLink title="Print issued Check" actionListener="#{chk.printVoucherCheck}" target="_blank" >
 					                		<i class="pi pi-print" style="font-size: 2rem;float: right"></i>
 					            		</h:commandLink>
+					            		<h:commandLink title="Print Record Check" actionListener="#{chk.printVoucherCheckRecord}" target="_blank" >
+					                		<i class="pi pi-print" style="font-size: 2rem;float: right"></i>
+					            		</h:commandLink>
 		            				</f:facet>
 		            				<p:column headerText="[*]" width="20" exportable="false">
 				            					<p:commandButton update="adviceData" icon="pi pi-trash" actionListener="#{chk.deleteCheckSelected(rt)}">

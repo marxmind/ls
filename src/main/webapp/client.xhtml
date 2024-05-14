@@ -88,6 +88,7 @@
 
 <h:form prependId="false" id="formId">
 		
+		<p:growl id="msg" showDetail="true" life="2000" />
 		
 		<p:confirmPopup global="true">
             <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
@@ -488,6 +489,8 @@
 		
 		
 		<p:commandButton title="Client Queue" icon="pi pi-user-plus" id="queuID" actionListener="#{client.loadClient}" update="queDataId" oncomplete="PF('panelWgr').show(1000)" style="-moz-border-radius: 100px;-webkit-border-radius: 100px;border-radius: 100px;height: 30px;width: 30px;top: 20px;right: 50px;float:right; position: fixed;z-index: 1500;font-size: 70% ! important;font-weight: bold ! important;  text-transform: none ! important; "/>
+
+<ui:include src="menu.xhtml" />
 </h:form>	
 </h:body>
 </html>	

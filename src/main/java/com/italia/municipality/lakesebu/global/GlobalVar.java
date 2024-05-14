@@ -87,4 +87,5 @@ public class GlobalVar {
 	public static final String BUSINESS_APPLIACTION_CLOSURE_LETTER = "business_application_closure_letter";
 	public static final String BUSINESS_CLOSURE_LOCATION = "business_closure_location";
 	public static final String CASH_TICKET_MOVEMENT_RPT = "ctmovement";
+	public static final String VOUCHER_CHECK_RECORD = "voucher-record";
 }

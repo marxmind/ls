@@ -181,7 +181,7 @@
 		    		<p:panelGrid id="fldId" columns="2" layout="grid">
 					<p:selectOneMenu value="#{oRListingBean.selectOrTypeId}"  filter="true" filterMatchMode="contains" styleClass="js-tilt" style="width: 15em">
 					      			<f:selectItems value="#{oRListingBean.selectOrTypes}"/>
-					       			<f:ajax event="change" listener="#{oRListingBean.selectedOR}" render="oridd idPayd idSearchPname dataSelectedId fldId fldId2 totalId cid"/>
+					       			<f:ajax event="change" listener="#{oRListingBean.selectedOR}" render="oridd idPayd idSearchPname dataSelectedId fldId fldId2 totalId cid dataOrId frmId"/>
 		      				</p:selectOneMenu>
 					<p:calendar value="#{oRListingBean.dateTrans}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
 					<p:selectOneMenu id="frmstat" value="#{oRListingBean.statusId}" style="width: 15em">
@@ -661,13 +661,6 @@
 			            <p:ajax event="select" update="dataId dataSelectedId totalId" listener="#{oRListingBean.onSelect}"/>
 			        </p:tagCloud>
             		
-            		<br/>
-            		
-            		<p:outputLabel value="Select Payment Type" />
-            		<p:tagCloud id="dataGroupId" model="#{oRListingBean.suggestedGroup}" style="width: 100em">
-			            <p:ajax event="select" update="dataId dataSelectedId totalId" listener="#{oRListingBean.onSelectGroup}"/>
-			        </p:tagCloud>
-            		
             		</div>
             		
 					<p:outputLabel value="Selection" />
@@ -759,13 +752,13 @@
                 <p:menuitem title="Open QRCode" icon="pi pi-qrcode" id="startQR" style="background-color: gray"/>
                 <p:menuitem title="Open Camera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();" style="background-color: gray"/>
                 <p:menuitem title="Click to Clear (ctrl+c)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="background-color: gray"/>
-                <p:menuitem title="Click to save (ctrl+shift+s)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="background-color: gray"/>
-                <p:menuitem title="Particular Name Lookup (ctrl+o)" icon="pi pi-search" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId dataGroupId" oncomplete="PF('selectDialog').show();" style="background-color: gray"/>
+                <p:menuitem title="Click to Save (ctrl+shift+s)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="background-color: gray"/>
+            	<p:menuitem title="Particular Name Lookup (ctrl+o)" icon="pi pi-search" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId" oncomplete="PF('selectDialog').show();" style="background-color: gray"/>
               </p:speedDial>
     </div>        
     
     <p:hotkey bind="ctrl+shift+s"  actionListener="#{oRListingBean.saveData}" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg"/>
-    <p:hotkey bind="ctrl+o" handler="PF('selectDialog').show()" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId dataGroupId"/>
+    <p:hotkey bind="ctrl+o" handler="PF('selectDialog').show()" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId"/>
     <p:hotkey bind="ctrl+c" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid"  actionListener="#{oRListingBean.clearAllFlds}"/>
     <p:hotkey bind="ctrl+1" actionListener="#{oRListingBean.runUpdate}" update="dataSendOr dataFetch msg"/>
     <p:hotkey bind="ctrl+2" actionListener="#{sendOrServerBean.loadFiles}" update="dataSendOr"/>
@@ -1369,6 +1362,7 @@
 						</p:dataTable>
 		
 	</p:dialog>	
+	
 </h:form>
 </h:body>
 </html>	

@@ -170,7 +170,8 @@ public class FormChangeBean implements Serializable {/**
 		//colData = CollectionInfo.retrieve(sql, new String[0]);
 	    Map<String, CollectionInfo> mapCol = new LinkedHashMap<String, CollectionInfo>();
 		for(CollectionInfo col : CollectionInfo.retrieve(sql, new String[0]) ) {
-			if("ALL ISSUED".equalsIgnoreCase(col.getStatusName())) {
+			//if("ALL ISSUED".equalsIgnoreCase(col.getStatusName())) {
+			if("CONSUMED".equalsIgnoreCase(col.getStatusName())) {
 				mapCol.put(correctingDigitOfSeries(col.getBeginningNo(),col.getFormType()), info);
 			}
 			
@@ -788,7 +789,8 @@ public class FormChangeBean implements Serializable {/**
 			if(amount.equalsIgnoreCase(ser.getIssuedFrom())) {
 				formSeriesData.get(index).setIssuedFrom(newAmnt);
 				if(remAmount==0) {
-					formSeriesData.get(index).setEndingFrom("All Issued");
+					//formSeriesData.get(index).setEndingFrom("All Issued");
+					formSeriesData.get(index).setEndingFrom("Consumed");
 					formsData.get(index).setStyle("color:red");
 				}else {
 					formSeriesData.get(index).setEndingFrom(newAvlAmnt);
@@ -822,7 +824,8 @@ public class FormChangeBean implements Serializable {/**
 		}
 		
 		if(newRemQty==0) {
-			valLatestEndStart="All Issued";
+			//valLatestEndStart="All Issued";
+			valLatestEndStart="Consumed";
 			newRemainintQty="";
 		}
 		
@@ -875,7 +878,8 @@ public class FormChangeBean implements Serializable {/**
 					formsData.get(index).setSeriesFrom(newStart);
 					formsData.get(index).setSeriesTo(newEnd);
 					formsData.get(index).setAmount(amount);
-					if("All Issued".equalsIgnoreCase(latestEndStart)) {
+					//if("All Issued".equalsIgnoreCase(latestEndStart)) {
+					if("Consumed".equalsIgnoreCase(latestEndStart)) {
 						formsData.get(index).setStyle("color:red");
 					}else {
 						formsData.get(index).setStyle("");

@@ -664,7 +664,8 @@ public class FormBean implements Serializable{
 		
 		if(endingQty==0) {
 			rpt.setF11("");
-			rpt.setF12("All Issued");
+			//rpt.setF12("All Issued");
+			rpt.setF12("Consumed");
 			//remarks
 			rpt.setF14("");
 			rpt.setF13("");
@@ -714,7 +715,8 @@ public class FormBean implements Serializable{
 				if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 					
 					rpt.setF1(FormType.nameId(info.getFormType()));
-					String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+					//String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+					String allIssued = info.getBeginningNo()==0? "Consumed" : "";
 					double amount = 0d;
 					
 					if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
@@ -897,7 +899,8 @@ public class FormBean implements Serializable{
 		//issued
 		rpt.setF8("");
 		if(info.getIssuedForm().getIsForBarangayOR()==1) {
-			rpt.setF9("All Issued");
+			//rpt.setF9("All Issued");
+			rpt.setF9("Consumed");
 		}else {
 			rpt.setF9("No Iss.");
 		}
@@ -956,7 +959,8 @@ public class FormBean implements Serializable{
 				rpt.setF9(Currency.formatAmount(info.getAmount()));
 				rpt.setF10("");
 				
-				String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+				//String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+				String allIssued = info.getBeginningNo()==0? "Consumed" : "";
 				//ending balance
 				rpt.setF11("");
 				rpt.setF12(allIssued);
@@ -1113,7 +1117,8 @@ public class FormBean implements Serializable{
 		//issued
 		rpt.setF8("");
 		if(isform.getIsForBarangayOR()==1) {
-			rpt.setF9("All Issued");
+			//rpt.setF9("All Issued");
+			rpt.setF9("Consumed");
 		}else {
 			rpt.setF9("No Iss.");
 		}
@@ -1194,7 +1199,8 @@ public class FormBean implements Serializable{
 						//issued
 						rpt.setF8("");
 						if(isform.getIsForBarangayOR()==1) {
-							rpt.setF9("All Issued");
+							//rpt.setF9("All Issued");
+							rpt.setF9("Consumed");
 						}else {
 							rpt.setF9("No Iss.");
 						}

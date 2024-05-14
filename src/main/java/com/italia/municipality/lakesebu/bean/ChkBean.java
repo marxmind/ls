@@ -1094,6 +1094,133 @@ public class ChkBean implements Serializable{
 				ioe.printStackTrace();
 			}
 	}
+	
+	public void printVoucherCheckRecord() {
+		List<Reports> reports = new ArrayList<Reports>();
+		double total = 0d;
+		int year = Integer.valueOf(getSelectedChecks().get(0).getDate_disbursement().split("-")[0]);
+		Map<Long, Mooe> mapMooe = Mooe.retrieveDataAll(year);
+		List<Chequedtls> selectedData = getSelectedChecks();
+		//Collections.reverse(selectedData);
+		
+		int size = selectedData.size() - 1;
+		
+		for(int i = size; i>=0; i--) {
+			Chequedtls c = selectedData.get(i);
+			Reports rpt = new Reports();
+			rpt.setF1(c.getDate_disbursement());
+			rpt.setF2(c.getCheckNo());
+			//rpt.setF4(tran.getDepartmentCode());
+			String stat = c.getRemarks();
+			if("RECEIVED".equalsIgnoreCase(stat) || stat.isEmpty()) {
+				rpt.setF3("Posted Check");
+			}else {
+				rpt.setF3(c.getRemarks());
+			}
+			try{rpt.setF4(getOfficeData().get(c.getOffice().getId()).getName());}catch(NullPointerException e) {}
+			try{rpt.setF5(c.getPayToTheOrderOf());}catch(NullPointerException e) {}
+			try{rpt.setF6(mapMooe.get(c.getMoe().getId()).getDescription());}catch(NullPointerException e) {}
+			try{rpt.setF7(Currency.formatAmount(c.getAmount()));}catch(NullPointerException e) {}
+			reports.add(rpt);
+			total += c.getAmount();
+		}
+		
+		//compiling report
+		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
+				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
+		String REPORT_NAME = GlobalVar.VOUCHER_CHECK_RECORD;
+		System.out.println("Report path " + REPORT_PATH + " name " + REPORT_NAME);
+		ReportCompiler compiler = new ReportCompiler();
+		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
+		
+		
+		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
+  		HashMap param = new HashMap();
+		
+  		param.put("PARAM_REPORT_TITLE","CHECK ISSUED REPORT");
+  		
+  		param.put("PARAM_PRINTED_DATE","Printed: "+DateUtils.getCurrentDateMMDDYYYYTIME());
+  		param.put("PARAM_RANGE_DATE",DateUtils.convertDate(getDateFrom(), "yyyy-MM-dd")+ " to " + DateUtils.convertDate(getDateTo(), "yyyy-MM-dd"));
+  		
+  		BankAccounts fund = new BankAccounts();
+		if(getFundsData()!=null) {
+			fund = getFundsData().get(getSearchFundId());
+			param.put("PARAM_ACCOUNT_NAME","Bank Name/Account No. "+fund.getBankAccntNo() + "-" + fund.getBankAccntBranch());
+		}else {
+			param.put("PARAM_ACCOUNT_NAME","All Accounts");
+		}
+  		
+		
+  		param.put("PARAM_SUB_TOTAL",Currency.formatAmount(total));
+  		
+  		param.put("PARAM_RECEIVEDBY",Login.getUserLogin().getUserDtls().getFirstname().toUpperCase() + " " + Login.getUserLogin().getUserDtls().getLastname().toUpperCase());
+  		
+  		//logo
+		String officialLogo = REPORT_PATH + "logo.png";
+		try{File file = new File(officialLogo);
+		FileInputStream off = new FileInputStream(file);
+		param.put("PARAM_LOGO", off);
+		}catch(Exception e){e.printStackTrace();}
+		
+		//logo
+		String officialLogotrans = REPORT_PATH + "logotrans.png";
+		try{File file = new File(officialLogotrans);
+		FileInputStream off = new FileInputStream(file);
+		param.put("PARAM_LOGO_TRANS", off);
+		}catch(Exception e){e.printStackTrace();}
+		
+		try{
+	  		String jrprint = JasperFillManager.fillReportToFile(jrxmlFile, param, beanColl);
+	  	    JasperExportManager.exportReportToPdfFile(jrprint,REPORT_PATH+ REPORT_NAME +".pdf");
+	  		}catch(Exception e){e.printStackTrace();}
+			
+	  		try{
+	  		File file = new File(REPORT_PATH, REPORT_NAME + ".pdf");
+			 FacesContext faces = FacesContext.getCurrentInstance();
+			 ExternalContext context = faces.getExternalContext();
+			 HttpServletResponse response = (HttpServletResponse)context.getResponse();
+				
+		     BufferedInputStream input = null;
+		     BufferedOutputStream output = null;
+		     
+		     try{
+		    	 
+		    	 // Open file.
+		            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+		            // Init servlet response.
+		            response.reset();
+		            response.setHeader("Content-Type", "application/pdf");
+		            response.setHeader("Content-Length", String.valueOf(file.length()));
+		            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
+		            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+		            // Write file contents to response.
+		            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
+		            int length;
+		            while ((length = input.read(buffer)) > 0) {
+		                output.write(buffer, 0, length);
+		            }
+
+		            // Finalize task.
+		            output.flush();
+		    	 
+		     }finally{
+		    	// Gently close streams.
+		            close(output);
+		            close(input);
+		     }
+		     
+		     // Inform JSF that it doesn't need to handle response.
+		        // This is very important, otherwise you will get the following exception in the logs:
+		        // java.lang.IllegalStateException: Cannot forward after response has been committed.
+		        faces.responseComplete();
+		        
+			}catch(Exception ioe){
+				ioe.printStackTrace();
+			}
+	}
+	
 	public void refresh() {
 		mooes = new ArrayList<>();
 		officeId=0;//office

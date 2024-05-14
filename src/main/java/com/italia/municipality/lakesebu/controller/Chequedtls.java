@@ -1024,7 +1024,22 @@ public class Chequedtls {
 		
 		params.put("PARAM_ACCOUNT_NUMBER", rpt.getAccntNumber());
 		params.put("PARAM_CHECK_NUMBER", rpt.getCheckNo());
-		params.put("PARAM_DATE_DISBURSEMENT", rpt.getDate_disbursement());
+		
+		//params.put("PARAM_DATE_DISBURSEMENT", rpt.getDate_disbursement());
+		String dateCheck = rpt.getDate_disbursement();
+		//dateCheck = dateCheck.replace("-", "   ");
+		//dateCheck = dateCheck
+		String val = "";
+		for(int i=0; i<dateCheck.length(); i++) {
+			if(i>0) {
+				val += "   ";
+			}
+			val += dateCheck.charAt(i);
+		}
+		dateCheck = val.replace("-", "");
+		
+		params.put("PARAM_DATE_DISBURSEMENT", dateCheck);
+		
 		params.put("PARAM_BANK_NAME", rpt.getBankName().toUpperCase());
 		params.put("PARAM_ACCOUNT_NAME", rpt.getAccntName().toUpperCase());
 		params.put("PARAM_AMOUNT", Currency.formatAmount(rpt.getAmount()));

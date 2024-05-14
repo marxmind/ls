@@ -9,7 +9,7 @@ package com.italia.municipality.lakesebu.enm;
  */
 public enum ClientTransactionType {
 	
-	CEDULA(0, "Individual Cedula"),
+	CEDULA_INDIVIDUAL(0, "Individual Cedula"),
 	BUSINESS_NEW(1, "New Business"),
 	BUSINESS_RENEWAL(2, "Business Renewal"),
 	QUARTERLY_BUSINESS_PAYMENT(3, "Business Quarterly Payment"),
@@ -66,7 +66,14 @@ public enum ClientTransactionType {
 	
 	TAX_DECLARATION(49, "Tax Declaration"),
 	
-	OTHER(50, "Others");
+	OTHER(50, "Others"),
+	GROUND_RENTAL(51, "Ground Rental"),
+	TAPANGKO_STALL(52, "Tapangko Stall"),
+	BUILDING_STALL(53, "Building Stall"),
+	LIVE_TILAPIA(54, "Live Tilapia Stall"),
+	WATER_BILL(55, "Water Bill"),
+	CEDULA_CORPORATION(56, "Corporation Cedula")
+	;
 	
 	private int id;
 	private String name;
@@ -92,7 +99,7 @@ public enum ClientTransactionType {
 			}
 		}
 		
-		return ClientTransactionType.CEDULA.getName();
+		return ClientTransactionType.CEDULA_INDIVIDUAL.getName();
 	}
 	
 	public static int idName(String name){
@@ -103,7 +110,7 @@ public enum ClientTransactionType {
 			}
 		}
 		
-		return ClientTransactionType.CEDULA.getId();
+		return ClientTransactionType.CEDULA_INDIVIDUAL.getId();
 	}
 	
 }

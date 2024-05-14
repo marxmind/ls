@@ -11,7 +11,8 @@ package com.italia.municipality.lakesebu.enm;
 public enum FormStatus {
 
 	HANDED(1, "HANDED"),
-	ALL_ISSUED(2, "ALL ISSUED"),
+	//ALL_ISSUED(2, "ALL ISSUED"),
+	ALL_ISSUED(2, "CONSUMED"),
 	NOT_ALL_ISSUED(3, "NOT ALL ISSUED"),
 	ENCODED(4, "ENCODED"),
 	CANCELLED(5, "CANCELLED"),

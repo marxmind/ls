@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+
 import javax.imageio.ImageIO;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.event.CellEditEvent;
@@ -34,6 +36,7 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
+
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -69,7 +72,6 @@ import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.CivilStatus;
 import com.italia.municipality.lakesebu.enm.ClientStatus;
 import com.italia.municipality.lakesebu.enm.ClientTransactionType;
-import com.italia.municipality.lakesebu.enm.FormORTypes;
 import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.Months;
@@ -83,6 +85,7 @@ import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import com.italia.municipality.lakesebu.utils.Numbers;
 import com.italia.municipality.lakesebu.utils.OrlistingXML;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -176,7 +179,7 @@ public class ORListingBean implements Serializable{
 	
 	@Setter @Getter private String limitData;
 	
-	@Setter @Getter private int selectOrTypeId;
+	@Setter @Getter private long selectOrTypeId;
 	@Setter @Getter private List selectOrTypes;
 	
 	@Setter @Getter private boolean collectorsMode;
@@ -274,10 +277,12 @@ public class ORListingBean implements Serializable{
 	@Setter @Getter private String[] proffesionsList;
 	@Setter @Getter private TagCloudModel suggestedCloud;
 	@Setter @Getter private Map<String, PaymentName> suggestedMap;
-	@Setter @Getter private TagCloudModel suggestedGroup;
-	@Setter @Getter private Map<String, TaxCodeGroup> suggestedGroupMap;
+	//@Setter @Getter private TagCloudModel suggestedGroup;
+	//@Setter @Getter private Map<String, TaxCodeGroup> suggestedGroupMap;
 	@Getter private String keyPress="subId";
 	@Setter @Getter private String qrCode;
+	
+	@Setter @Getter private Map<Long, TaxCodeGroup> taxCodeGroupMapData;
 	
 	public void validateSeries() {
 		boolean isExist = ORListing.isExistingSeries(getCollectorId(), getOrNumber(), getFormTypeId());
@@ -324,10 +329,14 @@ public class ORListingBean implements Serializable{
 		setSelectedFinalAmount(Numbers.roundOf(tmpAmount, 2));
 	}
 	
+	
+	
+	
 	@PostConstruct
 	public void init() {
-		suggestedCloud = new DefaultTagCloudModel();
-		suggestedGroup = new DefaultTagCloudModel();
+		
+		//suggestedCloud = new DefaultTagCloudModel();
+		//suggestedGroup = new DefaultTagCloudModel();
 		Date dateRpt = DateUtils.getDateToday();
 		rangeDate = new ArrayList<Date>();
 		rangeDate.add(dateRpt);
@@ -374,6 +383,7 @@ public class ORListingBean implements Serializable{
 		
 		loadClient();
 		proffesionsList = Words.getTagName("profession-list").split(",");
+		
 	}
 	
 	public void updateInfo() {
@@ -457,9 +467,11 @@ public class ORListingBean implements Serializable{
 		genders.add(new SelectItem(2, "Female"));
 		
 		selectOrTypes = new ArrayList<>();
-		for(FormORTypes type : FormORTypes.values()) {
-			selectOrTypes.add(new SelectItem(type.getId(), type.getName()));
-		}
+		//for(FormORTypes type : FormORTypes.values()) {
+			//selectOrTypes.add(new SelectItem(type.getId(), type.getName()));
+		//}
+		loadGoup();
+		
 		
 		civilStatus = new ArrayList<>();
 		for(CivilStatus s : CivilStatus.values()) {
@@ -648,6 +660,7 @@ public class ORListingBean implements Serializable{
 	}
 	
 	private void suggestedPayment() {
+		
 		suggestedCloud = new DefaultTagCloudModel();
 		suggestedMap = new LinkedHashMap<String, PaymentName>();
 		Map<Long, PaymentName> mapData = new HashMap<Long, PaymentName>();
@@ -1587,7 +1600,7 @@ public class ORListingBean implements Serializable{
 	}
 	
 	private void loadSuggested() {
-		loadTaxGroup();
+		//loadTaxGroup();
 		
 		//ADDED
 		suggestedInfo();
@@ -1606,25 +1619,30 @@ public class ORListingBean implements Serializable{
             		</p:dataGrid>
 		 */
 		
-		suggestedGroup = new DefaultTagCloudModel();
-		suggestedGroupMap=new LinkedHashMap<String, TaxCodeGroup>();
-		for(TaxCodeGroup gp : TaxCodeGroup.retrieve(" ORDER BY st.groupname", new String[0])) {
+		//suggestedGroup = new DefaultTagCloudModel();
+		//suggestedGroupMap=new LinkedHashMap<String, TaxCodeGroup>();
+		/*for(TaxCodeGroup gp : TaxCodeGroup.retrieve(" ORDER BY st.groupname", new String[0])) {
 			int[] nums = {1,2,3,4,5};
 			Random random = new Random();
 			int numRan = random.nextInt(4 - 0 + 1) + 0;
 			suggestedGroup.addTag(new DefaultTagCloudItem(gp.getName(),numRan));
 			suggestedGroupMap.put(gp.getName(),gp);
-		}
+		}*/
 		
 	}
 	
+	/*
 	public void onSelectGroup(SelectEvent<TagCloudItem> event) {
+		
+		namesDataSelected = new ArrayList<PaymentName>();
+		selectedPaymentNameMap = new HashMap<Long, PaymentName>();
+		
         TagCloudItem item = event.getObject();
         TaxCodeGroup name = getSuggestedGroupMap().get(item.getLabel()); 
         loadPaymentDetails(name);
         PrimeFaces pf = PrimeFaces.current();
         pf.executeScript("PF('selectDialog').hide()");
-	}  
+	}  */
 	
 	public void loadPaymentDetails(TaxCodeGroup gp) {
 		namesData = new ArrayList<PaymentName>();
@@ -1780,7 +1798,80 @@ public class ORListingBean implements Serializable{
 		setTotalAmount(Currency.formatAmount(amount));
 	}
 	
+	
+	private void cedula() {
+		//setLabel2(0);
+		//setLabel3(0);
+		//setLabel4(0);
+		setAmount1(5.00);
+		//setAmount2(0);
+		//setAmount3(0);
+		//setAmount4(0);
+		
+		setGenderId(1);
+		setBirthdate(DateUtils.getDateToday());
+		setHieghtDateReg("");
+		setWeight("");
+		setTinNo("");
+		setCivilStatusId(1);
+		
+		setPlaceOfBirth("Lake Sebu");
+		setCitizenshipOrganization("FILIPINO");
+		
+		ctcFlds(true);
+		
+		setEnableBirthday(false);
+		cedulaInterest();
+		calculateCedula();
+	}
+	
+	public void loadSelectionGroup() {
+		loadGoup();
+		PrimeFaces pf = PrimeFaces.current();
+        pf.executeScript("PF('dlgSelectTrans').show()");
+	}
+	
+	public void loadGoup() {
+		
+		String sql = " ORDER BY st.groupname";
+		taxCodeGroupMapData = new LinkedHashMap<Long, TaxCodeGroup>();
+		selectOrTypes.add(new SelectItem(0, "Select Transaction"));
+		for(TaxCodeGroup type : TaxCodeGroup.retrieve(sql, new String[0])) {
+			selectOrTypes.add(new SelectItem(type.getId(), type.getName()));
+			taxCodeGroupMapData.put(type.getId(),type);
+		}
+		
+	}
+	
+	@Deprecated
+	public void selectedGroup(TaxCodeGroup name) {
+		namesDataSelected = new ArrayList<PaymentName>();
+		selectedPaymentNameMap = new HashMap<Long, PaymentName>();
+		loadPaymentDetails(name);
+	}
+	
 	public void selectedOR() {
+		
+		namesDataSelected = new ArrayList<PaymentName>();
+		selectedPaymentNameMap = new HashMap<Long, PaymentName>();
+		
+		if(getSelectOrTypeId()==0) {
+			setFormTypeId(FormType.CTC_INDIVIDUAL.getId());
+			updateORNumber();
+		}else {
+			ctcFlds(false);
+			loadPaymentDetails(taxCodeGroupMapData.get(getSelectOrTypeId()));
+			setFormTypeId(FormType.AF_51.getId());	
+		}
+		
+		
+	}
+	
+	//original name selectedOR()
+	//code change... see above changes
+	@Deprecated
+	public void selectedORXX() {
+		
 		namesDataSelected = new ArrayList<PaymentName>();
 		String sql = "";
 		String[] params = new String[0];
@@ -2338,7 +2429,8 @@ public class ORListingBean implements Serializable{
 			selectedOR();
 		}
 		
-		setSelectOrTypeId(FormORTypes.NEW.getId());
+		//setSelectOrTypeId(FormORTypes.NEW.getId());
+		setSelectOrTypeId(ClientTransactionType.OTHER.getId());
 		setFormTypeId(FormType.AF_51.getId());
 		setOrNumber(ORListing.getLatestORNumber(getFormTypeId(),getCollectorId()));
 		dateTrans = DateUtils.getDateToday();
@@ -3648,6 +3740,7 @@ private void close(Closeable resource) {
 	}
 	
 	public void supplyCustomerInfo() {
+		System.out.println("Start supplyCustomerInfo()");
 		if(getMapCustomer()!=null && getMapCustomer().size()>0 && getMapCustomer().get(getPayorName())!=null){
 			Customer cus = getMapCustomer().get(getPayorName());
 			
@@ -3693,9 +3786,9 @@ private void close(Closeable resource) {
 			}else {
 				ctcFlds(false);
 			}
-			
+			System.out.println("supplyCustomerInfo() start updateOrnumber");
 			updateORNumber();
-			
+			System.out.println("supplyCustomerInfo() end updateOrnumber");
 		}else {
 			if(FormType.CTC_INDIVIDUAL.getId()==getFormTypeId() || FormType.CTC_CORPORATION.getId()==getFormTypeId()) {
 				ctcFlds(true);
@@ -3705,7 +3798,7 @@ private void close(Closeable resource) {
 		}
 		completNameOfClient(getPayorName());
 		
-		
+		System.out.println("end supplyCustomerInfo()");
 	}
 	
 	private void completNameOfClient(String name) {
@@ -4363,7 +4456,7 @@ private void close(Closeable resource) {
 	
 	@Setter @Getter private Client clientTmpSelected;
 	public void popUpRemarks(Client c) {
-		if(c.getTransType()==ClientTransactionType.CEDULA.getId()) {
+		if(c.getTransType()==ClientTransactionType.CEDULA_INDIVIDUAL.getId()) {
 			grabQue(c);
 		}else {
 			
@@ -4940,6 +5033,36 @@ private void close(Closeable resource) {
 			//Secretary fee
 			ids[3] = 20;
 			amounts[3] = 50.00;
+		}else if(c.getTransType()==ClientTransactionType.GROUND_RENTAL.getId()) {
+			ids = new int[1];
+			amounts = new double[1];
+			//Ground Rental
+			ids[0] = 47;
+			amounts[0] = 350.00;
+		}else if(c.getTransType()==ClientTransactionType.TAPANGKO_STALL.getId()) {
+			ids = new int[1];
+			amounts = new double[1];
+			//Ground Rental
+			ids[0] = 238;
+			amounts[0] = 500.00;	
+		}else if(c.getTransType()==ClientTransactionType.BUILDING_STALL.getId()) {
+			ids = new int[1];
+			amounts = new double[1];
+			//Ground Rental
+			ids[0] = 46;
+			amounts[0] = 750.00;
+		}else if(c.getTransType()==ClientTransactionType.LIVE_TILAPIA.getId()) {
+			ids = new int[1];
+			amounts = new double[1];
+			//Live Tilapia
+			ids[0] = 239;
+			amounts[0] = 750.00;
+		}else if(c.getTransType()==ClientTransactionType.WATER_BILL.getId()) {
+			ids = new int[1];
+			amounts = new double[1];
+			//Water Bill
+			ids[0] = 55;
+			amounts[0] = 0.00;	
 		}
 		
 			

@@ -2842,7 +2842,8 @@ public class LogformBean implements Serializable{
 		
 		if(endingQty==0) {
 			rpt.setF11("");
-			rpt.setF12("All Issued");
+			//rpt.setF12("All Issued");
+			rpt.setF12("Consumed");
 			rpt.setF13("");
 		}else {
 			rpt.setF11(endingQty+"");
@@ -2875,7 +2876,8 @@ public class LogformBean implements Serializable{
 				if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 					
 					rpt.setF1(FormType.nameId(info.getFormType()));
-					String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+					//String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+					String allIssued = info.getBeginningNo()==0? "Consumed" : "";
 					double amount = 0d;
 					
 					if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
@@ -3055,7 +3057,8 @@ public class LogformBean implements Serializable{
 				rpt.setF9(Currency.formatAmount(info.getAmount()));
 				rpt.setF10((info.getIssuedForm().getStabNo()==0? "" : "#"+info.getIssuedForm().getStabNo()));
 				
-				String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+				//String allIssued = info.getBeginningNo()==0? "All Issued" : "";
+				String allIssued = info.getBeginningNo()==0? "Consumed" : "";
 				//ending balance
 				rpt.setF11("");
 				rpt.setF12(allIssued);
