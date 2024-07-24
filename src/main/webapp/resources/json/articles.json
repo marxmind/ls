@@ -16,6 +16,21 @@
       "views" : "220",
       "createdAt" : "2"
     },
+    
+    {
+      "id" : "1",
+      "title" : "Post Evaluation Meeting for South Cotabato Tnalak Festival",
+      "subtitle": "July 23, 2024",
+      "body" : "Post Evaluation Meeting for South Cotabato Tnalak Festival was conducted earlier today at  the Municipal Treasurer Office Conference Room led by Lake Sebu Municipal Mayor Hon. Remie M. Unggol.",
+      "body2" : "In attendance were Municipal Tourism Office staff Nenita G. Kinan, Marina Engvik, Municipal Acting Treasurer Henry Magbanua, MPA, SCMSI staff Ian Kamangkang, Joey Hechanova from MAO, Lishly Boclaras from the admin office, Sir Moises Subiera, and Hon. Pongz Batilaran from Brgy. Ned and LGU Lake Sebu festival coordinators.",
+      "bodyImageUrl" : "https://i.postimg.cc/2SrJ0s9y/07232024-2.png<:>https://i.postimg.cc/xTKhyfRB/07232024-1.png",
+      "author" : "Chris Ofong/Ariel Tambukong",
+      "authorImageUrl" : "https://recruitmentvision.com.au/wp-content/uploads/2016/05/blank-male.jpg",
+      "category" : "Local",
+      "imageUrl" : "https://i.postimg.cc/xTKhyfRB/07232024-1.png",
+      "views" : "220",
+      "createdAt" : "2"
+    },
 	  
 	  {
       "id" : "1",
