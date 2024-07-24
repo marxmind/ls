@@ -11,6 +11,7 @@
 	<parameter name="PARAM_LINE_BUSINESS" class="java.lang.String"/>
 	<parameter name="PARAM_LOCATION" class="java.lang.String"/>
 	<parameter name="PARAM_BUSINESS_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_TREASURER_POS" class="java.lang.String"/>
 	<parameter name="PARAM_TREASURER" class="java.lang.String"/>
 	<parameter name="PARAM_INSPECTOR" class="java.lang.String"/>
 	<parameter name="PARAM_BPLO_POS" class="java.lang.String"/>
@@ -334,15 +335,6 @@
 				<textFieldExpression><![CDATA[$P{PARAM_TREASURER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="280" y="425" width="240" height="16" uuid="2769e1f8-dc86-4058-bc88-51c8fd48b8b3">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[MUNICIPAL TREASURER]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="40" y="359" width="240" height="16" uuid="b72dc521-7c00-44f2-9437-cb31c56eabca">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -396,6 +388,15 @@
 			<line>
 				<reportElement x="282" y="255" width="270" height="1" uuid="a25ce284-4fc4-482c-b045-06473eb5431c"/>
 			</line>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="280" y="425" width="240" height="16" uuid="e5f3dcf0-655c-4bc5-b844-4b25a222ff05">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER_POS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

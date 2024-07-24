@@ -88,4 +88,9 @@ public class GlobalVar {
 	public static final String BUSINESS_CLOSURE_LOCATION = "business_closure_location";
 	public static final String CASH_TICKET_MOVEMENT_RPT = "ctmovement";
 	public static final String VOUCHER_CHECK_RECORD = "voucher-record";
+	public static final String RCD_OLD = "rcd";
+	public static final String RCD_FRONT = "rcdv2-1";
+	public static final String RCD_BACK = "rcdv2-2";
+	public static final String FORM10 = "form10";
+	public static final String FORM11 = "form12";
 }

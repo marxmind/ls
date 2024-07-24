@@ -27,6 +27,7 @@ import com.italia.municipality.lakesebu.controller.DepositTransaction;
 import com.italia.municipality.lakesebu.controller.Form11Report;
 import com.italia.municipality.lakesebu.controller.IssuedForm;
 import com.italia.municipality.lakesebu.controller.Login;
+import com.italia.municipality.lakesebu.controller.NumberToWords;
 import com.italia.municipality.lakesebu.controller.RCDAllController;
 import com.italia.municipality.lakesebu.controller.RCDDeposit;
 import com.italia.municipality.lakesebu.controller.RCDSummaryController;
@@ -57,6 +58,8 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -1023,7 +1026,7 @@ public class LogformBean implements Serializable{
 			PrimeFaces pm = PrimeFaces.current();
 			pm.executeScript("PF('dlgCash').show();");
 		}else {
-			printRDC(info);
+			printRDC(info,0);
 		}
 	}
 	
@@ -1431,9 +1434,12 @@ public class LogformBean implements Serializable{
 			}
 			
 			
-			if(checkCashTicketBeforeSaving()) {
+			//before only for cash ticket
+			//now there is instances that other form create a source of collection
+			//like hospital collection
+			//if(checkCashTicketBeforeSaving()) {
 				saveCashTicketFormDetails(newForms.get(0));
-			}
+			//}
 			
 			CollectionInfo in = newForms.get(0);
 			newForms = new ArrayList<CollectionInfo>();//Collections.synchronizedList(new ArrayList<CollectionInfo>());
@@ -1675,40 +1681,35 @@ public class LogformBean implements Serializable{
 		setPerReportDate(DateUtils.convertDateString(info.getReceivedDate(), "yyyy-MM-dd"));
 		setCollectionPrint(info);
 	}
-	public void printChange() {
+	public void printChange(String type) {
+		System.out.println("Assignet Print Type: " + type);
 		if(getCollectionPrint()!=null) {
-			printRDC(getCollectionPrint());
+			int tt = Integer.valueOf(type);
+			printRDC(getCollectionPrint(),tt);
+			
 		}
 	}
 	
 	
-	public void printRDC(CollectionInfo info) {
+	public void printRDC(CollectionInfo info, int type) {
 		
-		String today = DateUtils.getCurrentDateYYYYMMDD();
-		String dbDate = info.getReceivedDate();
+		//String today = DateUtils.getCurrentDateYYYYMMDD();
+		//String dbDate = info.getReceivedDate();
 		
 		if(CollectionInfo.isGroupLatest(info.getRptGroup(), info.getCollector().getId(), info.getFundId())) {
-			/*System.out.println("Printing information from database");
-			if(today.equalsIgnoreCase(dbDate)) {
-				printForm(info);
-			}else {
-				System.out.println("Printing information from xml file parin");
-				if(isXmlFileExist(info)) {
-					printXML(info);
-				}else {*/
+			
 					System.out.println("Creating xml file");
 					System.out.println("Gathering information from database for data");
-					printForm(info);
-				/*}
-			}*/
+					printForm(info, type);
+			
 		}else {
 			System.out.println("Printing information from xml file");
 			if(isXmlFileExist(info)) {
-				printXML(info);
+				printXML(info, type);
 			}else {
 				System.out.println("Creating xml file");
 				System.out.println("Gathering information from database for data");
-				printForm(info);
+				printForm(info, type);
 			}
 		}
 	}
@@ -1755,11 +1756,18 @@ public class LogformBean implements Serializable{
 		return false;
 	}
 	
-	public void printXML(CollectionInfo info) {
+	public void printXML(CollectionInfo info, int type) {
 		
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
-		String REPORT_NAME ="rcd";
+		String REPORT_NAME = GlobalVar.RCD_OLD;//old rcd MTO Format
+		
+		//BLGF Recommendation Format
+		if(type==1) {
+			REPORT_NAME = GlobalVar.RCD_FRONT;
+		}else if(type==2) {
+			REPORT_NAME = GlobalVar.RCD_BACK;
+		}
 		
 		ReportCompiler compiler = new ReportCompiler();
 		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
@@ -1800,8 +1808,10 @@ public class LogformBean implements Serializable{
   		param.put("PARAM_VERIFIED_DATE", useModifiedDate==true? date : xml.getDateVerified());
   		param.put("PARAM_VERIFIED_PERSON", xml.getVerifierPerson());
   		param.put("PARAM_TREASURER", xml.getTreasurer());
+  		
   		DocumentFormatter doc = new DocumentFormatter();
   		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
+  		param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
   		
   		int cnt = 1;
   		for(RCDFormDetails d : xml.getRcdFormDtls()) {
@@ -2169,9 +2179,12 @@ public class LogformBean implements Serializable{
 		
 		String fileName = collector+"-"+value+"_"+rcd.getFund();
 		List<RCDFormDetails> rs = new ArrayList<RCDFormDetails>();
-		if(hasTicketIssued) {	
+		
+		//before only cash ticket
+		//now including other form
+		//if(hasTicketIssued) {	
 			rs = RCDReader.readCashTicker(XML_FOLDER + fileName +"_CT.xml");
-		}		
+		//}		
 		
 		if(rs!=null && rs.size()>0) {
 			RCDFormDetails rx = new RCDFormDetails();
@@ -2221,13 +2234,24 @@ public class LogformBean implements Serializable{
 	}
 	
 	
-	public void printForm(CollectionInfo in) {
+	public void printForm(CollectionInfo in, int type) {
 		
+		//building xml report here
 		RCDReader rcd = buildFormData(in);
 		
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
-		String REPORT_NAME ="rcd";
+		String REPORT_NAME = GlobalVar.RCD_OLD;//old rcd MTO Format
+		
+		//BLGF Recommendation Format
+		if(type==1) {
+			REPORT_NAME = GlobalVar.RCD_FRONT;
+		}else if(type==2) {
+			REPORT_NAME = GlobalVar.RCD_BACK;
+		}
+		
+		System.out.println("Checl type print: " + type);
+		
 		ReportCompiler compiler = new ReportCompiler();
 		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
 		
@@ -2247,6 +2271,7 @@ public class LogformBean implements Serializable{
   		DocumentFormatter doc = new DocumentFormatter();
   		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
   		param.put("PARAM_TREASURER", rcd.getTreasurer());
+  		param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
   		param.put("PARAM_RPT_GROUP",rcd.getSeriesReport().replace("#", ""));
   		param.put("PARAM_TOTAL",rcd.getAddAmount());
   		System.out.println("check before print the dtls " + (rcd.getRcdFormDtls()!=null? rcd.getRcdFormDtls().size() : "zero dtls"));
@@ -2306,6 +2331,23 @@ public class LogformBean implements Serializable{
 	  		
 		cnt++;
   		}
+  		
+  		//rcd details
+  		param.put("PARAM_BEGINNING_BALANCE_AMOUNT", "0.00");
+  		param.put("PARAM_CASH_TOTAL", rcd.getAddAmount());
+  		param.put("PARAM_CHECK_TOTAL", "");
+  		//param.put("PARAM_TOTAL", "");
+  		param.put("PARAM_LESS_REMITTANCE", rcd.getAddAmount());
+  		param.put("PARAM_ENDING_BALANCE_AMOUNT", "0.00");
+  		//check details
+  		param.put("PARAM_CHECKNO", "");
+  		param.put("PARAM_PAYEE", "");
+  		param.put("PARAM_AMOUNT", "");
+  		
+  		NumberToWords numberToWords = new NumberToWords();
+  		double amount = Double.valueOf(rcd.getAddAmount().replace(",", ""));
+  		param.put("PARAM_INWORDS", "\t\t\t\t"+numberToWords.changeToWords(amount).toUpperCase() + " (Php "+rcd.getAddAmount()  +")");
+  		//param.put("PARAM_VERIFIED_AMOUNT", rcd.getAddAmount());
   		
   		
   		
@@ -2685,11 +2727,23 @@ public class LogformBean implements Serializable{
 		String f12 = "";
 		String f13 = "";
 		
-		if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+		boolean isNoFirstTransaction = CollectionInfo.hasTransaction(info.getIssuedForm().getId(),info.getFormType(), info.getCollector().getId());
+		
+		//removed as per blgf reviews due to wrong usage
+		//if stock is issued today
+		//if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+		
+		//this was the recode based on the blgf suggestion
+		//if no first transaction start on the receipt
+		if(isNoFirstTransaction) {
 			//write in receipt
 			rpt.setF2("");
-			rpt.setF3("");
-			rpt.setF4("");
+			//rpt.setF3("");
+			try{
+				rpt.setF3("Issued");
+				rpt.setF4(info.getIssuedForm().getIssuedDate());
+			}catch(Exception e) {rpt.setF3("");rpt.setF4("");}
+			
 			
 			String be1= info.getBeginningNo()+"";
 			int be2 = be1.length();
@@ -2703,26 +2757,11 @@ public class LogformBean implements Serializable{
 				
 				String en1= info.getIssuedForm().getEndingNo()+"";
 				int en2 = en1.length();
-				//rpt.setF7(en2==7? "0"+en1 : en1);
+				
 			
 				f7 = en2==7? "0"+en1 : en1;
 				rpt.setF7(DateUtils.numberResult(info.getFormType(), Long.valueOf(f7)));
 			}else {
-				/*int qty = info.getPrevPcs()+1;
-				rpt.setF5(qty+"");
-				
-				long begNo = info.getBeginningNo();
-				be1= begNo+"";
-				be2 = be1.length();
-				
-				f6 = be2==7? "0"+be1 : be1;
-				rpt.setF6(DateUtils.numberResult(info.getFormType(), Long.valueOf(f6)));
-				
-				String en1= info.getIssuedForm().getEndingNo()+"";
-				int en2 = en1.length();
-			
-				f7 = en2==7? "0"+en1 : en1;
-				rpt.setF7(DateUtils.numberResult(info.getFormType(), Long.valueOf(f7)));*/
 				
 				int qty = info.getPrevPcs()+1;
 				//temporary removed if qty not equal to 50 place it to beginning
@@ -2880,15 +2919,18 @@ public class LogformBean implements Serializable{
 					String allIssued = info.getBeginningNo()==0? "Consumed" : "";
 					double amount = 0d;
 					
-					if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
-						
+					//change as per blgf advice
+					//if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+					if(isNoFirstTransaction) {	
 						amount = info.getBeginningNo() + info.getAmount();
 						
 						if(amount==info.getEndingNo()) {
 							//beginning
 							rpt.setF2("");
-							rpt.setF3("");
-							rpt.setF4("");
+							try{
+								rpt.setF3("Issued");
+								rpt.setF4(info.getIssuedForm().getIssuedDate());
+							}catch(Exception e) {rpt.setF3("");rpt.setF4("");}
 							 
 							//Receipt
 							rpt.setF5("");
@@ -3345,11 +3387,19 @@ public class LogformBean implements Serializable{
 		int logmonth = Integer.valueOf(isform.getIssuedDate().split("-")[1]);
 		int logDay = Integer.valueOf(isform.getIssuedDate().split("-")[2]);
 		
-		if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+		//replace below code as advice by blgf that all no issuance should always in receipt not in beggining
+		//if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+		
+		//for totaly no issuance start on receipt
+		//change 05-27-2024
+		boolean hasNoIssuance = CollectionInfo.hasTransaction(isform.getId(), isform.getFormType(), isform.getCollector().getId());
+		if(hasNoIssuance) {
 			//write in receipt
 			rpt.setF2("");
-			rpt.setF3("");
-			rpt.setF4("");
+			try{
+				rpt.setF3("Issued");
+				rpt.setF4(isform.getIssuedDate());
+			}catch(Exception e) {rpt.setF3("");rpt.setF4("");}
 			
 			String be1= isform.getBeginningNo()+"";
 			int be2 = be1.length();
@@ -3436,12 +3486,18 @@ public class LogformBean implements Serializable{
 						}else if(FormType.CT_5.getId()==isform.getFormType()) {
 							amount = isform.getPcs() * 5;
 						}
-						
-						if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+						boolean hasNoIssuance = CollectionInfo.hasTransaction(isform.getId(), isform.getFormType(), isform.getCollector().getId());
+						//remove as blgf advice
+						//if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
+						if(hasNoIssuance) {
 							//beginning
 							rpt.setF2("");
-							rpt.setF3("");
-							rpt.setF4("");
+							//rpt.setF3("");
+							try{
+								rpt.setF3("Issued");
+								rpt.setF4(isform.getIssuedDate());
+							}catch(Exception e) {rpt.setF3("");rpt.setF4("");}
+							
 							
 							//Receipt
 							rpt.setF5("");
@@ -3718,6 +3774,7 @@ public class LogformBean implements Serializable{
 	  		HashMap param = new HashMap();
 	  		DocumentFormatter doc = new DocumentFormatter();
 			param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+			param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
 	  		param.put("PARAM_LIQUIDATING_OFFICER", doc.getTagName("verified-person"));
 	  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
 	  		param.put("PARAM_TOTAL",Currency.formatAmount(totalAmount));
@@ -3831,6 +3888,7 @@ public class LogformBean implements Serializable{
 	  		HashMap param = new HashMap();
 	  		DocumentFormatter doc = new DocumentFormatter();
 			param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+			param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
 	  		param.put("PARAM_LIQUIDATOR_PERSON", doc.getTagName("verified-person"));
 	  		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
 	  		param.put("PARAM_TOTAL",Currency.formatAmount(totalAmount));
@@ -5343,6 +5401,8 @@ public class LogformBean implements Serializable{
 	public void setUserAccess(boolean userAccess) {
 		this.userAccess = userAccess;
 	}
+
+	
 
 }
 

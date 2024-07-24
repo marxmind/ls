@@ -38,7 +38,7 @@ public class OpenTableAccess {
 			}
 			
 		}
-		//System.out.println("OPENTABLE: " + ps.toString());
+		System.out.println("OPENTABLE: " + ps.toString());
 		rs = ps.executeQuery();
 
 		//rs.close();

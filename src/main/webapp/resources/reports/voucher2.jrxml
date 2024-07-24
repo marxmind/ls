@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="funds" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="f3ee26d4-874a-4861-b9ee-2f2416b2c180">
 	<parameter name="PARAM_PRINTED_DATE" class="java.lang.String"/>
 	<parameter name="PARAM_RANGE_DATE" class="java.lang.String"/>
@@ -8,6 +8,8 @@
 	<parameter name="PARAM_RECEIVEDBY" class="java.lang.String"/>
 	<parameter name="PARAM_REPORT_TITLE" class="java.lang.String"/>
 	<parameter name="PARAM_LOGO" class="java.io.InputStream"/>
+	<parameter name="PARAM_TREASURER_POS" class="java.lang.String"/>
+	<parameter name="PARAM_TREASURER" class="java.lang.String"/>
 	<parameter name="PARAM_LOGO_TRANS" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
@@ -381,7 +383,7 @@
 				<reportElement x="475" y="64" width="135" height="1" uuid="b01186ce-f6c0-4d19-84f2-097077ad0057"/>
 			</line>
 			<line>
-				<reportElement x="128" y="103" width="135" height="1" uuid="52b484cf-27f5-4cc9-a1dc-c32c77595513"/>
+				<reportElement x="83" y="102" width="177" height="1" uuid="52b484cf-27f5-4cc9-a1dc-c32c77595513"/>
 			</line>
 			<staticText>
 				<reportElement x="481" y="68" width="124" height="16" uuid="27ed3136-9d70-4bef-bd2a-77e81aa54461"/>
@@ -389,20 +391,6 @@
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Signature Over Printed Name]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="130" y="90" width="124" height="16" uuid="c6bf299a-cd95-4a32-8e2a-58d339497f5b"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[FERDINAND L. LOPEZ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="134" y="107" width="124" height="16" uuid="94cd42a5-e1d0-488a-8b7e-97350974543b"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Municipal Treasurer]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="425" y="19" width="66" height="18" uuid="b2e83204-5211-486f-885e-11c174572b21"/>
@@ -457,6 +445,20 @@
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_RECEIVEDBY}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="83" y="72" width="178" height="30" uuid="205d6664-909d-4707-a416-d2d167e54c36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="83" y="103" width="178" height="30" uuid="400ad305-f76b-4f5a-ac0c-f346519de821"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER_POS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

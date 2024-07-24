@@ -80,6 +80,54 @@
             </p:column>
         </p:dataTable>    
    </p:overlayPanel>
+   
+   
+   <p:overlayPanel widgetVar="chkData" style="width:900px" dismissable="true" showCloseIcon="true" dynamic="true" modal="true">
+   		<p:dataTable id="chkId" var="py" value="#{ovBean.chks}">
+   		    <p:column headerText="Check No" width="70">
+                <h:outputText value="#{py.f1}"/>
+            </p:column>     
+            <p:column headerText="Date" width="70">
+                <h:outputText value="#{py.f2}"/>
+            </p:column>
+            <p:column title="Pay To" width="150" filterBy="#{py.f4}"  filterMatchMode="contains" sortable="true">
+                <h:outputText value="#{py.f4}"/>
+            </p:column>
+            <p:column headerText="Amount" width="70" style="text-align: right">
+                <h:outputText value="#{py.f3}"/>
+            </p:column>
+            <p:column headerText="Remarks" width="150">
+                <h:outputText value="#{py.f5}"/>
+            </p:column>
+        </p:dataTable>    
+   </p:overlayPanel>
+   
+   <p:overlayPanel widgetVar="budData" style="width:700px" dismissable="true" showCloseIcon="true" dynamic="true" modal="true">
+   		<p:outputLabel id="yearBeg" value="Beginning Balance: #{ovBean.yearBeginningBalance} added to January Budget" style="font-size: 2em; font-weight: bold"/>
+   		<p:dataTable id="budId" var="py" value="#{ovBean.budRpts}">
+   		    <p:column headerText="Month" width="70">
+                <h:outputText value="#{py.f1}"/>
+            </p:column>   
+            <p:column headerText="NTA" width="70">
+                <h:outputText value="#{py.f2}"/>
+            </p:column>
+            <p:column headerText="Loan" width="70">
+                <h:outputText value="#{py.f3}"/>
+            </p:column>  
+            <p:column headerText="Trasfer Fund" width="70">
+                <h:outputText value="#{py.f4}"/>
+            </p:column>  
+            <p:column headerText="Net NTA" width="70">
+                <h:outputText value="#{py.f5}"/>
+            </p:column>
+            <p:column headerText="Deposit" width="70">
+                <h:outputText value="#{py.f6}"/>
+            </p:column>
+            <p:column headerText="Budget" width="90" >
+                <h:outputText value="#{py.f7}" style="font-weight: bold; text-size: 2em"/>
+            </p:column>
+        </p:dataTable>    
+   </p:overlayPanel>
     
     <div class="card">
     <div class="grid">
@@ -94,7 +142,7 @@
                  
          <p:tabView prependId="false" widgetVar="tabSelection">
             
-            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId bzId"/>
+            <p:ajax event="tabChange" listener="#{ovBean.onTabChange}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId bzId cashId"/>
             
             <p:tab title="Running Collections">
             	
@@ -359,56 +407,66 @@
             	
             	<p:dataTable id="monthlyCheckId" var="pk" value="#{ovBean.rptMonthCheckIssuedsPerAccounts}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar">
 		            
-		            <p:column headerText="" width="250" style="font-weight: bold">
+		            <p:column headerText="Name" width="250" style="font-weight: bold">
 		                <p:outputLabel value="#{pk.f1}" />
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f2}" />
+		            <p:column headerText="Alloted Budget" width="150" style="text-align: right;">
+		                <p:commandButton value="#{pk.f14}" iconPos="right" style="font-weight: bold; font-size: 1.5em" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f14!='00.00'? true:false}" update="budId yearBeg" actionListener="#{ovBean.loadMonthlyBudget(pk.f1)}" oncomplete="PF('budData').show('#{component.clientId}')"/>
+		            </p:column>
+		            <p:column headerText="Total Issued" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f15}" />
+		            </p:column>
+		            <p:column headerText="Cash In Bank" width="100" style="text-align: right">
+		                <p:outputLabel value="#{pk.f16}" />
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f3}" />
+		            <p:column headerText="January" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f2}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f2!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,1)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f4}" />
+		            <p:column headerText="February" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f3}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f3!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,2)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f5}" />
+		            <p:column headerText="March" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f4}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f4!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,3)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f6}" />
+		            <p:column headerText="April" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f5}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f5!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,4)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f7}" />
+		            <p:column headerText="May" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f6}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f6!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,5)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f8}" />
+		            <p:column headerText="June" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f7}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f7!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,6)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f9}" />
+		            <p:column headerText="July" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f8}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f8!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,7)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f10}" />
+		            <p:column headerText="August" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f9}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f9!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,8)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f11}" />
+		            <p:column headerText="September" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f10}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f10!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,9)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f12}" />
+		            <p:column headerText="October" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f11}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f11!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,10)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
-		            <p:column headerText="" width="100" style="text-align: right">
-		                <p:outputLabel value="#{pk.f13}" />
+		            <p:column headerText="November" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f12}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f12!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,11)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
+		            </p:column>
+		            
+		            <p:column headerText="December" width="100" style="text-align: right">
+		                <p:commandButton value="#{pk.f13}" icon="pi pi-plus" styleClass="ui-button-flat ui-button-plain" rendered="#{pk.f13!=''? true:false}" update="chkId" actionListener="#{ovBean.loadCheckIssued(pk.f1,12)}" oncomplete="PF('chkData').show('#{component.clientId}')"/>
 		            </p:column>
 		            
 		            
@@ -661,6 +719,59 @@
      					</p:dataTable>
             </p:tab>
             
+            <p:tab title="Cash Book">
+            	
+            	<p:selectOneMenu value="#{ovBean.cashBankAccountsId}" style="width:10em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{ovBean.cashBankAccounts}"/>
+						                	<p:ajax event="change" listener="#{ovBean.loadCashBook}" update="cashId"/>
+						            </p:selectOneMenu>
+            	
+            	<p:dataTable id="cashId" value="#{ovBean.cashbooks}" var="cz" stickyHeader="false"
+							rows="100" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" lazy="false"
+                         paginatorPosition="top" paginatorAlwaysVisible="true"
+                         >
+                         	
+                         	<f:facet name="{Exporters}">
+                         			
+                         			
+                         			
+                         			
+            						<h:commandLink title="Export Cashbook in excel format">
+                						    <i class="pi pi-file-excel" style="font-size: 2rem;float: left"></i>
+                							<p:dataExporter type="xls" target="cashId" fileName="Cashbook" options="#{exporter.excelOpt}"/>
+            						</h:commandLink>
+            						<p:commandLink title="Export Cashbook in pdf format">
+                						    <i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+                						    <p:dataExporter type="xls" target="cashId" fileName="Cashbook" options="#{exporter.excelOpt}"/>
+            						</p:commandLink>
+            				</f:facet>
+                         	
+                         	<p:column headerText="Date" width="50">
+            						<p:outputLabel  value="#{cz.f1}"/>
+            				</p:column>
+                         	
+            				<p:column headerText="Particulars" width="100">
+            						<p:outputLabel  value="#{cz.f2}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Debit" width="100">
+            						<p:outputLabel  value="#{cz.f3}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Credit" width="100">
+            						<p:outputLabel  value="#{cz.f4}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Balance" width="100">
+            						<p:outputLabel  value="#{cz.f5}"/>
+            				</p:column>
+            				
+     					</p:dataTable>
+            	
+            
+            </p:tab>
             
         </p:tabView>
                  

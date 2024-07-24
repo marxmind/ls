@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rcd" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26e068af-d628-4cb1-a9f8-d0c0204ec0af">
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
@@ -241,6 +241,7 @@
 	<parameter name="PARAM_VERIFIED_DATE" class="java.lang.String"/>
 	<parameter name="PARAM_VERIFIED_POSITION" class="java.lang.String"/>
 	<parameter name="PARAM_VERIFIED_PERSON" class="java.lang.String"/>
+	<parameter name="PARAM_TREASURER_POS" class="java.lang.String"/>
 	<parameter name="PARAM_TREASURER" class="java.lang.String"/>
 	<parameter name="PARAM_FUND" class="java.lang.String"/>
 	<queryString>
@@ -1037,13 +1038,6 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{PARAM_A13}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="365" y="269" width="208" height="14" uuid="7daf5fec-f406-4472-a863-f5e23b1e0d7b"/>
-				<textElement textAlignment="Center">
-					<font isBold="false" isUnderline="false"/>
-				</textElement>
-				<text><![CDATA[Municipal Treasurer]]></text>
-			</staticText>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="1" y="329" width="35" height="15" uuid="e2d1443e-c6b4-44e7-aec9-040e75723008"/>
 				<box padding="1">
@@ -2364,7 +2358,7 @@
 				<textFieldExpression><![CDATA[$P{PARAM_VERIFIED_PERSON}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="363" y="259" width="210" height="15" uuid="b0305c3a-2bca-480a-921b-754e7fd9d32b"/>
+				<reportElement x="314" y="259" width="256" height="15" uuid="b0305c3a-2bca-480a-921b-754e7fd9d32b"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true" isUnderline="true"/>
 				</textElement>
@@ -2696,6 +2690,13 @@
 					<font size="10" isBold="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_VERIFIED_POSITION}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="314" y="271" width="256" height="15" uuid="43e2f396-d52c-4c78-a1e3-a36c0196543e"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER_POS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

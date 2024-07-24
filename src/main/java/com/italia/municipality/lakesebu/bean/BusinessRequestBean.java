@@ -465,6 +465,8 @@ public class BusinessRequestBean implements Serializable{
 		
 		param.put("PARAM_CONTENT", content);
 		param.put("PARAM_TREASURER", req.getTreasurer().toUpperCase());
+		DocumentFormatter doc = new DocumentFormatter();
+		param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
 		
 		}else if("app".equalsIgnoreCase(type)) {
 			String content = Words.getTagName("business-application-closure");
@@ -482,9 +484,9 @@ public class BusinessRequestBean implements Serializable{
 			
 			param.put("PARAM_BPLO", req.getBploApprover().toUpperCase());
 			param.put("PARAM_BPLO_POS", req.getBploPosition());
-			
+			DocumentFormatter doc = new DocumentFormatter();
 			param.put("PARAM_TREASURER", req.getTreasurer().toUpperCase());
-			
+			param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
 			param.put("PARAM_INSPECTOR", req.getInspectorate().toUpperCase());
 			param.put("PARAM_CONTENT", content);
 		}else if("letter".equalsIgnoreCase(type)) {
@@ -499,10 +501,11 @@ public class BusinessRequestBean implements Serializable{
 			content = content.replace("<reason>", req.getReason());
 			param.put("PARAM_CONTENT", content);
 		}else if("loc".equalsIgnoreCase(type)) {
-			
+			DocumentFormatter doc = new DocumentFormatter();
 			param.put("PARAM_DATE", DateUtils.convertDateToMonthDayYear(req.getDateFilling()));
 			param.put("PARAM_MAYOR", req.getMayor().toUpperCase());
 			param.put("PARAM_TREASURER", req.getTreasurer().toUpperCase());
+			param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position").toUpperCase());
 			param.put("PARAM_BPLO", req.getBploApprover().toUpperCase());
 			param.put("PARAM_BPLO_POS", req.getBploPosition());
 			param.put("PARAM_INSPECTOR", req.getInspectorate().toUpperCase());

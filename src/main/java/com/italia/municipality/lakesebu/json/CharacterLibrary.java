@@ -8,12 +8,12 @@ public class CharacterLibrary {
 	
 	public static void main(String[] args) {
 		
-		String uname = readCharacterEncode("admin");
-		String password = readCharacterEncode("909011");
-		String passcode = readCharacterEncode("99999999");
-		String fullName = readCharacterEncode("Maria L. Gandam");
+		String uname = readCharacterEncode("che");
+		String password = readCharacterEncode("8888");
+		String passcode = readCharacterEncode("88888888");
+		String fullName = readCharacterEncode("SHEENA MAE SOLIS APOLISTAR");
 		
-		//System.out.println("Decode:"+ readCharacterDecode("zqzq"));
+		//System.out.println("Decode:"+ readCharacterDecode("qrdof"));
 		
 		System.out.println(uname + "\n" + password + "\n" + passcode +"\n" + fullName);
 		

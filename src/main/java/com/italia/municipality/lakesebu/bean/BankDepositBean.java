@@ -104,6 +104,13 @@ public class BankDepositBean implements Serializable {
 		
 	}
 	
+	public void clear() {
+		rcdData = RCDDeposit.builder()
+				.dateDeposited(new Date())
+				.build();
+		setRcdData(rcdData);
+	}
+	
 	public void saveDeposit() {
 		if(getRcdData()!=null && !getRcdData().getReference().isEmpty() && getRcdData().getAmount()>0) {
 			RCDDeposit rcd = getRcdData();
@@ -115,7 +122,7 @@ public class BankDepositBean implements Serializable {
 			
 			rcd.setFundType(getDepositFundTypeId());
 			rcd.setDateTrans(DateUtils.convertDate(rcd.getDateDeposited(), "yyyy-MM-dd"));
-			rcd.setRemarks("RCD-DEPOSIT");
+			//rcd.setRemarks("RCD-DEPOSIT");
 			rcd.setIsActive(1);
 			rcd.save();
 			rcdData = RCDDeposit.builder()
@@ -141,34 +148,78 @@ public class BankDepositBean implements Serializable {
 		Application.addMessage(1, "Success", "Successfully deleted");
 	}
 	
+	private String group(String number) {
+		String val = "0001";
+		
+		int count = number.length();
+		switch(count) {
+			case 1 : val = "000" + number; break;
+			case 2 : val = "00" + number; break;
+			case 3 : val = "0" + number; break;
+			case 4 : val = number; break;
+		}
+		
+		return val;
+	}
+	
 	public void printDeposit(RCDDeposit dp) {
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
 		String REPORT_NAME = GlobalVar.BANK_DEPOSIT;
+		
+		String grp = "";
+		if(FundType.GENERAL_FUND.getId()==dp.getFundType()) {
+			grp += "GF-" + dp.getDateTrans().split("-")[0];
+		}else if(FundType.TRUST_FUND.getId()==dp.getFundType()) {
+			grp += "TF-" + dp.getDateTrans().split("-")[0];
+		}else if(FundType.MOTORPOOL.getId()==dp.getFundType()) {
+			grp += "MF-" + dp.getDateTrans().split("-")[0];
+		}
+		
+		
+		
+		if(dp.getGroupNo()==0) {
+			grp += "-0001";
+		}else {
+			grp += "-"+group(dp.getGroupNo()+"");
+		}
 		
 		ReportCompiler compiler = new ReportCompiler();
 		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
 		
 		List<Rcd> reports = new ArrayList<Rcd>();
 		DocumentFormatter doc = new DocumentFormatter();
-		reports.add(Rcd.builder().f1(doc.getTagName("treasurer-name").toUpperCase()).f2("").f3("").build());
+		/*reports.add(Rcd.builder().f1(doc.getTagName("treasurer-name").toUpperCase()).f2("").f3("").build());
 		for(int i=1; i<=9; i++) {
+			reports.add(Rcd.builder().f1("").f2("").f3("").build());
+		}*/
+		List<RCDDeposit> rcds = RCDDeposit.retrieve(" AND ct.datetrans='"+ dp.getDateTrans() +"' AND ct.fundtype="+ dp.getFundType() +" AND ct.groupno=" + dp.getGroupNo(), new String[0]);
+		double total = 0d;
+		if(rcds!=null && rcds.size()>0) {
+			for(RCDDeposit r : rcds) {
+				reports.add(Rcd.builder().f1(r.getRemarks()).f2(r.getReference()).f3(Currency.formatAmount(r.getAmount())).build());
+				total += r.getAmount();
+			}
+			reports.add(Rcd.builder().f1("******************NOTHING FOLLOWS").f2("******************").f3("******************").build());
+		}else {
 			reports.add(Rcd.builder().f1("").f2("").f3("").build());
 		}
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
   		HashMap param = new HashMap();
   		
 		param.put("PARAM_TREASURER", doc.getTagName("treasurer-name").toUpperCase());
+		param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
   		param.put("PARAM_LIQUIDATING_OFFICER", doc.getTagName("verified-person"));
   		param.put("PARAM_VERIFIED_POSITION", doc.getTagName("verified-person-position"));
-  		param.put("PARAM_TOTAL",Currency.formatAmount(dp.getAmount()));
+  		//param.put("PARAM_TOTAL",Currency.formatAmount(dp.getAmount()));
+  		param.put("PARAM_TOTAL",Currency.formatAmount(total));
   		
   		String date = DateUtils.convertDateToMonthDayYear(dp.getDateTrans());
   		
   		param.put("PARAM_FUND", FundType.typeName(getDepositFundTypeId()));
-  		param.put("PARAM_REFERENCENO", dp.getReference());
-  		param.put("PARAM_AMOUNT_DEPOSITED", Currency.formatAmount(dp.getAmount()));
-  		param.put("PARAM_RPT_GROUP", "");
+  		param.put("PARAM_REFERENCENO_1", dp.getReference());
+  		param.put("PARAM_AMOUNT_DEPOSITED_1", Currency.formatAmount(dp.getAmount()));
+  		param.put("PARAM_RPT_GROUP", grp);
   		param.put("PARAM_PRINTED_DATE", date);
   		param.put("PARAM_VERIFIED_DATE", date);
   		

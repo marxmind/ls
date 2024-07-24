@@ -272,7 +272,7 @@
 							</p:column>
                          	
                          	<p:column headerText="PDF" width="30" exportable="false">
-								<p:commandLink title="Print in PDF"  actionListener="#{logformBean.printDateModify(in)}" oncomplete="PF('dlgPrint').show();" update="idPrintDate printId">
+								<p:commandLink title="Print in PDF"  actionListener="#{logformBean.printDateModify(in)}" oncomplete="PF('dlgPrint').show();" update="idPrintDate printId printId1 printId2">
             				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left; #{in.color}"></i>
 								</p:commandLink>
 							</p:column>
@@ -581,7 +581,13 @@
 			</p:selectBooleanCheckbox>
 			<p:outputLabel value="Date Printed" />
 			<p:calendar id="idPrintCal" value="#{logformBean.perReportDate}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 7em" disabled="#{logformBean.enableCalendarPrint}"/>
-			<p:commandLink id="printId" title="Print in PDF" target="_blank" actionListener="#{logformBean.printChange}" ajax="false" immediate="false">
+			<p:commandLink id="printId" value="OLD RCD Format" title="Old RCD" target="_blank" actionListener="#{logformBean.printChange('0')}" ajax="false" immediate="false">
+            		<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+			</p:commandLink>
+			<p:commandLink id="printId1" value="BLGF RCD Page 1" title="RCD Front" target="_blank" actionListener="#{logformBean.printChange('1')}" ajax="false" immediate="false">
+            		<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+			</p:commandLink>
+			<p:commandLink id="printId2" value="BLGF RCD Page 2" title="RCD Back" target="_blank" actionListener="#{logformBean.printChange('2')}" ajax="false" immediate="false">
             		<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
 			</p:commandLink>
 		</p:panelGrid>

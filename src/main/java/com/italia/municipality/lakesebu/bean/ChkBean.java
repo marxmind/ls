@@ -31,6 +31,7 @@ import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import com.italia.municipality.lakesebu.controller.AppSetting;
 import com.italia.municipality.lakesebu.controller.BankAccounts;
+import com.italia.municipality.lakesebu.controller.BudgetMonitoring;
 import com.italia.municipality.lakesebu.controller.ChequeXML;
 import com.italia.municipality.lakesebu.controller.Chequedtls;
 import com.italia.municipality.lakesebu.controller.Login;
@@ -40,9 +41,13 @@ import com.italia.municipality.lakesebu.controller.Offices;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.controller.Reports;
 import com.italia.municipality.lakesebu.controller.Signatories;
+import com.italia.municipality.lakesebu.controller.VrTransaction;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
+import com.italia.municipality.lakesebu.enm.BudgetType;
+import com.italia.municipality.lakesebu.enm.VrTransStatus;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
 import com.italia.municipality.lakesebu.reports.OfficeBudget;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
@@ -143,8 +148,32 @@ public class ChkBean implements Serializable{
 	private int perFundOfficeId;
 	private List perFundOffices;
 	
-	@Setter @Getter private String printName=GlobalVar.EPSON_L3110;
-	@Setter @Getter private boolean printMode;
+	private String printName=GlobalVar.EPSON_L3110;
+	private boolean printMode;
+	
+	private List<BudgetMonitoring> buds;
+	private int monYearId;
+	private List monYears;
+	private int monMonthId;
+	private List monMonths;
+	private int monAccId;
+	private List monAccounts;
+	private BudgetMonitoring budgetData;
+	private double monAmount;
+	private int type;
+	private List types;
+	private int cycle;
+	private String budgetRemarks;
+	
+	private long searchOfficeId;
+	private List searchOffices;
+	
+	private List<VrTransaction> vrTrans;
+	private VrTransaction vrData;
+	private String searchVr;
+	private List vrStatus;
+	private List vrOffices;
+	private List vrAccounts;
 	
 	public void clickItem(Chequedtls chk) {
 		setSelectedData(chk);
@@ -178,6 +207,19 @@ public class ChkBean implements Serializable{
 	public void init() {
 		System.out.println("init.......");
 		
+		//vr transaction
+				defaultVr();
+				vrOffices = new ArrayList<>();
+				vrAccounts = new ArrayList<>();
+				
+				vrStatus = new ArrayList<>();
+				for(VrTransStatus s : VrTransStatus.values()){
+					vrStatus.add(new SelectItem(s.getId(), s.getName()));
+				}
+		
+		searchFundId=2;//General Fund
+		//this for NTA
+		loadMonBudgetDefault();
 		
 			String mode = AppSetting.getPrintMode();
 			System.out.println("Checking printer mode: " + mode);
@@ -219,6 +261,7 @@ public class ChkBean implements Serializable{
 			fundBudgets.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
 			fundsData.put(b.getBankId(), b);
 			fundBudgetPerOffices.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
+			vrAccounts.add(new SelectItem(b.getBankId(), b.getBankAccntName() + "-" + b.getBankAccntNo()));
 		}
 		offBuds = new ArrayList<>();
 		offBuds.add(new SelectItem(999, "All"));
@@ -226,13 +269,23 @@ public class ChkBean implements Serializable{
 		perFundOfficeId=0;//ALL
 		perFundOffices=new ArrayList<>();
 		perFundOffices.add(new SelectItem(0, "All Offices"));
-		
+		searchOffices = new ArrayList<>();
 		for(Offices d : Offices.retrieve(" ORDER BY name", new String[0])) {
 			offices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			officesHis.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			perFundOffices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			offBuds.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
 			officeData.put(d.getId(), d);
+			searchOffices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
+			
+			try {
+			int len = d.getName().length();
+				if(len>50) {
+					vrOffices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName().substring(0, 46) + "..."));
+				}else {
+					vrOffices.add(new SelectItem(d.getId(), d.getCode() + "-" + d.getName()));
+				}
+			}catch(Exception e) {}
 		}
 		
 		officials = new ArrayList<>();
@@ -276,6 +329,9 @@ public class ChkBean implements Serializable{
 			yearBuds.add(new SelectItem(y, y+""));
 			yearOfficeBuds.add(new SelectItem(y, y+""));
 		}
+		
+		
+		
 		search();
 		
 		createBarModel();
@@ -390,6 +446,11 @@ public class ChkBean implements Serializable{
 			String dTo = DateUtils.convertDate(getDateTo(), "yyyy-MM-dd");
 			sql += " AND (date_disbursement>='"+ dFrom +"' AND date_disbursement<='"+ dTo +"')";
 		}
+		
+		if(getSearchOfficeId()>0) {
+			sql += " AND offid=" + getSearchOfficeId();
+		}
+		
 		sql += " ORDER BY cheque_id DESC";
 		Object[] obj = Chequedtls.retrieveData(sql, new String[0]);
 		setGrandTotal(Currency.formatAmount((Double)obj[0]));
@@ -1011,7 +1072,7 @@ public class ChkBean implements Serializable{
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
   		HashMap param = new HashMap();
 		
-  		param.put("PARAM_REPORT_TITLE","CHECK ISSUED REPORT");
+  		param.put("PARAM_REPORT_TITLE","REPORT OF CHECK ISSUED");
   		
   		param.put("PARAM_PRINTED_DATE","Printed: "+DateUtils.getCurrentDateMMDDYYYYTIME());
   		param.put("PARAM_RANGE_DATE",DateUtils.convertDate(getDateFrom(), "yyyy-MM-dd")+ " to " + DateUtils.convertDate(getDateTo(), "yyyy-MM-dd"));
@@ -1028,6 +1089,11 @@ public class ChkBean implements Serializable{
   		param.put("PARAM_SUB_TOTAL",Currency.formatAmount(total));
   		
   		param.put("PARAM_RECEIVEDBY",Login.getUserLogin().getUserDtls().getFirstname().toUpperCase() + " " + Login.getUserLogin().getUserDtls().getLastname().toUpperCase());
+  		
+  		
+  		DocumentFormatter doc = new DocumentFormatter();
+		param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+		param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
   		
   		//logo
 		String officialLogo = REPORT_PATH + "logo.png";
@@ -1137,7 +1203,7 @@ public class ChkBean implements Serializable{
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
   		HashMap param = new HashMap();
 		
-  		param.put("PARAM_REPORT_TITLE","CHECK ISSUED REPORT");
+  		param.put("PARAM_REPORT_TITLE","REPORT OF CHECK ISSUED");
   		
   		param.put("PARAM_PRINTED_DATE","Printed: "+DateUtils.getCurrentDateMMDDYYYYTIME());
   		param.put("PARAM_RANGE_DATE",DateUtils.convertDate(getDateFrom(), "yyyy-MM-dd")+ " to " + DateUtils.convertDate(getDateTo(), "yyyy-MM-dd"));
@@ -1154,6 +1220,10 @@ public class ChkBean implements Serializable{
   		param.put("PARAM_SUB_TOTAL",Currency.formatAmount(total));
   		
   		param.put("PARAM_RECEIVEDBY",Login.getUserLogin().getUserDtls().getFirstname().toUpperCase() + " " + Login.getUserLogin().getUserDtls().getLastname().toUpperCase());
+  		
+  		DocumentFormatter doc = new DocumentFormatter();
+		param.put("PARAM_TREASURER", doc.getTagName("treasurer-name"));
+		param.put("PARAM_TREASURER_POS", doc.getTagName("treasurer-position"));
   		
   		//logo
 		String officialLogo = REPORT_PATH + "logo.png";
@@ -1448,5 +1518,141 @@ public class ChkBean implements Serializable{
 
         barModel2.setOptions(options);
 }
+	
+	
+	
+	public void loadBudget() {
+		buds = BudgetMonitoring.retrieve(getMonYearId(), getMonMonthId(), getMonAccId());
+		Collections.reverse(buds);
+		}
+	public void loadMonBudgetDefault() {
+		
+		setMonYearId(DateUtils.getCurrentYear());
+		setMonMonthId(DateUtils.getCurrentMonth());
+		
+		monMonths = new ArrayList<>();
+		for(int month=1; month<=12; month++) {
+			monMonths.add(new SelectItem(month, DateUtils.getMonthName(month)));		
+		}
+		monYears = new ArrayList<>();
+		for(int year=2024; year<=DateUtils.getCurrentYear(); year++) {
+			monYears.add(new SelectItem(year, year+""));
+		}
+		
+		monAccounts = new ArrayList<>();
+		for(BankAccounts acc : BankAccounts.retrieveAll()) {
+			monAccounts.add(new SelectItem(acc.getBankId(), acc.getBankAccntName() + "-" + acc.getBankAccntBranch()));
+		}
+		
+		types = new ArrayList<>();
+		type = 0;
+		for(BudgetType t : BudgetType.values()) {
+			types.add(new SelectItem(t.getId(), t.getName()));
+		}
+	}
+	public void saveBudMonitoring() {
+		boolean isOk = true;
+		BudgetMonitoring mon = new BudgetMonitoring();
+		if(getBudgetData()!=null) {
+			mon = getBudgetData();
+		}
+		
+		if(getMonAmount()==0) {
+			Application.addMessage(3, "Error", "Provide amount");
+			isOk = false;
+		}
+		
+		if(getCycle()==0) {
+			Application.addMessage(3, "Error", "Provide cycle");
+			isOk = false;
+		}
+		
+		if(isOk) {
+			String date = getMonYearId() +"-" + (getMonMonthId()<20? "0"+getMonMonthId(): getMonMonthId());
+			date += "-"+ (getCycle()<10? "0"+getCycle() : getCycle());
+			mon.setAccounts(BankAccounts.builder().bankId(getMonAccId()).build());
+			mon.setDateTrans(date);
+			mon.setIsActive(1);
+			mon.setAmount(getMonAmount());
+			mon.setType(getType());
+			mon.setCycle(getCycle());
+			mon.setRemarks(getBudgetRemarks());
+			mon.save();
+			clearBudMonitoring();
+			loadBudget();
+			Application.addMessage(1, "Success", "Successfully saved");
+		}
+	}
+	public void editMonBudget(BudgetMonitoring bud) {
+		budgetData = bud;
+		String[] date = bud.getDateTrans().split("-");
+		int year = Integer.valueOf(date[0]);
+		int month = Integer.valueOf(date[1]);
+		int cycle = Integer.valueOf(date[2]);
+		
+		setMonYearId(year);
+		setMonMonthId(month);
+		setCycle(cycle);
+		
+		setMonAccId(bud.getAccounts().getBankId());
+		setMonAmount(bud.getAmount());
+		setType(bud.getType());
+		setCycle(bud.getCycle());
+		setBudgetRemarks(bud.getRemarks());
+	}
+	
+	public void clearBudMonitoring() {
+		setBudgetData(null);
+		//setMonAccId(bud.getAccounts().getBankId());
+		setMonAmount(0);
+		setType(0);
+		setCycle(DateUtils.getCurrentDay());
+		setBudgetRemarks(null);
+	}
+	
+	public void defaultVr() {
+		vrData = VrTransaction.builder()
+				.tmpDateTrans(new Date())
+				.offices(Offices.builder().id(2).build())
+				.accounts(BankAccounts.builder().bankId(2).build())
+				.status(1)
+				.isActive(1)
+				.build();
+	}
+	
+	public void deleteMonBudget(BudgetMonitoring bud) {
+		bud.delete();
+		loadBudget();
+		Application.addMessage(1, "Success", "Successfully deleted");
+	}
+	
+	public void saveVr() {
+		VrTransaction tr = getVrData();
+		tr.setDateTrans(DateUtils.convertDate(tr.getTmpDateTrans() , "yyyy-MM-dd"));
+		tr.setIsActive(1);
+		tr.setDeliveredDateTime(DateUtils.getCurrentDateMMDDYYYYTIMEPlain());
+		
+		tr.save();
+		defaultVr();
+		loadLogVR();
+		Application.addMessage(1, "Success", "Successfully deleted");
+	}
+	
+	public void loadLogVR() {
+		String sql = "";
+		if(getSearchVr()!=null && !getSearchVr().isEmpty()) {
+			sql += " AND vr.payor LIKE '%"+ getSearchVr() +"%'";
+		}
+		vrTrans = VrTransaction.retrieve(sql, new String[0]);
+	}
+	public void clickVR(VrTransaction vr) {
+			vr.setTmpDateTrans(DateUtils.convertDateString(vr.getDateTrans(),"yyyy-MM-dd"));
+			setVrData(vr);
+	}
+	public void deleteVR(VrTransaction vr) {
+		vr.delete();
+		loadLogVR();
+		Application.addMessage(1, "Success", "Successfully saved");	
+	}
 	
 }

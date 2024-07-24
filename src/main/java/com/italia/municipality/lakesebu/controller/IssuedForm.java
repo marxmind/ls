@@ -88,7 +88,7 @@ public class IssuedForm {
 			}
 			
 		}
-		System.out.println("SQL " + ps.toString());
+		System.out.println("IssuedForm SQL " + ps.toString());
 		rs = ps.executeQuery();
 		
 		while(rs.next()){

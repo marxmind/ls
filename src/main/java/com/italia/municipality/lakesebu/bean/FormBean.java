@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
 import org.primefaces.event.TabChangeEvent;
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
@@ -26,6 +29,7 @@ import com.italia.municipality.lakesebu.enm.FormType;
 import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.enm.StockStatus;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.Currency;
@@ -40,6 +44,8 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -97,6 +103,7 @@ public class FormBean implements Serializable{
 	private List months;
 	private List<Form11Report> seriesForm;
 	private String tabNow="Issued Forms";
+	@Getter @Setter private Map<Integer, Collector> collectorData;
 	
 	@PostConstruct
 	public void init() {
@@ -167,8 +174,8 @@ public class FormBean implements Serializable{
 			String[] params = new String[1];
 			params[0] = form.getId()+"";
 			for(IssuedForm is : IssuedForm.retrieve(sql, params)) {
-				
-				sql = " AND (frm.receiveddate>=? AND frm.receiveddate<=?) AND sud.logid=?";
+				System.out.println("IssuedId: " + is.getId());
+				sql = " AND (frm.receiveddate>=? AND frm.receiveddate<=?) AND sud.logid=? AND sud.isactivelog=1 AND cl.isid=" + getCollectorMapId();
 				
 				/*if(getFundSearchId()>0) {
 					sql += " AND frm.fundid=" + getFundSearchId();
@@ -217,8 +224,10 @@ public class FormBean implements Serializable{
 						if(rpt!=null) {
 							seriesForm.add(rpt);
 						}
+						System.out.println("No Issuance IssuedId last last: " + infos.get(0).getIssuedForm().getId());
 					}else {
 						seriesForm.add(reportIssued(is));
+						System.out.println("With Issuance IssuedId last last: " + is.getId());
 					}
 					
 					
@@ -285,11 +294,28 @@ public class FormBean implements Serializable{
 	}
 	
 	private void printMonth() {
-		
+		DocumentFormatter doc = new DocumentFormatter();
+		String title = "REPORT OF ACCOUNTABILITY FOR ACCOUNTABLE FORMS";
+		String accountableOfficer = doc.getTagName("treasurer-name").toUpperCase();
+		String designation = doc.getTagName("treasurer-position");
+		String REPORT_NAME = GlobalVar.FORM11; //ReadConfig.value(AppConf.FORM11_REPORT);
+		if(getCollectorMapId()==0) {
+			title = "CONSOLIDATED REPORT OF ACCOUNTABILITY FOR ACCOUNTABLE FORMS";
+			//accountableOfficer = getCollectorData().get(getCollectorMapId()).getName();
+		}else {
+			String name = getCollectorData().get(getCollectorMapId()).getName();
+			if(name.contains("-")) {
+				accountableOfficer = name.split("-")[1];
+			}else {
+				accountableOfficer = name;
+			}
+			designation = "Collector";
+			REPORT_NAME = GlobalVar.FORM10;
+		}
 		//compiling report
 		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
 				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue();
-		String REPORT_NAME =ReadConfig.value(AppConf.FORM11_REPORT);
+		
 		System.out.println("Report path " + REPORT_PATH + " name " + REPORT_NAME);
 		ReportCompiler compiler = new ReportCompiler();
 		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
@@ -297,12 +323,15 @@ public class FormBean implements Serializable{
 		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(getSeriesForm());
   		HashMap param = new HashMap();
 		
-  		param.put("PARAM_REPORT_TITLE","CONSOLIDATED REPORT OF ACCOUNTABILITY FOR ACCOUNTABLE FORMS");
-  		param.put("PARAM_MUNICIPALITY","Municipality of Lake Sebu");
+  		
+  		param.put("PARAM_REPORT_TITLE",title);
+  		param.put("PARAM_ACCOUNTABLE_OFFICER",accountableOfficer);
+  		param.put("PARAM_DESIGNATION",designation);
+  		param.put("PARAM_MUNICIPALITY","Lake Sebu, South Cotabato");
   		String dateMonth = DateUtils.getCurrentYear() + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-01";
   		param.put("PARAM_DATE_RANGE","For the month of "+DateUtils.getMonthName(getMonthId()) + " 1-" + DateUtils.getLastDayOfTheMonth("yyyy-MM-dd", dateMonth, Locale.TAIWAN, DateUtils.getCurrentYear(),getMonthId()).split("-")[2] +", " + DateUtils.getCurrentYear());
   		param.put("PARAM_REPORT_NO","Report No." + DateUtils.getCurrentYear() +"-" + (getMonthId()>9? getMonthId() : "0"+ getMonthId()));
-  		
+  		param.put("PARAM_DATE",DateUtils.getCurrentDateMMMMDDYYYY());
   		//logo
 		String officialLogo = REPORT_PATH + "logo.png";
 		try{File file = new File(officialLogo);
@@ -385,7 +414,7 @@ public class FormBean implements Serializable{
 	private RCDReader buildFormData() {
 		//String monthlyReportName = DateUtils.getMonthName(DateUtils.getCurrentMonth()).toUpperCase() + "-" + DateUtils.getCurrentYear();
 		String monthlyReportName = DateUtils.getMonthName(getMonthId()).toUpperCase() + "-" + DateUtils.getCurrentYear();
-		String collector = "FERDINAND L. LOPEZ";
+		String collector = "HENRY E. MAGBANUA";
 		String[] dates = DateUtils.getCurrentDateYYYYMMDD().split("-");
 		
 		String virifiedDate = dates[1]+"/"+dates[2]+"/"+dates[0];
@@ -869,7 +898,8 @@ public class FormBean implements Serializable{
 		
 		if(endingQty>0) {
 		rpt = new Form11Report();	
-		rpt.setF1(FormType.nameId(info.getFormType()));
+		//rpt.setF1(FormType.nameId(info.getFormType()));
+		rpt.setF1(FormType.val(info.getFormType()).getName() + " " + FormType.val(info.getFormType()).getDescription());
 		System.out.println("form type>> " + rpt.getF1());
 		rpt.setF2(endingQty+"");
 		
@@ -930,7 +960,8 @@ public class FormBean implements Serializable{
 				int logmonth = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[1]);
 				int logDay = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[2]);
 				
-				rpt.setF1(FormType.nameId(info.getFormType()));
+				//rpt.setF1(FormType.nameId(info.getFormType()));
+				rpt.setF1(FormType.val(info.getFormType()).getName() + " " + FormType.val(info.getFormType()).getDescription());
 				if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {
 					//beginning
 					rpt.setF2("");
@@ -999,8 +1030,8 @@ public class FormBean implements Serializable{
 		String f13 = "";
 		
 		if("Stock".equalsIgnoreCase(isform.getCollector().getName())) {
-			rpt.setF1(FormType.nameId(isform.getFormType()));
-			
+			//rpt.setF1(FormType.nameId(isform.getFormType()));
+			rpt.setF1(FormType.val(isform.getFormType()).getName() + " " + FormType.val(isform.getFormType()).getDescription());
 			int logmonth = Integer.valueOf(isform.getIssuedDate().split("-")[1]);
 			
 			if(logmonth==getMonthId()) {
@@ -1068,8 +1099,9 @@ public class FormBean implements Serializable{
 			
 		}else {
 		
-		rpt.setF1(FormType.nameId(isform.getFormType()));
-		
+		//rpt.setF1(FormType.nameId(isform.getFormType()));
+		rpt.setF1(FormType.val(isform.getFormType()).getName() + " " + FormType.val(isform.getFormType()).getDescription());	
+			
 		int logmonth = Integer.valueOf(isform.getIssuedDate().split("-")[1]);
 		int logDay = Integer.valueOf(isform.getIssuedDate().split("-")[2]);
 		
@@ -1163,8 +1195,8 @@ public class FormBean implements Serializable{
 			int logmonth = Integer.valueOf(isform.getIssuedDate().split("-")[1]);
 			int logDay = Integer.valueOf(isform.getIssuedDate().split("-")[2]);
 			
-						rpt.setF1(FormType.nameId(isform.getFormType()));
-						
+						//rpt.setF1(FormType.nameId(isform.getFormType()));
+						rpt.setF1(FormType.val(isform.getFormType()).getName() + " " + FormType.val(isform.getFormType()).getDescription());
 						
 						double amount = 0d;
 						if(FormType.CT_2.getId()==isform.getFormType()) {
@@ -1536,8 +1568,10 @@ public class FormBean implements Serializable{
 	public List getCollectors() {
 		collectors = new ArrayList<>();
 		collectors.add(new SelectItem(0, "Select Collector"));
+		collectorData = new LinkedHashMap<Integer, Collector>();
 		for(Collector col : Collector.retrieve(" AND cl.isresigned=0", new String[0])) {
 			collectors.add(new SelectItem(col.getId(), col.getDepartment().getDepartmentName()+"/"+col.getName()));
+			collectorData.put(col.getId(), col);
 		}
 		
 		return collectors;

@@ -63,6 +63,7 @@
 		    				<p:toolbarGroup>
 		    					  
                 				<p:commandButton value="New" actionListener="#{chk.createNew}" update="idPanel" icon="pi pi-file"/>
+                				
                 			</p:toolbarGroup>
                 			<p:toolbarGroup align="right">
                 				<div class="ui-inputgroup ui-noborder">
@@ -72,6 +73,9 @@
                 				<p:commandButton value="MOOE" title="MOOE" icon="pi pi-money-bill" actionListener="#{moe.showMoe}" update="idPanelMooe dataId"/>
                 				<p:commandButton value="Budget Monitoring" title="Budget Monitoring" icon="pi pi-money-bill" actionListener="#{chk.budgetMonitoring}" update="dataBudgetId budSeachId" oncomplete="PF('dlgBudget').show(1000)"/>
                 				<p:commandButton value="Send To Server"  title="Send" update="dataSendOr"  icon="pi pi-send" actionListener="#{sendchk.loadFiles}"/>
+                				<p:commandButton value="Budget"  title="Send" update="budDataId"  icon="pi pi-money" oncomplete="PF('dlgBudgetMonitoring').show(1000)" actionListener="#{chk.loadBudget}"/>
+                				<p:commandButton value="V-Log" actionListener="#{chk.loadLogVR}" update="vrDataId panVrId" icon="pi pi-file" oncomplete="PF('dlgVR').show(1000)"/>
+                				
                 				</div>
                 			</p:toolbarGroup>	
 		    			</p:toolbar>
@@ -163,6 +167,10 @@
 	    				<p:autoComplete minQueryLength="5" placeholder="Search..." value="#{chk.searchPayTo}" completeMethod="#{chk.autoPayToName}" effect="fade" maxResults="10">
 		    					<p:ajax event="change" listener="#{chk.search}" update="dataChkId"/>
 		    			</p:autoComplete>
+		    			<p:selectOneMenu value="#{chk.searchOfficeId}" style="width: 15em" filter="true" filterMatchMode="contains">
+					            		<f:selectItem itemLabel="Select..."/>
+					            		<f:selectItems value="#{chk.searchOffices}"/>
+					    </p:selectOneMenu>
 			            <p:selectOneMenu value="#{chk.searchFundId}"  filter="true" filterMatchMode="contains">
 							<f:selectItems value="#{chk.searchFunds}"/>
 						</p:selectOneMenu>
@@ -717,7 +725,222 @@
         </p:panelGrid>         
 	</p:dialog>
 	
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="NTA Budget Monitoring" widgetVar="dlgBudgetMonitoring" width="900" height="600" position="center top">
+		
+						<p:toolbar>
+		    				<p:toolbarGroup id="budIdTool">
+                				<div class="ui-inputgroup">
+                					<p:selectOneMenu value="#{chk.monYearId}" style="width:10em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.monYears}"/>
+						                	<p:ajax event="change" listener="#{chk.loadBudget}" update="budDataId"/>
+						                </p:selectOneMenu>
+						             <p:selectOneMenu value="#{chk.monMonthId}" style="width:10em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.monMonths}"/>
+						                	<p:ajax event="change" listener="#{chk.loadBudget}" update="budDataId"/>
+						                </p:selectOneMenu> 
+						                <p:selectOneMenu value="#{chk.monAccId}" style="width:20em" filter="true" filterMatchMode="contains">
+						                    <p:ajax event="change" listener="#{chk.loadBudget}" update="budDataId"/>
+						                	<f:selectItems value="#{chk.monAccounts}"/>
+						                </p:selectOneMenu>
+						                
+                				</div>
+                				
+                			</p:toolbarGroup>
+                		</p:toolbar>
+						
+						<p:panelGrid id="panBudId" layout="grid" columns="4">
+										<p:outputLabel value="Amount:">
+										<p:inputNumber value="#{chk.monAmount}" placeholder="Amount" style="width:10em" /> 
+										</p:outputLabel>
+										<p:outputLabel value="Limit:">
+						                <p:selectOneMenu value="#{chk.type}" style="width:10em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.types}"/>
+						                </p:selectOneMenu>
+						                </p:outputLabel>
+						                <p:outputLabel value="Cycle:">
+						                 <p:inputNumber value="#{chk.cycle}" placeholder="Cycle" style="width:5em" /> 
+						                 </p:outputLabel>
+						                 <p:outputLabel value="Remarks:">
+						                 <p:inputText value="#{chk.budgetRemarks}" placeholder="Remarks" style="width:10em" /> 
+						                 </p:outputLabel>
+						                 <p:outputLabel>
+						                 <p:commandButton value="Clear" title="Clear" icon="pi pi-trash" actionListener="#{chk.clearBudMonitoring}" update="panBudId"/>
+						                 <p:commandButton value="Save" title="Save" icon="pi pi-save" actionListener="#{chk.saveBudMonitoring}" update="budDataId msg">
+		                					<p:confirm header="Confirmation" message="Are you sure you want to save this data?" icon="ui-icon-alert"/>
+		                				</p:commandButton>
+										</p:outputLabel>
+						</p:panelGrid>
+						
+						<p:dataTable id="budDataId" value="#{chk.buds}" var="bud" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+									<f:facet name="{Exporters}">
+										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+						                    <p:dataExporter type="xls" target="budDataId" fileName="series"/>
+						                </p:commandButton>
+		            				</f:facet>
+		            				
+		            				<p:column headerText="[*]" width="20" exportable="false">
+		            					<p:commandButton update="budDataId panBudId" icon="pi pi-trash" actionListener="#{chk.deleteMonBudget(bud)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		            				<p:column headerText="Edit" width="20" exportable="false">
+												<p:commandButton icon="pi pi-pencil" update="budIdTool panBudId" actionListener="#{chk.editMonBudget(bud)}"/>
+									</p:column>
+		            				
+		            				<p:column headerText="Date Added" width="70">
+		            						<p:outputLabel value="#{bud.dateTrans}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Account Name" width="100">
+		            						<p:outputLabel value="#{bud.accounts.bankAccntName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Amount" width="70" resizable="true" >
+		            						<p:outputLabel  value="#{bud.amount}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Type" width="70" resizable="true" >
+		            						<p:outputLabel  value="#{bud.typeName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Cycle" width="10">
+		            						<p:outputLabel value="#{bud.cycle}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Remarks" width="100">
+		            						<p:outputLabel value="#{bud.remarks}"/>
+		            				</p:column>
+		            				
+						</p:dataTable>
+						
+	</p:dialog>
 	
+	
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="VR Transaction Recording" widgetVar="dlgVR" width="1200" height="600" position="center top">
+					
+						<p:toolbar>
+							<p:toolbarGroup >
+                				<div class="ui-inputgroup">
+                					<p:commandButton update="panVrId" value="New" icon="pi pi-file" action="#{chk.defaultVr}"/>
+                					<p:commandButton update="vrDataId panVrId msg" value="Save" icon="pi pi-save" action="#{chk.saveVr}">
+					    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to update this issued form series?" icon="pi pi-info-circle" />
+					    			</p:commandButton>
+						                
+                				</div>
+                			</p:toolbarGroup>
+                		</p:toolbar>
+					
+					<p:panelGrid id="panVrId" layout="grid" columns="4">
+					
+										<p:outputLabel value="Offices"/>
+						                <p:selectOneMenu value="#{chk.vrData.offices.id}" inputStyle="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.vrOffices}"/>
+						                </p:selectOneMenu>
+										
+										<p:outputLabel value="Date"/>
+										<p:datePicker  value="#{chk.vrData.tmpDateTrans}" pattern="yyyy-MM-dd" inputStyle="width: 20em"/>
+										
+						                
+										
+										<p:outputLabel value="Payor"/>
+						                 <p:inputTextarea value="#{chk.vrData.payor}" placeholder="Payor" style="width: 20em" /> 
+						                
+						                <p:outputLabel value="Accounts"/>
+						                <p:selectOneMenu value="#{chk.vrData.accounts.bankId}" inputStyle="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.vrAccounts}"/>
+						                </p:selectOneMenu>
+						                 
+						                 <p:outputLabel value="Amount"/>
+						                 <p:inputNumber value="#{chk.vrData.amount}" placeholder="0.00" inputStyle="width: 20em" /> 
+						                 
+						                 <p:outputLabel value="Delivered By"/>
+						                 <p:inputText value="#{chk.vrData.deliveredBy}" placeholder="Delivered By" style="width: 20em" /> 
+						                 
+						                 
+						                 <p:outputLabel value="Contact No"/>
+						                 <p:inputText value="#{chk.vrData.contactNo}" placeholder="00000000000" style="width: 20em" /> 
+						                 
+						                  <p:outputLabel value="Pickup By"/>
+						                 <p:inputText value="#{chk.vrData.pickUpBy}" placeholder="Pickup By" style="width: 20em" /> 
+						                 
+						                 
+						                 <p:outputLabel value="Remarks"/>
+						                 <p:inputTextarea value="#{chk.vrData.remarks}" placeholder="Remarks" style="width: 20em" /> 
+										
+										<p:outputLabel value="Status"/>
+						                <p:selectOneMenu value="#{chk.vrData.status}" inputStyle="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.vrStatus}"/>
+						                </p:selectOneMenu>
+						                
+						</p:panelGrid>
+					
+					
+						<p:dataTable id="vrDataId" value="#{chk.vrTrans}" var="vr" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="false" paginatorPosition="top" paginatorAlwaysVisible="true" reflow="true" lazy="false"
+							>	             
+							
+									<f:facet name="{Exporters}">
+										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+						                    <p:dataExporter type="xls" target="budDataId" fileName="series"/>
+						                </p:commandButton>
+		            				</f:facet>
+		            				
+		            				<p:column headerText="[*]" width="20" exportable="false">
+		            					<p:commandButton update="panVrId vrDataId" icon="pi pi-trash" actionListener="#{chk.deleteVR(vr)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            				</p:column>
+		            				<p:column headerText="Edit" width="20" exportable="false">
+												<p:commandButton icon="pi pi-pencil" update="panVrId" actionListener="#{chk.clickVR(vr)}"/>
+									</p:column>
+		            				
+		            				<p:column headerText="Date" width="70">
+		            						<p:outputLabel value="#{vr.dateTrans}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Payor" width="150">
+		            						<p:outputLabel value="#{vr.payor}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Amount" width="70">
+		            						<p:outputLabel  value="#{vr.amount}">
+		            							<f:convertNumber currencySymbol="" type="currency"/>
+		            						</p:outputLabel>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Status" width="70">
+		            						<p:outputLabel  value="#{vr.statusName}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Delivered By | Time" width="100">
+		            						<p:outputLabel value="#{vr.deliveredBy} | #{vr.deliveredDateTime}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Pickup By | Time" width="100">
+		            						<p:outputLabel value="#{vr.pickUpBy} | #{vr.pickUpDateTime}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Contact No" width="70">
+		            						<p:outputLabel value="#{vr.contactNo}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Remarks" width="70">
+		            						<p:outputLabel value="#{vr.remarks}"/>
+		            				</p:column>
+		            				
+						</p:dataTable>
+						
+						
+	</p:dialog>
 	
 	<ui:include src="sendchk.xhtml" />
 	<ui:include src="loader.xhtml" />

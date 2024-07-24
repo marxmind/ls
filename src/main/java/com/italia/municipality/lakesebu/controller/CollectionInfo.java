@@ -71,6 +71,33 @@ public class CollectionInfo {
 	private int inputQty;
 	private int available;
 	
+	/**
+	 * 
+	 * @param logId
+	 * @param formTypeId
+	 * @param collectorId
+	 * @return true if only one transaction meaning first transaction
+	 */
+	public static boolean hasTransaction(long logId, int formTypeId, long collectorId) {
+		
+		String st = "SELECT count(*) as total FROM collectioninfo WHERE isactivecol=1 AND formtypecol="+formTypeId + " AND isid="+ collectorId + " AND logid=" + logId;
+		ResultSet rs = OpenTableAccess.query(st, new String[0], new WebTISDatabaseConnect());
+		try {
+			while(rs.next()) {
+				int count = rs.getInt("total");
+				if(count==1) {
+					return true;
+				}else if(count>1) {
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 	public static int remainingQty(int formTypeId, int collectorId, long logId) {
 		
 		String st = "SELECT sum(colpcs) as qty FROM collectioninfo WHERE isactivecol=1 AND formtypecol="+formTypeId + " AND isid="+ collectorId + " AND logid=" + logId;
@@ -567,7 +594,7 @@ public class CollectionInfo {
 			}
 			
 		}
-		System.out.println("SQL Retrieve: " + ps.toString());
+		System.out.println("CollectionInfo SQL Retrieve: " + ps.toString());
 		rs = ps.executeQuery();
 		
 		while(rs.next()){

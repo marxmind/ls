@@ -2688,7 +2688,10 @@ public class ORListingBean implements Serializable{
 	  		amnt = amnt.replace(",", "");
 	  		param.put("PARAM_WORDS", numberToWords.changeToWords(amnt).toUpperCase().replace("/", " / ") );
 	  		param.put("PARAM_CASHCHECK", "CASH");
-	  		param.put("PARAM_COLLECTING_OFFICER", "FERDINAND L. LOPEZ\n" + DateUtils.getCurrentDateMMDDYYYYTIME());
+	  		
+	  		String collector = Words.getTagName("treasurer-name");
+	  		
+	  		param.put("PARAM_COLLECTING_OFFICER", collector.toUpperCase() +"\n" + DateUtils.getCurrentDateMMDDYYYYTIME());
 	  		//param.put("PARAM_COLLECTING_OFFICER", "FERDINAND L. LOPEZ");
 			
 	  		List<OR51> ors = new ArrayList<OR51>();

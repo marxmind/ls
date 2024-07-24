@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
 import com.italia.municipality.lakesebu.utils.OpenTableAccess;
@@ -31,11 +34,95 @@ public class RCDDeposit {
 	private String reference;
 	private double amount;
 	private String accountNo;
+	private int groupNo;
 	private String bankName;
 	private int fundType;
 	private int isActive;
 	
 	private Date dateDeposited;
+	
+	public static double totalDeposit(int year, int fund) {
+		
+		String sql = "SELECT sum(amount) as total FROM rcddeposit where isactivercd=1 AND year(datetrans)=" + year + " AND fundtype=" + fund;
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
+		try {
+			while(rs.next()) {
+				return rs.getDouble("total");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public static Map<Integer, Double> depositedCollection(int year, int fund){
+		Map<Integer, Double> mapData = new LinkedHashMap<Integer, Double>();
+		String sql = "SELECT month(datetrans) as mnt, sum(amount) as total FROM rcddeposit where isactivercd=1 AND fundtype="+fund+" AND year(datetrans)=" + year;
+		
+		
+		sql += " GROUP BY month(datetrans) ORDER BY month(datetrans)";
+		
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				int mnt = rs.getInt("mnt");
+				double amount = rs.getDouble("total");
+				if(mapData!=null) {
+					if(mapData.containsKey(mnt)) {
+						double amnt = mapData.get(mnt) + amount;
+						mapData.put(mnt, amnt);
+					}else {
+						mapData.put(mnt, amount);
+					}
+				}else {
+					mapData.put(mnt, amount);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return mapData;
+	}
+	
+	public static Map<Integer, Double> depositedCollection(int year, int month, int fund){
+		Map<Integer, Double> mapData = new LinkedHashMap<Integer, Double>();
+		String sql = "SELECT month(datetrans) as mnt, sum(amount) as total FROM rcddeposit where isactivercd=1 AND fundtype="+fund+" AND year(datetrans)=" + year;
+		
+		if(month>0) {
+			sql += " AND month(datetrans)=" + month;
+		}
+		
+		sql += " GROUP BY month(datetrans) ORDER BY month(datetrans)";
+		
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				int mnt = rs.getInt("mnt");
+				double amount = rs.getDouble("total");
+				if(mapData!=null) {
+					if(mapData.containsKey(mnt)) {
+						double amnt = mapData.get(mnt) + amount;
+						mapData.put(mnt, amnt);
+					}else {
+						mapData.put(mnt, amount);
+					}
+				}else {
+					mapData.put(mnt, amount);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return mapData;
+	}
 	
 	public static int lastIndex(int fundType, int year, int month) {
 		
@@ -94,6 +181,7 @@ public class RCDDeposit {
 						.isActive(rs.getInt("isactivercd"))
 						.fundType(rs.getInt("fundtype"))
 						.indexId(rs.getInt("indexid"))
+						.groupNo(rs.getInt("groupno"))
 						.build();
 				
 				vrs.add(vr);
@@ -153,8 +241,9 @@ public class RCDDeposit {
 				+ "amount,"
 				+ "isactivercd,"
 				+ "fundtype,"
-				+ "indexid)" 
-				+ "values(?,?,?,?,?,?,?,?,?,?)";
+				+ "indexid,"
+				+ "groupno)" 
+				+ "values(?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -186,6 +275,7 @@ public class RCDDeposit {
 		ps.setInt(cnt++, st.getIsActive());
 		ps.setInt(cnt++, st.getFundType());
 		ps.setInt(cnt++, st.getIndexId());
+		ps.setInt(cnt++, st.getGroupNo());
 		
 		LogU.add(st.getDateTrans());
 		LogU.add(st.getReference());
@@ -196,6 +286,7 @@ public class RCDDeposit {
 		LogU.add(st.getIsActive());
 		LogU.add(st.getFundType());
 		LogU.add(st.getIndexId());
+		LogU.add(st.getGroupNo());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -219,7 +310,8 @@ public class RCDDeposit {
 				+ "bankname=?,"
 				+ "amount=?,"
 				+ "fundtype=?,"
-				+ "indexid=?" 
+				+ "indexid=?,"
+				+ "groupno=?" 
 				+ " WHERE did=?";
 		
 		PreparedStatement ps = null;
@@ -241,6 +333,7 @@ public class RCDDeposit {
 		ps.setDouble(cnt++, st.getAmount());
 		ps.setInt(cnt++, st.getFundType());
 		ps.setInt(cnt++, st.getIndexId());
+		ps.setInt(cnt++, st.getGroupNo());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDateTrans());
@@ -251,6 +344,7 @@ public class RCDDeposit {
 		LogU.add(st.getAmount());
 		LogU.add(st.getFundType());
 		LogU.add(st.getIndexId());
+		LogU.add(st.getGroupNo());
 		LogU.add(st.getId());
 		
 		LogU.add("executing for saving...");

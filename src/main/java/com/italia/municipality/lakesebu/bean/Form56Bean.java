@@ -147,6 +147,10 @@ public class Form56Bean implements Serializable{
 		listColumns.set(id, visible);
 	}
 	
+	public void specialCaseCheckHandler(){
+		setSpecialCase(true);
+		specialCaseCheck();
+	}
 	public void specialCaseCheck(){
 		if(getSpecialCase()){
 			
@@ -1723,6 +1727,10 @@ private void close(Closeable resource) {
 			receipts.add(rec);
 			updateTotal();
 		}
+	}
+	
+	public void clickHotKeyEdit() {
+		clickItem(getTrans().get(0));
 	}
 	
 	public void clickItem(ITaxPayorTrans trans){

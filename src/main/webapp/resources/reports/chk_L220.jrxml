@@ -42,20 +42,6 @@
 				<textFieldExpression><![CDATA[$P{PARAM_PAYTOORDEROF}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="489" y="137" width="131" height="12" uuid="cbe286c6-91d3-4f64-9d25-2619d1b1041a"/>
-				<textElement>
-					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{PARAM_SIGNATORY1}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="638" y="136" width="150" height="14" uuid="75372838-78f4-4307-8697-f972800b74a4"/>
-				<textElement>
-					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{PARAM_SIGNATORY2}]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="450" y="14" width="161" height="14" uuid="0751b2fd-9ea2-4a8a-992c-d599ad44973c"/>
 				<textElement>
 					<font fontName="Arial Rounded MT Bold" size="10" isBold="true"/>

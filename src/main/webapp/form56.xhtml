@@ -51,6 +51,17 @@
             <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
     </p:confirmPopup>
     	 	 
+    	 	 
+    <p:hotkey bind="ctrl+x" actionListener="#{form56Bean.newForm}" update="ownerId,formDataId,recFromId,wordId,scId,statId,payId,caseId,grandId,form56Id,payorSearchId,paySearchId,yearSelId"/>	 	 
+    <p:hotkey bind="ctrl+shift+s" actionListener="#{form56Bean.saveData}" update="formDataId,form56Id,dataTransId,wordId,paySearchId,yearSelId,caseId,msg,searchNameId,cal1,cal2"/>	 	 
+	<p:hotkey bind="ctrl+p" handler="PF('payorDialog').show()" actionListener="#{form56Bean.payorLookup}" update="payorDataId,payorSearchId"/>	 
+	<p:hotkey bind="ctrl+c" update="formDataId,form56Id,grandId,wordId"  actionListener="#{form56Bean.updateTotal}"/>
+	<p:hotkey bind="ctrl+b" actionListener="#{form56Bean.selectedLand}" handler="PF('widAdd').jq.click()"/>
+	<p:hotkey bind="ctrl+shift+o" handler="PF('varFindOwer').jq.click();PF('ownerDialog').show()" update="ownDataId,paySearchId,yearSelId" actionListener="#{form56Bean.viewLandOwner(rpt)}"/>
+	<p:hotkey bind="ctrl+e" update="form56Id formDataId ownerId grandId wordId"  actionListener="#{form56Bean.clickHotKeyEdit}"/>
+	<p:hotkey bind="ctrl+shift+k" update="caseSelId formDataId,caseId,wordId,grandId,msg"  actionListener="#{form56Bean.specialCaseCheckHandler}"/>
+	
+	
 	
 	<div class="card">
     
@@ -149,7 +160,7 @@
 							<p:ajax event="cellEdit"  listener="#{form56Bean.onCellEdit}" update="formDataId,msg" />	
 							
 							<p:column headerText="Find">
-								<p:commandButton id="findOwner" update="ownDataId,paySearchId,yearSelId" icon="pi pi-search" oncomplete="PF('ownerDialog').show()" actionListener="#{form56Bean.viewLandOwner(rpt)}"/>
+								<p:commandButton id="findOwner" widgetVar="varFindOwer" update="ownDataId,paySearchId,yearSelId" icon="pi pi-search" oncomplete="PF('ownerDialog').show()" actionListener="#{form56Bean.viewLandOwner(rpt)}"/>
 							</p:column>		  
 							
 							<p:column headerText="Value">
@@ -317,7 +328,7 @@
 	
 	<p:dialog position="center top" widgetVar="ownerDialog" 
 header="Land Owner Lookup" Height="400" draggable="false" width="1100" maximizable="false" minimizable="false"  
-modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false">
+modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false" closeOnEscape="true">
 
 	<p:toolbar id="tbown">
     		<f:facet name="left">
@@ -381,7 +392,7 @@ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="fa
 	
 	<p:dialog position="center top" widgetVar="payorDialog" responsive="true" 
 header="Payor Lookup" Height="500" draggable="false" width="800" maximizable="true" minimizable="false" 
-modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false" fitViewport="true">
+modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="false" closeOnEscape="true" fitViewport="true">
 	<p:toolbar id="tbpay">
     		<f:facet name="left">
     				<span class="ui-input-icon-left">
@@ -449,7 +460,7 @@ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="fa
 <p:dialog position="center center" widgetVar="dlgYear" modal="true" width="500" height="300" showHeader="false">
 	<p:toolbar id="tbYear">
     		<f:facet name="left">
-    			<p:commandButton value="Add" actionListener="#{form56Bean.selectedLand}" onclick="PF('ownerDialog').hide();PF('dlgYear').hide()" update="formDataId,wordId,grandId,ownerId"/>
+    			<p:commandButton value="Add" widgetVar="widAdd" actionListener="#{form56Bean.selectedLand}" onclick="PF('ownerDialog').hide();PF('dlgYear').hide()" update="formDataId,wordId,grandId,ownerId"/>
     		</f:facet>
     		<f:facet name="right">
 				<p:commandButton value="Close"  onclick="PF('dlgYear').hide()"/>
@@ -467,7 +478,7 @@ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="fa
 			            </p:selectOneMenu>
 		       			
 		       			<p:outputLabel value="Adjust Penalty and Fullpayment?"/>
-				        <p:selectBooleanCheckbox id="caseSelId" value="#{form56Bean.specialCase}">
+				        <p:selectBooleanCheckbox id="caseSelId" widgetVar="widChk" value="#{form56Bean.specialCase}">
 				            		<p:ajax event="change" update="formDataId,caseId,wordId,grandId,msg" listener="#{form56Bean.specialCaseCheck}"/>
 				        </p:selectBooleanCheckbox>
 		       			

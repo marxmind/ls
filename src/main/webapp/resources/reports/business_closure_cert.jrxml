@@ -6,6 +6,7 @@
 	<parameter name="PARAM_SEALTRANSPARENT" class="java.io.InputStream"/>
 	<parameter name="PARAM_TITLE" class="java.lang.String"/>
 	<parameter name="PARAM_CONTENT" class="java.lang.String"/>
+	<parameter name="PARAM_TREASURER_POS" class="java.lang.String"/>
 	<parameter name="PARAM_TREASURER" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -140,15 +141,15 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_TREASURER}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="294" y="253" width="257" height="16" uuid="b23fbfdf-ee8d-460c-bd50-d227e583b536">
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="293" y="253" width="257" height="16" uuid="98f8ed23-08f2-4dba-b0b6-b3317e8db018">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="12" isBold="false" isUnderline="false"/>
 				</textElement>
-				<text><![CDATA[Municipal Treasurer]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER_POS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

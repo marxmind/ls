@@ -1132,9 +1132,21 @@ public class StocksBean implements Serializable{
 		List<RisRpt> reports = new ArrayList<RisRpt>();
 		
 		for(Requisition r : Requisition.retrieve(" AND  rx.rid="+ slip.getId(), new String[0])) {
+			//removed due to blgf
+			/*if(r.getTotalCost()>0) {
+				r.setRemarks(Currency.formatAmount(r.getTotalCost()));
+			}*/
+			
+			//based on blgf
+			r.setDescription(r.getStocks().getFormTypeName());
 			if(r.getTotalCost()>0) {
 				r.setRemarks(Currency.formatAmount(r.getTotalCost()));
+			}else {
+				r.setRemarks(r.getStocks().getSeriesFrom()+"-"+r.getStocks().getSeriesTo());
 			}
+			//force to 1 qty blgf
+			r.setQuantity(1);
+			
 			reports.add(
 					RisRpt.builder()
 					.f1(r.getStockNo())
@@ -1165,7 +1177,7 @@ public class StocksBean implements Serializable{
 		param.put("PARAM_REQUESTEDBY_DESIG", slip.getPosition().toUpperCase());
 		
 		param.put("PARAM_APPROVEDBY", Words.getTagName("treasurer-name").toUpperCase());
-		param.put("PARAM_APPROVEDBY_DESIG", "MUNICIPAL TREASURER");
+		param.put("PARAM_APPROVEDBY_DESIG", Words.getTagName("official-designation").toUpperCase());
 		
 		param.put("PARAM_ISSUEDBY", slip.getIssuedBy().toUpperCase());
 		param.put("PARAM_ISSUED_DESIG", slip.getIssuedPosition().toUpperCase());

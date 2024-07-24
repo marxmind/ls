@@ -51,6 +51,7 @@ import com.italia.municipality.lakesebu.controller.Voucher;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.BudgetType;
+import com.italia.municipality.lakesebu.enm.BudgetTypeOld;
 import com.italia.municipality.lakesebu.enm.GraphColor;
 import com.italia.municipality.lakesebu.enm.GraphColorWithBorder;
 import com.italia.municipality.lakesebu.enm.TransactionType;
@@ -465,7 +466,7 @@ public class CheckBean implements Serializable{
 	private BigDecimal[] computeAmount(BankAccounts accnt){
 		
 		IBudget bud = null;
-		try{bud=Budget.retrieveBudget("SELECT * FROM budget WHERE bank_id="+accnt.getBankId() + " AND budtypeid="+BudgetType.MONTHLY.getId(), new String[0]).get(0);}catch(Exception e){}
+		try{bud=Budget.retrieveBudget("SELECT * FROM budget WHERE bank_id="+accnt.getBankId() + " AND budtypeid="+BudgetTypeOld.MONTHLY.getId(), new String[0]).get(0);}catch(Exception e){}
 		String dateFrom = DateUtils.getFirstDayOfTheMonth("yyyy-MM-dd", DateUtils.getCurrentDateYYYYMMDD(), Locale.TAIWAN);
 		String dateTo = DateUtils.getLastDayOfTheMonth("yyyy-MM-dd", DateUtils.getCurrentDateYYYYMMDD(), Locale.TAIWAN);
 		if(bud!=null){
@@ -511,7 +512,7 @@ public class CheckBean implements Serializable{
 		sql = "SELECT * FROM budget b, budgettype t, tbl_bankaccounts a WHERE b.bank_id = a.bank_id AND b.budtypeid=t.budtypeid AND a.bank_id=? AND t.budtypeid=? AND budisactive=1 ";
 		params = new String[2];
 		params[0] = accnt.getBankId()+"";
-		params[1] = BudgetType.MONTHLY.getId()+"";
+		params[1] = BudgetTypeOld.MONTHLY.getId()+"";
 		List<IBudget> buds = Budget.retrieve(sql, params);
 		if(buds.size()>0){
 			try{value[1] = buds.get(0).getAmount().subtract(dispense_amnt); }catch(Exception e){value[1]=new BigDecimal("0.00");}//value of remaining amount
@@ -556,7 +557,7 @@ public class CheckBean implements Serializable{
 	  			accnt.setBankId(Integer.valueOf(getSearchBankAccountId()));
 	  			BigDecimal[] amnt = computeAmount(accnt);
 	  			IBudget bud = null;
-	  			try{bud=Budget.retrieveBudget("SELECT * FROM budget WHERE bank_id="+accnt.getBankId() + " AND budtypeid="+BudgetType.MONTHLY.getId(), new String[0]).get(0);
+	  			try{bud=Budget.retrieveBudget("SELECT * FROM budget WHERE bank_id="+accnt.getBankId() + " AND budtypeid="+BudgetTypeOld.MONTHLY.getId(), new String[0]).get(0);
 	  			System.out.println("pasok ako dito");}catch(Exception e){System.out.println("ERROR AKO :" +e.getMessage());}
 	  			int month = DateUtils.getCurrentMonth(); 
   				int year = DateUtils.getCurrentYear();

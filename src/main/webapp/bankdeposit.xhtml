@@ -20,7 +20,7 @@
 			    }
 			</style>
     		
-    		<p:dialog widgetVar="dlgBankDeposit"  height="700" width="1200" minimizable="true" maximizable="true" position="center top" header="Bank Deposit" closable="true" modal="true" closeOnEscape="true">
+    		<p:dialog widgetVar="dlgBankDeposit"  height="700" width="1300" minimizable="true" maximizable="true" position="center top" header="Bank Deposit" closable="true" modal="true" closeOnEscape="true">
     		
     		
     		<p:dataTable id="depositId" value="#{bankdp.deposits}" var="dp" stickyHeader="false"
@@ -57,9 +57,12 @@
 									<f:selectItems value="#{bankdp.monthDeposits}"/>
 									<p:ajax event="change" listener="#{bankdp.loadBankTransaction}" update="depositId"/>
 							</p:selectOneMenu>
-                        	<p:calendar value="#{bankdp.rcdData.dateDeposited}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 12em"/>
-                        	<p:inputText value="#{bankdp.rcdData.reference}" placeholder="Reference No"/>
-                        	<p:inputNumber value="#{bankdp.rcdData.amount}" placeholder="00.00"/>
+                        	<p:calendar id="idCal" value="#{bankdp.rcdData.dateDeposited}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 12em"/>
+                        	<p:inputText id="idRem" value="#{bankdp.rcdData.remarks}" placeholder="Accountable"/>
+                        	<p:inputText id="idRef" value="#{bankdp.rcdData.reference}" placeholder="Reference No"/>
+                        	<p:inputNumber id="idGrp" value="#{bankdp.rcdData.groupNo}" placeholder="Group No"/>
+                        	<p:inputNumber id="idAmnt" value="#{bankdp.rcdData.amount}" placeholder="00.00"/>
+                        	<p:commandButton icon="pi pi-trash" value="Clear" actionListener="#{bankdp.clear}" update="idCal idRem idRef idGrp idAmnt"/>
                         	<p:commandButton icon="pi pi-save" value="Save" actionListener="#{bankdp.saveDeposit}" update="msg depositId">
                         		<p:confirm type="popup" header="Confirmation" message="Are you sure you want to update this deposit?" icon="pi pi-info-circle" />
                         	</p:commandButton>
@@ -86,9 +89,18 @@
 	            			<p:outputLabel value="#{dp.dateTrans}"/>
 						</p:column>
 						
+						<p:column headerText="Accountable Officer/Bank" width="100" >
+	            			<p:outputLabel value="#{dp.remarks}"/>
+						</p:column>
+						
 						<p:column headerText="Reference" width="70" >
 	            			<p:outputLabel value="#{dp.reference}"/>
 						</p:column>
+						
+						<p:column headerText="Group" width="70" >
+	            			<p:outputLabel value="#{dp.groupNo}"/>
+						</p:column>
+						
 						
 						<p:column headerText="Amount" width="70" >
 	            			<p:outputLabel value="#{dp.amount}">

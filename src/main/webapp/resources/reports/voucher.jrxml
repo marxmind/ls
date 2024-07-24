@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="funds" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f3ee26d4-874a-4861-b9ee-2f2416b2c180">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="PARAM_PRINTED_DATE" class="java.lang.String"/>
@@ -10,6 +10,8 @@
 	<parameter name="PARAM_REPORT_TITLE" class="java.lang.String"/>
 	<parameter name="PARAM_LOGO" class="java.io.InputStream"/>
 	<parameter name="PARAM_LOGO_TRANS" class="java.io.InputStream"/>
+	<parameter name="PARAM_TREASURER_POS" class="java.lang.String"/>
+	<parameter name="PARAM_TREASURER" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -56,7 +58,7 @@
 				</textElement>
 				<text><![CDATA[MUNICIPALITY OF LAKE SEBU]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="130" y="107" width="302" height="14" uuid="4699bec5-9678-48d2-9570-2f676bbea9f6"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" isUnderline="true"/>
@@ -70,7 +72,7 @@
 				</textElement>
 				<text><![CDATA[Period Covered]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="127" y="71" width="306" height="22" uuid="2535f910-5e5a-4344-9aa1-781dfb8740ec"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
@@ -99,14 +101,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="150" y="0" width="266" height="13" uuid="04334cf2-3df5-475e-927a-ff95c7bd903d"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_ACCOUNT_NAME}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="416" y="0" width="139" height="11" uuid="7f623d30-77cd-4603-81d0-07d393a81d4c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
@@ -225,7 +227,7 @@
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="44" height="20" uuid="6add4bcc-0fec-49c0-b290-7b83ccaeba26"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
@@ -239,7 +241,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="44" y="0" width="50" height="20" uuid="4e189d76-838f-4182-82a5-78684ec491a0"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
@@ -253,7 +255,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="94" y="0" width="22" height="20" uuid="482115c0-5371-4674-8939-3a504c4d0a9c"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
@@ -267,7 +269,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f4}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="289" y="0" width="158" height="20" uuid="8a494118-92a5-489d-9dc1-d36bd4ac3cf4"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
@@ -281,7 +283,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f6}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="447" y="0" width="56" height="20" uuid="9fa65146-75c5-4152-95f9-4523fcee72bf"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
@@ -295,7 +297,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f7}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="116" y="0" width="173" height="20" uuid="ac66665c-a00a-4cfc-b9fd-988b92cfb564"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.5"/>
@@ -357,7 +359,7 @@
 				<reportElement x="415" y="64" width="135" height="1" uuid="b01186ce-f6c0-4d19-84f2-097077ad0057"/>
 			</line>
 			<line>
-				<reportElement x="68" y="103" width="135" height="1" uuid="52b484cf-27f5-4cc9-a1dc-c32c77595513"/>
+				<reportElement x="44" y="102" width="177" height="1" uuid="52b484cf-27f5-4cc9-a1dc-c32c77595513"/>
 			</line>
 			<staticText>
 				<reportElement x="409" y="68" width="150" height="16" uuid="27ed3136-9d70-4bef-bd2a-77e81aa54461"/>
@@ -365,20 +367,6 @@
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Signature Over Printed Name]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="70" y="90" width="124" height="16" uuid="c6bf299a-cd95-4a32-8e2a-58d339497f5b"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[FERDINAND L. LOPEZ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="74" y="107" width="124" height="16" uuid="94cd42a5-e1d0-488a-8b7e-97350974543b"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Municipal Treasurer]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="350" y="37" width="66" height="18" uuid="b2e83204-5211-486f-885e-11c174572b21"/>
@@ -400,7 +388,7 @@
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="447" y="0" width="58" height="16" uuid="d429d60f-a8c5-45b7-9d2d-42a844a3886c"/>
 				<box padding="1">
 					<topPen lineWidth="1.0"/>
@@ -421,18 +409,32 @@
 				<text><![CDATA[Date:                              ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="215" y="91" width="124" height="14" uuid="b63cf888-bd12-4f09-8857-eed6aae44c44"/>
+				<reportElement x="237" y="91" width="124" height="14" uuid="b63cf888-bd12-4f09-8857-eed6aae44c44"/>
 				<textElement>
 					<font isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Date:                               ]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="409" y="39" width="150" height="30" uuid="826e24f1-18e7-490d-a241-d61796c4b709"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_RECEIVEDBY}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="43" y="72" width="178" height="30" uuid="d57d42c3-a5d7-47ee-9ea0-41dbc8c7d577"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="43" y="103" width="178" height="30" uuid="ac7f00f3-748c-493a-88b7-9b352e4f765d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASURER_POS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

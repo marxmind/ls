@@ -13,6 +13,7 @@ import com.italia.municipality.lakesebu.controller.IBudgetType;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.UserAccessLevel;
 import com.italia.municipality.lakesebu.enm.BudgetType;
+import com.italia.municipality.lakesebu.enm.BudgetTypeOld;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
 import jakarta.annotation.PostConstruct;
@@ -45,15 +46,15 @@ public class BudgetBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
-		loadBudget(BudgetType.MONTHLY);
+		loadBudget(BudgetTypeOld.MONTHLY);
 		updateTotal();
 	}
 
 	
-	private void loadBudget(BudgetType budgetType){
+	private void loadBudget(BudgetTypeOld budgetType){
 		String sql = "SELECT * FROM budget b, budgettype t, tbl_bankaccounts a WHERE b.bank_id = a.bank_id AND b.budtypeid=t.budtypeid AND t.budtypeid=? AND budisactive=1";
 		String[] params = new String[1];
-		params[0] = BudgetType.MONTHLY.getId()+"";
+		params[0] = BudgetTypeOld.MONTHLY.getId()+"";
 		List<IBudget> tmpbudgets = new ArrayList<IBudget>();
 		tmpbudgets = Budget.retrieve(sql, params);
 		if(tmpbudgets.size()<=0){
@@ -281,7 +282,7 @@ public class BudgetBean implements Serializable{
 		}
 	}
 	
-	private IBudget createNewBudget(BankAccounts accounts, BudgetType budgetType){
+	private IBudget createNewBudget(BankAccounts accounts, BudgetTypeOld budgetType){
 		IBudget bud = new Budget();
 		try{bud.setBudgetDate(DateUtils.getCurrentDateYYYYMMDD());}catch(NullPointerException e){}
 		try{bud.setAmount(new BigDecimal("0.00"));}catch(NullPointerException e){}

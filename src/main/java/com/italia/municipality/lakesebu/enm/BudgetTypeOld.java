@@ -1,11 +1,10 @@
 package com.italia.municipality.lakesebu.enm;
 
-public enum BudgetType {
-
-	NTA(0,"NTA"),
-	LOANS(1,"LOANS"),
-	YEAR_BEGINNING_BALANCE(2, "YEAR BEGINNING BALANCE"),
-	TRANSFER_TO_OTHER_FUND(3, "TRANSFER TO OTHER FUND");
+public enum BudgetTypeOld {
+	DAILY(1,"DAILY"),
+	WEEKLY(2,"WEEKLY"),
+	MONTHLY(3,"MONTHLY"),
+	YEARLY(4,"YEARLY");
 	
 	private int id;
 	private String name;
@@ -18,25 +17,24 @@ public enum BudgetType {
 		return name;
 	}
 	
-	private BudgetType(int id,String name){
+	private BudgetTypeOld(int id,String name){
 		this.id = id;
 		this.name = name;
 	}
 	public static String typeName(int id){
-		for(BudgetType type : BudgetType.values()){
+		for(BudgetTypeOld type : BudgetTypeOld.values()){
 			if(id==type.getId()){
 				return type.getName();
 			}
 		}
-		return BudgetType.NTA.getName();
+		return BudgetTypeOld.DAILY.getName();
 	}
 	public static int typeId(String name){
-		for(BudgetType type : BudgetType.values()){
+		for(BudgetTypeOld type : BudgetTypeOld.values()){
 			if(name.equalsIgnoreCase(type.getName())){
 				return type.getId();
 			}
 		}
-		return BudgetType.NTA.getId();
+		return BudgetTypeOld.DAILY.getId();
 	}
-	
 }

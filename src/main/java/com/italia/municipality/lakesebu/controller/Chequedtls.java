@@ -21,6 +21,8 @@ import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
+import com.italia.municipality.lakesebu.utils.OpenTableAccess;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,6 +72,61 @@ public class Chequedtls {
 	private int fundTypeId;
 	private String fundName;
 	private String style;
+	
+	public static List<Reports> retrieveByFundName(String fundName, int year, int month){
+		List<Reports> rpts = new ArrayList<Reports>();
+		
+		String sql = "SELECT cheque_no,date_disbursement,cheque_amount,pay_to_the_order_of,chkremarks FROM tbl_chequedtls WHERE isactive=1 AND chkstatus=1 AND accnt_name='"+ fundName +"'";
+		
+		if(year>0) {
+			sql += " AND year(date_disbursement)=" + year;
+		}
+		
+		if(month>0) {
+			sql += " AND month(date_disbursement)=" + month;
+		}
+		
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new BankChequeDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				Reports rpt = Reports.builder()
+						.f1(rs.getString("cheque_no"))
+						.f2(rs.getString("date_disbursement"))
+						.f3(Currency.formatAmount(rs.getDouble("cheque_amount")))
+						.f4(rs.getString("pay_to_the_order_of"))
+						.f5(rs.getString("chkremarks"))
+						.build();
+				
+				rpts.add(rpt);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rpts;
+	}
+	
+	
+	public static double monthlyIssued(int fundType, int year, int month) {
+		double amount = 0d;
+		
+		String sql = "SELECT sum(cheque_amount) as total FROM tbl_chequedtls WHERE chkstatus=1 AND isactive=1 AND accnt_no='"+ fundType +"' AND year(date_disbursement)=" + year + " AND month(date_disbursement)=" + month;
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new BankChequeDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				amount = rs.getDouble("total");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return amount;
+	}
 	
 	public static List<Chequedtls> retrieveSpecAll(String param){
 			Map<Integer, BankAccounts> bud = BankAccounts.budgetAll();

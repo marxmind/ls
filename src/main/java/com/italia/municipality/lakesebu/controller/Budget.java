@@ -10,6 +10,7 @@ import java.util.List;
 import com.italia.municipality.lakesebu.database.BankChequeDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
+import com.italia.municipality.lakesebu.utils.OpenTableAccess;
 
 public class Budget implements IBudget{
 
@@ -57,6 +58,24 @@ public class Budget implements IBudget{
 		this.accounts = accounts;
 		this.isActivated = isActivated;
 		this.cycleDate = cycleDate;
+	}
+	
+	public static double amountBudget(int budgetType, int month, int year) {
+		
+		String sql = "SELECT SUM(budamount) as total FROM budget WHERE budisactive=1 AND year(buddate)=" + year + " AND month(buddate)="+ month + " AND budtypeid=" + budgetType;
+		double total = 0d;
+		ResultSet rs = OpenTableAccess.query(sql, new String[0], new BankChequeDatabaseConnect());
+		
+		try {
+			while(rs.next()) {
+				return rs.getDouble("total");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return total;
 	}
 	
 	public static List<IBudget> retrieve(String sql, String[] params){

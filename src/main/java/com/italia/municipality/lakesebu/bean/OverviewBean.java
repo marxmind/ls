@@ -23,12 +23,15 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
 
 import com.italia.municipality.lakesebu.controller.BankAccounts;
+import com.italia.municipality.lakesebu.controller.BudgetMonitoring;
+import com.italia.municipality.lakesebu.controller.Chequedtls;
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
 import com.italia.municipality.lakesebu.controller.Collector;
 import com.italia.municipality.lakesebu.controller.Login;
 import com.italia.municipality.lakesebu.controller.Mooe;
 import com.italia.municipality.lakesebu.controller.Offices;
 import com.italia.municipality.lakesebu.controller.PaymentName;
+import com.italia.municipality.lakesebu.controller.RCDDeposit;
 import com.italia.municipality.lakesebu.controller.Reports;
 import com.italia.municipality.lakesebu.controller.TaxAccountGroup;
 import com.italia.municipality.lakesebu.controller.UserDtls;
@@ -108,6 +111,11 @@ public class OverviewBean implements Serializable {
 	
 	private List<BusinessPermit> bzs;
 	
+	private List<Reports> cashbooks;
+	private List cashBankAccounts;
+	private String cashBankAccountsId;
+	private Map<String, BankAccounts> mapAccounts;
+	
 	@PostConstruct
 	public void init() {
 		
@@ -142,6 +150,14 @@ public class OverviewBean implements Serializable {
 		loadCollection();
 		
 		payMapData = PaymentName.retrieveAllInMap();
+		
+		mapAccounts = new LinkedHashMap<String, BankAccounts>();
+		cashBankAccounts = new ArrayList<>();
+		setCashBankAccountsId("GENERAL FUND");
+		for(BankAccounts b : BankAccounts.retrieveAll()) {
+			cashBankAccounts.add(new SelectItem(b.getBankAccntName(), b.getBankAccntName()));
+			mapAccounts.put(b.getBankAccntName(), b);
+		}
 	}
 	
 	public void reloadTab() {
@@ -180,6 +196,8 @@ public class OverviewBean implements Serializable {
 			loadAccountableForms();
 		}else if("List Of No Business Renewal".equalsIgnoreCase(getTabSelected())) {
 			loadNoBusinessRenewal();
+		}else if("Cash Book".equalsIgnoreCase(getTabSelected())) {
+			loadCashBook();	
 		}
 	}
 	
@@ -212,9 +230,136 @@ public class OverviewBean implements Serializable {
 			loadAccountableForms();
 		}else if("List Of No Business Renewal".equalsIgnoreCase(event.getTab().getTitle())) {
 			loadNoBusinessRenewal();
+		}else if("Cash Book".equalsIgnoreCase(event.getTab().getTitle())) {
+			loadCashBook();	
 		}
 		setTabSelected(event.getTab().getTitle());
     }
+	
+	private void loadCashBook() {
+		
+		cashbooks = new ArrayList<Reports>();
+		
+		double beginningBalance = BudgetMonitoring.yearBeginningBalance(getCashBankAccountsId(), Integer.valueOf(getYear()));	
+		cashbooks.add(Reports.builder()
+				.f1("January " + getYear())
+				.f2("Beginning Balance")
+				.f5(Currency.formatAmount(beginningBalance)).build());
+		
+		int fundId = 0;
+		if("GENERAL FUND".equalsIgnoreCase(getCashBankAccountsId())) {
+			fundId = 1;
+		}else if("MOTORPOOL".equalsIgnoreCase(getCashBankAccountsId())) {
+			fundId = 2;
+		}else if("TRUST FUND".equalsIgnoreCase(getCashBankAccountsId())) {
+			fundId = 3;
+		}
+		
+		double forwardedAmount = 0d;
+		for(int month=1; month<=12; month++) {
+			double cashInBank = 0d;
+			Reports rpt = new Reports();
+			double budget = BudgetMonitoring.amountBudgetOnly(Integer.valueOf(getYear()), month, getMapAccounts().get(getCashBankAccountsId()).getBankId());
+			double loan = BudgetMonitoring.loanAmount(Integer.valueOf(getYear()), month, getMapAccounts().get(getCashBankAccountsId()).getBankId());
+			double transferAmount = BudgetMonitoring.transferFundAmount(Integer.valueOf(getYear()), month, getMapAccounts().get(getCashBankAccountsId()).getBankId());
+			
+			if(budget>0) {
+			
+			if(month>1) {
+				//beginning
+				//rpt.setF1(DateUtils.getMonthName(month));
+				//rpt.setF2("Beginning Balance");
+				//rpt.setF5(Currency.formatAmount(forwardedAmount));
+				//cashbooks.add(rpt);
+				
+				//NTA
+				if(budget>0) {
+					rpt = new Reports();
+					rpt.setF1(DateUtils.getMonthName(month));
+					rpt.setF2("Add: NTA");
+					rpt.setF5(Currency.formatAmount(budget));
+					cashbooks.add(rpt);
+				}
+				
+			}else {
+			
+				//NTA
+				if(budget>0) {
+					rpt.setF1(DateUtils.getMonthName(month));
+					rpt.setF2("Add: NTA");
+					rpt.setF5(Currency.formatAmount(budget));
+					cashbooks.add(rpt);
+				}
+			}
+			//Deposit
+			Map<Integer, Double> mapDep = RCDDeposit.depositedCollection(Integer.valueOf(getYear()), fundId);
+			double deposit = 0;
+			if(mapDep!=null && mapDep.size()>0 && mapDep.containsKey(month)) {
+				deposit = mapDep.get(month);
+			}
+			
+			if(deposit>0) {
+				rpt = new Reports();
+				rpt.setF1("");
+				rpt.setF2("Add: Collection");
+				rpt.setF3(Currency.formatAmount(deposit));
+				cashbooks.add(rpt);
+			}
+			//Expenses
+			if(loan>0) {
+				rpt = new Reports();
+				rpt.setF1("");
+				rpt.setF2("Less: Loans");
+				rpt.setF4(Currency.formatAmount(loan));
+				cashbooks.add(rpt);
+			}
+			
+			//Transfer Fund
+			if(transferAmount>0) {
+				rpt = new Reports();
+				rpt.setF1("");
+				rpt.setF2("Transfer Fund");
+				rpt.setF4(Currency.formatAmount(transferAmount));
+				cashbooks.add(rpt);
+			}
+			
+			//Expenses
+			double issuedAmount = Chequedtls.monthlyIssued(getMapAccounts().get(getCashBankAccountsId()).getBankId(), Integer.valueOf(getYear()), month);
+			if(issuedAmount>0) {
+				rpt = new Reports();
+				rpt.setF1("");
+				rpt.setF2("Checks");
+				rpt.setF4(Currency.formatAmount(issuedAmount));
+				cashbooks.add(rpt);
+			}
+			
+			//Cash In Bank
+			
+			if(month==1) {
+				cashInBank = (budget + beginningBalance + deposit) - (loan + issuedAmount + transferAmount);
+			}else {
+				cashInBank = (budget + forwardedAmount + deposit) - (loan + issuedAmount + transferAmount);
+			}
+			
+			if(month<12) {
+				rpt = new Reports();
+				rpt.setF1("");
+				rpt.setF2("Ending Balance");
+				rpt.setF5(Currency.formatAmount(cashInBank));
+				cashbooks.add(rpt);
+			}
+			
+			forwardedAmount = cashInBank;
+			
+			}
+		}
+		Reports rpt = new Reports();
+		rpt.setF1("");
+		rpt.setF2("Current Cash In Bank");
+		rpt.setF5(Currency.formatAmount(forwardedAmount));
+		cashbooks.add(rpt);
+		
+	}
 	
 	public void loadAccountableForms() {
 		ResultSet rs = OpenTableAccess.query("SELECT issueddate,formtypelog,beginningNoLog,endingNoLog,logpcs,isid,fundid,logid FROM logissuedform WHERE isactivelog=1 AND formstatus=" + FormStatus.HANDED.getId() +" ORDER BY isid", new String[0], new WebTISDatabaseConnect());
@@ -1193,7 +1338,7 @@ public class OverviewBean implements Serializable {
 	
 	public void monthlyCheckIssued() {
 		
-		ResultSet rs = OpenTableAccess.query("SELECT c.offid,c.moid,c.cheque_no,c.cheque_amount as amount,MONTH(c.date_disbursement) as month,c.chkstatus,b.bank_account_name,pay_to_the_order_of as payee,c.chkremarks FROM tbl_chequedtls c, tbl_bankaccounts b WHERE c.accnt_no=b.bank_id AND c.isactive=1 AND (c.date_disbursement>='"+  year +"-01-01" +"' AND c.date_disbursement<='"+  year+"-12-31" +"')", new String[0],new BankChequeDatabaseConnect());
+		ResultSet rs = OpenTableAccess.query("SELECT c.offid,c.moid,c.cheque_no,c.cheque_amount as amount,MONTH(c.date_disbursement) as month,c.chkstatus,b.bank_account_name,pay_to_the_order_of as payee,c.chkremarks FROM tbl_chequedtls c, tbl_bankaccounts b WHERE c.accnt_no=b.bank_id AND c.isactive=1 AND c.chkstatus=1 AND (c.date_disbursement>='"+  year +"-01-01" +"' AND c.date_disbursement<='"+  year+"-12-31" +"')", new String[0],new BankChequeDatabaseConnect());
 		
 		Map<String, Map<Integer, Double>> mapMonth = new LinkedHashMap<String, Map<Integer, Double>>();
 		Map<Integer, Double> mapMode = new LinkedHashMap<Integer, Double>();
@@ -1224,30 +1369,73 @@ public class OverviewBean implements Serializable {
 			Map<String, Map<Integer, Double>> mapOrg = new TreeMap<String, Map<Integer, Double>>(mapMonth);
 			//rptMonthCheckIssuedsPerAccounts
 			
+			//budget
+			Map<String, Double> budgetData = BudgetMonitoring.amountBudget(Integer.valueOf(getYear()),0);
+			
+			//int size = mapOrg.size() + 1;
+			int size = mapOrg.size();
+			String[][] data = new String[size][16];
+			
+			//data[0][0] = "Name";
+			
+			//for(int m=1; m<=12; m++) {
+				//data[0][m] = DateUtils.getMonthName(m);
+			//}
 			
 			
-			int size = mapOrg.size() + 1;
-			String[][] data = new String[size][13];
-			
-			data[0][0] = "Name";
-			
-			for(int m=1; m<=12; m++) {
-				data[0][m] = DateUtils.getMonthName(m);
-			}
-			
-			int sz = 1;
+			//int sz = 1;
+			int sz = 0;
 			for(String fund : mapOrg.keySet()) {
 				data[sz][0] = fund;
+				double totalamount = 0d;
 				for(int month=1; month<=12; month++) {
 					if(mapOrg.get(fund).containsKey(month)) {
 						data[sz][month] = Currency.formatAmount(mapOrg.get(fund).get(month));
+						totalamount += mapOrg.get(fund).get(month);
 					}else {
 						data[sz][month] = "";
 					}
 				}
+				//this for budget
+				if(budgetData!=null && budgetData.containsKey(fund)) {
+					
+					
+					//program static
+					//STATIC STATIC STATIC
+					double deposit = 0d;
+					double fundAmount = budgetData.get(fund);
+					if("GENERAL FUND".equalsIgnoreCase(fund)) {
+						deposit = RCDDeposit.totalDeposit(Integer.valueOf(year),1);
+					}else if("MOTORPOOL".equalsIgnoreCase(fund)) {
+						deposit = RCDDeposit.totalDeposit(Integer.valueOf(year), 2);
+					}else if("TRUST FUND".equalsIgnoreCase(fund)) {
+						deposit = RCDDeposit.totalDeposit(Integer.valueOf(year), 3);
+					}
+					double yearBeginningBalance = BudgetMonitoring.yearBeginningBalance(fund, Integer.valueOf(year));
+					data[sz][13] = Currency.formatAmount(fundAmount + deposit + yearBeginningBalance);//budget
+					
+					//totalamount += yearBeginningBalance;//adding year beginning balance
+					
+					
+					fundAmount = (fundAmount + deposit) -totalamount;
+					fundAmount += yearBeginningBalance;
+					
+					
+					data[sz][14] = Currency.formatAmount(totalamount);//used
+					data[sz][15] = Currency.formatAmount(fundAmount);//remaining
+				}else {
+					data[sz][13] = "00.00";//budget
+					data[sz][14] = Currency.formatAmount(totalamount);//used
+					data[sz][15] = "00.00";//Currency.formatAmount(-totalamount);//remaining
+				}
 				sz++;
 			}
-			int y=0;
+			
+			//data[0][13] = "Budget";
+			//data[0][14] = "Used";
+			//data[0][15] = "Remaining";
+			
+			//int y=0;
 			for(int x=0; x<size; x++) {
 					Reports name = new Reports();
 					name.setF1(data[x][0]);
@@ -1263,6 +1451,11 @@ public class OverviewBean implements Serializable {
 					name.setF11(data[x][10]);
 					name.setF12(data[x][11]);
 					name.setF13(data[x][12]);
+					
+					name.setF14(data[x][13]);//budget
+					name.setF15(data[x][14]);//used
+					name.setF16(data[x][15]);//remaining
+					
 					rptMonthCheckIssuedsPerAccounts.add(name);
 					
 				//System.out.println(data[x][0] + " = " + data[x][1] + " = " + data[x][2]);
@@ -1272,6 +1465,18 @@ public class OverviewBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	private List<Reports> chks;
+	public void loadCheckIssued(String fundName, int month) {
+		chks = Chequedtls.retrieveByFundName(fundName, Integer.valueOf(getYear()), month);
+		
+	}
+	private List<Reports> budRpts;
+	private String yearBeginningBalance;
+	public void loadMonthlyBudget(String fundName) {
+		double yearBeginningBalance = BudgetMonitoring.yearBeginningBalance(fundName,Integer.valueOf(getYear()));
+		setYearBeginningBalance(Currency.formatAmount(yearBeginningBalance));
+		budRpts = BudgetMonitoring.amountBudget(fundName, Integer.valueOf(getYear()) ,0);
 	}
 	
 	public void loadCheckWriting() {
