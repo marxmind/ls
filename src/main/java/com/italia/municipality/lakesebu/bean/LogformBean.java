@@ -1568,10 +1568,16 @@ public class LogformBean implements Serializable{
 		
 		RCDReader.saveCashTicket(rs, collector+"-"+value+"_"+fund+"_CT", XML_FOLDER);
 		setPuj(null);
+		setPuj(null);
 		setPedller(null);
+		setPeddlerLabel(null);
 		setIsda(null);
+		setIsdaLabel(null);
 		setSkylab(null);
+		setSkylabLabel(null);
 		setOthers(null);
+		setMarket(null);
+		setMarketLablel(null);
 	}
 	
 	

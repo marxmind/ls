@@ -9,11 +9,11 @@ public class CharacterLibrary {
 	public static void main(String[] args) {
 		
 		String uname = readCharacterEncode("che");
-		String password = readCharacterEncode("8888");
-		String passcode = readCharacterEncode("88888888");
-		String fullName = readCharacterEncode("SHEENA MAE SOLIS APOLISTAR");
+		String password = readCharacterEncode("che");
+		String passcode = readCharacterEncode("5555");
+		String fullName = readCharacterEncode("SHEENA MAE S. APOLISTAR");
 		
-		//System.out.println("Decode:"+ readCharacterDecode("qrdof"));
+		//System.out.println("Decode:"+ readCharacterDecode("lqd59"));
 		
 		System.out.println(uname + "\n" + password + "\n" + passcode +"\n" + fullName);
 		

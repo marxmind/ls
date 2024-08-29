@@ -864,7 +864,7 @@ public class OverviewBean implements Serializable {
 				
 			}
 			
-			setGrandTotalRunningCollection(Currency.formatAmount(grandTotal));
+			//setGrandTotalRunningCollection(Currency.formatAmount(grandTotal));
 			
 			String[][] data = new String[mapColl.size()][15];
 			int x = 0;
@@ -902,6 +902,7 @@ public class OverviewBean implements Serializable {
 				}
 				//add total
 				data[x][13]= Currency.formatAmount(total);
+				
 				data[x][14]=name+"";
 				x++;
 			}
@@ -935,31 +936,15 @@ public class OverviewBean implements Serializable {
 				}
 			}
 			
-			//add total
-			rss = Reports.builder()
-					.f1("TOTAL")
-					.f2(totalPerPayment[0]==0? "" : Currency.formatAmount(totalPerPayment[0]))
-					.f3(totalPerPayment[1]==0? "" : Currency.formatAmount(totalPerPayment[1]))
-					.f4(totalPerPayment[2]==0? "" : Currency.formatAmount(totalPerPayment[2]))
-					.f5(totalPerPayment[3]==0? "" : Currency.formatAmount(totalPerPayment[3]))
-					.f6(totalPerPayment[4]==0? "" : Currency.formatAmount(totalPerPayment[4]))
-					.f7(totalPerPayment[5]==0? "" : Currency.formatAmount(totalPerPayment[5]))
-					.f8(totalPerPayment[6]==0? "" : Currency.formatAmount(totalPerPayment[6]))
-					.f9(totalPerPayment[7]==0? "" : Currency.formatAmount(totalPerPayment[7]))
-					.f10(totalPerPayment[8]==0? "" : Currency.formatAmount(totalPerPayment[8]))
-					.f11(totalPerPayment[9]==0? "" : Currency.formatAmount(totalPerPayment[9]))
-					.f12(totalPerPayment[10]==0? "" : Currency.formatAmount(totalPerPayment[10]))
-					.f13(totalPerPayment[11]==0? "" : Currency.formatAmount(totalPerPayment[11]))
-					.f14(grandTotal==0? "" : Currency.formatAmount(grandTotal))
-					.f15("font-weight: bold")
-					.build();
-			collections.add(rss);
+			
 			
 			collectionPrintData = new ArrayList<Reports>();
 				
 			//add land tax label
+			double landTaxTotal = 0d;
+			List<Reports> tmpRpt = new ArrayList<Reports>();
 			if(taxData!=null && taxData.size()>0) {
-					double landTaxTotal = 0d;
+					
 					Reports r = new Reports();
 					r.setF1("Land Tax Collection");
 					for(int mo : taxData.keySet()) {
@@ -982,13 +967,35 @@ public class OverviewBean implements Serializable {
 					}
 					r.setF14(Currency.formatAmount(landTaxTotal));;
 					collectionPrintData.add(r);
-					collections.add(r);
+					tmpRpt.add(r);
 				
 			}
 			
+			//add total
+			rss = Reports.builder()
+					.f1("TOTAL")
+					.f2(totalPerPayment[0]==0? "" : Currency.formatAmount(totalPerPayment[0]))
+					.f3(totalPerPayment[1]==0? "" : Currency.formatAmount(totalPerPayment[1]))
+					.f4(totalPerPayment[2]==0? "" : Currency.formatAmount(totalPerPayment[2]))
+					.f5(totalPerPayment[3]==0? "" : Currency.formatAmount(totalPerPayment[3]))
+					.f6(totalPerPayment[4]==0? "" : Currency.formatAmount(totalPerPayment[4]))
+					.f7(totalPerPayment[5]==0? "" : Currency.formatAmount(totalPerPayment[5]))
+					.f8(totalPerPayment[6]==0? "" : Currency.formatAmount(totalPerPayment[6]))
+					.f9(totalPerPayment[7]==0? "" : Currency.formatAmount(totalPerPayment[7]))
+					.f10(totalPerPayment[8]==0? "" : Currency.formatAmount(totalPerPayment[8]))
+					.f11(totalPerPayment[9]==0? "" : Currency.formatAmount(totalPerPayment[9]))
+					.f12(totalPerPayment[10]==0? "" : Currency.formatAmount(totalPerPayment[10]))
+					.f13(totalPerPayment[11]==0? "" : Currency.formatAmount(totalPerPayment[11]))
+					.f14(grandTotal==0? "" : Currency.formatAmount(grandTotal + landTaxTotal))
+					.f15("font-weight: bold")
+					.build();
+			collections.add(rss);
+			collections.addAll(tmpRpt);
+			setGrandTotalRunningCollection(Currency.formatAmount(grandTotal + landTaxTotal));
 			
 			
 				for(int b=0; b<mapColl.size(); b++) {
+					
 				Reports r = Reports.builder()
 						.f1(data[b][0])
 						.f2(data[b][1])
