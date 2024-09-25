@@ -126,6 +126,9 @@
 							<p:outputLabel value="Purok/Sitio/Zone"/>
 							<p:inputText value="#{bnIndex.businessIndex.purok}" style="width: 15em"/>
 							
+							<p:outputLabel value="Contact No"/>
+							<p:inputText value="#{bnIndex.businessIndex.contanctNo}" style="width: 15em"/>
+							
 							<p:outputLabel value="Link Map"/>
 							<p:commandButton id="mapId" icon="pi pi-link" value="#{bnIndex.businessIndex.map.id>0? 'linked' : 'unlinked'}" style="width: 15em;#{bnIndex.businessIndex.map.id>0? '':'background-color: red'}" actionListener="#{bnIndex.loadMap}" oncomplete="PF('dlgMap').show()" update="mapDataId"/>
 							
@@ -223,6 +226,12 @@
 									<p:column headerText="Map" width="30" exportable="false">
 			                         	<p:commandButton icon="pi pi-map" disabled="#{rpt.map.id==0}" actionListener="#{bnIndex.openSelectedBusinessInMap(rpt)}"  update="gmap" onclick="PF('dlg').show();"/>
 			                         </p:column>
+									
+									<p:column headerText="SMS" width="30">
+					            		<p:commandButton id="sendSmsId" value="Send" actionListener="#{bnIndex.sendCustomerSMS(rpt)}"  update="sendSmsId msg">
+						    				<p:confirm header="Confirmation" message="Are you sure you want to send sms to business owner?." icon="ui-icon-alert" />
+						    			</p:commandButton>
+					                </p:column>
 									
 									<p:column headerText="Date" width="70">
 		            						<p:outputLabel value="#{rpt.dateTrans}" style="#{rpt.statusId==0? '' : 'color: red; font-weight: bold'}"/>

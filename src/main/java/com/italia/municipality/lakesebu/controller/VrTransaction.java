@@ -45,6 +45,7 @@ public class VrTransaction {
 	private String contactNo;
 	private String remarks;
 	private int status;
+	private String checkno;
 	
 	private BankAccounts accounts;
 	private Offices offices;
@@ -84,6 +85,10 @@ public class VrTransaction {
 		
 		while(rs.next()){
 			
+			String status = rs.getString("pickupby");
+				  status =  (status==null? "UNSENT" : (status.isEmpty()? "UNSENT" : (status.equalsIgnoreCase("SENT")?  status : "UNSENT")));//(status==null? "UNSEND" : (status.isEmpty()? "UNSEND" : "SEND" ));
+			//String contactNo = rs.getString("contactno");
+					//contactNo = (contactNo==null? null : (contactNo.isEmpty()? null : contactNo));
 			VrTransaction vr = VrTransaction.builder()
 					.id(rs.getLong("rfid"))
 					.dateTrans(rs.getString("daterf"))
@@ -91,7 +96,7 @@ public class VrTransaction {
 					.amount(rs.getDouble("amount"))
 					.deliveredBy(rs.getString("deliverdby"))
 					.deliveredDateTime(rs.getString("delivereddt"))
-					.pickUpBy(rs.getString("pickupby"))
+					.pickUpBy(status)
 					.pickUpDateTime(rs.getString("pickupdt"))
 					.isActive(rs.getInt("isactiverf"))
 					.contactNo(rs.getString("contactno"))
@@ -100,6 +105,7 @@ public class VrTransaction {
 					.accounts(banks.get(rs.getInt("bankid")))
 					.offices(offices.get(rs.getLong("offid")))
 					.statusName(VrTransStatus.val(rs.getInt("status")).getName())
+					.checkno(rs.getString("checkno"))
 					.build();
 			
 			vrs.add(vr);
@@ -167,8 +173,9 @@ public class VrTransaction {
 				+ "remarks,"
 				+ "status,"
 				+ "bankid,"
-				+ "offid)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "offid,"
+				+ "checkno)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -204,6 +211,7 @@ public class VrTransaction {
 		ps.setInt(cnt++, st.getStatus());
 		ps.setInt(cnt++, st.getAccounts().getBankId());
 		ps.setLong(cnt++, st.getOffices().getId());
+		ps.setString(cnt++, st.getCheckno());
 		
 		LogU.add(st.getDateTrans());
 		LogU.add(st.getPayor());
@@ -218,6 +226,7 @@ public class VrTransaction {
 		LogU.add(st.getStatus());
 		LogU.add(st.getAccounts().getBankId());
 		LogU.add(st.getOffices().getId());
+		LogU.add(st.getCheckno());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -245,7 +254,8 @@ public class VrTransaction {
 				+ "remarks=?,"
 				+ "status=?,"
 				+ "bankid=?,"
-				+ "offid=?" 
+				+ "offid=?,"
+				+ "checkno=?" 
 				+ " WHERE rfid=?";
 		
 		PreparedStatement ps = null;
@@ -270,6 +280,7 @@ public class VrTransaction {
 		ps.setInt(cnt++, st.getStatus());
 		ps.setInt(cnt++, st.getAccounts().getBankId());
 		ps.setLong(cnt++, st.getOffices().getId());
+		ps.setString(cnt++, st.getCheckno());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDateTrans());
@@ -284,6 +295,7 @@ public class VrTransaction {
 		LogU.add(st.getStatus());
 		LogU.add(st.getAccounts().getBankId());
 		LogU.add(st.getOffices().getId());
+		LogU.add(st.getCheckno());
 		LogU.add(st.getId());
 		
 		LogU.add("executing for saving...");

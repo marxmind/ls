@@ -29,12 +29,17 @@ import com.italia.municipality.lakesebu.enm.BusinessType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.Barangay;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
+import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
 import com.italia.municipality.lakesebu.licensing.controller.Municipality;
 import com.italia.municipality.lakesebu.licensing.controller.Province;
 import com.italia.municipality.lakesebu.licensing.controller.Regional;
+import com.italia.municipality.lakesebu.licensing.controller.Words;
 import com.italia.municipality.lakesebu.utils.Application;
+import com.italia.municipality.lakesebu.utils.CheckInternetConnection;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
+import com.italia.municipality.lakesebu.utils.SendSMS;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -523,4 +528,39 @@ public class BusinessIndexBean implements Serializable {
         copyPhoto(marker.getData()+"");
         setSelectedMapData(getMapBiz().get(marker.getTitle()));   
     }
+	
+	public void sendCustomerSMS(BusinessIndex rs) {
+		if(rs!=null && rs.getId()>0 && !rs.getContanctNo().isEmpty()) {
+			if(CheckInternetConnection.isInternetPresent("https://semaphore.co/")) {
+				System.out.println("The site is accessible...");
+				String contactNo = rs.getContanctNo();
+				contactNo = contactNo.replace("+63", "");
+				int len = contactNo.length();
+				if(len==11) {
+					String api_key = Words.getTagName("sms-api-key");
+					String post_url_msg = Words.getTagName("sms-post-url-msg");
+					String user_agent = Words.getTagName("sms-user-agent");
+					String msg = GlobalVar.smsMSG.replace("<recepient>", rs.getOwner().split(",")[0]);
+					
+					System.out.println("sending info "+ msg + " number: " + contactNo);
+					String[] response = SendSMS.sendSMS(api_key, contactNo, msg,post_url_msg, user_agent);
+					
+					//String[] response2 = SendSMS.sendSMS(api_key, contactNo, msg,post_url_msg, user_agent);
+					//String[] response = {"SUCCESS"};
+					if("SUCCESS".equalsIgnoreCase(response[0])) {
+						Application.addMessage(1, "Success", "You have successfully sent the message to " + rs.getOwner());
+					}else {
+						Application.addMessage(3, "Error", "Sending sms was not successfully. Please try again.");
+					}
+				}else {
+					Application.addMessage(3, "Error", "Please check the contact number of the client. It seems that is not correct.");
+				}
+			}else {
+				System.out.println("Not accessible at this moment....");
+				Application.addMessage(3, "Error", "Provider is not available or the internet is not present at this moment. Please re-send the notification to the user once online.");
+			}
+		}else {
+			Application.addMessage(3, "Error", "Please click the client first");
+		}
+	}
 }

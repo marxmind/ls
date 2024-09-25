@@ -13,6 +13,8 @@ import com.italia.municipality.lakesebu.enm.AppConf;
  */
 public class GlobalVar {
 	
+	public static String smsMSG = "Hi <recepient>, this is a friendly reminder for the upcoming quarterly business payment. Please disregard this message if already settled.";
+	public static String smsCheckMSG = "Hi <recepient>, your Check with No: <checkno> is now available for release. Please go to treasurer Office";
 	public static final String PRIMARY_DRIVE=System.getenv("SystemDrive");
 	public static final double YEARLY = 12.0;
 	public static final double CEDULA_DIVEDEND = 1000.00;

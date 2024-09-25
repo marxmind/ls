@@ -157,6 +157,8 @@ public class FormBean implements Serializable{
 	}
 	
 	public void loadSeries() {
+		int currentYear = DateUtils.getCurrentYear();
+		
 		seriesForm = new ArrayList<Form11Report>();//Collections.synchronizedList(new ArrayList<Form11Report>());
 		for(FormType form : FormType.values()) {
 			if(FormType.CT_2.getId()==form.getId() || FormType.CT_5.getId()==form.getId()) {
@@ -186,8 +188,11 @@ public class FormBean implements Serializable{
 				}*/
 				
 				params = new String[3];
-				params[0] = DateUtils.getCurrentYear() + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-01";
-				params[1] = DateUtils.getCurrentYear() + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-31";
+				//params[0] = DateUtils.getCurrentYear() + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-01";
+				//params[1] = DateUtils.getCurrentYear() + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-31";
+				params[0] = currentYear + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-01";
+				params[1] = currentYear + "-" + (getMonthId()>=10? getMonthId() : "0"+ getMonthId()) + "-31";
+				
 				params[2] = is.getId()+"";
 				boolean noIssuance = true;
 				long endingNo = FormStatus.RTS.getId()==is.getStatus()? (((is.getPcs() - (is.getEndingNo() - is.getBeginningNo()))-1)+ is.getEndingNo()) : is.getEndingNo();
@@ -214,20 +219,30 @@ public class FormBean implements Serializable{
 					
 					params = new String[2];
 					int month = getMonthId() - 1;
-					params[0] = DateUtils.getCurrentYear() + "-" + (month>=10? month : "0"+ month) + "-31";
+					//params[0] = DateUtils.getCurrentYear() + "-" + (month>=10? month : "0"+ month) + "-31";
+					params[0] = currentYear + "-" + (month>=10? month : "0"+ month) + "-31";
 					params[1] = is.getId()+"";
 					System.out.println("checking previous ");
 					List<CollectionInfo> infos = CollectionInfo.retrieve(sql, params);
 					System.out.println("end checking previous ");
 					if(infos!=null && infos.size()>0) {
-						Form11Report rpt = reportLastCollectionInfo(infos.get(0));
-						if(rpt!=null) {
-							seriesForm.add(rpt);
+						CollectionInfo info = infos.get(0);
+						int year = Integer.valueOf(info.getReceivedDate().split("-")[0]);
+						if(year==currentYear) {//just addedd condition to not included last year issued
+							Form11Report rpt = reportLastCollectionInfo(info);
+							if(rpt!=null) {
+								seriesForm.add(rpt);
+							}
+							System.out.println("No Issuance IssuedId last last: " + infos.get(0).getIssuedForm().getId());
 						}
-						System.out.println("No Issuance IssuedId last last: " + infos.get(0).getIssuedForm().getId());
 					}else {
-						seriesForm.add(reportIssued(is));
-						System.out.println("With Issuance IssuedId last last: " + is.getId());
+						int year = Integer.valueOf(is.getIssuedDate().split("-")[0]);
+						if(FormStatus.ALL_ISSUED.getId()==is.getStatus() && year!=currentYear) {//just added condition to not including last year issued
+							System.out.println("**********************NOT CURRENT YEAR**********************:" + is.getBeginningNo());
+						}else {	
+							seriesForm.add(reportIssued(is));
+							System.out.println("With Issuance IssuedId last last: " + is.getId());
+						}
 					}
 					
 					

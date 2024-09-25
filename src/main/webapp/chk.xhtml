@@ -823,37 +823,42 @@
 	</p:dialog>
 	
 	
-	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="VR Transaction Recording" widgetVar="dlgVR" width="1200" height="600" position="center top">
+	<p:dialog closable="true" closeOnEscape="true" showHeader="true" header="VR Transaction Recording" widgetVar="dlgVR" width="1500" height="800" position="center top">
 					
 						<p:toolbar>
 							<p:toolbarGroup >
-                				<div class="ui-inputgroup">
+                				
+                				
+                				
+			    				
+			    				<div class="ui-inputgroup" >
                 					<p:commandButton update="panVrId" value="New" icon="pi pi-file" action="#{chk.defaultVr}"/>
                 					<p:commandButton update="vrDataId panVrId msg" value="Save" icon="pi pi-save" action="#{chk.saveVr}">
 					    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to update this issued form series?" icon="pi pi-info-circle" />
 					    			</p:commandButton>
-						                
                 				</div>
+                				
                 			</p:toolbarGroup>
                 		</p:toolbar>
 					
 					<p:panelGrid id="panVrId" layout="grid" columns="4">
 					
 										<p:outputLabel value="Offices"/>
-						                <p:selectOneMenu value="#{chk.vrData.offices.id}" inputStyle="width: 20em" filter="true" filterMatchMode="contains">
+						                <p:selectOneMenu value="#{chk.vrData.offices.id}" style="width: 20em" filter="true" filterMatchMode="contains">
 						                	<f:selectItems value="#{chk.vrOffices}"/>
 						                </p:selectOneMenu>
 										
 										<p:outputLabel value="Date"/>
 										<p:datePicker  value="#{chk.vrData.tmpDateTrans}" pattern="yyyy-MM-dd" inputStyle="width: 20em"/>
 										
-						                
+						                <p:outputLabel value="Check No"/>
+						                 <p:inputText value="#{chk.vrData.checkno}" placeholder="0123456789" style="width: 20em" /> 
 										
 										<p:outputLabel value="Payor"/>
 						                 <p:inputTextarea value="#{chk.vrData.payor}" placeholder="Payor" style="width: 20em" /> 
 						                
 						                <p:outputLabel value="Accounts"/>
-						                <p:selectOneMenu value="#{chk.vrData.accounts.bankId}" inputStyle="width: 20em" filter="true" filterMatchMode="contains">
+						                <p:selectOneMenu value="#{chk.vrData.accounts.bankId}" style="width: 20em" filter="true" filterMatchMode="contains">
 						                	<f:selectItems value="#{chk.vrAccounts}"/>
 						                </p:selectOneMenu>
 						                 
@@ -867,15 +872,13 @@
 						                 <p:outputLabel value="Contact No"/>
 						                 <p:inputText value="#{chk.vrData.contactNo}" placeholder="00000000000" style="width: 20em" /> 
 						                 
-						                  <p:outputLabel value="Pickup By"/>
-						                 <p:inputText value="#{chk.vrData.pickUpBy}" placeholder="Pickup By" style="width: 20em" /> 
 						                 
 						                 
 						                 <p:outputLabel value="Remarks"/>
 						                 <p:inputTextarea value="#{chk.vrData.remarks}" placeholder="Remarks" style="width: 20em" /> 
 										
 										<p:outputLabel value="Status"/>
-						                <p:selectOneMenu value="#{chk.vrData.status}" inputStyle="width: 20em" filter="true" filterMatchMode="contains">
+						                <p:selectOneMenu value="#{chk.vrData.status}" style="width: 20em" filter="true" filterMatchMode="contains">
 						                	<f:selectItems value="#{chk.vrStatus}"/>
 						                </p:selectOneMenu>
 						                
@@ -889,9 +892,19 @@
 							>	             
 							
 									<f:facet name="{Exporters}">
+										
 										<p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined" >
 						                    <p:dataExporter type="xls" target="budDataId" fileName="series"/>
 						                </p:commandButton>
+						                
+						                <span class="ui-input-icon-left">
+						    				<i class="pi pi-search" />
+							    			<p:inputText id="searchid" value="#{chk.searchVr}" placeholder="Search Name..." style="width: 60.2em">
+							    				<p:ajax event="keyup" listener="#{chk.loadLogVR}" update="vrDataId" delay="800"/>
+							    			</p:inputText>
+					    				</span>
+						                
+						                
 		            				</f:facet>
 		            				
 		            				<p:column headerText="[*]" width="20" exportable="false">
@@ -899,12 +912,25 @@
 		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
 		            					</p:commandButton>
 		            				</p:column>
+		            				
+		            				<p:column headerText="Create Check" width="70">
+		            						<p:commandButton  icon="pi pi-money-bill"/>
+		            				</p:column>
+		            				
 		            				<p:column headerText="Edit" width="20" exportable="false">
 												<p:commandButton icon="pi pi-pencil" update="panVrId" actionListener="#{chk.clickVR(vr)}"/>
 									</p:column>
 		            				
 		            				<p:column headerText="Date" width="70">
 		            						<p:outputLabel value="#{vr.dateTrans}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="Office" width="70">
+		            						<p:outputLabel value="#{vr.offices.name}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="CheckNo" width="70">
+		            						<p:outputLabel value="#{vr.checkno}"/>
 		            				</p:column>
 		            				
 		            				<p:column headerText="Payor" width="150">
@@ -921,16 +947,17 @@
 		            						<p:outputLabel  value="#{vr.statusName}"/>
 		            				</p:column>
 		            				
-		            				<p:column headerText="Delivered By | Time" width="100">
-		            						<p:outputLabel value="#{vr.deliveredBy} | #{vr.deliveredDateTime}"/>
-		            				</p:column>
-		            				
-		            				<p:column headerText="Pickup By | Time" width="100">
-		            						<p:outputLabel value="#{vr.pickUpBy} | #{vr.pickUpDateTime}"/>
+		            				<p:column headerText="Delivered By" width="100">
+		            						<p:outputLabel value="#{vr.deliveredBy}"/>
 		            				</p:column>
 		            				
 		            				<p:column headerText="Contact No" width="70">
-		            						<p:outputLabel value="#{vr.contactNo}"/>
+		            						<p:commandButton rendered="#{!vr.pickUpBy.equalsIgnoreCase('SENT')}" value="#{vr.contactNo}" actionListener="#{chk.sendCustomerSMS(vr)}" update="vrDataId" disabled="#{vr.pickUpBy==null? true : false}"/>
+		            						<p:outputLabel value="#{vr.contactNo}" rendered="#{vr.pickUpBy.equalsIgnoreCase('SENT')}"/>
+		            				</p:column>
+		            				
+		            				<p:column headerText="SMS Status" width="70">
+		            						<p:outputLabel value="#{vr.pickUpBy.equalsIgnoreCase('SENT')? 'SENT' : 'UNSENT'}"/>
 		            				</p:column>
 		            				
 		            				<p:column headerText="Remarks" width="70">

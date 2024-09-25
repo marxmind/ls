@@ -13,7 +13,7 @@ public class CharacterLibrary {
 		String passcode = readCharacterEncode("5555");
 		String fullName = readCharacterEncode("SHEENA MAE S. APOLISTAR");
 		
-		//System.out.println("Decode:"+ readCharacterDecode("lqd59"));
+		System.out.println("Decode:"+ readCharacterDecode("3333"));
 		
 		System.out.println(uname + "\n" + password + "\n" + passcode +"\n" + fullName);
 		

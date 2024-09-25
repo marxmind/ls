@@ -48,6 +48,7 @@ public class BusinessIndex {
 	private int isEssential;
 	private int category;
 	private String natureOfBusiness;
+	private String contanctNo;
 	
 	private Date dateTmp;
 	private String address;
@@ -110,6 +111,7 @@ public class BusinessIndex {
 					.isEssential(rs.getInt("isessentail"))
 					.category(rs.getInt("category"))
 					.natureOfBusiness(rs.getString("natureofbusiness"))
+					.contanctNo(rs.getString("contactno"))
 					.build();
 			
 			bns.add(index);
@@ -210,6 +212,7 @@ public class BusinessIndex {
 					.map(BusinessMapping.builder().id(rs.getLong("bzid")).build())
 					.isEssential(rs.getInt("isessentail"))
 					.category(rs.getInt("category"))
+					.contanctNo(rs.getString("contactno"))
 					.build();
 			
 			bns.add(index);
@@ -279,8 +282,9 @@ public class BusinessIndex {
 				+ "bzid,"
 				+ "isessentail,"
 				+ "category,"
-				+ "natureofbusiness)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "natureofbusiness,"
+				+ "contactno)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -317,6 +321,7 @@ public class BusinessIndex {
 		ps.setInt(cnt++, st.getIsEssential());
 		ps.setInt(cnt++, st.getCategory());
 		ps.setString(cnt++, st.getNatureOfBusiness());
+		ps.setString(cnt++, st.getContanctNo());
 		
 		LogU.add(st.getDateTrans());
 		LogU.add(st.getBusinessName());
@@ -332,6 +337,7 @@ public class BusinessIndex {
 		LogU.add(st.getIsEssential());
 		LogU.add(st.getCategory());
 		LogU.add(st.getNatureOfBusiness());
+		LogU.add(st.getContanctNo());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -360,7 +366,8 @@ public class BusinessIndex {
 				+ "bzid=?,"
 				+ "isessentail=?,"
 				+ "category=?,"
-				+ "natureofbusiness=?" 
+				+ "natureofbusiness=?,"
+				+ "contactno=?" 
 				+ " WHERE bnid=?";
 		
 		PreparedStatement ps = null;
@@ -387,6 +394,7 @@ public class BusinessIndex {
 		ps.setInt(cnt++, st.getIsEssential());
 		ps.setInt(cnt++, st.getCategory());
 		ps.setString(cnt++, st.getNatureOfBusiness());
+		ps.setString(cnt++, st.getContanctNo());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDateTrans());
@@ -402,6 +410,7 @@ public class BusinessIndex {
 		LogU.add(st.getIsEssential());
 		LogU.add(st.getCategory());
 		LogU.add(st.getNatureOfBusiness());
+		LogU.add(st.getContanctNo());
 		LogU.add(st.getId());
 		
 		
