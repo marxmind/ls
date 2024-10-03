@@ -749,11 +749,11 @@
 	
 	 <div class="speeddial-circle-demo" style="bottom: 72px;left: 0px;float:left; position: fixed;z-index: 1500;font-size: 100% ">
             <p:speedDial radius="120" direction="up-right" type="quarter-circle" showIcon="pi pi-align-justify" keepOpen="true">
-                <p:menuitem title="Open QRCode" icon="pi pi-qrcode" id="startQR" style="background-color: gray"/>
-                <p:menuitem title="Open Camera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();" style="background-color: gray"/>
-                <p:menuitem title="Click to Clear (ctrl+c)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="background-color: gray"/>
-                <p:menuitem title="Click to Save (ctrl+shift+s)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="background-color: gray"/>
-            	<p:menuitem title="Particular Name Lookup (ctrl+o)" icon="pi pi-search" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId" oncomplete="PF('selectDialog').show();" style="background-color: gray"/>
+                <p:menuitem title="Open QRCode" icon="pi pi-qrcode" id="startQR" style="background-color: white"/>
+                <p:menuitem title="Open Camera" icon="pi pi-camera" id="startButton" oncomplete="PF('dlgCam').show();" style="background-color: white"/>
+                <p:menuitem title="Click to Clear (ctrl+c)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid" onclick="PF('selectDialog').hide(1000);PF('dlgTaxCode').hide(1000);PF('dlgCam').hide(1000);"  icon="pi pi-trash" actionListener="#{oRListingBean.clearAllFlds}" style="background-color: white"/>
+                <p:menuitem title="Click to Save (ctrl+shift+s)" update="dataSelectedId dataOrId fldId fldId2 dtlsId totalId searchid fldNoteId  msg" onclick="PF('selectDialog').hide(1000);"  icon="pi pi-save" actionListener="#{oRListingBean.saveData}" style="background-color: white"/>
+            	<p:menuitem title="Particular Name Lookup (ctrl+o)" icon="pi pi-search" actionListener="#{oRListingBean.loadPaymentNames}" update="dataId idSearchPname dataSugId" oncomplete="PF('selectDialog').show();" style="background-color: white"/>
               </p:speedDial>
     </div>        
     

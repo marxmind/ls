@@ -60,6 +60,17 @@ public class ApplicationBackupBean implements Serializable {
                 .build();
         return file;
     }
+    
+public StreamedContent getFileApk() {
+    	
+    	String fileName = GlobalVar.APP_RELEAE_FILE_NAME + ".apk";
+        file = DefaultStreamedContent.builder()
+                .name(fileName)
+                .contentType("application/x-zip")
+                .stream(() -> FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/apps/" + GlobalVar.APP_RELEAE_FILE_NAME + ".apk"))
+                .build();
+        return file;
+    }
 	
     
     

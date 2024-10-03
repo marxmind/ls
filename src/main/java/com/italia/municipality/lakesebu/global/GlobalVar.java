@@ -14,7 +14,7 @@ import com.italia.municipality.lakesebu.enm.AppConf;
 public class GlobalVar {
 	
 	public static String smsMSG = "Hi <recepient>, this is a friendly reminder for the upcoming quarterly business payment. Please disregard this message if already settled.";
-	public static String smsCheckMSG = "Hi <recepient>, your Check with No: <checkno> is now available for release. Please go to treasurer Office";
+	public static String smsCheckMSG = "Hi <recepient>, your Check with No: <checkno> is now available for release. Please go to Treasurer Office";
 	public static final String PRIMARY_DRIVE=System.getenv("SystemDrive");
 	public static final double YEARLY = 12.0;
 	public static final double CEDULA_DIVEDEND = 1000.00;
@@ -79,6 +79,7 @@ public class GlobalVar {
 	public static final String CHECK_XML_UNPROCCESSED=CHECK_XML_FOLDER+SEP+"unproccessed"+SEP;
 	public static final String BACKUP_DATA_FOLDER=PRIMARY_DRIVE + SEP + APP_NAME + SEP + "app_data_backup" + SEP;
 	public static final String BACKUP_ZIP_FILE_NAME="data_backup";
+	public static final String APP_RELEAE_FILE_NAME="app-release";
 	public static final String EPSON_L220="chk_L220";
 	public static final String EPSON_L3110="chk_L3110";
 	public static final String BUSINESS_BILLING="bzbilling";

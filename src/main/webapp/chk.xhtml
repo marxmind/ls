@@ -846,6 +846,12 @@
 										<p:outputLabel value="Offices"/>
 						                <p:selectOneMenu value="#{chk.vrData.offices.id}" style="width: 20em" filter="true" filterMatchMode="contains">
 						                	<f:selectItems value="#{chk.vrOffices}"/>
+						                	<p:ajax event="change" listener="#{chk.loadVrMooe}" update="idvrMooe" />
+						                </p:selectOneMenu>
+						                
+						                <p:outputLabel value="MOOE"/>
+						                <p:selectOneMenu id="idvrMooe" value="#{chk.vrData.mooe.id}" style="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{chk.vrMooes}"/>
 						                </p:selectOneMenu>
 										
 										<p:outputLabel value="Date"/>
@@ -913,8 +919,8 @@
 		            					</p:commandButton>
 		            				</p:column>
 		            				
-		            				<p:column headerText="Create Check" width="70">
-		            						<p:commandButton  icon="pi pi-money-bill"/>
+		            				<p:column headerText="Create" width="20">
+		            						<p:commandButton  icon="pi pi-money-bill" actionListener="#{chk.createCheck(vr)}" update="idPanel" disabled="#{vr.checkno!=null}"/>
 		            				</p:column>
 		            				
 		            				<p:column headerText="Edit" width="20" exportable="false">

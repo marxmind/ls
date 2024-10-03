@@ -32,6 +32,7 @@ import org.primefaces.model.charts.optionconfig.title.Title;
 import com.italia.municipality.lakesebu.controller.AppSetting;
 import com.italia.municipality.lakesebu.controller.BankAccounts;
 import com.italia.municipality.lakesebu.controller.BudgetMonitoring;
+import com.italia.municipality.lakesebu.controller.BusinessIndex;
 import com.italia.municipality.lakesebu.controller.ChequeXML;
 import com.italia.municipality.lakesebu.controller.Chequedtls;
 import com.italia.municipality.lakesebu.controller.Login;
@@ -48,11 +49,15 @@ import com.italia.municipality.lakesebu.enm.BudgetType;
 import com.italia.municipality.lakesebu.enm.VrTransStatus;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
+import com.italia.municipality.lakesebu.licensing.controller.Words;
 import com.italia.municipality.lakesebu.reports.OfficeBudget;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
+import com.italia.municipality.lakesebu.utils.CheckInternetConnection;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
+import com.italia.municipality.lakesebu.utils.SendSMS;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -173,7 +178,9 @@ public class ChkBean implements Serializable{
 	private String searchVr;
 	private List vrStatus;
 	private List vrOffices;
+	private List vrMooes;
 	private List vrAccounts;
+	private VrTransaction selectedVrTransaction;
 	
 	public void clickItem(Chequedtls chk) {
 		setSelectedData(chk);
@@ -622,6 +629,12 @@ public class ChkBean implements Serializable{
 			Collections.reverse(cheques);
 			Application.addMessage(1, "Success", "Successfully saved.");
 			
+			if(getSelectedVrTransaction()!=null) {
+				VrTransaction vr = getSelectedVrTransaction();
+				vr.setCheckno(checkNo);
+				vr.save();
+				setSelectedVrTransaction(null);
+			}
 		}
 		
 	}
@@ -1568,7 +1581,7 @@ public class ChkBean implements Serializable{
 		}
 		
 		if(isOk) {
-			String date = getMonYearId() +"-" + (getMonMonthId()<20? "0"+getMonMonthId(): getMonMonthId());
+			String date = getMonYearId() +"-" + (getMonMonthId()<10? "0"+getMonMonthId(): getMonMonthId());
 			date += "-"+ (getCycle()<10? "0"+getCycle() : getCycle());
 			mon.setAccounts(BankAccounts.builder().bankId(getMonAccId()).build());
 			mon.setDateTrans(date);
@@ -1614,10 +1627,14 @@ public class ChkBean implements Serializable{
 		vrData = VrTransaction.builder()
 				.tmpDateTrans(new Date())
 				.offices(Offices.builder().id(2).build())
+				.mooe(Mooe.builder().id(16).build())
 				.accounts(BankAccounts.builder().bankId(2).build())
 				.status(1)
 				.isActive(1)
 				.build();
+		
+		loadVrMooe();
+	
 	}
 	
 	public void deleteMonBudget(BudgetMonitoring bud) {
@@ -1631,6 +1648,9 @@ public class ChkBean implements Serializable{
 		tr.setDateTrans(DateUtils.convertDate(tr.getTmpDateTrans() , "yyyy-MM-dd"));
 		tr.setIsActive(1);
 		tr.setDeliveredDateTime(DateUtils.getCurrentDateMMDDYYYYTIMEPlain());
+		if(tr.getCheckno().isEmpty()) {
+			tr.setCheckno(null);
+		}
 		
 		tr.save();
 		defaultVr();
@@ -1640,19 +1660,100 @@ public class ChkBean implements Serializable{
 	
 	public void loadLogVR() {
 		String sql = "";
+		vrData.setOffices(Offices.builder().id(2).build());
 		if(getSearchVr()!=null && !getSearchVr().isEmpty()) {
 			sql += " AND vr.payor LIKE '%"+ getSearchVr() +"%'";
+			sql += " ORDER By vr.daterf DESC";
+		}else {
+			sql = " ORDER By vr.daterf DESC LIMIT 10";
 		}
+		
+		
+		
 		vrTrans = VrTransaction.retrieve(sql, new String[0]);
 	}
 	public void clickVR(VrTransaction vr) {
 			vr.setTmpDateTrans(DateUtils.convertDateString(vr.getDateTrans(),"yyyy-MM-dd"));
 			setVrData(vr);
+			loadVrMooe();
 	}
 	public void deleteVR(VrTransaction vr) {
 		vr.delete();
 		loadLogVR();
 		Application.addMessage(1, "Success", "Successfully saved");	
+	}
+	
+	public void sendCustomerSMS(VrTransaction rs) {
+		if(rs!=null && rs.getId()>0 && !rs.getContactNo().isEmpty() && !rs.getCheckno().isEmpty() && VrTransStatus.RELEASING.getId()==rs.getStatus()) {
+			if(CheckInternetConnection.isInternetPresent("https://semaphore.co/")) {
+				System.out.println("The site is accessible...");
+				String contactNo = rs.getContactNo();
+				contactNo = contactNo.replace("+63", "");
+				int len = contactNo.length();
+				if(len==11) {
+					String api_key = Words.getTagName("sms-api-key");
+					String post_url_msg = Words.getTagName("sms-post-url-msg");
+					String user_agent = Words.getTagName("sms-user-agent");
+					String msg = GlobalVar.smsCheckMSG.replace("<recepient>", rs.getDeliveredBy());
+					msg = GlobalVar.smsCheckMSG.replace("<checkno>", rs.getCheckno());
+					
+					System.out.println("sending info "+ msg + " number: " + contactNo);
+					String[] response = SendSMS.sendSMS(api_key, contactNo, msg,post_url_msg, user_agent);
+					//String[] response = {"SUCCESS"};
+					//String[] response2 = SendSMS.sendSMS(api_key, contactNo, msg,post_url_msg, user_agent);
+					//String[] response = {"SUCCESS"};
+					if("SUCCESS".equalsIgnoreCase(response[0])) {
+						Application.addMessage(1, "Success", "You have successfully sent the message to " + rs.getPayor() );
+						rs.setPickUpBy("SENT");
+						rs.save();
+						loadLogVR();
+						}else {
+						Application.addMessage(3, "Error", "Sending sms was not successfully. Please try again.");
+					}
+				}else {
+					Application.addMessage(3, "Error", "Please check the contact number of the client. It seems that is not correct.");
+				}
+			}else {
+				System.out.println("Not accessible at this moment....");
+				Application.addMessage(3, "Error", "Provider is not available or the internet is not present at this moment. Please re-send the notification to the user once online.");
+			}
+		}else {
+			Application.addMessage(3, "Error", "Contact no is not available or check status is not yet change to for releasing");
+		}
+	}
+	
+	public void createCheck(VrTransaction rs) {
+		setSelectedVrTransaction(rs);
+		PrimeFaces pf = PrimeFaces.current();
+		pf.executeScript("PF('dlgVR').hide(1000)");
+		;
+	
+		setFundId(rs.getAccounts().getBankId());
+		setOfficeId(rs.getOffices().getId());
+		//System.out.println("Office Id: " + chk.getOffice().getId());
+		if(rs.getMooe()!=null) {
+			setMooeId(rs.getMooe().getId());
+		}
+		//setYearDataClick(Integer.valueOf(chk.getDate_disbursement().split("-")[0]));
+		loadMooeForOffice();
+		//setCheckSeriesNo(chk.getCheckNo());
+		setPayTo(rs.getPayor());
+		//setNatureOfPayment(getMooeMap().get(chk.getMoe().getId()).getDescription());
+		setInputAmount(Currency.formatAmount(rs.getAmount()));
+		//setStatusId(chk.getStatus());
+		setRemarks(rs.getRemarks());
+		//setTreasPersonnelId(chk.getSignatory1());
+		//setOfficialId(chk.getSignatory2());
+		generateWords();//generate words
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void loadVrMooe() {
+		vrMooes = new ArrayList<>();
+		for(Mooe mooe : Mooe.retrieveData(vrData.getOffices().getId(), DateUtils.getCurrentYear()).values()) {
+			vrMooes.add(new SelectItem(mooe.getId(), mooe.getCode() + " " + mooe.getDescription()));
+		}
 	}
 	
 }

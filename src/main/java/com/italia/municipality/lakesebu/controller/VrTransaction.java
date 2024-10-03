@@ -49,6 +49,7 @@ public class VrTransaction {
 	
 	private BankAccounts accounts;
 	private Offices offices;
+	private Mooe mooe;
 	
 	private String statusName;
 	private Date tmpDateTrans;
@@ -104,6 +105,7 @@ public class VrTransaction {
 					.status(rs.getInt("status"))
 					.accounts(banks.get(rs.getInt("bankid")))
 					.offices(offices.get(rs.getLong("offid")))
+					.mooe(Mooe.builder().id(rs.getLong("moid")).build())
 					.statusName(VrTransStatus.val(rs.getInt("status")).getName())
 					.checkno(rs.getString("checkno"))
 					.build();
@@ -174,8 +176,9 @@ public class VrTransaction {
 				+ "status,"
 				+ "bankid,"
 				+ "offid,"
-				+ "checkno)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "checkno,"
+				+ "moid)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -212,6 +215,7 @@ public class VrTransaction {
 		ps.setInt(cnt++, st.getAccounts().getBankId());
 		ps.setLong(cnt++, st.getOffices().getId());
 		ps.setString(cnt++, st.getCheckno());
+		ps.setLong(cnt++, st.getMooe().getId());
 		
 		LogU.add(st.getDateTrans());
 		LogU.add(st.getPayor());
@@ -227,6 +231,7 @@ public class VrTransaction {
 		LogU.add(st.getAccounts().getBankId());
 		LogU.add(st.getOffices().getId());
 		LogU.add(st.getCheckno());
+		LogU.add(st.getMooe().getId());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -255,7 +260,8 @@ public class VrTransaction {
 				+ "status=?,"
 				+ "bankid=?,"
 				+ "offid=?,"
-				+ "checkno=?" 
+				+ "checkno=?,"
+				+ "moid=?" 
 				+ " WHERE rfid=?";
 		
 		PreparedStatement ps = null;
@@ -281,6 +287,7 @@ public class VrTransaction {
 		ps.setInt(cnt++, st.getAccounts().getBankId());
 		ps.setLong(cnt++, st.getOffices().getId());
 		ps.setString(cnt++, st.getCheckno());
+		ps.setLong(cnt++, st.getMooe().getId());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDateTrans());
@@ -296,6 +303,7 @@ public class VrTransaction {
 		LogU.add(st.getAccounts().getBankId());
 		LogU.add(st.getOffices().getId());
 		LogU.add(st.getCheckno());
+		LogU.add(st.getMooe().getId());
 		LogU.add(st.getId());
 		
 		LogU.add("executing for saving...");
