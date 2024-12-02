@@ -1,7 +1,7 @@
 {
   "server" : [
     {
-      "serverName" : "10.158.1.15",
+      "serverName" : "10.158.1.16",
       "port" : "8081"
     }
   ]
