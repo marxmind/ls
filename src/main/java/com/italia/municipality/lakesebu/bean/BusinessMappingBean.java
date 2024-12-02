@@ -31,48 +31,78 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 import com.italia.municipality.lakesebu.controller.BusinessMapping;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.utils.DateUtils;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Named("mapping")
 @ViewScoped
+@Data
 public class BusinessMappingBean implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1348798989656L;
-	@Setter @Getter private List<BusinessMapping> maps;
-	@Setter @Getter private List<BusinessMapping> mapsTemp;
-	@Setter @Getter private String searchParam;
-	@Setter @Getter private BarChartModel barangayModel;
-	@Setter @Getter private BarChartModel permitModel;
-	@Setter @Getter private BarChartModel rentedModel;
+	private List<BusinessMapping> maps;
+	private List<BusinessMapping> mapsTemp;
+	private String searchParam;
+	private BarChartModel barangayModel;
+	private BarChartModel permitModel;
+	private BarChartModel rentedModel;
 	
-	@Setter @Getter private BarChartModel stackedBarModel;
-	@Setter @Getter private List<BusinessMapping> dataInfos;
+	private BarChartModel stackedBarModel;
+	private List<BusinessMapping> dataInfos;
 	
-	@Setter @Getter private MapModel allBusiness;
-	@Setter @Getter private String centerMap;
+	private MapModel allBusiness;
+	private String centerMap;
 	private Marker marker;
-	@Setter @Getter private BusinessMapping selectedMapData;
-	@Setter @Getter Map<String, BusinessMapping> mapBiz;
+	private BusinessMapping selectedMapData;
+	private Map<String, BusinessMapping> mapBiz;
+	
+	private List years;
+	private int year;
 	
 	@PostConstruct
 	private void init() {
+		//mapBiz = new LinkedHashMap<String, BusinessMapping>();
+		//int yearNow = DateUtils.getCurrentYear();
+		//maps = BusinessMapping.retrieve(" ORDER BY owner", new String[0]);
+		year = DateUtils.getCurrentYear();
 		mapBiz = new LinkedHashMap<String, BusinessMapping>();
-		maps = BusinessMapping.retrieve(" ORDER BY owner", new String[0]);
+		maps = BusinessMapping.retrieve(" AND yearmap="+ getYear() +" ORDER BY owner", new String[0]);
+		
+		reloadData();
+		
+		years = new ArrayList<>();
+		
+		for(int y=2022; y<=year; y++) {
+			years.add(new SelectItem(y, y+""));
+		}
+		
+	}
+	
+	public void reloadData() {
+		mapBiz = new LinkedHashMap<String, BusinessMapping>();
+		maps = BusinessMapping.retrieve(" AND yearmap="+ getYear() +" ORDER BY owner", new String[0]);
+
 		mapsTemp = maps;
 		barangay();
 		permit();
 		rented();
 		barangayGraph();
 		openMap();
+	}
+	
+	public void changeYear() {
+		reloadData() ;
+		businessList();
 	}
 	
 	public void load() {
@@ -658,6 +688,7 @@ public class BusinessMappingBean implements Serializable{
 		System.out.println("Business Picture: " + bz.getPictureOfBusiness());
 		copyPhoto(bz.getPictureOfBusiness());
 		copyPhoto(bz.getPictureOfOwner());
+		copyPhoto(bz.getOutsidePicture()	);
 		setSelectedMapData(bz);
 	}
 

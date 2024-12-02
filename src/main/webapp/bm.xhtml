@@ -55,10 +55,17 @@
 			<p:ajax event="tabChange" listener="#{mapping.onTabChange}" update="mapDataId barangayDataId permitDataId rentedDataId combineDataId barDataInfo"/>
 			
 			<p:tab title="Business List">
-			
+				<div class="ui-inputgroup">
 				<p:inputText value="#{mapping.searchParam}" placeholder="Search..." style="width: 30em; float: left">
-				<p:ajax event="keyup" listener="#{mapping.businessList}" update="mapDataId" delay="500"/>
-			</p:inputText>
+					<p:ajax event="keyup" listener="#{mapping.businessList}" update="mapDataId" delay="500"/>
+				</p:inputText>
+				
+				<p:selectOneMenu value="#{mapping.year}" style="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{mapping.years}"/>
+						                	<p:ajax event="change" listener="#{mapping.changeYear}" update="mapDataId" />
+				</p:selectOneMenu>
+				</div>
+				
 			<p:dataTable id="mapDataId" value="#{mapping.maps}" var="pt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
@@ -88,7 +95,7 @@
                          </p:column>
                          
                          <p:column headerText="Store" width="20">
-                         	<p:commandButton icon="pi pi-user" actionListener="#{mapping.showStore(pt)}"  update="imgId1 imgId2" onclick="PF('picDialog').show();"/>
+                         	<p:commandButton icon="pi pi-user" actionListener="#{mapping.showStore(pt)}"  update="imgId1 imgId2 imgId3" onclick="PF('picDialog').show();"/>
                          </p:column>
                          
                          <p:column headerText="Date" width="50">
@@ -101,6 +108,10 @@
 		            	 
 		            	 <p:column headerText="Owner" width="100">
 		            		<p:outputLabel  value="#{pt.owner}"/>
+		            	 </p:column>
+		            	 
+		            	 <p:column headerText="Contact" width="100">
+		            		<p:outputLabel  value="#{pt.mobile}"/>
 		            	 </p:column>
 		            	
 		            	 <p:column headerText="Business Name" width="150">
@@ -200,9 +211,10 @@
 	
 	<p:dialog id="picDialogId" widgetVar="picDialog" width="850" height="400" modal="true" position="center top" closeOnEscape="true">
 		
-					<p:panelGrid layout="grid" columns="2">
+					<p:panelGrid layout="grid" columns="3">
 						<p:graphicImage id="imgId1" name="/images/businessmap/#{mapping.selectedMapData.pictureOfOwner}" height="400" width="400"/>
 						<p:graphicImage id="imgId2" name="/images/businessmap/#{mapping.selectedMapData.pictureOfBusiness}" height="400" width="400"/>
+						<p:graphicImage id="imgId3" name="/images/businessmap/#{mapping.selectedMapData.outsidePicture}" height="400" width="400"/>
 					</p:panelGrid>
 					
 		</p:dialog>

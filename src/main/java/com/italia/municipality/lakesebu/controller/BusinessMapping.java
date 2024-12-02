@@ -41,6 +41,10 @@ public class BusinessMapping {
 	private String mapBy;
 	private int year;
 	
+	private int cntEmployee;
+	private String outsidePicture;
+	private String mobile;
+	
 	private int count;
 	private int countWithPermit;
 	private int countNoPermit;
@@ -111,6 +115,9 @@ public class BusinessMapping {
 					.mapBy(rs.getString("mapby"))
 					.address(address)
 					.year(rs.getInt("yearmap"))
+					.cntEmployee(rs.getInt("cntemp"))
+					.outsidePicture(rs.getString("outsidepicture"))
+					.mobile(rs.getString("mobile"))
 					.build();
 			
 			trans.add(mk);

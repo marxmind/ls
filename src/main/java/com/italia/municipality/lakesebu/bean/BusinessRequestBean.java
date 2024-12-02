@@ -22,6 +22,7 @@ import com.italia.municipality.lakesebu.controller.WaterRentalsPayment;
 import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.BusinessRequestType;
 import com.italia.municipality.lakesebu.global.GlobalVar;
+import com.italia.municipality.lakesebu.licensing.controller.BusinessCustomer;
 import com.italia.municipality.lakesebu.licensing.controller.BusinessEngaged;
 import com.italia.municipality.lakesebu.licensing.controller.DocumentFormatter;
 import com.italia.municipality.lakesebu.licensing.controller.Words;
@@ -111,7 +112,11 @@ public class BusinessRequestBean implements Serializable{
 	public void selectedBusiness(Livelihood lv) {
 		BusinessRequest bz = new BusinessRequest();
 		bz.setOldBusinessName(lv.getBusinessName());
-		bz.setOldOwner(lv.getTaxPayer().getFullname());
+		BusinessCustomer customer = lv.getTaxPayer();
+		String ownerName = customer.getFirstname() + " " + customer.getMiddlename() + " " + customer.getLastname();
+		
+		//bz.setOldOwner(lv.getTaxPayer().getFullname());
+		bz.setOldOwner(ownerName);
 		String address = lv.getPurokName().isEmpty()? "" : lv.getPurokName() + ", ";
 			   address += lv.getBarangay().getName()+", ";
 			   address += lv.getMunicipality().getName() + ", ";
