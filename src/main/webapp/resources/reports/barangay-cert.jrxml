@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="barangay-cert" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dd70131c-816e-4c62-807d-6e25741f3c27">
+	<parameter name="PARAM_BARANGAY" class="java.lang.String"/>
+	<parameter name="PARAM_ISSUED_DATE" class="java.lang.String"/>
+	<parameter name="PARAM_BUSINESS_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_BUSINESS_OWNER" class="java.lang.String"/>
+	<parameter name="PARAM_CAPTAIN_NAME" class="java.lang.String"/>
+	<parameter name="PARAM_SIGNATURE" class="java.io.InputStream"/>
+	<parameter name="PARAM_RECEIPTNO" class="java.lang.String"/>
+	<parameter name="PARAM_BUSINESS_ADDRESS" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="144" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="560" height="15" uuid="cd5318e9-e5a5-4add-8c7e-bc984aaa5a85">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Republic of the Philippines]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="16" width="560" height="15" uuid="0496bcf0-125e-40b4-bc47-cb3b7ded84e1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Province of South Cotabato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="31" width="560" height="15" uuid="3b4e7298-367d-422b-a322-81f10be5ac3d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Municipality of Lake Sebu]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="0" y="54" width="560" height="16" uuid="1445aa18-349d-4e8f-a818-91dc14f16137">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BARANGAY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="77" width="560" height="15" uuid="6bd1428e-c061-4b44-b536-31fc6c230541">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[OFFICE OF THE PUNONG BARANGAY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="108" width="560" height="26" uuid="96029c2f-0032-46cf-9783-157e6f722988">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Tw Cen MT Condensed Extra Bold" size="24"/>
+				</textElement>
+				<text><![CDATA[BARANGAY CERTIFICATION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="466" splitType="Stretch">
+			<staticText>
+				<reportElement x="65" y="23" width="150" height="16" uuid="80605d61-2c5c-4012-880a-8291c41e3b89">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Pursuant to the provision of ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="23" width="191" height="16" uuid="2f0c958b-72f3-48fb-8040-409eccb67147">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[(   Otherwise     known     as      the]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="23" width="130" height="16" uuid="0b89fc0b-00c8-48ef-bc13-fe539e8af900">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Republic Act No. 7160]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="39" width="520" height="16" uuid="92aa1001-5f9a-4d0a-b3dd-ebe4d364ced3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Local Government Code of 1991) and Barangay Ordinance. This is subject to   compliance   with]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="55" width="400" height="16" uuid="e654d2bc-62bd-4f79-b91e-4c8c3b70f6f1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[the requirements of other Government Agencies and Instrumentalities, this]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="304" width="264" height="16" uuid="b84221f6-532a-4e27-856f-4a29f904b951">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_ISSUED_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="416" y="55" width="120" height="16" uuid="1f330eb6-7b40-4d3d-a2ab-be3da79e07b4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Barangay Certificate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="71" width="400" height="16" uuid="c4adf828-2777-4e5a-beb6-d9a6e3fec593">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[is hereby granted to:]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="16" y="109" width="498" height="18" uuid="9a508b7b-acd0-4de9-a625-e066fa3f96c5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BUSINESS_OWNER}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="17" y="156" width="498" height="18" uuid="c1df6697-3890-46f5-9597-d36f5a13fef9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BUSINESS_NAME}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="18" y="208" width="498" height="18" uuid="a45fda11-4fde-49bf-a62e-e6129ee6dd60">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_BUSINESS_ADDRESS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="127" width="498" height="16" uuid="da2c26f5-b35c-46a9-8061-d7e2daee68cc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Registered Name of Owner]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="174" width="498" height="16" uuid="524e25f2-8cc8-4ad8-9c14-63876d18257e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Registered Name of Business]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="226" width="498" height="16" uuid="380784ac-aaee-4827-95ac-51f0f67346bc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Location of Business]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="288" width="72" height="16" uuid="d80c27db-8e1b-43d3-be2a-90302cb669b9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Purpose:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="288" width="264" height="16" uuid="a4c1bed7-8b1f-422e-80f0-8738b0363bde">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[BUSINESS PERMIT RENEWAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="304" width="72" height="16" uuid="5393b1b8-4774-46cb-8b60-bc18b956b278">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Issued Date:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="424" width="264" height="16" uuid="d2110c17-4895-4c1d-8393-2c9060735947">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_CAPTAIN_NAME}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="345" y="330" width="155" height="110" uuid="00ea11ce-90a3-4456-9150-7606edfe8bc6"/>
+				<imageExpression><![CDATA[$P{PARAM_SIGNATURE}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="18" y="320" width="72" height="16" uuid="d7723d60-6b8a-4cb3-8efd-c88d932a5fa6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[OR Number:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="320" width="264" height="16" uuid="a5d05715-a8c2-47d2-8b7f-1ae6f62e52ea">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_RECEIPTNO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

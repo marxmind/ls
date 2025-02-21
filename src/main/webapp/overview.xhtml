@@ -149,9 +149,17 @@
             	<p:dataTable id="monthlyColId" rowHover="true" showGridlines="false" var="pk" value="#{ovBean.collections}" lazy="false" stickyHeader="true" stickyTopAt=".layout-topbar" emptyMessage="No match data found with given criteria">
 		            
 		            <f:facet name="header">
+		            
+		            	
+			            <p:selectOneMenu id="fundIdSearch" value="#{ovBean.fundIdSearch}"  filterMatchMode="contains" filter="true" style="width: 20em">
+								<f:selectItems value="#{ovBean.fundTypesSearch}"/>
+								<p:ajax event="change" listener="#{ovBean.reloadTab}" update="issuedCheckId multipleCheckId monthlyCheckId highestissuedCheckId monthlyRCDId monthlyColId monthlyCollectorId dailyCollectorId accId"/>
+						</p:selectOneMenu>
+		            
 			            <p:outputPanel>
 			                <h:outputText value="Grand Total: #{ovBean.grandTotalRunningCollection}" style="font-weight: bold; font-size: 2em"/>
 			            </p:outputPanel>
+			            
 			        </f:facet>
 		            
 		            

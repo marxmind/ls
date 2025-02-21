@@ -56,4 +56,5 @@ public class Barangay {
 		
 		return bars;
 	}
+	
 }

@@ -74,6 +74,7 @@ import com.italia.municipality.lakesebu.enm.ClientStatus;
 import com.italia.municipality.lakesebu.enm.ClientTransactionType;
 import com.italia.municipality.lakesebu.enm.FormStatus;
 import com.italia.municipality.lakesebu.enm.FormType;
+import com.italia.municipality.lakesebu.enm.FundType;
 import com.italia.municipality.lakesebu.enm.Months;
 import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.Customer;
@@ -284,6 +285,11 @@ public class ORListingBean implements Serializable{
 	
 	@Setter @Getter private Map<Long, TaxCodeGroup> taxCodeGroupMapData;
 	
+	@Setter @Getter private int fundId;
+	@Setter @Getter private List fundTypes;
+	@Setter @Getter private int fundIdSearch;
+	@Setter @Getter private List fundTypesSearch;
+	
 	public void validateSeries() {
 		boolean isExist = ORListing.isExistingSeries(getCollectorId(), getOrNumber(), getFormTypeId());
 		if(isExist) {
@@ -333,6 +339,7 @@ public class ORListingBean implements Serializable{
 	
 	
 	@PostConstruct
+	@SuppressWarnings("unchecked")
 	public void init() {
 		
 		//suggestedCloud = new DefaultTagCloudModel();
@@ -364,6 +371,15 @@ public class ORListingBean implements Serializable{
 			}
 		}
 		
+		fundId = FundType.GENERAL_FUND.getId();//default Fund Type
+		fundIdSearch = 0; //default search Fund Type which is all fund type
+		fundTypes = new ArrayList<>();
+		fundTypesSearch = new ArrayList<>();
+		fundTypesSearch.add(new SelectItem(0, "All Fund Types"));
+		for(FundType type : FundType.values()){
+			fundTypes.add(new SelectItem(type.getId(), type.getName()));
+			fundTypesSearch.add(new SelectItem(type.getId(), type.getName()));
+		}
 		
 		System.out.println("Initialized....");
 		if(!alreadyRetrieve) {
@@ -724,6 +740,11 @@ public class ORListingBean implements Serializable{
 		}
 		
 		//System.out.println("Check filtered status : " + isFiltered());
+		
+		
+		if(getFundIdSearch()>0) {
+			sql += " AND orl.fundid=" + getFundIdSearch();
+		}
 		
 		if(!isFiltered()) {
 		
@@ -2228,6 +2249,8 @@ public class ORListingBean implements Serializable{
 			or.setDateTrans(DateUtils.convertDate(getDateTrans(), "yyyy-MM-dd"));
 			or.setFormType(getFormTypeId());
 			or.setCustomer(customer);
+			or.setFundId(getFundId());
+			
 			try{or.setOrNumber(getOrNumber().trim());}catch(Exception e){}
 			Collector col = new Collector();
 			col.setId(getCollectorId());
@@ -2466,6 +2489,7 @@ public class ORListingBean implements Serializable{
 		setOrNumber(or.getOrNumber());
 		setFormTypeId(or.getFormType());
 		setNotes(or.getNotes());
+		setFundId(or.getFundId());
 		if(or.getCustomer()!=null) {
 			//String fName=or.getCustomer().getFirstname();
 			//String mName=or.getCustomer().getMiddlename();

@@ -205,8 +205,13 @@
 					<p:inputText placeholder="Address" value="#{oRListingBean.address}" style="width: 15em"/>
 					
 				</p:panelGrid>
-				<p:panelGrid id="fldNoteId" columns="1" layout="grid">
-					<p:inputTextarea value="#{oRListingBean.notes}" cols="70" rows="1" placeholder="You can add remarks here except ctc and corporation"/>
+				<p:panelGrid id="fldNoteId" columns="2" layout="grid">
+					<p:inputTextarea value="#{oRListingBean.notes}" cols="70" rows="3" placeholder="You can add remarks here except ctc and corporation"/>
+					
+					
+					<p:selectOneMenu id="fundIds" value="#{oRListingBean.fundId}"  filterMatchMode="contains" filter="true" style="width: 15em">
+								<f:selectItems value="#{oRListingBean.fundTypes}"/>
+					</p:selectOneMenu>
 				</p:panelGrid>
 				
 				<div id="ctid" style="display: none">
@@ -385,10 +390,13 @@
                 		
 			    			<span class="ui-input-icon-left">
 			    				<i class="pi pi-search" />
-				    			<p:inputText id="searchid" value="#{oRListingBean.searchName}" placeholder="Search Name..." style="width: 60.2em">
+				    			<p:inputText id="searchid" value="#{oRListingBean.searchName}" placeholder="Search Name..." style="width: 30.2em">
 				    				<p:ajax event="keyup" listener="#{oRListingBean.load}" update="dataOrId dtlsId" delay="800"/>
 				    			</p:inputText>
 			    			</span>
+			    			<p:selectOneMenu id="fundIdSearch" value="#{oRListingBean.fundIdSearch}"  filterMatchMode="contains" filter="true" style="width: 15em">
+								<f:selectItems value="#{oRListingBean.fundTypesSearch}"/>
+							</p:selectOneMenu>
 			    			<p:inputText value="#{oRListingBean.limitData}" placeholder="provide limit in number" style="width: 5em"/>
 			    			<p:selectBooleanButton id="filId" value="#{oRListingBean.filtered}" onLabel="Not Filtered - DESC"
 							offLabel="Filtered - ASC" onIcon="ui-icon-check" offIcon="ui-icon-close" >

@@ -6,7 +6,8 @@ public enum BusinessType {
 	NEW(0, "NEW"),
 	RENEW(1, "RENEW"),
 	ADDED(2, "ADDED"),//3 is reserve
-	OTHERS(4, "OTHERS");
+	OTHERS(4, "OTHERS"),
+	BARANGAY_CERT(5, "BARANGAY CERTIFICATE");
 	
 	private int id;
 	private String name;

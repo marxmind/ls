@@ -177,10 +177,13 @@ public class FishcageBillingStatment {
 			
 			int num = Integer.valueOf(vals[2]);
 			
-			if(!year.equalsIgnoreCase(DateUtils.getCurrentYear()+"")) {
+			System.out.println("Before: year: " + year + " num: " + num);
+			int nowYear = DateUtils.getCurrentYear();
+			if(!year.equalsIgnoreCase(nowYear+"")) {
 				num = 0;//reset to zero
+				year = nowYear + "";
 			}
-			
+			System.out.println("After: year: " + year + " num: " + num);
 			num += 1;
 			String numLen = num+"";
 			int len = numLen.length();
@@ -191,7 +194,7 @@ public class FishcageBillingStatment {
 				case 4: newControl = suffix + "-" + year + "-" + num; break;
 			}
 			
-			
+			System.out.println("newControl: " + newControl);
 			
 		}
 		

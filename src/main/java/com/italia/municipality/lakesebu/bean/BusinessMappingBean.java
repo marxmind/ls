@@ -82,7 +82,7 @@ public class BusinessMappingBean implements Serializable{
 		
 		years = new ArrayList<>();
 		
-		for(int y=2022; y<=year; y++) {
+		for(int y=2022; y<=DateUtils.getCurrentYear(); y++) {
 			years.add(new SelectItem(y, y+""));
 		}
 		
@@ -101,6 +101,7 @@ public class BusinessMappingBean implements Serializable{
 	}
 	
 	public void changeYear() {
+		setSearchParam("");
 		reloadData() ;
 		businessList();
 	}

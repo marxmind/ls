@@ -55,7 +55,7 @@ public class OrlistingXML {
 	private String fullName;
 	private String birthDate;
 	private String civilStatus;
-	
+	private String fundId;
 	private String userId;
 	
 	private String dateTrans;
@@ -377,6 +377,7 @@ public class OrlistingXML {
     			.status(Integer.valueOf(xml.getOrStatus()))
     			.formType(Integer.valueOf(xml.getFormType()))
     			.orNumber(xml.getOrNumber())
+    			.fundId(Integer.valueOf(xml.getFundId()))
     			.isActive(Integer.valueOf(xml.getIsActive()))
     			.forminfo(formInfo)
     			.collector(col)
@@ -518,6 +519,8 @@ public class OrlistingXML {
 				try{xml.setIsActive(node.selectSingleNode("isactive").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				try{xml.setFormInfo(StringUtils.convertToUTF8(node.selectSingleNode("forminfo").getText()));}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
 				
+				try{xml.setFundId(node.selectSingleNode("fundid").getText());}catch(Exception e) {System.out.println("count: " + count++ + " reason: " + e.getStackTrace());}
+				
 				List<PaymentName> pynames = new ArrayList<PaymentName>();
 				List<Node> dtls = document.selectNodes("/orlisting/details/payname");
 				for(Node n : dtls) {
@@ -580,7 +583,7 @@ public class OrlistingXML {
 			sb.append("<ornumber>"+ ors.getOrNumber() +"</ornumber>");sb.append("\n");
 			sb.append("<collectorid>"+ ors.getCollector().getId() +"</collectorid>");sb.append("\n");
 			sb.append("<isactive>"+ ors.getIsActive() +"</isactive>");sb.append("\n");
-			
+			sb.append("<fundid>"+ ors.getFundId() +"</fundid>");sb.append("\n");
 			
 			
 			if(ors.getForminfo()!=null && !ors.getForminfo().isEmpty() && ors.getForminfo().contains("<->")) {

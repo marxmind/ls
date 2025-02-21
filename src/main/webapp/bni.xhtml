@@ -127,7 +127,7 @@
 							<p:inputText value="#{bnIndex.businessIndex.purok}" style="width: 15em"/>
 							
 							<p:outputLabel value="Contact No"/>
-							<p:inputText value="#{bnIndex.businessIndex.contanctNo}" style="width: 15em"/>
+							<p:inputText id="contId" value="#{bnIndex.businessIndex.contanctNo}" style="width: 15em"/>
 							
 							<p:outputLabel value="Link Map"/>
 							<p:commandButton id="mapId" icon="pi pi-link" value="#{bnIndex.businessIndex.map.id>0? 'linked' : 'unlinked'}" style="width: 15em;#{bnIndex.businessIndex.map.id>0? '':'background-color: red'}" actionListener="#{bnIndex.loadMap}" oncomplete="PF('dlgMap').show()" update="mapDataId"/>
@@ -343,7 +343,7 @@
 	</div><!-- Card -->
 	
 	
-	<p:dialog widgetVar="dlgAddDetails"  width="1200" height="600" position="center top" header="Business Details" showHeader="false">
+	<p:dialog widgetVar="dlgAddDetails"  width="1500" height="600" position="center top" header="Business Details" showHeader="false">
 	
 	
 						<div class="ui-inputgroup" style="float:right">
@@ -451,7 +451,7 @@
 								                  
 		            				</p:column>
 		            				
-		            				<p:column headerText="Action" width="70">
+		            				<p:column headerText="Action" width="120">
 		            					<div class="ui-inputgroup">
 		            						<p:commandButton update="dataDtls msg" value="Delete" icon="pi pi-trash" actionListener="#{bnIndex.deleteDtls(rt)}">
 		            							<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
@@ -459,6 +459,8 @@
 		            						<p:commandButton update="dataDtls msg" value="Save" icon="pi pi-save" actionListener="#{bnIndex.saveTrans(rt)}">
 							    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
 							    			</p:commandButton>
+											<p:commandButton icon="pi pi-file-pdf" value="Certificate" title="Print in PDF" actionListener="#{bnIndex.printBarangayCert(rt)}" ajax="false" immediate="false" rendered="#{rt.typeOf==5}"/>
+		            				 			
 		            					</div>
 		            				</p:column>
 		            				
@@ -476,6 +478,10 @@
 			<p:inputText value="#{bnIndex.searchBusinessMap}" placeholder="Search..." style="width: 30em; float: left">
 				<p:ajax event="keyup" listener="#{bnIndex.loadMap}" update="mapDataId" delay="800"/>
 			</p:inputText>
+			<p:selectOneMenu value="#{bnIndex.yearMap}" style="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{bnIndex.yearsMap}"/>
+						                	<p:ajax event="change" listener="#{bnIndex.loadMap}" update="mapDataId" />
+				</p:selectOneMenu>
 			</div>
 			
 			
@@ -486,7 +492,7 @@
                          >
                          
                          <p:column headerText="Select" width="30" exportable="false">
-		                        <p:commandButton icon="pi pi-thumbs-up" update="mapId" actionListener="#{bnIndex.selectedMap(pt)}" oncomplete="PF('dlgMap').hide()"/>
+		                        <p:commandButton icon="pi pi-thumbs-up" update="mapId contId" actionListener="#{bnIndex.selectedMap(pt)}" oncomplete="PF('dlgMap').hide()"/>
 		                 </p:column>
                          
                          <p:column headerText="Year" width="50">
@@ -495,6 +501,10 @@
 		            	 
 		            	 <p:column headerText="Owner" width="100">
 		            		<p:outputLabel  value="#{pt.owner}"/>
+		            	 </p:column>
+		            	 
+		            	  <p:column headerText="Contact" width="100">
+		            		<p:outputLabel  value="#{pt.mobile}"/>
 		            	 </p:column>
 		            	
 		            	 <p:column headerText="Business Name" width="150">
@@ -511,9 +521,10 @@
 	
 	<p:dialog id="picDialogId" widgetVar="picDialog" width="850" height="400" modal="true" position="center top" closeOnEscape="true">
 		
-					<p:panelGrid layout="grid" columns="2">
+					<p:panelGrid layout="grid" columns="3">
 						<p:graphicImage id="imgId1" name="/images/businessmap/#{bnIndex.selectedMapData.pictureOfOwner}" height="400" width="400"/>
 						<p:graphicImage id="imgId2" name="/images/businessmap/#{bnIndex.selectedMapData.pictureOfBusiness}" height="400" width="400"/>
+						<p:graphicImage id="imgId3" name="/images/businessmap/#{bnIndex.selectedMapData.outsidePicture}" height="400" width="400"/>
 					</p:panelGrid>
 					
    </p:dialog>

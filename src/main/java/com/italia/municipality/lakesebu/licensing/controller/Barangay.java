@@ -5,7 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import com.italia.municipality.lakesebu.database.WebTISDatabaseConnect;
 import com.italia.municipality.lakesebu.utils.LogU;
 import lombok.AllArgsConstructor;
@@ -147,6 +151,39 @@ public class Barangay {
 		}catch(Exception e){e.getMessage();}
 		
 		return bars;
+	}
+	
+	public static Map<Integer, Barangay> barangays(){
+		Map<Integer, Barangay> mapData = new LinkedHashMap<Integer, Barangay>();
+		
+		String sql = "SELECT * FROM barangay WHERE bgisactive=1 AND bgid>0";
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = WebTISDatabaseConnect.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			Barangay bar = new Barangay();
+			try{bar.setId(rs.getInt("bgid"));}catch(NullPointerException e){}
+			try{bar.setName(rs.getString("bgname"));}catch(NullPointerException e){}
+			try{bar.setIsActive(rs.getInt("bgisactive"));}catch(NullPointerException e){}
+		
+			mapData.put(bar.getId(), bar);
+			
+			
+			}
+		
+		rs.close();
+		ps.close();
+		WebTISDatabaseConnect.close(conn);
+		}catch(Exception e){e.getMessage();}	
+			
+		return mapData;
 	}
 	
 	public static Barangay retrieve(int id){

@@ -96,4 +96,5 @@ public class GlobalVar {
 	public static final String RCD_BACK = "rcdv2-2";
 	public static final String FORM10 = "form10";
 	public static final String FORM11 = "form12";
+	public static final String BARANGAY_CERT = "barangay-cert";
 }

@@ -1,6 +1,10 @@
 package com.italia.municipality.lakesebu.bean;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -8,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +26,10 @@ import org.primefaces.model.map.Marker;
 import com.italia.municipality.lakesebu.controller.BusinessIndex;
 import com.italia.municipality.lakesebu.controller.BusinessIndexTrans;
 import com.italia.municipality.lakesebu.controller.BusinessMapping;
+import com.italia.municipality.lakesebu.controller.Cash;
 import com.italia.municipality.lakesebu.controller.Livelihood;
 import com.italia.municipality.lakesebu.controller.ORNameList;
+import com.italia.municipality.lakesebu.enm.AppConf;
 import com.italia.municipality.lakesebu.enm.BusinessCategory;
 import com.italia.municipality.lakesebu.enm.BusinessQtrType;
 import com.italia.municipality.lakesebu.enm.BusinessType;
@@ -34,6 +41,8 @@ import com.italia.municipality.lakesebu.licensing.controller.Municipality;
 import com.italia.municipality.lakesebu.licensing.controller.Province;
 import com.italia.municipality.lakesebu.licensing.controller.Regional;
 import com.italia.municipality.lakesebu.licensing.controller.Words;
+import com.italia.municipality.lakesebu.reports.ReportCompiler;
+import com.italia.municipality.lakesebu.reports.Rpts;
 import com.italia.municipality.lakesebu.utils.Application;
 import com.italia.municipality.lakesebu.utils.CheckInternetConnection;
 import com.italia.municipality.lakesebu.utils.Currency;
@@ -46,7 +55,11 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Named("bnIndex")
 @ViewScoped
 @Data
@@ -108,8 +121,14 @@ public class BusinessIndexBean implements Serializable {
 	private int mappingId;
 	private List mappings;
 	
+	private List yearsMap;
+	private int yearMap;
+	private Map<Integer, Barangay> mapBaragany;
+	
 	@PostConstruct
 	public void init() {
+		mapBaragany = Barangay.barangays();
+		
 		
 		mappingId = 0; //default
 		mappings = new ArrayList<>();
@@ -196,10 +215,13 @@ public class BusinessIndexBean implements Serializable {
 		}
 		
 		years = new ArrayList<>();
+		yearsMap = new ArrayList<>();
 		year = DateUtils.getCurrentYear();
+		yearMap = year;
 		years.add(new SelectItem(0, "All"));
 		for(int year=2020; year<=DateUtils.getCurrentYear(); year++) {
 			years.add(new SelectItem(year, year+""));
+			yearsMap.add(new SelectItem(year, year+""));
 		}
 		dateFrom = DateUtils.getDateToday();
 		dateTo = dateFrom;
@@ -408,9 +430,19 @@ public class BusinessIndexBean implements Serializable {
 				|| BusinessQtrType.FIRST_QTR.getId()==tran.getQtrPayment()
 				|| BusinessQtrType.FIRST_SEMI_ANNUAL.getId()==tran.getQtrPayment()
 				|| BusinessQtrType.FIRST_TO_THIRD.getId()==tran.getQtrPayment()) {
-			if(tran.getBasicTax()==0) {//required basic tax
-				isOk = false;
-				Application.addMessage(3, "Error", "Basix tax is required");
+			
+			if(tran.getTypeOf()==BusinessType.BARANGAY_CERT.getId()) {
+				if(tran.getOrnumber()==null || tran.getOrnumber().isEmpty()) {
+					isOk = false;
+					Application.addMessage(3, "Error", "Please provide Official Receipt for Barangay Certificate");
+				}
+			}else {
+			
+				if(tran.getBasicTax()==0) {//required basic tax
+					isOk = false;
+					Application.addMessage(3, "Error", "Basix tax is required");
+				}
+			
 			}
 		}
 		
@@ -476,11 +508,17 @@ public class BusinessIndexBean implements Serializable {
 		if(getSearchBusinessMap()!=null && !getSearchBusinessMap().isEmpty()) {
 			sql = " AND (name like '%"+ getSearchBusinessMap() +"%' OR owner like '%"+ getSearchBusinessMap() +"%')";
 		}
+		
+		if(getYearMap()>0) {
+			sql += " AND yearmap=" + getYearMap();
+		}
+		
 		sql += " ORDER BY owner";
 		maps= BusinessMapping.retrieve(sql, new String[0]);
 	}
 	public void selectedMap(BusinessMapping map) {
 		businessIndex.setMap(map);
+		businessIndex.setContanctNo(map.getMobile());
 		System.out.println("map>>>> " + getBusinessIndex().getMap().getId());
 	}
 	
@@ -488,6 +526,7 @@ public class BusinessIndexBean implements Serializable {
 		BusinessMapping bz = BusinessMapping.mapData(index.getMap().getId());
 		copyPhoto(bz.getPictureOfBusiness());
 		copyPhoto(bz.getPictureOfOwner());
+		copyPhoto(bz.getOutsidePicture());
 		setSelectedMapData(bz);
 	}
 
@@ -562,5 +601,103 @@ public class BusinessIndexBean implements Serializable {
 		}else {
 			Application.addMessage(3, "Error", "Please click the client first");
 		}
+	}
+	
+	public void printBarangayCert(BusinessIndexTrans tran) {
+		String REPORT_PATH = AppConf.PRIMARY_DRIVE.getValue() +  AppConf.SEPERATOR.getValue() + 
+				AppConf.APP_CONFIG_FOLDER_NAME.getValue() + AppConf.SEPERATOR.getValue() + AppConf.REPORT_FOLDER.getValue() + AppConf.SEPERATOR.getValue()
+				+ "barangay" + AppConf.SEPERATOR.getValue();
+		String REPORT_NAME = GlobalVar.BARANGAY_CERT;
+		
+		ReportCompiler compiler = new ReportCompiler();
+		String jrxmlFile = compiler.compileReport(REPORT_NAME, REPORT_NAME, REPORT_PATH);
+		
+		List<Rpts> reports = new ArrayList<Rpts>();
+		reports.add(new Rpts());
+		Barangay barangay = mapBaragany.get(tran.getBusinessIndex().getBarangay().getId());
+		
+		JRBeanCollectionDataSource beanColl = new JRBeanCollectionDataSource(reports);
+  		HashMap param = new HashMap();
+  		DocumentFormatter doc = new DocumentFormatter();
+  		
+  		param.put("PARAM_BUSINESS_OWNER", tran.getBusinessIndex().getOwner());
+  		param.put("PARAM_BUSINESS_NAME", tran.getBusinessIndex().getBusinessName());
+  		param.put("PARAM_BUSINESS_ADDRESS", tran.getBusinessIndex().getPurok() + ", " + barangay.getName() + ", Lake Sebu, South Cotabato");
+  		param.put("PARAM_ISSUED_DATE", DateUtils.convertDateToMonthDayYear(tran.getDateTrans()));
+  		param.put("PARAM_RECEIPTNO", tran.getOrnumber());
+  		param.put("PARAM_CAPTAIN_NAME", doc.getTagName(barangay.getName()));
+  		param.put("PARAM_BARANGAY", "BARANGAY " + barangay.getName().toUpperCase());
+  		
+  			//signature
+  		try{
+  			String sig = REPORT_PATH + barangay.getName() + ".png";
+  			File file = new File(sig);
+  			FileInputStream off = new FileInputStream(file);
+  			param.put("PARAM_SIGNATURE", off);
+  			}catch(Exception e){e.printStackTrace();}
+  			
+  			try{
+  		  		String jrprint = JasperFillManager.fillReportToFile(jrxmlFile, param, beanColl);
+  		  	    JasperExportManager.exportReportToPdfFile(jrprint,REPORT_PATH+ REPORT_NAME +".pdf");
+  		  	}catch(Exception e){e.printStackTrace();}
+  	  		
+  			
+  			try{
+  		  		File file = new File(REPORT_PATH, REPORT_NAME + ".pdf");
+  				 FacesContext faces = FacesContext.getCurrentInstance();
+  				 ExternalContext context = faces.getExternalContext();
+  				 HttpServletResponse response = (HttpServletResponse)context.getResponse();
+  					
+  			     BufferedInputStream input = null;
+  			     BufferedOutputStream output = null;
+  			     
+  			     try{
+  			    	 
+  			    	 // Open file.
+  			            input = new BufferedInputStream(new FileInputStream(file), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+  			            // Init servlet response.
+  			            response.reset();
+  			            response.setHeader("Content-Type", "application/pdf");
+  			            response.setHeader("Content-Length", String.valueOf(file.length()));
+  			            response.setHeader("Content-Disposition", "inline; filename=\"" + REPORT_NAME + ".pdf" + "\"");
+  			            output = new BufferedOutputStream(response.getOutputStream(), GlobalVar.DEFAULT_BUFFER_SIZE);
+
+  			            // Write file contents to response.
+  			            byte[] buffer = new byte[GlobalVar.DEFAULT_BUFFER_SIZE];
+  			            int length;
+  			            while ((length = input.read(buffer)) > 0) {
+  			                output.write(buffer, 0, length);
+  			            }
+
+  			            // Finalize task.
+  			            output.flush();
+  			    	 
+  			     }finally{
+  			    	// Gently close streams.
+  			            close(output);
+  			            close(input);
+  			     }
+  			     
+  			     // Inform JSF that it doesn't need to handle response.
+  			        // This is very important, otherwise you will get the following exception in the logs:
+  			        // java.lang.IllegalStateException: Cannot forward after response has been committed.
+  			        faces.responseComplete();
+  			        
+  				}catch(Exception ioe){
+  					ioe.printStackTrace();
+  				}
+	}
+	
+	private void close(Closeable resource) {
+	    if (resource != null) {
+	        try {
+	            resource.close();
+	        } catch (IOException e) {
+	            // Do your thing with the exception. Print it, log it or mail it. It may be useful to 
+	            // know that this will generally only be thrown when the client aborted the download.
+	            e.printStackTrace();
+	        }
+	    }
 	}
 }

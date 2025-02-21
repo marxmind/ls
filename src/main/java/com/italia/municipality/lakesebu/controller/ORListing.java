@@ -41,7 +41,7 @@ public class ORListing {
 	private int status;
 	private String forminfo;
 	private String notes;
-	
+	private int fundId;
 	private Collector collector;
 	private Customer customer;
 	
@@ -146,7 +146,7 @@ public class ORListing {
 				val += " )";
 				
 				
-				sql = "SELECT ors.orid,ors.ordatetrans,ors.ornumber,ors.aform,ors.orstatus,cz.fullname,col.collectorname,(select sum(s.olamount) as amount from ornamelist s where s.orid=ors.orid) as amount  FROM ORLISTING ors,customer cz,issuedcollector col WHERE col.isid=ors.isid and cz.customerid=ors.customerid AND ors.isactiveor=1 and ors.aform!=10 and ors.orstatus=4 and ors.ordatetrans>='"+dateStart+"'" + val + " ORDER BY ors.ornumber";
+				sql = "SELECT ors.orid,ors.ordatetrans,ors.ornumber,ors.fundid,ors.aform,ors.orstatus,cz.fullname,col.collectorname,(select sum(s.olamount) as amount from ornamelist s where s.orid=ors.orid) as amount  FROM ORLISTING ors,customer cz,issuedcollector col WHERE col.isid=ors.isid and cz.customerid=ors.customerid AND ors.isactiveor=1 and ors.aform!=10 and ors.orstatus=4 and ors.ordatetrans>='"+dateStart+"'" + val + " ORDER BY ors.ornumber";
 				ps = conn.prepareStatement(sql);
 				rs = ps.executeQuery();
 				ors = new ArrayList<ORListing>();
@@ -162,6 +162,7 @@ public class ORListing {
 							.customer(Customer.builder().fullname(rs.getString("fullname")).build())
 							.collector(Collector.builder().name(rs.getString("collectorname")).build())
 							.amount(rs.getDouble("amount"))
+							.fundId(rs.getInt("fundid"))
 							.build();
 					ors.add(or);
 				}
@@ -201,6 +202,7 @@ public class ORListing {
 						.formName(FormType.nameId(rs.getInt("aform")))
 						.status(rs.getInt("orstatus"))
 						.statusName(FormStatus.nameId(rs.getInt("orstatus")))
+						.fundId(rs.getInt("fundid"))
 						.build();
 				ors.put(or.getOrNumber(), or);
 			}
@@ -223,7 +225,7 @@ public class ORListing {
 		String sql = "select o.orid,c.fullname, "
 				+ "(select sum(s.olamount) as amount from ornamelist s where s.orid=o.orid) as amount ,"
 				+ " o.ornumber, "
-				+ "o.ordatetrans,"
+				+ "o.ordatetrans,o.fundid,"
 				+ "o.aform as formtype,o.orstatus,i.collectorname "
 				+ "from orlisting o, customer c,issuedcollector i where "
 				+ "c.customerid=o.customerid and o.isid=i.isid  AND o.isactiveor=1 ";
@@ -259,6 +261,7 @@ public class ORListing {
 						.status(stat)
 						.statusName(FormStatus.nameId(stat))
 						.collector(Collector.builder().name(rs.getString("collectorname")).build())
+						.fundId(rs.getInt("fundid"))
 						.build();
 				ors.add(or);
 				if(FormStatus.CANCELLED.getId()!=stat) {	
@@ -439,7 +442,7 @@ public class ORListing {
 			try{or.setForminfo(rs.getString("forminfo"));}catch(NullPointerException e){}
 			try{or.setNotes(rs.getString("notes"));}catch(NullPointerException e){}
 			try{or.setGenCollection(rs.getLong("genid"));}catch(NullPointerException e){}
-			
+			try{or.setFundId(rs.getInt("fundid"));}catch(NullPointerException e){}
 			Customer cus = new Customer();
 			try{cus.setId(rs.getLong("customerid"));}catch(NullPointerException e){}
 			try{cus.setFullname(rs.getString("fullname"));}catch(NullPointerException e){}
@@ -535,6 +538,7 @@ public class ORListing {
 			try{or.setForminfo(rs.getString("forminfo"));}catch(NullPointerException e){}
 			try{or.setNotes(rs.getString("notes"));}catch(NullPointerException e){}
 			try{or.setGenCollection(rs.getLong("genid"));}catch(NullPointerException e){}
+			try{or.setFundId(rs.getInt("fundid"));}catch(NullPointerException e){}
 			
 			Customer cus = new Customer();
 			try{cus.setId(rs.getLong("customerid"));}catch(NullPointerException e){}
@@ -628,6 +632,7 @@ public class ORListing {
 			try{or.setForminfo(rs.getString("forminfo"));}catch(NullPointerException e){}
 			try{or.setNotes(rs.getString("notes"));}catch(NullPointerException e){}
 			try{or.setGenCollection(rs.getLong("genid"));}catch(NullPointerException e){}
+			try{or.setFundId(rs.getInt("fundid"));}catch(NullPointerException e){}
 			
 			Customer cus = new Customer();
 			try{cus.setId(rs.getLong("customerid"));}catch(NullPointerException e){}
@@ -760,8 +765,9 @@ public class ORListing {
 				+ "orstatus,"
 				+ "forminfo,"
 				+ "notes,"
-				+ "genid)" 
-				+ "values(?,?,?,?,?,?,?,?,?,?,?)";
+				+ "genid,"
+				+ "fundid) " 
+				+ " values(?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -794,6 +800,7 @@ public class ORListing {
 		ps.setString(cnt++, name.getForminfo());
 		ps.setString(cnt++, name.getNotes());
 		ps.setLong(cnt++, name.getGenCollection());
+		ps.setInt(cnt++, name.getFundId());
 		
 		LogU.add(name.getDateTrans());
 		LogU.add(name.getOrNumber());
@@ -805,6 +812,7 @@ public class ORListing {
 		LogU.add(name.getForminfo());
 		LogU.add(name.getNotes());
 		LogU.add(name.getGenCollection());
+		LogU.add(name.getFundId());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -831,8 +839,9 @@ public class ORListing {
 				+ "orstatus,"
 				+ "forminfo,"
 				+ "notes,"
-				+ "genid)" 
-				+ "values(?,?,?,?,?,?,?,?,?,?,?)";
+				+ "genid,"
+				+ "fundid) " 
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -865,6 +874,7 @@ public class ORListing {
 		ps.setString(cnt++, getForminfo());
 		ps.setString(cnt++, getNotes());
 		ps.setLong(cnt++, getGenCollection());
+		ps.setInt(cnt++, getFundId());
 		
 		LogU.add(getDateTrans());
 		LogU.add(getOrNumber());
@@ -876,6 +886,7 @@ public class ORListing {
 		LogU.add(getForminfo());
 		LogU.add(getNotes());
 		LogU.add(getGenCollection());
+		LogU.add(getFundId());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -900,7 +911,8 @@ public class ORListing {
 				+ "orstatus=?,"
 				+ "forminfo=?,"
 				+ "notes=?,"
-				+ "genid=?" 
+				+ "genid=?,"
+				+ "fundid=?" 
 				+ " WHERE orid=?";
 		
 		PreparedStatement ps = null;
@@ -923,7 +935,9 @@ public class ORListing {
 		ps.setString(cnt++, name.getForminfo());
 		ps.setString(cnt++, name.getNotes());
 		ps.setLong(cnt++, name.getGenCollection());
+		ps.setInt(cnt++, name.getFundId());
 		ps.setLong(cnt++, name.getId());
+		
 		
 		LogU.add(name.getDateTrans());
 		LogU.add(name.getOrNumber());
@@ -934,6 +948,7 @@ public class ORListing {
 		LogU.add(name.getForminfo());
 		LogU.add(name.getNotes());
 		LogU.add(name.getGenCollection());
+		LogU.add(name.getFundId());
 		LogU.add(name.getId());
 		
 		LogU.add("executing for saving...");
@@ -959,7 +974,8 @@ public class ORListing {
 				+ "orstatus=?,"
 				+ "forminfo=?,"
 				+ "notes=?,"
-				+ "genid=?" 
+				+ "genid=?,"
+				+ "fundid=? " 
 				+ " WHERE orid=?";
 		
 		PreparedStatement ps = null;
@@ -983,6 +999,7 @@ public class ORListing {
 		ps.setString(cnt++, getForminfo());
 		ps.setString(cnt++, getNotes());
 		ps.setLong(cnt++, getGenCollection());
+		ps.setInt(cnt++, getFundId());
 		ps.setLong(cnt++, getId());
 		
 		LogU.add(getDateTrans());
@@ -994,6 +1011,7 @@ public class ORListing {
 		LogU.add(getForminfo());
 		LogU.add(getNotes());
 		LogU.add(getGenCollection());
+		LogU.add(getFundId());
 		LogU.add(getId());
 		
 		LogU.add("executing for saving...");

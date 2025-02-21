@@ -65,6 +65,7 @@
 			        <p:inputText value="#{fishcageBillingBean.searchBill}" placeholder="Search..." style="width: 30em">
 	    				<p:ajax event="keyup" listener="#{fishcageBillingBean.loadData}" update="dataFishBill" delay="800"/>
 	    			</p:inputText>
+	    			<p:commandButton value="Create Bill" icon="pi pi-plus" actionListener="#{fishcageBillingBean.loadData}" update="dataFishBill"/>
 	    			</span>
 	    		</f:facet>
 	    		<f:facet name="right"/>
@@ -165,7 +166,7 @@
     		<f:facet name="left">
     			<span class="ui-input-icon-left">
 			    <i class="pi pi-search" />
-    			<p:inputText value="#{fishcageBillingBean.searchBill}" placeholder="Search..." style="width: 25em">
+    			<p:inputText value="#{fishcageBillingBean.searchPayname}" placeholder="Search..." style="width: 25em">
     				<p:ajax event="keyup" listener="#{fishcageBillingBean.loadParticulars}" update="dataPaySel" />
     			</p:inputText>
     			</span>

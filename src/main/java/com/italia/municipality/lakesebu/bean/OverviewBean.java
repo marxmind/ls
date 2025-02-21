@@ -57,6 +57,8 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -116,6 +118,9 @@ public class OverviewBean implements Serializable {
 	private String cashBankAccountsId;
 	private Map<String, BankAccounts> mapAccounts;
 	
+	private int fundIdSearch;
+	private List fundTypesSearch;
+	
 	@PostConstruct
 	public void init() {
 		
@@ -140,6 +145,14 @@ public class OverviewBean implements Serializable {
 		startDate = year + "-" + month + "-01";
 		dateToday = DateUtils.getCurrentDateYYYYMMDD();
 		last_Date= DateUtils.getLastDayOfTheMonth("yyyy-MM-dd",dateToday, Locale.TAIWAN);
+		
+		fundIdSearch = 0; //default search Fund Type which is all fund type
+		fundTypesSearch = new ArrayList<>();
+		fundTypesSearch.add(new SelectItem(0, "All Fund Types"));
+		for(FundType type : FundType.values()){
+			fundTypesSearch.add(new SelectItem(type.getId(), type.getName()));
+		}
+		
 		
 		//do not move these line of codes
 		loadOffices();
@@ -276,7 +289,7 @@ public class OverviewBean implements Serializable {
 				if(budget>0) {
 					rpt = new Reports();
 					rpt.setF1(DateUtils.getMonthName(month));
-					rpt.setF2("Add: NTA");
+					rpt.setF2("National Tax Allocation");
 					rpt.setF5(Currency.formatAmount(budget));
 					cashbooks.add(rpt);
 				}
@@ -286,7 +299,7 @@ public class OverviewBean implements Serializable {
 				//NTA
 				if(budget>0) {
 					rpt.setF1(DateUtils.getMonthName(month));
-					rpt.setF2("Add: NTA");
+					rpt.setF2("National Tax Allocation");
 					rpt.setF5(Currency.formatAmount(budget));
 					cashbooks.add(rpt);
 				}
@@ -301,7 +314,7 @@ public class OverviewBean implements Serializable {
 			if(deposit>0) {
 				rpt = new Reports();
 				rpt.setF1("");
-				rpt.setF2("Add: Collection");
+				rpt.setF2("Deposited Collection");
 				rpt.setF3(Currency.formatAmount(deposit));
 				cashbooks.add(rpt);
 			}
@@ -309,7 +322,7 @@ public class OverviewBean implements Serializable {
 			if(loan>0) {
 				rpt = new Reports();
 				rpt.setF1("");
-				rpt.setF2("Less: Loans");
+				rpt.setF2("20% Development Fund + Loans");
 				rpt.setF4(Currency.formatAmount(loan));
 				cashbooks.add(rpt);
 			}
@@ -328,7 +341,7 @@ public class OverviewBean implements Serializable {
 			if(issuedAmount>0) {
 				rpt = new Reports();
 				rpt.setF1("");
-				rpt.setF2("Checks");
+				rpt.setF2("Issued Checks");
 				rpt.setF4(Currency.formatAmount(issuedAmount));
 				cashbooks.add(rpt);
 			}
@@ -354,8 +367,8 @@ public class OverviewBean implements Serializable {
 			}
 		}
 		Reports rpt = new Reports();
-		rpt.setF1("");
-		rpt.setF2("Current Cash In Bank");
+		rpt.setF1("Current Cash In Bank");
+		rpt.setF2("");
 		rpt.setF5(Currency.formatAmount(forwardedAmount));
 		cashbooks.add(rpt);
 		
@@ -775,6 +788,12 @@ public class OverviewBean implements Serializable {
 		//String sql = "SELECT month(b.timestampol) as month, a.accname as name, b.olamount as amount FROM taxaccntgroup a,ornamelist b WHERE b.accid=a.accid AND b.orid IN(select o.orid from orlisting o where o.isactiveor=1 AND (o.ordatetrans>='"+ year +"-01-01' AND o.ordatetrans<='"+ year +"-12-31')) ORDER BY amount DESC";
 		//o.isactiveol=1 and remove to inclued cancelled
 		String sql = "SELECT o.isactiveol as stat,p.orstatus, o.olamount as amount,o.accid as id,month(p.ordatetrans) as month,p.aform,p.isid from ornamelist o, orlisting p WHERE  p.isactiveor=1 and o.orid=p.orid AND (p.ordatetrans>='"+ year +"-01-01' AND p.ordatetrans<='"+ year +"-12-31')";
+		
+		if(getFundIdSearch()>0) {
+			sql += " AND p.fundid=" + getFundIdSearch();
+		}
+		
+		
 		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
 		Map<Integer, Map<Integer, Double>> mapColl = new LinkedHashMap<Integer, Map<Integer, Double>>();
 		Map<Integer, Double> mapMonth = new LinkedHashMap<Integer, Double>();
@@ -926,10 +945,15 @@ public class OverviewBean implements Serializable {
 					.f15("")
 					.build();
 			collections.add(rss);
+		
+			
+			Map<Integer, Double> taxData = new LinkedHashMap<Integer, Double>();
+			if(getFundIdSearch()==FundType.GENERAL_FUND.getId()) {
 			
 			//add land tax reported collection amount
-			Map<Integer, Double> taxData = CollectionInfo.monthlyIncomeRealPropertyTax(Integer.valueOf(getYear()));
-			
+			 taxData = CollectionInfo.monthlyIncomeRealPropertyTax(Integer.valueOf(getYear()));
+			}
+			 
 			if(taxData!=null && taxData.size()>0) {
 				for(int mx : taxData.keySet()) {
 					totalPerPayment[mx-1] += taxData.get(mx);
@@ -991,6 +1015,9 @@ public class OverviewBean implements Serializable {
 					.build();
 			collections.add(rss);
 			collections.addAll(tmpRpt);
+			
+			
+			
 			setGrandTotalRunningCollection(Currency.formatAmount(grandTotal + landTaxTotal));
 			
 			

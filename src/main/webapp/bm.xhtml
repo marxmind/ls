@@ -76,12 +76,10 @@
                          	  <div class="ui-inputgroup" style="float: right">
                          	  <p:commandButton id="btn" icon="pi pi-map"  value="Show Map" onclick="PF('dlg').show();" actionListener="#{mapping.openMap}" update="gmap"/>
 	                          <p:menuButton id="exInqiD" value="Exports" >
-	                          	<p:menuitem value="Export Excel All Data">
-	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData"/>
-	                          	</p:menuitem>
-	                          	<p:menuitem value="Export Excel Current Page">
-	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData" pageOnly="true"/>
-	                          	</p:menuitem>
+	                          	
+	                          	<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-excel">
+												<p:dataExporter type="xls" target="mapDataId" fileName="mappingData"/> 
+											</p:menuitem>
 	                          </p:menuButton>
                           	 </div>
                           </f:facet>
@@ -90,11 +88,11 @@
 		            		<p:outputLabel  value="#{pt.number}"/>
 		            	 </p:column>
                          
-                         <p:column headerText="Map" width="20">
+                         <p:column headerText="Map" width="20" exportable="false">
                          	<p:commandButton icon="pi pi-map" actionListener="#{mapping.openSelectedBusinessInMap(pt)}"  update="gmap" onclick="PF('dlg').show();"/>
                          </p:column>
                          
-                         <p:column headerText="Store" width="20">
+                         <p:column headerText="Store" width="20" exportable="false">
                          	<p:commandButton icon="pi pi-user" actionListener="#{mapping.showStore(pt)}"  update="imgId1 imgId2 imgId3" onclick="PF('picDialog').show();"/>
                          </p:column>
                          
@@ -209,7 +207,7 @@
 		</div><!-- main grid -->
 	</div><!-- Card -->
 	
-	<p:dialog id="picDialogId" widgetVar="picDialog" width="850" height="400" modal="true" position="center top" closeOnEscape="true">
+	<p:dialog id="picDialogId" widgetVar="picDialog" width="1000" height="400" modal="true" position="center top" closeOnEscape="true">
 		
 					<p:panelGrid layout="grid" columns="3">
 						<p:graphicImage id="imgId1" name="/images/businessmap/#{mapping.selectedMapData.pictureOfOwner}" height="400" width="400"/>

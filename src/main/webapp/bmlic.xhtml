@@ -55,10 +55,17 @@
 			<p:ajax event="tabChange" listener="#{mapping.onTabChange}" update="mapDataId barangayDataId permitDataId rentedDataId combineDataId barDataInfo"/>
 			
 			<p:tab title="Business List">
-			
+				<div class="ui-inputgroup">
 				<p:inputText value="#{mapping.searchParam}" placeholder="Search..." style="width: 30em; float: left">
-				<p:ajax event="keyup" listener="#{mapping.businessList}" update="mapDataId" delay="500"/>
-			</p:inputText>
+					<p:ajax event="keyup" listener="#{mapping.businessList}" update="mapDataId" delay="500"/>
+				</p:inputText>
+				
+				<p:selectOneMenu value="#{mapping.year}" style="width: 20em" filter="true" filterMatchMode="contains">
+						                	<f:selectItems value="#{mapping.years}"/>
+						                	<p:ajax event="change" listener="#{mapping.changeYear}" update="mapDataId" />
+				</p:selectOneMenu>
+				</div>
+				
 			<p:dataTable id="mapDataId" value="#{mapping.maps}" var="pt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
@@ -69,12 +76,9 @@
                          	  <div class="ui-inputgroup" style="float: right">
                          	  <p:commandButton id="btn" icon="pi pi-map"  value="Show Map" onclick="PF('dlg').show();" actionListener="#{mapping.openMap}" update="gmap"/>
 	                          <p:menuButton id="exInqiD" value="Exports" >
-	                          	<p:menuitem value="Export Excel All Data">
-	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData"/>
-	                          	</p:menuitem>
-	                          	<p:menuitem value="Export Excel Current Page">
-	                          		<p:dataExporter type="xlsxstream" target="mapDataId" fileName="mappingData" pageOnly="true"/>
-	                          	</p:menuitem>
+	                          	<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-excel">
+												<p:dataExporter type="xls" target="mapDataId" fileName="mappingData"/> 
+								</p:menuitem>
 	                          </p:menuButton>
                           	 </div>
                           </f:facet>
@@ -83,12 +87,12 @@
 		            		<p:outputLabel  value="#{pt.number}"/>
 		            	 </p:column>
                          
-                         <p:column headerText="Map" width="20">
+                         <p:column headerText="Map" width="20" exportable="false">
                          	<p:commandButton icon="pi pi-map" actionListener="#{mapping.openSelectedBusinessInMap(pt)}"  update="gmap" onclick="PF('dlg').show();"/>
                          </p:column>
                          
-                         <p:column headerText="Store" width="20">
-                         	<p:commandButton icon="pi pi-user" actionListener="#{mapping.showStore(pt)}"  update="imgId1 imgId2" onclick="PF('picDialog').show();"/>
+                         <p:column headerText="Store" width="20" exportable="false">
+                         	<p:commandButton icon="pi pi-user" actionListener="#{mapping.showStore(pt)}"  update="imgId1 imgId2 imgId3" onclick="PF('picDialog').show();"/>
                          </p:column>
                          
                          <p:column headerText="Date" width="50">
@@ -101,6 +105,10 @@
 		            	 
 		            	 <p:column headerText="Owner" width="100">
 		            		<p:outputLabel  value="#{pt.owner}"/>
+		            	 </p:column>
+		            	
+		            	 <p:column headerText="Contact" width="100">
+		            		<p:outputLabel  value="#{pt.mobile}"/>
 		            	 </p:column>
 		            	
 		            	 <p:column headerText="Business Name" width="150">
@@ -198,11 +206,12 @@
 		</div><!-- main grid -->
 	</div><!-- Card -->
 	
-	<p:dialog id="picDialogId" widgetVar="picDialog" width="850" height="400" modal="true" position="center top" closeOnEscape="true">
+	<p:dialog id="picDialogId" widgetVar="picDialog" width="1000" height="400" modal="true" position="center top" closeOnEscape="true">
 		
-					<p:panelGrid layout="grid" columns="2">
+					<p:panelGrid layout="grid" columns="3">
 						<p:graphicImage id="imgId1" name="/images/businessmap/#{mapping.selectedMapData.pictureOfOwner}" height="400" width="400"/>
 						<p:graphicImage id="imgId2" name="/images/businessmap/#{mapping.selectedMapData.pictureOfBusiness}" height="400" width="400"/>
+						<p:graphicImage id="imgId3" name="/images/businessmap/#{mapping.selectedMapData.outsidePicture}" height="400" width="400"/>
 					</p:panelGrid>
 					
 		</p:dialog>
