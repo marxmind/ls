@@ -1,8 +1,7 @@
 {
-  "server" : [
-    {
-      "serverName" : "10.158.1.10",
-      "port" : "8081"
-    }
-  ]
+	"server" : [{
+			"serverName" : "10.158.1.11",
+			"port" : "8081"
+		}
+	]
 }
