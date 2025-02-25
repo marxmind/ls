@@ -1,38 +1,32 @@
 {
-  "authorization" : [
-    {
-      "id" : "1",
-      "uname" : "dqka",
-      "pword" : "843183",
-      "passcode" : "843183",
-      "fullname" : "DQKA KOCTKQ OZQSOQ",
-      "role" : "1"
-    },
-    {
-      "id" : "2",
-      "uname" : "itfkn",
-      "pword" : "lqd59",
-      "passcode" : "3333",
-      "fullname" : "ITFKN T. DQUWQFXQ",
-      "role" : "2"
-    },
-    {
-      "id" : "3",
-      "uname" : "dqosnf",
-      "pword" : "foeq",
-      "passcode" : "8765",
-      "fullname" : "DQOSNF L. WOFXTMQ",
-      "role" : "2"
-    },
-    {
-      "id" : "4",
-      "uname" : "eit",
-      "pword" : "eit",
-      "passcode" : "0000",
-      "fullname" : "LITTFQ DQT L. QHGSOLZQK",
-      "role" : "2"
-    }
-    
-    
-  ]
+	"authorization" : [{
+			"id" : "1",
+			"uname" : "dqka",
+			"pword" : "843183",
+			"passcode" : "843183",
+			"fullname" : "DQKA KOCTKQ OZQSOQ",
+			"role" : "1"
+		}, {
+			"id" : "2",
+			"uname" : "itfkn",
+			"pword" : "lqd59",
+			"passcode" : "3333",
+			"fullname" : "ITFKN T. DQUWQFXQ",
+			"role" : "2"
+		}, {
+			"id" : "3",
+			"uname" : "dqosnf",
+			"pword" : "foeq",
+			"passcode" : "8765",
+			"fullname" : "DQOSNF L. WOFXTMQ",
+			"role" : "2"
+		}, {
+			"id" : "4",
+			"uname" : "eit",
+			"pword" : "eit",
+			"passcode" : "0000",
+			"fullname" : "LITTFQ DQT L. QHGSOLZQK",
+			"role" : "2"
+		}
+	]
 }
