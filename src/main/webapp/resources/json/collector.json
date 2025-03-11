@@ -1,0 +1,349 @@
+{
+	"collector" : [
+		{
+"id" : "0",
+"id" : "NOT ISSUED",
+		},
+		{
+"id" : "1",
+"id" : "Jerry Manuel",
+		},
+		{
+"id" : "2",
+"id" : "Hector Umek",
+		},
+		{
+"id" : "3",
+"id" : "Analyn Dolar",
+		},
+		{
+"id" : "4",
+"id" : "Jenjen Fada",
+		},
+		{
+"id" : "5",
+"id" : "Shirley Shine Omek",
+		},
+		{
+"id" : "6",
+"id" : "Ethelyn Fentew",
+		},
+		{
+"id" : "7",
+"id" : "Ivy Tayanes",
+		},
+		{
+"id" : "8",
+"id" : "Paquito Sindao",
+		},
+		{
+"id" : "9",
+"id" : "Sunday Ray Cabilbigan",
+		},
+		{
+"id" : "10",
+"id" : "Ariel Calusay",
+		},
+		{
+"id" : "11",
+"id" : "Gomez Awey",
+		},
+		{
+"id" : "12",
+"id" : "Edilyn Matillano",
+		},
+		{
+"id" : "13",
+"id" : "Dreamer Aban",
+		},
+		{
+"id" : "14",
+"id" : "Cecil L. Esmorga",
+		},
+		{
+"id" : "15",
+"id" : "Diones Mann",
+		},
+		{
+"id" : "16",
+"id" : "Reymond Pelayo",
+		},
+		{
+"id" : "17",
+"id" : "Judith Seng",
+		},
+		{
+"id" : "18",
+"id" : "Demie Yodoc",
+		},
+		{
+"id" : "19",
+"id" : "Joel Bernas",
+		},
+		{
+"id" : "20",
+"id" : "Julius Lacay",
+		},
+		{
+"id" : "21",
+"id" : "Charlotte Lucero",
+		},
+		{
+"id" : "22",
+"id" : "H.E. Magbanua-Roselleta Valera",
+		},
+		{
+"id" : "23",
+"id" : "Jose Levy Weaver",
+		},
+		{
+"id" : "24",
+"id" : "Melver Vergara",
+		},
+		{
+"id" : "25",
+"id" : "Stock",
+		},
+		{
+"id" : "26",
+"id" : "H.E. Magbanua-Ranny Fikan",
+		},
+		{
+"id" : "27",
+"id" : "H.E. Magbanua-Jocelyn Damole",
+		},
+		{
+"id" : "28",
+"id" : "H.E. Magbanua-Joel Lugan",
+		},
+		{
+"id" : "29",
+"id" : "Mamerta Bautista",
+		},
+		{
+"id" : "30",
+"id" : "Juanito Umek",
+		},
+		{
+"id" : "31",
+"id" : "Garcia Alam",
+		},
+		{
+"id" : "32",
+"id" : "Henry Magbanua",
+		},
+		{
+"id" : "33",
+"id" : "H.E. Magbanua-Evelyn Bolivar",
+		},
+		{
+"id" : "34",
+"id" : "Mailyn Binueza",
+		},
+		{
+"id" : "35",
+"id" : "Jessie Handatu",
+		},
+		{
+"id" : "36",
+"id" : "F.L Lopez-Ellena Frondoso",
+		},
+		{
+"id" : "37",
+"id" : "F.L Lopez-Ricky Lahaw",
+		},
+		{
+"id" : "38",
+"id" : "Elizabeth M. Montil",
+		},
+		{
+"id" : "39",
+"id" : "Chronos SDVI",
+		},
+		{
+"id" : "40",
+"id" : "Elsa Bulahan",
+		},
+		{
+"id" : "41",
+"id" : "Nerla Manuel",
+		},
+		{
+"id" : "42",
+"id" : "Juanito Umek-Junjun Ngo",
+		},
+		{
+"id" : "43",
+"id" : "Juanito Umek-Hospital",
+		},
+		{
+"id" : "44",
+"id" : "Juanito Umek-F. Kananding",
+		},
+		{
+"id" : "45",
+"id" : "Melver Vergara__",
+		},
+		{
+"id" : "46",
+"id" : "Melver Vergara-CHRONOS SDVI",
+		},
+		{
+"id" : "47",
+"id" : "Christopher Ofong-Crystal Gie Dioso",
+		},
+		{
+"id" : "48",
+"id" : "Sheena Mae Apolistar-Mary Joy Estares",
+		},
+		{
+"id" : "49",
+"id" : "Mailyn Binueza-Antonio Handatu",
+		},
+		{
+"id" : "50",
+"id" : "Mailyn Binueza-Orlando Langgong",
+		},
+		{
+"id" : "51",
+"id" : "Mailyn Binueza-Archimedes Binueza",
+		},
+		{
+"id" : "52",
+"id" : "Mailyn Binueza-Aquilet Biano",
+		},
+		{
+"id" : "53",
+"id" : "Christopher Ofong-Brumell Leong",
+		},
+		{
+"id" : "54",
+"id" : "Juanito Umek-Aquilet Biano",
+		},
+		{
+"id" : "55",
+"id" : "Sheena Mae Apolistar-Marina Aban",
+		},
+		{
+"id" : "56",
+"id" : "Sheena Mae Apolistar-Rosalyn Dilon",
+		},
+		{
+"id" : "57",
+"id" : "Juanito Umek-Roderick Jade Loco",
+		},
+		{
+"id" : "58",
+"id" : "Juanito Umek-Marina Aban",
+		},
+		{
+"id" : "59",
+"id" : "Jocelyn L. Damole-Arnel Esquera",
+		},
+		{
+"id" : "61",
+"id" : "H.E. Magbanua-Jessie Handatu",
+		},
+		{
+"id" : "62",
+"id" : "Mailyn Binueza-Anamarie Langgong",
+		},
+		{
+"id" : "63",
+"id" : "Leah M. Logong",
+		},
+		{
+"id" : "64",
+"id" : "Delia T. Daham",
+		},
+		{
+"id" : "65",
+"id" : "Rhea E. Palanog",
+		},
+		{
+"id" : "66",
+"id" : "Mailyn Binueza-Crystal Gie Dioso",
+		},
+		{
+"id" : "67",
+"id" : "Arnel Taflan",
+		},
+		{
+"id" : "68",
+"id" : "Jimlyn D. Gal",
+		},
+		{
+"id" : "69",
+"id" : "Christine D. Padronia",
+		},
+		{
+"id" : "70",
+"id" : "Dency F. Bantol",
+		},
+		{
+"id" : "71",
+"id" : "Mary Joy Estares",
+		},
+		{
+"id" : "72",
+"id" : "Sheena Mae Apolistar-Ranny Fikan",
+		},
+		{
+"id" : "73",
+"id" : "Sheena Mae Apolistar",
+		},
+		{
+"id" : "74",
+"id" : "Anarose F. Monggo",
+		},
+		{
+"id" : "75",
+"id" : "Mary Joy Estares-Eljan Ray Ofong",
+		},
+		{
+"id" : "76",
+"id" : "Evelyn Bolivar-Eljan Ray Ofong",
+		},
+		{
+"id" : "77",
+"id" : "Jeeren M. Legal",
+		},
+		{
+"id" : "78",
+"id" : "Evelyn Bolivar-Ranny Fikan",
+		},
+		{
+"id" : "79",
+"id" : "Maureen Faye F. Leonida",
+		},
+		{
+"id" : "80",
+"id" : "Vanessa Mae Estaris-Duhig",
+		},
+		{
+"id" : "81",
+"id" : "Joyln S. Lumbay",
+		},
+		{
+"id" : "82",
+"id" : "Christopher Ofong-Marina Aban",
+		},
+		{
+"id" : "83",
+"id" : "Christopher Ofong-Efren Boy Ofong",
+		},
+		{
+"id" : "84",
+"id" : "H.E. Magbanua-Ranny Fikan",
+		},
+		{
+"id" : "85",
+"id" : "H.E. Magbanua-Eljan Ray Ofong",
+		},
+		{
+"id" : "86",
+"id" : "Ana Marie D. Marino",
+		},
+		]
+}
+
