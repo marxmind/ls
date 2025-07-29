@@ -2028,6 +2028,7 @@ public class CashDVReportBean implements Serializable{
 		
 		int count = 0;
 		double amount = 0d;
+		//one page
 		if(cashDisList.size()<46) {
 			
 			for(CashDisbursement cs : cashDisList) {
@@ -2071,8 +2072,8 @@ public class CashDVReportBean implements Serializable{
 					.build();
 			reports.add(cpt);
 		}
-		
-		if(cashDisList.size()>=46 && cashDisList.size()<89) {
+		//two page
+		if(cashDisList.size()>=46 && cashDisList.size()<=89) {
 			
 			for(int i=0; i<=44; i++) {
 				CashDisbursement cs = cashDisList.get(i);
@@ -2156,9 +2157,10 @@ public class CashDVReportBean implements Serializable{
 					.build();
 			reports.add(cpt);
 		}
-		
-		if(cashDisList.size()>=90 && cashDisList.size()<135) {
+		//three page
+		if(cashDisList.size()>=92 && cashDisList.size()<138) {
 			
+			//page 1
 			for(int i=0; i<=44; i++) {
 				CashDisbursement cs = cashDisList.get(i);
 				CheckRpt cpt = CheckRpt.builder()
@@ -2174,7 +2176,7 @@ public class CashDVReportBean implements Serializable{
 				count++;
 				amount += cs.getAmount();
 			}
-			
+			//total on the first page
 			CheckRpt cpt = CheckRpt.builder()
 					.visible("hide")
 					.f1("")
@@ -2187,7 +2189,7 @@ public class CashDVReportBean implements Serializable{
 			reports.add(cpt);
 			
 			
-			
+			//on top carried forward amount
 			 cpt = CheckRpt.builder()
 					.visible("hide")
 					.f1("")
@@ -2201,7 +2203,7 @@ public class CashDVReportBean implements Serializable{
 			
 			count = 0;
 			
-			for(int i=45; i<90; i++) {
+			for(int i=45; i<89; i++) {
 				CashDisbursement cs = cashDisList.get(i);
 				 cpt = CheckRpt.builder()
 						.visible("show")
@@ -2217,6 +2219,7 @@ public class CashDVReportBean implements Serializable{
 				amount += cs.getAmount();
 			}
 			count = 44 - count;
+			
 			for(int i=1; i<=count; i++) {
 				cpt = CheckRpt.builder()
 						.visible("show")
@@ -2255,7 +2258,7 @@ public class CashDVReportBean implements Serializable{
 			
 			count = 0;
 			
-			for(int i=92; i<cashDisList.size(); i++) {
+			for(int i=89; i<cashDisList.size(); i++) {
 				CashDisbursement cs = cashDisList.get(i);
 				 cpt = CheckRpt.builder()
 						.visible("show")

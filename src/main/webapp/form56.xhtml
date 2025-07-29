@@ -334,7 +334,7 @@ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="fa
     		<f:facet name="left">
     				<p:selectOneMenu  id="bgId" value="#{form56Bean.barangayIdSearch}" style="color: black" filter="true" filterMatchMode="contains">
     				   <f:selectItem itemLabel="All"/>
-                       <f:selectItems value="#{form56Bean.barangayListSearch}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                       <f:selectItems value="#{form56Bean.barangayListSearch}"/>
                    </p:selectOneMenu>
                    <span class="ui-input-icon-left">
 			    	<i class="pi pi-search" />
@@ -437,19 +437,19 @@ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="fa
 		       		<p:panelGrid layout="grid" columns="4" id="copyId">
 		       			<p:outputLabel value="Date From"/>
 		       			<p:selectOneMenu  value="#{form56Bean.idFromYear}" style="width:100%;" filter="true" filterMatchMode="contains">
-		                        <f:selectItems value="#{form56Bean.fromYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+		                        <f:selectItems value="#{form56Bean.fromYear}" />
 		                        <f:ajax event="change" render="formDataId" listener="#{form56Bean.onCellEdit}" />
 		                </p:selectOneMenu>
 		                
 		       			<p:outputLabel value="Date To"/>
 		       			<p:selectOneMenu  value="#{form56Bean.idToYear}" style="width:100%;" filter="true" filterMatchMode="contains">
-			                       <f:selectItems value="#{form56Bean.toYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                       <f:selectItems value="#{form56Bean.toYear}"/>
 			            </p:selectOneMenu>
 		       			
 		       			
 		       			<p:outputLabel value="Type"/>
 		       			<p:selectOneMenu  value="#{form56Bean.idPaymentType}" style="width:100%;">
-		                       <f:selectItems value="#{form56Bean.paymentTypes}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+		                       <f:selectItems value="#{form56Bean.paymentTypes}" />
 		                </p:selectOneMenu>
 		       			
 	</p:panelGrid>
@@ -469,12 +469,12 @@ modal="false" showEffect="clip" hideEffect="clip" resizable="false" closable="fa
 		<p:panelGrid layout="grid" columns="4" id="yearSelId">
 		       			<p:outputLabel value="Date From"/>
 		       			<p:selectOneMenu  value="#{form56Bean.yearSelectedFromId}" style="width:5em;" filter="true" filterMatchMode="contains">
-		                        <f:selectItems value="#{form56Bean.yearSelectedFroms}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+		                        <f:selectItems value="#{form56Bean.yearSelectedFroms}"/>
 		                </p:selectOneMenu>
 		                
 		       			<p:outputLabel value="Date To"/>
 		       			<p:selectOneMenu  value="#{form56Bean.yearSelectedToId}" style="width:5em;" filter="true" filterMatchMode="contains">
-			                       <f:selectItems value="#{form56Bean.yearSelectedTos}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                       <f:selectItems value="#{form56Bean.yearSelectedTos}"/>
 			            </p:selectOneMenu>
 		       			
 		       			<p:outputLabel value="Adjust Penalty and Fullpayment?"/>

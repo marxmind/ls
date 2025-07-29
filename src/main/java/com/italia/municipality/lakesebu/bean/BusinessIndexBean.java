@@ -124,9 +124,12 @@ public class BusinessIndexBean implements Serializable {
 	private List yearsMap;
 	private int yearMap;
 	private Map<Integer, Barangay> mapBaragany;
+	private String smsMsg;
+	private BusinessIndex selectedBusiness = BusinessIndex.builder().contanctNo("").build();
 	
 	@PostConstruct
 	public void init() {
+		setSelectedBusiness(new BusinessIndex());
 		mapBaragany = Barangay.barangays();
 		
 		
@@ -568,7 +571,15 @@ public class BusinessIndexBean implements Serializable {
         setSelectedMapData(getMapBiz().get(marker.getTitle()));   
     }
 	
-	public void sendCustomerSMS(BusinessIndex rs) {
+	public void sendSMSPop(BusinessIndex rs) {
+		String msg = "Hi <recepient>,  this is a friendly reminder of your second qtr payment. Please pay <amount>. If payment already settled, please disregard this message.";
+		msg = msg.replace("<recepient>", rs.getOwner().split(",")[0]);
+		setSmsMsg(msg);
+		setSelectedBusiness(rs);
+	}
+	
+	public void sendCustomerSMS() {
+		BusinessIndex rs = getSelectedBusiness();
 		if(rs!=null && rs.getId()>0 && !rs.getContanctNo().isEmpty()) {
 			if(CheckInternetConnection.isInternetPresent("https://semaphore.co/")) {
 				System.out.println("The site is accessible...");
@@ -580,6 +591,9 @@ public class BusinessIndexBean implements Serializable {
 					String post_url_msg = Words.getTagName("sms-post-url-msg");
 					String user_agent = Words.getTagName("sms-user-agent");
 					String msg = GlobalVar.smsMSG.replace("<recepient>", rs.getOwner().split(",")[0]);
+					if(getSmsMsg()!=null && !getSmsMsg().isEmpty()) {
+						msg = getSmsMsg();
+					}
 					
 					System.out.println("sending info "+ msg + " number: " + contactNo);
 					String[] response = SendSMS.sendSMS(api_key, contactNo, msg,post_url_msg, user_agent);

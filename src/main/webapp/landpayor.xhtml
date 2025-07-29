@@ -60,7 +60,7 @@
 			    				</span>
 			    				<p:selectOneMenu  id="bgId" value="#{payorBean.barangayIdSearch}" filter="true" filterMatchMode="contains" style="color: black" >
 			    				   <f:selectItem itemLabel="All"/>
-			                       <f:selectItems value="#{payorBean.barangayListSearch}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                       <f:selectItems value="#{payorBean.barangayListSearch}" />
 			                   </p:selectOneMenu>
 			                   <p:commandButton id="findId" update="formDataId"  icon="pi pi-search" actionListener="#{payorBean.init}"/>
 			                   </div>
@@ -121,7 +121,7 @@
 						                  <f:facet name="input">
 						                  <p:selectOneMenu  value="#{payorBean.barangayId}" style="width:100%;" filter="true" filterMatchMode="contains">
 						                       <f:selectItem itemLabel="Select..."/>
-						                       <f:selectItems value="#{payorBean.barangayList}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+						                       <f:selectItems value="#{payorBean.barangayList}"/>
 						                   </p:selectOneMenu>
 						                  </f:facet>
 						              </p:cellEditor>
@@ -210,7 +210,7 @@
                   <f:facet name="input">
                   <p:selectOneMenu  value="#{payorBean.imrovedId}" style="width:100%;">
                   	   <f:selectItem itemLabel="Select..."/>
-                       <f:selectItems value="#{payorBean.improves}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                       <f:selectItems value="#{payorBean.improves}" />
                    </p:selectOneMenu>
                   </f:facet>
               </p:cellEditor>
@@ -232,7 +232,7 @@
                   <f:facet name="input">
                   <p:selectOneMenu  value="#{payorBean.landStatusId}" style="width:100%;">
                   	   <f:selectItem itemLabel="Select..."/>
-                       <f:selectItems value="#{payorBean.landStatus}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                       <f:selectItems value="#{payorBean.landStatus}" />
                    </p:selectOneMenu>
                   </f:facet>
               </p:cellEditor>
@@ -262,7 +262,7 @@
                   <f:facet name="input">
                   <p:selectOneMenu  value="#{payorBean.landTypeId}" style="width:100%;">
                   	   <f:selectItem itemLabel="Select..."/>
-                       <f:selectItems value="#{payorBean.landTypes}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                       <f:selectItems value="#{payorBean.landTypes}" />
                    </p:selectOneMenu>
                   </f:facet>
               </p:cellEditor>
@@ -283,7 +283,7 @@
                   <f:facet name="input">
                   <p:selectOneMenu  value="#{payorBean.barangayIdLand}" style="width:100%;" filter="true" filterMatchMode="contains">
                        <f:selectItem itemLabel="Select..."/>
-                       <f:selectItems value="#{payorBean.barangayListLand}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                       <f:selectItems value="#{payorBean.barangayListLand}" />
                    </p:selectOneMenu>
                   </f:facet>
               </p:cellEditor>

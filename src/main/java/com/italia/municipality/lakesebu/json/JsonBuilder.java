@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Collator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.italia.municipality.lakesebu.controller.Chequedtls;
 import com.italia.municipality.lakesebu.controller.CollectionInfo;
+import com.italia.municipality.lakesebu.controller.Collector;
 import com.italia.municipality.lakesebu.controller.ORListing;
 import com.italia.municipality.lakesebu.controller.ReadConfig;
 import com.italia.municipality.lakesebu.enm.AppConf;
@@ -23,14 +25,15 @@ public class JsonBuilder {
 		
 		//to query in comment the session in webhisdatabaseconnect below code
 		//HttpSession session = SessionBean.getSession();
-		 //String val = session.getAttribute("server-local").toString();
+		//String val = session.getAttribute("server-local").toString();
 		//uncomment below code
 		//String val="true";
 		
-		createBusinessJsonFile(true);
-		createCollectionJsonFile(true);
-		createCheckJsonFile(true);
-		createORJsonFile(true);
+		//createBusinessJsonFile(true);
+		//createCollectionJsonFile(true);
+		//createCheckJsonFile(true);
+		//createORJsonFile(true);
+		createCollectorJsonFile();
 	}
 
 static void createORJsonFile(boolean isEncrypted) {
@@ -429,5 +432,73 @@ static void createCollectionJsonFile(boolean isEncyrpt) {
             System.out.println("Could not rename file");
 		
 	}
+
+static void createCollectorJsonFile() {
+	
+	
+	
+	
+	String str = "{\n";
+	str += "\t\"collector\" : [\n";
+	int count = 1;
+	
+	
+	for(Collector col : Collector.retrieve("", new String[0])) {
+		str +="\t\t{\n";
+		str += "\"id\" : \"" + col.getId() + "\",\n";
+		str += "\"name\" : \"" + col.getName() + "\"\n";
+		if(count>=1) {
+			str +="\t\t},\n";
+		}else {
+			str +="\t\t}\n";
+		}
+		
+		count++;
+	}
+	
+	
+	
+	str+="\t\t]\n";
+    str+="}\n";
+
+
+String FILE_LOG_NAME = "collector";
+String FILE_LOG_TMP_NAME = "tmpcollector";
+String EXT = ".json";
+
+String logpath = ReadConfig.value(AppConf.APP_LOG_PATH);
+
+String finalFile = logpath + FILE_LOG_NAME + EXT;
+String tmpFileName = logpath + FILE_LOG_TMP_NAME + EXT;
+
+File originalFile = new File(finalFile);
+
+//check log directory
+File logdirectory = new File(ReadConfig.value(AppConf.APP_LOG_PATH));
+if(!logdirectory.isDirectory()){
+	logdirectory.mkdir();
+}
+
+File tempFile = new File(tmpFileName);
+PrintWriter pw;
+try {
+	pw = new PrintWriter(new FileWriter(tempFile));
+	
+    pw.println(str);	
+    pw.flush();
+    pw.close();
+    System.out.println("completed...");
+} catch (IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+
+
+
+// Rename the new file to the filename the original file had.
+if (!tempFile.renameTo(originalFile))
+    System.out.println("Could not rename file");
+
+}
 	
 }

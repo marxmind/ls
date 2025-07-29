@@ -334,6 +334,10 @@ public class MenuBean implements Serializable{
 		return "businessreq.xhtml";
 	}
 	
+	public String tenant() {
+		return "tenant.xhtml";
+	}
+	
 	private static boolean checkdate(String dbLicense){
 		
 		String systemDate = DateUtils.getCurrentDateMMDDYYYY();

@@ -228,9 +228,7 @@
 			                         </p:column>
 									
 									<p:column headerText="SMS" width="30">
-					            		<p:commandButton id="sendSmsId" value="Send" actionListener="#{bnIndex.sendCustomerSMS(rpt)}"  update="sendSmsId msg">
-						    				<p:confirm header="Confirmation" message="Are you sure you want to send sms to business owner?." icon="ui-icon-alert" />
-						    			</p:commandButton>
+					            		<p:commandButton id="sendSmsId" value="Send" actionListener="#{bnIndex.sendSMSPop(rpt)}" update="msgIdSending" oncomplete="PF('dlgSMS').show('#{component.clientId}')"/>
 					                </p:column>
 									
 									<p:column headerText="Date" width="70">
@@ -604,6 +602,17 @@
 		
 		</p:dialog>
 	
+	
+	<p:overlayPanel widgetVar="dlgSMS" style="width:200px; height:400px" dismissable="false" showCloseIcon="true" dynamic="true" modal="true">
+		<p:panelGrid id="msgIdSending" columns="1" layout="grid" styleClass="ui-noborder">
+		<p:inputText id="contactId" value="#{bnIndex.selectedBusiness.contanctNo}" style="width: 14em" autoResize="true" rows="10" counter="display" maxlength="100" counterTemplate="{0} characters remaining." />
+		<p:inputTextarea id="smsSendingId" value="#{bnIndex.smsMsg}" style="width: 14em" autoResize="true" rows="10" counter="display" maxlength="160" counterTemplate="{0} characters remaining." />
+		<h:outputText id="display" class="block" />
+		<p:commandButton  value="Send SMS" actionListener="#{bnIndex.sendCustomerSMS}">
+					<p:confirm header="Confirmation" message="Are you sure you want to send sms to business owner?." icon="ui-icon-alert" />
+		</p:commandButton>
+		</p:panelGrid>
+	</p:overlayPanel>
 	
 	<ui:include src="bizlookup.xhtml" />
 	<ui:include src="loader.xhtml" />

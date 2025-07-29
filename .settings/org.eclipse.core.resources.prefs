@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/resources/reports/Dispense.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/barangay-cert.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/bill.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/business_application_closure.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/business_application_closure_letter.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/business_closure_cert.jrxml=UTF-8
@@ -22,6 +23,8 @@ encoding//src/main/webapp/resources/reports/ctmovement.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/form10.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/form11.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/form12.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/form56-change-20250331.jrxml=UTF-8
+encoding//src/main/webapp/resources/reports/form56.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcd-OR.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcd.jrxml=UTF-8
 encoding//src/main/webapp/resources/reports/rcdall.jrxml=UTF-8

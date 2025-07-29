@@ -1076,14 +1076,14 @@ private static BusinessPermit readXLSFile(File file,int sheetNo) {
 					                cell=(HSSFCell) cells.next();
 					                
 					                
-					                if(cell.getCellTypeEnum()==CellType.STRING) {
+					                /*if(cell.getCellTypeEnum()==CellType.STRING) {
 					                	value = cell.getStringCellValue();
 					                }else if(cell.getCellTypeEnum()==CellType.NUMERIC) {
 					                	value = cell.getNumericCellValue()+"";
 					                }else {
 					                	//U Can Handel Boolean, Formula, Errors
 					                	//System.out.println("\t");
-					                }
+					                }*/
 					                //System.out.println("value " + value);
 				            		
 				               countRow++;
@@ -1146,7 +1146,7 @@ private static List<BusinessORTransaction> readXLSFileOR(File file,int sheetNo) 
 		            		
 				                cell=(HSSFCell) cells.next();
 				                String value="";
-				                
+				                /*
 				                if(cell.getCellTypeEnum()==CellType.STRING) {
 				                	value = cell.getStringCellValue();
 				                }else if(cell.getCellTypeEnum()==CellType.NUMERIC) {
@@ -1154,7 +1154,7 @@ private static List<BusinessORTransaction> readXLSFileOR(File file,int sheetNo) 
 				                }else {
 				                	//U Can Handel Boolean, Formula, Errors
 				                	//System.out.println("\t");
-				                }
+				                }*/
 				                //System.out.println("value " + value);
 			            		
 				                switch(countRow) {

@@ -1,0 +1,505 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="jakarta.faces.facelets">
+
+    <h:head>
+    	<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+    	
+    	<f:facet name="middle">
+    		<h:outputStylesheet library="webjars" name="primeflex/3.3.0/primeflex.min.css" />
+    		<h:outputStylesheet name="css/bodyconf.css"/>
+    	</f:facet>
+    	
+    	
+    	
+    </h:head>
+	
+	<style>
+    
+    
+    h2 {
+	  background-color: black;
+	  color: white;
+	  text-align: center;
+	}
+	.div-table
+    {
+      display: table;         
+	  width: auto;         
+	  background-color: #eee;         
+	  border: 1px solid #666666;         
+	  border-spacing: 5px; /* cellspacing:poor IE support for  this */
+    }
+
+    .div-table-row
+    {
+      display: table-row;
+	  width: auto;
+	  clear: both;
+    }
+
+    .div-table-col
+    {
+      float: left; /* fix for  buggy browsers */
+	  display: table-column;         
+	  width: 200px;         
+	  background-color: #ccc;
+    }
+    
+    .ui-filter-column .ui-column-customfilter .custom-filter {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+</style>
+
+
+    <h:body>
+ 	<h:form prependId="false" id="formId">  
+	 	<div id="onProgId" style="display:none; z-index: 9999999999;">
+	    	<p:progressBar id="progressBarIndecator" style="height:10px" mode="indeterminate"/>
+	    </div>     
+	 	
+	    <p:growl id="msg" showDetail="true" life="2000" />
+	    
+	    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+    
+	    <p:confirmPopup global="true">
+	            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat"/>
+	            <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+	    </p:confirmPopup>
+    	
+    	<div class="card">
+    		<div class="grid">
+	        	<div class="col">
+	        	
+	        	<p:tabView prependId="false" widgetVar="tabSelection">
+	        	
+	        		<p:ajax event="tabChange" listener="#{tenant.onTabChange}" update="dataBillingForm gridId dataForm gridConId dataContractForm gridBillId dataBillForm"/>
+	        	
+	        		<p:tab title="Billing">
+	        			
+	        			<div class="grid">
+		        			<div class="col">
+		        			
+		        				
+		        					
+		        					<p:dataTable id="dataBillingForm" value="#{tenant.billTenants}" var="rpt" stickyHeader="false" stripedRows="true"
+									rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="5,10,15,20,50,100"
+		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
+		                         
+		                         >
+		                         
+		                         <f:facet name="{Exporters}" >
+		                         	<p:inputText value="#{tenant.searchBillCreated}" style="width: 30em; float: left" placeholder="Search...">
+	    								<p:ajax event="keyup" listener="#{tenant.loadBillCreated}" delay="800" update="dataBillingForm" />
+	    							</p:inputText>
+		                         </f:facet>
+		                         
+		                         <p:column headerText="PDF" width="10" exportable="false">
+		            				 	<p:commandLink title="Print in PDF" target="_blank" action="#{tenant.printBill(rpt)}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+										</p:commandLink>
+								</p:column>
+		                         
+		                         
+		            			 <p:column headerText="Name" width="100">
+		            				<p:outputLabel value="#{rpt.fullName}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Total Bill" width="70">
+		            				<p:outputLabel value="#{rpt.totalBill}"/>
+		            			 </p:column>
+		            			
+		                         
+		                     </p:dataTable>  
+		        					
+		        				
+		        				
+		        			</div>
+	        			</div>	
+	        			
+	        		</p:tab>
+	        	
+	        		<p:tab title="Tenant Information">
+	        		
+	        		
+	        		<div class="grid">
+	        			<div class="col">
+	        			
+	        				
+	        			
+	        				<div class="col-5">
+	        					
+	        					<div class="ui-inputgroup" style="float:left">
+					            	<p:commandButton update="gridId" value="New" icon="pi pi-file-o" actionListener="#{tenant.clear}"/>
+					    			<p:commandButton update="gridId" value="Clear" icon="pi pi-trash" action="#{tenant.clear}"/>
+					    			<p:commandButton update="gridId dataForm msg" value="Save" icon="pi pi-save" actionListener="#{tenant.save}">
+					    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
+					    			</p:commandButton>
+		            			</div>
+	        				
+	        					
+	        					<p:panelGrid id="gridId" columns="2" layout="grid" styleClass="ui-noborder">
+	        					
+	        					<p:outputLabel value="Tenant No"/>
+	        					<p:outputLabel value="#{tenant.selectedData.tenantNo}"/>
+	        					
+	        					<p:outputLabel value="Date"/>
+	        					<p:calendar value="#{tenant.selectedData.dateTrans}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
+	        					
+	        					<p:outputLabel value="Full Name"/>
+	        					<p:inputText value="#{tenant.selectedData.fullName}" style="width: 15em" placeholder="Full Name"/>
+	        					
+	        					<p:outputLabel value="Address"/>
+	        					<p:inputText value="#{tenant.selectedData.address}" style="width: 15em" placeholder="Address"/>
+	        					
+	        					<p:outputLabel value="Contact Number"/>
+	        					<p:inputText value="#{tenant.selectedData.contactNumber}" style="width: 15em" placeholder="0000-0000-000"/>
+	        					
+	        					
+	        					</p:panelGrid>
+	        				</div>
+	        				
+	        				
+	        				<p:dataTable id="dataForm" value="#{tenant.tenants}" var="rpt" stickyHeader="false" stripedRows="true"
+									rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="5,10,15,20,50,100"
+		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
+		                         
+		                         >
+		                         
+		                         <f:facet name="{Exporters}" >
+		                         	<p:inputText value="#{tenant.search}" style="width: 30em; float: left" placeholder="Search...">
+	    								<p:ajax event="keyup" listener="#{tenant.load}" delay="800" update="dataForm gridId" />
+	    							</p:inputText>
+		                         </f:facet>
+		                         
+		                         <p:column headerText="[*]" width="20" exportable="false">
+		            					<p:commandButton update="dataForm msg" icon="pi pi-trash" actionListener="#{tenant.delete(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            			</p:column>
+		                         
+		                         <p:column headerText="Edit" width="30" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="gridId" actionListener="#{tenant.clickItem(rpt)}"/>
+								</p:column>
+		                         
+		                         <p:column headerText="Date" width="30">
+		            				<p:outputLabel value="#{rpt.date}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Tenant No" width="30">
+		            				<p:outputLabel value="#{rpt.tenantNo}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Name" width="100">
+		            				<p:outputLabel value="#{rpt.fullName}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Address" width="100">
+		            				<p:outputLabel value="#{rpt.address}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Contact No" width="70">
+		            				<p:outputLabel value="#{rpt.contactNumber}"/>
+		            			 </p:column>
+		                         
+		                     </p:dataTable>   
+	        				
+	        				
+	        			</div>
+	        		</div>
+	        		
+	        		
+	        		</p:tab>
+	        		
+	        		<p:tab title="Contract Information">
+	        		
+	        		
+	        		<div class="grid">
+	        			<div class="col">
+	        			
+	        				
+	        			
+	        				<div class="col-5">
+	        					
+	        					<div class="ui-inputgroup" style="float:left">
+					            	<p:commandButton update="gridConId" value="New" icon="pi pi-file-o" actionListener="#{tenant.clearConract}"/>
+					    			<p:commandButton update="gridConId" value="Clear" icon="pi pi-trash" action="#{tenant.clearConract}"/>
+					    			<p:commandButton update="gridConId dataContractForm msg" value="Save" icon="pi pi-save" actionListener="#{tenant.saveContract}">
+					    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
+					    			</p:commandButton>
+		            			</div>
+	        				
+	        					
+	        					<p:panelGrid id="gridConId" columns="4" layout="grid" styleClass="ui-noborder">
+	        					
+	        					<p:outputLabel value="Account No."/>
+	        					<p:outputLabel value="#{tenant.selectedContract.accountNo}"/>
+	        					
+	        					<p:outputLabel value="Date"/>
+	        					<p:calendar value="#{tenant.selectedContract.dateTrans}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
+	        					
+	        					<p:outputLabel value="Tenant"/>
+	        					<p:selectOneMenu value="#{tenant.selectedContract.tenant.id}" style="width: 15em" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{tenant.tenantContracts}"/>
+								</p:selectOneMenu>
+	        					
+	        					<p:outputLabel value="Contract Start"/>
+	        					<p:calendar value="#{tenant.selectedContract.dateStart}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
+	        					
+	        					<p:outputLabel value="Contract End"/>
+	        					<p:calendar value="#{tenant.selectedContract.dateEnd}" pattern="yyyy-MM-dd" effect="slideDown" disabledWeekends="true" inputStyle="width: 15em"/>
+	        					
+	        					
+	        					<p:outputLabel value="Status"/>
+	        					<p:selectOneMenu value="#{tenant.selectedContract.status}" style="width: 15em" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{tenant.status}"/>
+								</p:selectOneMenu>
+								
+								<p:outputLabel value="Class Type"/>
+	        					<p:selectOneMenu value="#{tenant.selectedContract.classType}" style="width: 15em" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{tenant.types}"/>
+								</p:selectOneMenu>
+	        					
+	        					<p:outputLabel value="Amount"/>
+	        					<p:inputText value="#{tenant.selectedContract.amount}" style="width: 15em" placeholder="Amount"/>
+	        					
+	        					<p:outputLabel value="Location No"/>
+	        					<p:inputText value="#{tenant.selectedContract.locationNumber}" style="width: 15em" placeholder="Location No"/>
+	        					
+	        					</p:panelGrid>
+	        				</div>
+	        				
+	        				
+	        				<p:dataTable id="dataContractForm" value="#{tenant.contracts}" var="rpt" stickyHeader="false" stripedRows="true"
+									rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="5,10,15,20,50,100"
+		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
+		                         
+		                         >
+		                         
+		                         <f:facet name="{Exporters}" >
+		                         	<p:inputText value="#{tenant.searchContract}" style="width: 30em; float: left" placeholder="Search...">
+	    								<p:ajax event="keyup" listener="#{tenant.loadContract}" delay="800" update="dataContractForm gridConId" />
+	    							</p:inputText>
+		                         </f:facet>
+		                         
+		                         <p:column headerText="[*]" width="20" exportable="false">
+		            					<p:commandButton update="dataContractForm msg" icon="pi pi-trash" actionListener="#{tenant.delete(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            			</p:column>
+		                         
+		                         <p:column headerText="Edit" width="30" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="gridConId" actionListener="#{tenant.clickItemContract(rpt)}"/>
+								</p:column>
+		                         
+		                         <p:column headerText="Date" width="30">
+		            				<p:outputLabel value="#{rpt.date}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Account No" width="70">
+		            				<p:outputLabel value="#{rpt.accountNo}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Name" width="100">
+		            				<p:outputLabel value="#{rpt.tenant.fullName}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Contract Start" width="70">
+		            				<p:outputLabel value="#{rpt.contractStart}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Contract End" width="70">
+		            				<p:outputLabel value="#{rpt.contractEnd}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Contract Amount" width="70">
+		            				<p:outputLabel value="#{rpt.amount}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Location No" width="70">
+		            				<p:outputLabel value="#{rpt.locationNumber}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Status" width="100">
+		            				<p:outputLabel value="#{rpt.statusName}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Type" width="70">
+		            				<p:outputLabel value="#{rpt.classTypeName}"/>
+		            			 </p:column>
+		                         
+		                     </p:dataTable>   
+	        				
+	        				
+	        			</div>
+	        		</div>
+	        		
+	        		</p:tab>
+	        		
+	        		<p:tab title="Billing Generation">
+	        			
+	        			<div class="grid">
+	        			<div class="col">
+	        			
+	        				<div class="col-5">
+	        						
+	        					<div class="ui-inputgroup" style="float:left">
+	        						<p:commandButton update="gridBillId" value="Clear" icon="pi pi-trash" action="#{tenant.clearBill}"/>
+					            	<p:commandButton update="gridBillId dataBillForm msg" value="Generate Billing" icon="pi pi-sync" actionListener="#{tenant.generateBilling}"/>
+					            	<p:commandButton update="gridBillId dataBillForm msg" value="Save" icon="pi pi-save" actionListener="#{tenant.saveBill}">
+					    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
+					    			</p:commandButton>
+		            			</div>
+	        				
+	        					
+	        					<p:panelGrid id="gridBillId" columns="6" layout="grid" styleClass="ui-noborder">
+	        					
+	        					<p:outputLabel value="Date"/>
+	        					<p:outputLabel value="#{tenant.billSelected.date}"/>
+	        					
+	        					<p:outputLabel value="Bill No"/>
+	        					<p:outputLabel value="#{tenant.billSelected.billNo}"/>
+	        					
+	        					<p:outputLabel value="Tenant"/>
+	        					<p:outputLabel value="#{tenant.billSelected.tenant.fullName}"/>
+	        					
+	        					<p:outputLabel value="Surcharge"/>
+	        					<p:inputText value="#{tenant.billSelected.surcharge}"/>
+	        					
+	        					<p:outputLabel value="Interest"/>
+	        					<p:inputText value="#{tenant.billSelected.interest}"/>
+	        					
+	        					<p:outputLabel value="Total Bill"/>
+	        					<p:inputText value="#{tenant.billSelected.total}"/>
+	        					
+	        					<p:outputLabel value="Interest Rate"/>
+	        					<p:inputText value="#{tenant.billSelected.interestRate}"/>
+	        					
+	        					<p:outputLabel value="Unpaid Principal"/>
+	        					<p:inputText value="#{tenant.billSelected.unpaidPrincipal}"/>
+	        					
+	        					<p:outputLabel value="Is Paid"/>
+	        					<p:inputText value="#{tenant.billSelected.isPaid}"/>
+	        					
+	        					<p:outputLabel value="Month"/>
+	        					<p:inputText value="#{tenant.billSelected.month}"/>
+	        					
+	        					<p:outputLabel value="Year"/>
+	        					<p:inputText value="#{tenant.billSelected.year}"/>
+	        					
+	        					</p:panelGrid>
+	        							
+	        				</div>
+	        				
+	        				<p:dataTable id="dataBillForm" value="#{tenant.bills}" var="rpt" stickyHeader="false" stripedRows="true"
+									rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="5,10,15,20,50,100"
+		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
+		                         
+		                         >
+		                         
+		                         <f:facet name="{Exporters}" >
+		                         	<p:inputText value="#{tenant.searchBill}" style="width: 30em; float: left" placeholder="Search...">
+	    								<p:ajax event="keyup" listener="#{tenant.loadBill}" delay="800" update="dataBillForm gridBillId" />
+	    							</p:inputText>
+		                         </f:facet>
+		                         
+		                         <p:column headerText="[*]" width="20" exportable="false">
+		            					<p:commandButton update="dataBillForm msg" icon="pi pi-trash" actionListener="#{tenant.deleteBill(rpt)}">
+		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+		            					</p:commandButton>
+		            			</p:column>
+		                         
+		                         <p:column headerText="Edit" width="30" exportable="false">
+										<p:commandButton icon="pi pi-pencil" update="gridBillId" actionListener="#{tenant.clickBillItem(rpt)}"/>
+								</p:column>
+		                         
+		                         <p:column headerText="Date" width="30">
+		            				<p:outputLabel value="#{rpt.date}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Bill No" width="70">
+		            				<p:outputLabel value="#{rpt.billNo}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Name" width="100">
+		            				<p:outputLabel value="#{rpt.tenant.fullName}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Area/No" width="100">
+		            				<p:outputLabel value="#{rpt.contract.classTypeName}/#{rpt.contract.locationNumber}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Principal" width="70">
+		            				<p:outputLabel value="#{rpt.billAmount}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Surcharge" width="70">
+		            				<p:outputLabel value="#{rpt.surcharge}"/>
+		            			 </p:column>
+		            			 
+		            			  <p:column headerText="Interest" width="70">
+		            				<p:outputLabel value="#{rpt.interest}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Total Bill" width="70">
+		            				<p:outputLabel value="#{rpt.total}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Is Paid" width="70">
+		            				<p:outputLabel value="#{rpt.isPaid==1? 'Paid' : 'Unpaid'}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="OR Number" width="70">
+		            				<p:outputLabel value="#{rpt.officialRefNumber}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Amount Paid" width="70">
+		            				<p:outputLabel value="#{rpt.amountPaid}"/>
+		            			 </p:column>
+		                         
+		                         <p:column headerText="Remarks" width="70">
+		            				<p:outputLabel value="#{rpt.remarks}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Bill Year/Month" width="70">
+		            				<p:outputLabel value="#{rpt.year}/#{rpt.month}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Interest Rate" width="30">
+		            				<p:outputLabel value="#{rpt.interestRate}"/>
+		            			 </p:column>
+		            			 
+		            			 <p:column headerText="Unpaid Princ." width="30">
+		            				<p:outputLabel value="#{rpt.unpaidPrincipal}"/>
+		            			 </p:column>
+		                         
+		                     </p:dataTable>  
+	        			
+	        			</div>
+	        			</div>	
+	        			
+	        		</p:tab>
+	        	
+	        	</p:tabView>
+	        	
+	        	</div>
+    		</div>
+    	</div>	
+    
+    
+     <ui:include src="menu.xhtml" /> 
+
+    </h:form>    
+    </h:body>
+</html>

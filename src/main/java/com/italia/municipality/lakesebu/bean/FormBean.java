@@ -255,11 +255,12 @@ public class FormBean implements Serializable{
 	
 	
 	public void printMonthSeries() {
-		if(getMonthId()==DateUtils.getCurrentMonth()) {
+		//commentted due to error in individual craaf
+		//if(getMonthId()==DateUtils.getCurrentMonth()) {
 			buildFormData();
-		}else {
-			readXML();
-		}
+		//}else {
+			//readXML();
+		//}
 	}
 	
 	private void readXML() {
@@ -313,7 +314,10 @@ public class FormBean implements Serializable{
 		String title = "REPORT OF ACCOUNTABILITY FOR ACCOUNTABLE FORMS";
 		String accountableOfficer = doc.getTagName("treasurer-name").toUpperCase();
 		String designation = doc.getTagName("treasurer-position");
-		String REPORT_NAME = GlobalVar.FORM11; //ReadConfig.value(AppConf.FORM11_REPORT);
+		String REPORT_NAME = GlobalVar.FORM12; //ReadConfig.value(AppConf.FORM11_REPORT);
+		
+		REPORT_NAME = GlobalVar.FORM11;
+		
 		if(getCollectorMapId()==0) {
 			title = "CONSOLIDATED REPORT OF ACCOUNTABILITY FOR ACCOUNTABLE FORMS";
 			//accountableOfficer = getCollectorData().get(getCollectorMapId()).getName();
@@ -361,6 +365,11 @@ public class FormBean implements Serializable{
 		param.put("PARAM_LOGO_TRANS", off);
 		}catch(Exception e){e.printStackTrace();}
   		
+		
+		//for monthly consolidated form11
+		param.put("PARAM_TREASURER",accountableOfficer);
+  		param.put("PARAM_TREASURER_POS",designation);
+		
   		try{
 	  		String jrprint = JasperFillManager.fillReportToFile(jrxmlFile, param, beanColl);
 	  	    JasperExportManager.exportReportToPdfFile(jrprint,REPORT_PATH+ REPORT_NAME +".pdf");
@@ -549,6 +558,8 @@ public class FormBean implements Serializable{
 		String f12 = "";
 		String f13 = "";
 		
+		String f14 = "";// as date with issuance or issued
+		
 		if(logmonth==getMonthId() && logDay == DateUtils.getCurrentDay()) {//current month and current day same
 			//write in receipt
 			rpt.setF2("");
@@ -613,7 +624,7 @@ public class FormBean implements Serializable{
 			}
 			
 			
-			
+			rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 			
 		}else {
 		//Write in beginning balance
@@ -681,6 +692,8 @@ public class FormBean implements Serializable{
 			rpt.setF5("");
 			rpt.setF6("");
 			rpt.setF7("");
+			
+			rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 		}
 		
 		
@@ -727,7 +740,7 @@ public class FormBean implements Serializable{
 				f13 = enen2==7? "0"+enen1 : enen1;
 				rpt.setF13(DateUtils.numberResult(info.getFormType(), Long.valueOf(f13)));
 				
-				rpt.setF14("Partial Issued");
+				rpt.setF14("Partial Issued/"+ info.getReceivedDate()==null? "" : info.getReceivedDate());
 			}
 			
 			
@@ -749,7 +762,8 @@ public class FormBean implements Serializable{
 			f13 = enen2==7? "0"+enen1 : enen1;
 			rpt.setF13(DateUtils.numberResult(info.getFormType(), Long.valueOf(f13)));
 			//remarks
-			rpt.setF14("");
+			//rpt.setF14("");
+			rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 		}
 		
 		
@@ -802,6 +816,8 @@ public class FormBean implements Serializable{
 							rpt.setF12(allIssued);
 						}
 						rpt.setF13("");
+						
+						
 					}else {
 						
 						amount = info.getBeginningNo() + info.getAmount();
@@ -829,17 +845,21 @@ public class FormBean implements Serializable{
 							rpt.setF12(allIssued);
 						}
 						rpt.setF13("");
+						
 					}
 						
 						
 						//remarks
-						rpt.setF14("");
+						//rpt.setF14("");
+						rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 					//}
 				}
 				
 				Collector col = Collector.retrieve(info.getCollector().getId());
 				if(col.getDepartment().getCode().equalsIgnoreCase("1091")) {
-					rpt.setF15(col.getName().replace("F.L Lopez-", ""));
+					String val = col.getName().replace("F.L Lopez-", "");
+					val = val.replace("H.E. Magbanua", "");
+					rpt.setF15(val);
 				}else {
 					rpt.setF15(col.getDepartment().getDepartmentName());
 				}
@@ -883,7 +903,7 @@ public class FormBean implements Serializable{
 		rpt.setF12(beg);
 		rpt.setF13(end);
 		
-		rpt.setF14("***RTS***");
+		rpt.setF14("RTS/" +info.getReceivedDate()==null? "" : info.getReceivedDate());
 		
 		Collector col = Collector.retrieve(info.getCollector().getId());
 		if(col.getDepartment().getCode().equalsIgnoreCase("1091")) {
@@ -967,7 +987,8 @@ public class FormBean implements Serializable{
 		}
 		
 		//remarks
-		rpt.setF14("");
+		//rpt.setF14("");
+		rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 		
 		//change the value if the form is Cash ticket
 		if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
@@ -1013,7 +1034,8 @@ public class FormBean implements Serializable{
 				rpt.setF13("");
 				
 				//remarks
-				rpt.setF14("");
+				//rpt.setF14("");
+				rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 			}
 		}
 		
@@ -1194,6 +1216,7 @@ public class FormBean implements Serializable{
 		}
 		//remarks
 		rpt.setF14("");
+		rpt.setF14(isform.getIssuedDate()==null? "" : isform.getIssuedDate());
 		
 		Collector col = Collector.retrieve(isform.getCollector().getId());
 		if(col.getDepartment().getCode().equalsIgnoreCase("1091")) {
@@ -1265,7 +1288,8 @@ public class FormBean implements Serializable{
 							rpt.setF13("");
 						}
 						//remarks
-						rpt.setF14("");
+						//rpt.setF14("");
+						rpt.setF14(isform.getIssuedDate()==null? "" : isform.getIssuedDate());
 		}
 		
 		return rpt;

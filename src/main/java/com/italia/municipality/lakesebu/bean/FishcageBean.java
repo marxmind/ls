@@ -545,7 +545,7 @@ public WaterRentalsPayment yearDtlsAmount(int id, WaterRentalsPayment w, FishCag
 	
 	private String cellValue(HSSFCell cell) {
 		String tmpNum ="";
-		if(CellType.NUMERIC==cell.getCellTypeEnum().NUMERIC) {
+		/*if(CellType.NUMERIC==cell.getCellTypeEnum().NUMERIC) {
 			try{tmpNum = cell.getNumericCellValue()+"";}catch(IllegalStateException e) {System.out.println("illegal : " + cell.getStringCellValue()); tmpNum=cell.getStringCellValue();}
 			tmpNum = tmpNum.replace(".0", "");
 		}else if(CellType.STRING==cell.getCellTypeEnum().STRING) {
@@ -556,7 +556,7 @@ public WaterRentalsPayment yearDtlsAmount(int id, WaterRentalsPayment w, FishCag
 			tmpNum = "0";
 		}else if(CellType.FORMULA==cell.getCellTypeEnum().FORMULA) {
 			tmpNum = "";
-		}
+		}*/
 		return tmpNum;
 	}
 	

@@ -68,10 +68,10 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 			    				<p:outputLabel  value="Search From Year to Year "/>
 			    				<div class="ui-inputgroup">
 			    				<p:selectOneMenu  value="#{penaltyBean.idFromYear}" style="color: black">
-			                       <f:selectItems value="#{penaltyBean.fromYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                       <f:selectItems value="#{penaltyBean.fromYear}" />
 			                   </p:selectOneMenu>
 			                   <p:selectOneMenu  value="#{penaltyBean.idToYear}" style="color: black">
-			                       <f:selectItems value="#{penaltyBean.toYear}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+			                       <f:selectItems value="#{penaltyBean.toYear}" />
 			                   </p:selectOneMenu>
 			                   <p:commandButton id="findId" update="formDataId"  icon="pi pi-search" actionListener="#{penaltyBean.init}"/>
 			                   </div>

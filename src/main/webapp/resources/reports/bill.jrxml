@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bill" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="e1c85006-f4ee-454a-961c-a961a64985e9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="PARAM_TITLE2" class="java.lang.String"/>
+	<parameter name="PARAM_TITLE3" class="java.lang.String"/>
+	<parameter name="PARAM_TITLE1" class="java.lang.String"/>
+	<parameter name="PARAM_BUILDING_NAME2" class="java.lang.String"/>
+	<parameter name="PARAM_BUILDING_NAME3" class="java.lang.String"/>
+	<parameter name="PARAM_BUILDING_NAME1" class="java.lang.String"/>
+	<parameter name="PARAM_LOGO2" class="java.io.InputStream"/>
+	<parameter name="PARAM_LOGO3" class="java.io.InputStream"/>
+	<parameter name="PARAM_HEADER2" class="java.lang.String"/>
+	<parameter name="PARAM_HEADER3" class="java.lang.String"/>
+	<parameter name="PARAM_HEADER1" class="java.lang.String"/>
+	<parameter name="PARAM_NOTES2" class="java.lang.String"/>
+	<parameter name="PARAM_NOTES3" class="java.lang.String"/>
+	<parameter name="PARAM_NOTES1" class="java.lang.String"/>
+	<parameter name="PARAM_PREPAREDBY2" class="java.lang.String"/>
+	<parameter name="PARAM_PREPAREDBY1" class="java.lang.String"/>
+	<parameter name="PARAM_PREPAREDBY3" class="java.lang.String"/>
+	<parameter name="PARAM_POS3" class="java.lang.String"/>
+	<parameter name="PARAM_POS2" class="java.lang.String"/>
+	<parameter name="PARAM_POS1" class="java.lang.String"/>
+	<parameter name="PARAM_TREASNAME2" class="java.lang.String"/>
+	<parameter name="PARAM_TREASNAME3" class="java.lang.String"/>
+	<parameter name="PARAM_TREASNAME1" class="java.lang.String"/>
+	<parameter name="PARAM_TREASPOS2" class="java.lang.String"/>
+	<parameter name="PARAM_TREASPOS3" class="java.lang.String"/>
+	<parameter name="PARAM_TREASPOS1" class="java.lang.String"/>
+	<parameter name="PARAM_NOTEDBY2" class="java.lang.String"/>
+	<parameter name="PARAM_NOTEDBY3" class="java.lang.String"/>
+	<parameter name="PARAM_NOTEDBY1" class="java.lang.String"/>
+	<parameter name="PARAM_LOGO1" class="java.io.InputStream"/>
+	<parameter name="PARAM_TOTAL_PAYABLE2" class="java.lang.String"/>
+	<parameter name="PARAM_TOTAL_PAYABLE3" class="java.lang.String"/>
+	<parameter name="PARAM_TOTAL_PAYABLE1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="contractId" class="java.lang.Long"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="stall" class="java.lang.String"/>
+	<field name="year" class="java.lang.Integer"/>
+	<field name="month" class="java.lang.Integer"/>
+	<field name="principal" class="java.lang.Double"/>
+	<field name="surcharge" class="java.lang.Double"/>
+	<field name="interest" class="java.lang.Double"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="billNo" class="java.lang.String"/>
+	<field name="accountNo" class="java.lang.String"/>
+	<field name="tenantNo" class="java.lang.String"/>
+	<field name="unpaidPricipal" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="592" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="0" width="250" height="586" uuid="10a0e5eb-2c7c-4a3b-ba49-7f738e146ca4">
+					<printWhenExpression><![CDATA[$P{PARAM_TITLE1}!=null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="252" y="0" width="250" height="586" uuid="3a06bbcb-9f66-4d55-a79d-828f5cc50c9e">
+					<printWhenExpression><![CDATA[$P{PARAM_TITLE2}!=null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="503" y="0" width="250" height="586" uuid="0c445791-5a47-4c3d-b0c9-4b723c6e8a6c">
+					<printWhenExpression><![CDATA[$P{PARAM_TITLE3}!=null]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="0" y="14" width="252" height="96" uuid="5c1453a4-66e7-4f3b-82ae-ba4c72fd1867"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TITLE1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="252" y="14" width="252" height="96" uuid="b8966702-44ab-4364-8338-52d7c8e1e381"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TITLE2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="505" y="14" width="252" height="96" uuid="b3f9ccc2-7270-48fb-bb2f-4a6a46b44589"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TITLE3}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="5" y="3" width="40" height="37" isRemoveLineWhenBlank="true" uuid="b3f91186-c7b0-47af-af97-121d4bc9f19f"/>
+				<imageExpression><![CDATA[$P{PARAM_LOGO1}]]></imageExpression>
+			</image>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="257" y="3" width="40" height="37" isRemoveLineWhenBlank="true" uuid="358b3844-e9ad-449d-883d-333b4de0f19f"/>
+				<imageExpression><![CDATA[$P{PARAM_LOGO2}]]></imageExpression>
+			</image>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="510" y="3" width="40" height="37" isRemoveLineWhenBlank="true" uuid="bb29eb1c-6300-41d9-b094-95981cd6d7a0"/>
+				<imageExpression><![CDATA[$P{PARAM_LOGO3}]]></imageExpression>
+			</image>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="3" y="112" width="244" height="278" uuid="38b5086c-342b-4446-986a-f2e8e28affd9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_HEADER1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="255" y="112" width="244" height="278" uuid="b2b33798-fcf2-45f3-8602-c5cac688d941">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_HEADER2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="508" y="112" width="244" height="278" uuid="09089286-1102-4c04-86bc-9d84dced82ff">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_HEADER3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="5" y="407" width="237" height="106" uuid="7773f3bc-3d8a-45af-8636-e36dd28ed4a8"/>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NOTES1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="257" y="407" width="237" height="106" uuid="99e4ef82-2933-44a2-87af-0aed5555cd23">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NOTES2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="510" y="407" width="237" height="106" uuid="d08227ad-2528-4b24-8679-671a3bab3d4a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NOTES3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="10" y="514" width="118" height="13" uuid="573ef075-10b9-48a9-9a19-8f9d3626a978">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_PREPAREDBY1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="10" y="527" width="118" height="13" uuid="407d7eb8-122c-4e99-bfbd-22827bbeb1c3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_POS1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="90" y="560" width="138" height="13" uuid="a7154796-e525-4a89-92a2-9e7597c0c409">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASNAME1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="90" y="573" width="138" height="13" uuid="98f62ba0-a9d9-4689-975a-871ecd1b6e12">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASPOS1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="263" y="514" width="118" height="13" uuid="35a58d2e-8a40-46d8-aadd-fdde132ea792">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_PREPAREDBY2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="263" y="527" width="118" height="13" uuid="35b23687-b98b-4963-b14f-a79ae1e03b4d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_POS2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="343" y="560" width="138" height="13" uuid="7b613677-6705-4348-a10f-2d133fde1f89">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASNAME2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="343" y="573" width="138" height="13" uuid="859002b1-4a68-4e19-a2c8-4e837330c173">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASPOS2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="515" y="515" width="118" height="13" uuid="ba56cc93-6f9f-481d-8390-62a15036d157">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_PREPAREDBY3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="515" y="528" width="118" height="13" uuid="8e2f675f-d7ea-4c29-b377-c72a11abffc7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_POS3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="595" y="561" width="138" height="13" uuid="5d7769d6-a408-49a9-ba9e-99affb6f5c5a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASNAME3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="595" y="574" width="138" height="13" uuid="106b7b9f-3673-4570-a67b-483ce091646a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TREASPOS3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="515" y="547" width="118" height="13" uuid="b1654a06-8294-4850-a991-82ec2929d4e2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NOTEDBY3}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="264" y="545" width="118" height="13" uuid="665268aa-8545-4989-81ab-0bf6d75f76b9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NOTEDBY2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="9" y="545" width="118" height="13" uuid="9eb01cb1-d9fa-4ffd-9ffb-42de65335da7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_NOTEDBY1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="6" y="390" width="236" height="16" uuid="fd076b02-e3cb-4dbe-b439-54c466ec4dbc">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL_PAYABLE1}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="257" y="390" width="236" height="16" uuid="545d3d8b-9e61-4195-8c6b-1c40ba963b95"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL_PAYABLE2}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="510" y="390" width="236" height="16" uuid="d7732682-ef83-44fb-a316-150a78ca0404"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PARAM_TOTAL_PAYABLE3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>
