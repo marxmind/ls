@@ -53,6 +53,8 @@
         box-sizing: border-box;
     }
     
+    
+    
 </style>
 
 
@@ -97,9 +99,18 @@
 		                         >
 		                         
 		                         <f:facet name="{Exporters}" >
-		                         	<p:inputText value="#{tenant.searchBillCreated}" style="width: 30em; float: left" placeholder="Search...">
-	    								<p:ajax event="keyup" listener="#{tenant.loadBillCreated}" delay="800" update="dataBillingForm" />
-	    							</p:inputText>
+		                         	<div class="ui-inputgroup" style="float:left">
+			                         	<p:inputText value="#{tenant.searchBillCreated}" style="width: 30em; float: left" placeholder="Search...">
+		    								<p:ajax event="keyup" listener="#{tenant.loadBillCreated}" delay="800" update="dataBillingForm" />
+		    							</p:inputText>
+		    							<p:selectOneMenu value="#{tenant.yearSelected}" style="width: 10em" filterMatchMode="contains" filter="true">
+											<f:selectItems value="#{tenant.years}"/>
+										</p:selectOneMenu>
+										<p:selectOneMenu value="#{tenant.monthSelected}" style="width: 10em" filterMatchMode="contains" filter="true">
+											<f:selectItems value="#{tenant.months}"/>
+										</p:selectOneMenu>
+										<p:commandButton icon="pi pi-search" actionListener="#{tenant.loadBillCreated}" update="dataBillingForm" />
+									</div>
 		                         </f:facet>
 		                         
 		                         <p:column headerText="PDF" width="10" exportable="false">
@@ -293,7 +304,7 @@
 		                         </f:facet>
 		                         
 		                         <p:column headerText="[*]" width="20" exportable="false">
-		            					<p:commandButton update="dataContractForm msg" icon="pi pi-trash" actionListener="#{tenant.delete(rpt)}">
+		            					<p:commandButton update="dataContractForm msg" icon="pi pi-trash" actionListener="#{tenant.deleteContract(rpt)}">
 		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
 		            					</p:commandButton>
 		            			</p:column>
@@ -359,6 +370,11 @@
 					            	<p:commandButton update="gridBillId dataBillForm msg" value="Save" icon="pi pi-save" actionListener="#{tenant.saveBill}">
 					    				<p:confirm type="popup" header="Confirmation" message="Are you sure you want to save this data?" icon="pi pi-info-circle" />
 					    			</p:commandButton>
+					    			<p:menuButton id="exeRcd" value="Exports" style="float: left">
+										<p:menuitem value="Download Excel" ajax="false" immediate="true" icon="pi pi-file-excel" target="_blank">
+											<p:dataExporter type="xls" target="dataBillForm" fileName="Billing" pageOnly="false"/>
+										</p:menuitem>
+									</p:menuButton>
 		            			</div>
 	        				
 	        					
@@ -388,14 +404,17 @@
 	        					<p:outputLabel value="Unpaid Principal"/>
 	        					<p:inputText value="#{tenant.billSelected.unpaidPrincipal}"/>
 	        					
-	        					<p:outputLabel value="Is Paid"/>
-	        					<p:inputText value="#{tenant.billSelected.isPaid}"/>
-	        					
 	        					<p:outputLabel value="Month"/>
 	        					<p:inputText value="#{tenant.billSelected.month}"/>
 	        					
 	        					<p:outputLabel value="Year"/>
 	        					<p:inputText value="#{tenant.billSelected.year}"/>
+	        					
+	        					<p:outputLabel value="OR No."/>
+	        					<p:inputText value="#{tenant.billSelected.officialRefNumber}"/>
+	        					
+	        					<p:outputLabel value="Amount Paid"/>
+	        					<p:inputText value="#{tenant.billSelected.amountPaid}"/>
 	        					
 	        					</p:panelGrid>
 	        							
@@ -405,82 +424,100 @@
 									rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		                         rowsPerPageTemplate="5,10,15,20,50,100"
 		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
-		                         
 		                         >
 		                         
 		                         <f:facet name="{Exporters}" >
-		                         	<p:inputText value="#{tenant.searchBill}" style="width: 30em; float: left" placeholder="Search...">
+		                         
+		                         	
+		                         
+		                         	<div class="ui-inputgroup" style="float:left">
+		                         	<p:inputText value="#{tenant.searchBill}" style="width: 20em; float: left" placeholder="Search...">
 	    								<p:ajax event="keyup" listener="#{tenant.loadBill}" delay="800" update="dataBillForm gridBillId" />
 	    							</p:inputText>
+	    							<p:selectOneMenu value="#{tenant.yearSelectedSearch}" style="width: 10em" filterMatchMode="contains" filter="true">
+											<f:selectItems value="#{tenant.yearsSearch}"/>
+										</p:selectOneMenu>
+										<p:selectOneMenu value="#{tenant.monthSelectedSearch}" style="width: 10em" filterMatchMode="contains" filter="true">
+											<f:selectItems value="#{tenant.monthsSearch}"/>
+										</p:selectOneMenu>
+										<p:commandButton icon="pi pi-search" actionListener="#{tenant.loadBill}" update="dataBillForm" />
+									</div>	
+										
 		                         </f:facet>
 		                         
-		                         <p:column headerText="[*]" width="20" exportable="false">
+		                         <p:column headerText="[*]" width="20" exportable="false" style="#{rpt.style}">
 		            					<p:commandButton update="dataBillForm msg" icon="pi pi-trash" actionListener="#{tenant.deleteBill(rpt)}">
 		            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
 		            					</p:commandButton>
 		            			</p:column>
 		                         
-		                         <p:column headerText="Edit" width="30" exportable="false">
+		                         <p:column headerText="Edit" width="20" exportable="false" style="#{rpt.style}">
 										<p:commandButton icon="pi pi-pencil" update="gridBillId" actionListener="#{tenant.clickBillItem(rpt)}"/>
 								</p:column>
 		                         
-		                         <p:column headerText="Date" width="30">
+		                         <p:column headerText="PDF" width="10" exportable="false" style="#{rpt.style}">
+		            				 	<p:commandLink title="Print in PDF" target="_blank" action="#{tenant.printBillIndividual(rpt)}" ajax="false" immediate="false" >
+		            				 			<i class="pi pi-file-pdf" style="font-size: 2rem;float: left"></i>
+										</p:commandLink>
+								</p:column>
+		                         
+		                         <p:column headerText="Date" width="50" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.date}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Bill No" width="70">
+		            			 <p:column headerText="Bill No" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.billNo}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Name" width="100">
+		            			 <p:column headerText="Name" width="100" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.tenant.fullName}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Area/No" width="100">
+		            			 <p:column headerText="Area/No" width="100" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.contract.classTypeName}/#{rpt.contract.locationNumber}"/>
 		            			 </p:column>
 		            			 
-		            			  <p:column headerText="Principal" width="70">
+		            			  <p:column headerText="Principal" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.billAmount}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Surcharge" width="70">
+		            			 <p:column headerText="Surcharge" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.surcharge}"/>
 		            			 </p:column>
 		            			 
-		            			  <p:column headerText="Interest" width="70">
+		            			  <p:column headerText="Interest" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.interest}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Total Bill" width="70">
+		            			 <p:column headerText="Total Bill" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.total}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Is Paid" width="70">
+		            			 <p:column headerText="Is Paid" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.isPaid==1? 'Paid' : 'Unpaid'}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="OR Number" width="70">
+		            			 <p:column headerText="OR Number" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.officialRefNumber}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Amount Paid" width="70">
+		            			 <p:column headerText="Amount Paid" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.amountPaid}"/>
 		            			 </p:column>
 		                         
-		                         <p:column headerText="Remarks" width="70">
+		                         <p:column headerText="Remarks" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.remarks}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Bill Year/Month" width="70">
+		            			 <p:column headerText="Bill Year/Month" width="70" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.year}/#{rpt.month}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Interest Rate" width="30">
+		            			 <p:column headerText="Interest Rate" width="30" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.interestRate}"/>
 		            			 </p:column>
 		            			 
-		            			 <p:column headerText="Unpaid Princ." width="30">
+		            			 <p:column headerText="Unpaid Princ." width="30" style="#{rpt.style}">
 		            				<p:outputLabel value="#{rpt.unpaidPrincipal}"/>
 		            			 </p:column>
 		                         

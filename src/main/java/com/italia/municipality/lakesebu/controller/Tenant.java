@@ -42,6 +42,7 @@ public class Tenant {
 	private Date dateTrans;
 	private String totalBill;
 	
+
 	public static String getNewTenantNumber() {
 		String series = null;
 		String date = DateUtils.getCurrentDateYYYYMMDD();

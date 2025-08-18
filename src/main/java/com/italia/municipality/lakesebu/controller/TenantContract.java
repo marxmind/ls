@@ -52,6 +52,28 @@ public class TenantContract {
 	private Date dateStart;
 	private Date dateEnd;
 	
+	public static boolean hasExistingContract(long tenantId) {
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+			conn = WebTISDatabaseConnect.getConnection();
+			ps = conn.prepareStatement("SELECT tid FROM tenantcontract WHERE isactivec=1 AND tid=" + tenantId);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				return true;
+			}
+			rs.close();
+			ps.close();
+			WebTISDatabaseConnect.close(conn);
+	
+		}catch(Exception e){e.getMessage();}
+		
+		return false;
+	}
+	
 	public static String getNewAccountNumber() {
 		String series = null;
 		String date = DateUtils.getCurrentDateYYYYMMDD();

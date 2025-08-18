@@ -60,6 +60,30 @@ public class TenantBilling {
 	private Date dateTrans;
 	
 	
+	private String style;
+	
+	public static boolean hasExistingBills(long tenantId, long contractId) {
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+			conn = WebTISDatabaseConnect.getConnection();
+			ps = conn.prepareStatement("SELECT tid FROM tenantbilling WHERE isactiveb=1 AND tid=" + tenantId + " AND cid=" + contractId);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				return true;
+			}
+			rs.close();
+			ps.close();
+			WebTISDatabaseConnect.close(conn);
+	
+		}catch(Exception e){e.getMessage();}
+		
+		return false;
+	}
+	
 	public static List<Tenant> getTenantBillLatest(int year, int month, String name){
 		System.out.println("getTenantBill....");
 		List<Tenant> tns = new ArrayList<Tenant>();
@@ -528,6 +552,11 @@ public class TenantBilling {
 					.tenant(tn)
 					.build();
 			
+			String style="";
+			if(rs.getString("orreferenceno")!=null && !rs.getString("orreferenceno").isEmpty()) {
+				style="background-color: green";
+			}
+			
 			TenantBilling bill = builder()
 					.id(rs.getLong("bid"))
 					.date(rs.getString("bdate"))
@@ -547,6 +576,7 @@ public class TenantBilling {
 					.total(rs.getDouble("total"))
 					.interestRate(rs.getDouble("interestrate"))
 					.unpaidPrincipal(rs.getDouble("unpaidprincipal"))
+					.style(style)
 					.build();
 			
 			

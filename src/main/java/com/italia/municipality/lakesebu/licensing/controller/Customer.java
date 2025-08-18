@@ -538,7 +538,7 @@ public class Customer {
 	}
 	
 	public static List<Customer> retrieve(String sqlAdd, String[] params){
-		List<Customer> cuss = Collections.synchronizedList(new ArrayList<Customer>());
+		List<Customer> cuss = new ArrayList<Customer>(); //Collections.synchronizedList(new ArrayList<Customer>());
 		String supTable = "cus";
 		String userTable = "usr";
 		String purTable = "pur";
@@ -552,7 +552,7 @@ public class Customer {
 				                 ", municipality "+ munTable +
 				                 ", province "+ provTable + 
 				                 
-				" WHERE "
+				" WHERE " + supTable + ".cusisactive=1 AND "
 				+ supTable +".userdtlsid = "+ userTable +".userdtlsid AND "
 				+ supTable +".purid = "+ purTable +".purid AND "
 				+ supTable +".bgid = "+ barTable +".bgid AND "
@@ -1747,6 +1747,7 @@ public class Customer {
 			}
 			
 		}
+		System.out.println("Deleting customer: " + ps.toString());
 		
 		ps.executeUpdate();
 		ps.close();

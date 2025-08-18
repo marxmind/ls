@@ -259,7 +259,10 @@
                          				<p:menuitem value="Create/View Deposit" onclick="PF('dlgDeposit').show()" icon="fa fa-file" update="formDeps" actionListener="#{logformBean.viewDeposit}"/>
                          				<p:menuitem value="Monthly Summary" ajax="false" immediate="true" icon="fa fa-file-pdf-o" actionListener="#{logformBean.printInternalCollectorSummary('collector')}" target="_blank"/>
 										<p:menuitem value="Monthly Collection" ajax="false" immediate="true" icon="fa fa-file-pdf-o" actionListener="#{logformBean.printInternalCollectorSummary('all')}" target="_blank"/>
-									</p:menuButton> 
+										<p:menuitem value="Export Excel" ajax="false" immediate="true" icon="pi pi-file-excel">
+												<p:dataExporter type="xls" target="reportData" fileName="collection"/> 
+										</p:menuitem>
+									</p:menuButton>
 									</div>
             				</f:facet>
                          	
