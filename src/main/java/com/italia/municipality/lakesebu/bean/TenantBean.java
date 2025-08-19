@@ -77,6 +77,10 @@ public class TenantBean implements Serializable {
 	private List status;
 	private List types;
 	
+	private List yearArears;
+	
+	private List monthArearss;
+	
 	//bills
 	private String searchBill;
 	private List<TenantBilling> bills;
@@ -184,6 +188,7 @@ public class TenantBean implements Serializable {
 					.interest(py.getInterest())
 					.unpaidPricipal(py.getUnpaidPrincipal())
 					.total(py.getTotal())
+					.arrears(py.getContract().getArrears())
 					.build();
 			
 			int year = py.getYear();
@@ -307,6 +312,7 @@ public class TenantBean implements Serializable {
 				h1 += "\n";
 				h1 += "Bill no: " + bz.getBillNo();
 				h1 += "\nContract Amount: " + Currency.formatAmount(bz.getPrincipal());
+				h1 += "\nArrears: " + Currency.formatAmount(bz.getArrears());
 				h1 += "\nSurcharge: " + Currency.formatAmount(bz.getSurcharge());
 				h1 += "\nInterest: " + Currency.formatAmount(bz.getInterest());
 				h1 += "\nUnpaid: " + Currency.formatAmount(bz.getUnpaidPricipal());
@@ -325,7 +331,8 @@ public class TenantBean implements Serializable {
 				param.put("PARAM_NOTEDBY1", "Noted by:");
 				param.put("PARAM_TREASNAME1", treasname);
 				param.put("PARAM_TREASPOS1", treasnamepos);
-				param.put("PARAM_TOTAL_PAYABLE1","AMOUNT TO PAY PHP: " + Currency.formatAmount(bz.getTotal()));
+				double totalBill = bz.getArrears() + bz.getTotal();
+				param.put("PARAM_TOTAL_PAYABLE1","AMOUNT TO PAY PHP: " + Currency.formatAmount(totalBill));
 			}
 			
 			if(count==2) {
@@ -340,6 +347,7 @@ public class TenantBean implements Serializable {
 				h2 += "\n";
 				h2 += "Bill no: " + bz.getBillNo();
 				h2 += "\nContract Amount: " + Currency.formatAmount(bz.getPrincipal());
+				h1 += "\nArrears: " + Currency.formatAmount(bz.getArrears());
 				h2 += "\nSurcharge: " + Currency.formatAmount(bz.getSurcharge());
 				h2 += "\nInterest: " + Currency.formatAmount(bz.getInterest());
 				h2 += "\nUnpaid: " + Currency.formatAmount(bz.getUnpaidPricipal());
@@ -358,7 +366,8 @@ public class TenantBean implements Serializable {
 				param.put("PARAM_NOTEDBY2", "Noted by:");
 				param.put("PARAM_TREASNAME2", treasname);
 				param.put("PARAM_TREASPOS2", treasnamepos);
-				param.put("PARAM_TOTAL_PAYABLE2","AMOUNT TO PAY PHP: " + Currency.formatAmount(bz.getTotal()));
+				double totalBill = bz.getArrears() + bz.getTotal();
+				param.put("PARAM_TOTAL_PAYABLE2","AMOUNT TO PAY PHP: " + Currency.formatAmount(totalBill));
 			}
 			
 			if(count==3) {
@@ -373,6 +382,7 @@ public class TenantBean implements Serializable {
 				h3 += "\n";
 				h3 += "Bill no: " + bz.getBillNo();
 				h3 += "\nContract Amount: " + Currency.formatAmount(bz.getPrincipal());
+				h1 += "\nArrears: " + Currency.formatAmount(bz.getArrears());
 				h3 += "\nSurcharge: " + Currency.formatAmount(bz.getSurcharge());
 				h3 += "\nInterest: " + Currency.formatAmount(bz.getInterest());
 				h3 += "\nUnpaid: " + Currency.formatAmount(bz.getUnpaidPricipal());
@@ -391,7 +401,8 @@ public class TenantBean implements Serializable {
 				param.put("PARAM_NOTEDBY3", "Noted by:");
 				param.put("PARAM_TREASNAME3", treasname);
 				param.put("PARAM_TREASPOS3", treasnamepos);
-				param.put("PARAM_TOTAL_PAYABLE3","AMOUNT TO PAY PHP: " + Currency.formatAmount(bz.getTotal()));
+				double totalBill = bz.getArrears() + bz.getTotal();
+				param.put("PARAM_TOTAL_PAYABLE3","AMOUNT TO PAY PHP: " + Currency.formatAmount(totalBill));
 			}
 			
 			}
@@ -776,19 +787,25 @@ public class TenantBean implements Serializable {
 		yearsSearch = new ArrayList<>();
 		yearSelectedSearch = DateUtils.getCurrentYear();
 		yearsSearch.add(new SelectItem(0, "All"));
+		yearArears = new ArrayList<>();
+		yearArears.add(new SelectItem(0, "No Year Arrears"));
 		for(int year=2025; year<=DateUtils.getCurrentYear(); year++) {
 			years.add(new SelectItem(year, "" + year));
 			yearsSearch.add(new SelectItem(year, "" + year));
+			yearArears.add(new SelectItem(year, "" + year));
 		}
 		
+		monthArearss = new ArrayList<>();
 		months = new ArrayList<>();
 		monthSelected = DateUtils.getCurrentMonth();
 		monthsSearch = new ArrayList<>();
 		monthSelectedSearch = DateUtils.getCurrentMonth();
 		monthsSearch.add(new SelectItem(0, "All"));
+		monthArearss.add(new SelectItem(0, "No Month Arrears"));
 		for(int month=1; month<=12; month++) {
 			months.add(new SelectItem(month, DateUtils.getMonthName(month)));
 			monthsSearch.add(new SelectItem(month, DateUtils.getMonthName(month)));
+			monthArearss.add(new SelectItem(month, DateUtils.getMonthName(month)));
 		}
 		
 		status = new ArrayList<>();
@@ -887,11 +904,9 @@ public class TenantBean implements Serializable {
 	}
 	
 	public void saveBill() {
-		UserDtls user = getUser();
-		int year = DateUtils.getCurrentYear();
-		int month = DateUtils.getCurrentMonth();
 		
-		if(user.getUserdtlsid()==1) {
+		
+		//if(user.getUserdtlsid()==1) {
 			billSelected.setRemarks("Bill modefied by admin user:"+ getUser().getFirstname() +" on " + DateUtils.getCurrentDateMMDDYYYYTIME());
 			if(billSelected.getAmountPaid()>0 && !billSelected.getOfficialRefNumber().isEmpty()) {
 				billSelected.setIsPaid(1);
@@ -900,8 +915,12 @@ public class TenantBean implements Serializable {
 			clearBill();
 			loadBill();
 			Application.addMessage(1, "Success", "Successfully modefied by admin");
-			
-		}else {
+		
+		//temporary comment allow access to all user
+			//UserDtls user = getUser();
+			//int year = DateUtils.getCurrentYear();
+			//int month = DateUtils.getCurrentMonth();
+		/*}else {
 			if(billSelected!=null && billSelected.getIsPaid()==1) {
 				clearBill();
 				Application.addMessage(2, "Failed", "Paid transaction cannot be modefied");
@@ -920,7 +939,7 @@ public class TenantBean implements Serializable {
 					Application.addMessage(2, "Failed", "Previous bill cannot be modefied");
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void clearBill() {
@@ -962,9 +981,18 @@ public class TenantBean implements Serializable {
 	}
 	
 	public void deleteBill(TenantBilling bill) {
-		UserDtls user = getUser();
 		
-		if(user.getUserdtlsid()==1) {
+		
+		if(bill.getIsPaid()==0) {
+			bill.delete();
+			loadBill();
+			Application.addMessage(1, "Success", "Successfully deleted bill");
+		}else {
+			Application.addMessage(2, "Error", "Bill is already paid");
+		}
+		//tempory change
+		//UserDtls user = getUser();
+		/*if(user.getUserdtlsid()==1) {
 			if(bill.getIsPaid()==0) {
 				bill.delete();
 				loadBill();
@@ -974,7 +1002,7 @@ public class TenantBean implements Serializable {
 			}
 		}else {
 			Application.addMessage(3, "Error", "Is not allowed to delete");
-		}
+		}*/
 	}
 	
 public void printBillIndividual(TenantBilling py) {
@@ -1010,6 +1038,7 @@ public void printBillIndividual(TenantBilling py) {
 					.surcharge(py.getSurcharge())
 					.interest(py.getInterest())
 					.unpaidPricipal(py.getUnpaidPrincipal())
+					.arrears(py.getContract().getArrears())
 					.total(py.getTotal())
 					.build();
 			
@@ -1134,6 +1163,7 @@ public void printBillIndividual(TenantBilling py) {
 				h1 += "\n";
 				h1 += "Bill no: " + bz.getBillNo();
 				h1 += "\nContract Amount: " + Currency.formatAmount(bz.getPrincipal());
+				h1 += "\nArrears: " + Currency.formatAmount(bz.getArrears());
 				h1 += "\nSurcharge: " + Currency.formatAmount(bz.getSurcharge());
 				h1 += "\nInterest: " + Currency.formatAmount(bz.getInterest());
 				h1 += "\nUnpaid: " + Currency.formatAmount(bz.getUnpaidPricipal());
@@ -1152,7 +1182,8 @@ public void printBillIndividual(TenantBilling py) {
 				param.put("PARAM_NOTEDBY1", "Noted by:");
 				param.put("PARAM_TREASNAME1", treasname);
 				param.put("PARAM_TREASPOS1", treasnamepos);
-				param.put("PARAM_TOTAL_PAYABLE1","AMOUNT TO PAY PHP: " + Currency.formatAmount(bz.getTotal()));
+				double totalBill = bz.getArrears() + bz.getTotal();
+				param.put("PARAM_TOTAL_PAYABLE1","AMOUNT TO PAY PHP: " + Currency.formatAmount(totalBill));
 			}
 			
 			if(count==2) {
@@ -1167,6 +1198,7 @@ public void printBillIndividual(TenantBilling py) {
 				h2 += "\n";
 				h2 += "Bill no: " + bz.getBillNo();
 				h2 += "\nContract Amount: " + Currency.formatAmount(bz.getPrincipal());
+				h1 += "\nArrears: " + Currency.formatAmount(bz.getArrears());
 				h2 += "\nSurcharge: " + Currency.formatAmount(bz.getSurcharge());
 				h2 += "\nInterest: " + Currency.formatAmount(bz.getInterest());
 				h2 += "\nUnpaid: " + Currency.formatAmount(bz.getUnpaidPricipal());
@@ -1185,7 +1217,8 @@ public void printBillIndividual(TenantBilling py) {
 				param.put("PARAM_NOTEDBY2", "Noted by:");
 				param.put("PARAM_TREASNAME2", treasname);
 				param.put("PARAM_TREASPOS2", treasnamepos);
-				param.put("PARAM_TOTAL_PAYABLE2","AMOUNT TO PAY PHP: " + Currency.formatAmount(bz.getTotal()));
+				double totalBill = bz.getArrears() + bz.getTotal();
+				param.put("PARAM_TOTAL_PAYABLE2","AMOUNT TO PAY PHP: " + Currency.formatAmount(totalBill));
 			}
 			
 			if(count==3) {
@@ -1200,6 +1233,7 @@ public void printBillIndividual(TenantBilling py) {
 				h3 += "\n";
 				h3 += "Bill no: " + bz.getBillNo();
 				h3 += "\nContract Amount: " + Currency.formatAmount(bz.getPrincipal());
+				h1 += "\nArrears: " + Currency.formatAmount(bz.getArrears());
 				h3 += "\nSurcharge: " + Currency.formatAmount(bz.getSurcharge());
 				h3 += "\nInterest: " + Currency.formatAmount(bz.getInterest());
 				h3 += "\nUnpaid: " + Currency.formatAmount(bz.getUnpaidPricipal());
@@ -1218,7 +1252,8 @@ public void printBillIndividual(TenantBilling py) {
 				param.put("PARAM_NOTEDBY3", "Noted by:");
 				param.put("PARAM_TREASNAME3", treasname);
 				param.put("PARAM_TREASPOS3", treasnamepos);
-				param.put("PARAM_TOTAL_PAYABLE3","AMOUNT TO PAY PHP: " + Currency.formatAmount(bz.getTotal()));
+				double totalBill = bz.getArrears() + bz.getTotal();
+				param.put("PARAM_TOTAL_PAYABLE3","AMOUNT TO PAY PHP: " + Currency.formatAmount(totalBill));
 			}
 			
 			}

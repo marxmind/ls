@@ -27,6 +27,7 @@ public class Bills {
 	private String stall;
 	private int year;
 	private int month;
+	private double arrears;
 	private double principal;
 	private double surcharge;
 	private double interest;

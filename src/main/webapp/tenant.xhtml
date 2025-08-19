@@ -239,7 +239,7 @@
 	        			
 	        				
 	        			
-	        				<div class="col-5">
+	        				<div class="col-12">
 	        					
 	        					<div class="ui-inputgroup" style="float:left">
 					            	<p:commandButton update="gridConId" value="New" icon="pi pi-file-o" actionListener="#{tenant.clearConract}"/>
@@ -250,7 +250,7 @@
 		            			</div>
 	        				
 	        					
-	        					<p:panelGrid id="gridConId" columns="4" layout="grid" styleClass="ui-noborder">
+	        					<p:panelGrid id="gridConId" columns="6" layout="grid" styleClass="ui-noborder">
 	        					
 	        					<p:outputLabel value="Account No."/>
 	        					<p:outputLabel value="#{tenant.selectedContract.accountNo}"/>
@@ -285,6 +285,22 @@
 	        					
 	        					<p:outputLabel value="Location No"/>
 	        					<p:inputText value="#{tenant.selectedContract.locationNumber}" style="width: 15em" placeholder="Location No"/>
+	        					
+	        					<p:outputLabel value="Arrears"/>
+	        					<p:inputNumber value="#{tenant.selectedContract.arrears}" style="width: 15em" placeholder="00.00"/>
+	        					
+	        					<p:outputLabel value="Month Started"/>
+	        					<p:selectOneMenu value="#{tenant.selectedContract.monthStarted}" style="width: 15em" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{tenant.monthArearss}"/>
+								</p:selectOneMenu>
+	        					
+	        					<p:outputLabel value="Year Started"/>
+	        					<p:selectOneMenu value="#{tenant.selectedContract.yearStarted}" style="width: 15em" filterMatchMode="contains" filter="true">
+									<f:selectItems value="#{tenant.yearArears}"/>
+								</p:selectOneMenu>
+	        					
+	        					<p:outputLabel value="Penalty Rate"/>
+	        					<p:inputNumber value="#{tenant.selectedContract.penaltyRate}" style="width: 15em" placeholder="Year"/>
 	        					
 	        					</p:panelGrid>
 	        				</div>
@@ -362,7 +378,7 @@
 	        			<div class="grid">
 	        			<div class="col">
 	        			
-	        				<div class="col-5">
+	        				<div class="col-7">
 	        						
 	        					<div class="ui-inputgroup" style="float:left">
 	        						<p:commandButton update="gridBillId" value="Clear" icon="pi pi-trash" action="#{tenant.clearBill}"/>

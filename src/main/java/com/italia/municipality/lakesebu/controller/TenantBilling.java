@@ -200,6 +200,10 @@ public class TenantBilling {
 					.statusName(TenantStatus.val(rs.getInt("statusc")).getName())
 					.isActive(rs.getInt("isactivec"))
 					.tenant(Tenant.builder().id(rs.getLong("tid")).build())
+					.arrears(rs.getDouble("arrears"))
+					.monthStarted(rs.getInt("monthstarted"))
+					.yearStarted(rs.getInt("yearstarted"))
+					.penaltyRate(rs.getDouble("penaltyrate"))
 					.build();
 			
 			contractData.put(con.getId(), con);
@@ -549,6 +553,10 @@ public class TenantBilling {
 					.classTypeName(ClassType.val(rs.getInt("classtype")).getName())
 					.status(rs.getInt("statusc"))
 					.isActive(rs.getInt("isactivec"))
+					.arrears(rs.getDouble("arrears"))
+					.monthStarted(rs.getInt("monthstarted"))
+					.yearStarted(rs.getInt("yearstarted"))
+					.penaltyRate(rs.getDouble("penaltyrate"))
 					.tenant(tn)
 					.build();
 			

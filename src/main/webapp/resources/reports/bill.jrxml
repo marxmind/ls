@@ -60,6 +60,7 @@
 	<field name="accountNo" class="java.lang.String"/>
 	<field name="tenantNo" class="java.lang.String"/>
 	<field name="unpaidPricipal" class="java.lang.Double"/>
+	<field name="arrears" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

@@ -45,6 +45,11 @@ public class TenantContract {
 	private int status;
 	private int isActive;
 	
+	private double arrears;
+	private int monthStarted;
+	private int yearStarted;
+	private double penaltyRate;
+	
 	private Tenant tenant;
 	private String classTypeName;
 	private String statusName;
@@ -184,6 +189,10 @@ public class TenantContract {
 					.status(rs.getInt("statusc"))
 					.statusName(TenantStatus.val(rs.getInt("statusc")).getName())
 					.isActive(rs.getInt("isactivec"))
+					.arrears(rs.getDouble("arrears"))
+					.monthStarted(rs.getInt("monthstarted"))
+					.yearStarted(rs.getInt("yearstarted"))
+					.penaltyRate(rs.getDouble("penaltyrate"))
 					.tenant(tn)
 					.build();
 			
@@ -239,8 +248,12 @@ public class TenantContract {
 				+ "classtype,"
 				+ "statusc,"
 				+ "isactivec,"
-				+ "accountno)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+				+ "accountno,"
+				+ "arrears,"
+				+ "monthstarted,"
+				+ "yearstarted,"
+				+ "penaltyrate)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -273,6 +286,10 @@ public class TenantContract {
 		ps.setInt(cnt++, st.getStatus());
 		ps.setInt(cnt++, st.getIsActive());
 		ps.setString(cnt++, st.getAccountNo());
+		ps.setDouble(cnt++, st.getArrears());
+		ps.setInt(cnt++, st.getMonthStarted());
+		ps.setInt(cnt++, st.getYearStarted());
+		ps.setDouble(cnt++, st.getPenaltyRate());
 		
 		LogU.add(st.getDate());
 		LogU.add(st.getTenant().getId());
@@ -284,6 +301,10 @@ public class TenantContract {
 		LogU.add(st.getStatus());
 		LogU.add(st.getIsActive());
 		LogU.add(st.getAccountNo());
+		LogU.add(st.getArrears());
+		LogU.add(st.getMonthStarted());
+		LogU.add(st.getYearStarted());
+		LogU.add(st.getPenaltyRate());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -309,7 +330,11 @@ public class TenantContract {
 				+ "classtype=?,"
 				+ "statusc=?,"
 				+ "isactivec=?,"
-				+ "accountno=?" 
+				+ "accountno=?,"
+				+ "arrears=?,"
+				+ "monthstarted=?,"
+				+ "yearstarted=?,"
+				+ "penaltyrate=?" 
 				+ " WHERE cid=?";
 		
 		PreparedStatement ps = null;
@@ -332,6 +357,10 @@ public class TenantContract {
 		ps.setInt(cnt++, st.getStatus());
 		ps.setInt(cnt++, st.getIsActive());
 		ps.setString(cnt++, st.getAccountNo());
+		ps.setDouble(cnt++, st.getArrears());
+		ps.setInt(cnt++, st.getMonthStarted());
+		ps.setInt(cnt++, st.getYearStarted());
+		ps.setDouble(cnt++, st.getPenaltyRate());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDate());
@@ -344,6 +373,10 @@ public class TenantContract {
 		LogU.add(st.getStatus());
 		LogU.add(st.getIsActive());
 		LogU.add(st.getAccountNo());
+		LogU.add(st.getArrears());
+		LogU.add(st.getMonthStarted());
+		LogU.add(st.getYearStarted());
+		LogU.add(st.getPenaltyRate());
 		LogU.add(st.getId());
 		
 		LogU.add("executing for saving...");
