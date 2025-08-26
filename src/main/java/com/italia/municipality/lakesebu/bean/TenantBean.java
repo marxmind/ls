@@ -12,11 +12,13 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.primefaces.event.TabChangeEvent;
 
 import com.italia.municipality.lakesebu.controller.Bills;
 import com.italia.municipality.lakesebu.controller.Login;
+import com.italia.municipality.lakesebu.controller.MarketSummaryReport;
 import com.italia.municipality.lakesebu.controller.Tenant;
 import com.italia.municipality.lakesebu.controller.TenantBilling;
 import com.italia.municipality.lakesebu.controller.TenantContract;
@@ -96,6 +98,14 @@ public class TenantBean implements Serializable {
 	private List<Tenant> billTenants;
 	//private List<TenantBilling> billings;
 	
+	//summary report
+	private String searchSummary;
+	private int yearSummary;
+	private List yearSummaries;
+	private List<MarketSummaryReport> summaries;
+	private int locationId;
+	private List locations;
+	
 	@PostConstruct
 	public void init() {
 		
@@ -120,6 +130,8 @@ public class TenantBean implements Serializable {
 		}else if("Billing Generation".equalsIgnoreCase(event.getTab().getTitle())) {
 			clearBill();
 			generateBilling();
+		}else if("Summary Report".equalsIgnoreCase(event.getTab().getTitle())) {
+			loadSummary();
 		}
 	}
 	
@@ -782,9 +794,17 @@ public class TenantBean implements Serializable {
 	public void loadContactVal() {
 		
 		
+		locations = new ArrayList<>();
+		locations.add(new SelectItem(0, "All Class"));
+		for(ClassType type : ClassType.values()) {
+			locations.add(new SelectItem(type.getId(), type.getName()));
+		}
+		
 		years = new ArrayList<>();
 		yearSelected = DateUtils.getCurrentYear();
+		yearSummary = DateUtils.getCurrentYear();
 		yearsSearch = new ArrayList<>();
+		yearSummaries = new ArrayList<>();
 		yearSelectedSearch = DateUtils.getCurrentYear();
 		yearsSearch.add(new SelectItem(0, "All"));
 		yearArears = new ArrayList<>();
@@ -793,6 +813,7 @@ public class TenantBean implements Serializable {
 			years.add(new SelectItem(year, "" + year));
 			yearsSearch.add(new SelectItem(year, "" + year));
 			yearArears.add(new SelectItem(year, "" + year));
+			yearSummaries.add(new SelectItem(year, "" + year));
 		}
 		
 		monthArearss = new ArrayList<>();
@@ -1322,5 +1343,107 @@ public void printBillIndividual(TenantBilling py) {
 		
 		
 	}
+
+	public void loadSummary() {
+		String sql = "";
+		
+		if(getSearchSummary()!=null && !getSearchSummary().isEmpty()) {
+			sql = " AND ten.fullnamet like '%"+ getSearchSummary() +"%'";
+		}
+		
+		if(getLocationId()>0) {
+			sql += " AND con.classType=" + getLocationId();
+		}
+		
+		sql += " AND year(bill.bdate)=" + yearSummary;
+		
+		
+		//year //contract /billing
+		
+		Map<Integer, Map<Long, List<TenantBilling>>> yearsMap = new LinkedHashMap<Integer, Map<Long, List<TenantBilling>>>();
+		Map<Long, List<TenantBilling>> contracts = new LinkedHashMap<Long, List<TenantBilling>>();
+		List<TenantBilling> bills = new ArrayList<TenantBilling>();
+		
+		for(TenantBilling bill : TenantBilling.retrieve(sql, new String[0])) {
+		
+			int yer = Integer.valueOf(bill.getDate().split("-")[0]);
+			long conId = bill.getContract().getId();
+			if(years!=null && years.size()>0) {
+				if(yearsMap.containsKey(yer)) {
+					if(yearsMap.get(yer).containsKey(conId)) {
+						yearsMap.get(yer).get(conId).add(bill);
+					}else {
+						bills = new ArrayList<TenantBilling>();
+						bills.add(bill);
+						yearsMap.get(yer).put(conId, bills);
+					}
+				}else {
+					bills = new ArrayList<TenantBilling>();
+					contracts = new LinkedHashMap<Long, List<TenantBilling>>();
+					bills.add(bill);
+					contracts.put(bill.getContract().getId(), bills);
+					yearsMap.put(yer, contracts);
+				}
+			}else {
+				bills.add(bill);
+				contracts.put(bill.getContract().getId(), bills);
+				yearsMap.put(yer, contracts);
+			}
+			
+		}
+		
+		Map<Integer, Map<Long, List<TenantBilling>>> sortedData = new TreeMap<Integer, Map<Long,List<TenantBilling>>>(yearsMap);
+		summaries = new ArrayList<MarketSummaryReport>();
+		for(int year : sortedData.keySet()) {
+			for(long conId : sortedData.get(year).keySet()) {
+					
+					MarketSummaryReport market = new MarketSummaryReport();
+					int location = sortedData.get(year).get(conId).get(0).getContract().getClassType();
+					String tenant = sortedData.get(year).get(conId).get(0).getTenant().getFullName();
+					
+					market.setYear(year);
+					market.setLocation(ClassType.val(location).getName());
+					market.setTenant(tenant);
+					int lastIndex = sortedData.get(year).get(conId).size() - 1;
+					double arrears = sortedData.get(year).get(conId).get(lastIndex).getContract().getArrears();
+					double currentAmountBill = sortedData.get(year).get(conId).get(lastIndex).getBillAmount();
+					double unpaid = sortedData.get(year).get(conId).get(lastIndex).getUnpaidPrincipal();
+					double surcharge = sortedData.get(year).get(conId).get(lastIndex).getSurcharge();
+					double interest = sortedData.get(year).get(conId).get(lastIndex).getInterest();
+					double balance = currentAmountBill + unpaid + surcharge + interest + arrears;
+					double contractAmount = sortedData.get(year).get(conId).get(lastIndex).getContract().getAmount();
+					market.setTotalSurcharge(surcharge);
+					market.setTotalInterest(interest);
+					market.setArrears(arrears);;
+					market.setBalance(balance);
+					market.setPrincipal(contractAmount);
+					String unpaidColor = "background-color: red";
+					String paidColor = "background-color: green";
+				for(TenantBilling bill : sortedData.get(year).get(conId)) {
+					int month = bill.getMonth();
+					
+					switch(month) {
+						case 1: market.setJan(bill.getAmountPaid()); market.setStyle1(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 2: market.setFeb(bill.getAmountPaid());  market.setStyle2(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 3: market.setMar(bill.getAmountPaid());  market.setStyle3(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 4: market.setApr(bill.getAmountPaid());  market.setStyle4(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 5: market.setMay(bill.getAmountPaid());  market.setStyle5(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 6: market.setJun(bill.getAmountPaid());  market.setStyle6(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 7: market.setJul(bill.getAmountPaid());  market.setStyle7(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 8: market.setAug(bill.getAmountPaid());  market.setStyle8(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 9: market.setSep(bill.getAmountPaid());  market.setStyle9(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 10: market.setOct(bill.getAmountPaid());  market.setStyle10(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 11: market.setNov(bill.getAmountPaid());  market.setStyle11(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+						case 12: market.setDec(bill.getAmountPaid());  market.setStyle12(bill.getIsPaid()==1? paidColor:unpaidColor);  break;
+					}
+					
+				}
+				summaries.add(market);
+			}
+		}
+		
+		
+	}
+
 	
 }

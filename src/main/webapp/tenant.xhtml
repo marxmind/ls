@@ -82,7 +82,7 @@
 	        	
 	        	<p:tabView prependId="false" widgetVar="tabSelection">
 	        	
-	        		<p:ajax event="tabChange" listener="#{tenant.onTabChange}" update="dataBillingForm gridId dataForm gridConId dataContractForm gridBillId dataBillForm"/>
+	        		<p:ajax event="tabChange" listener="#{tenant.onTabChange}" update="dataBillingForm gridId dataForm gridConId dataContractForm gridBillId dataBillForm dataSummary"/>
 	        	
 	        		<p:tab title="Billing">
 	        			
@@ -457,8 +457,7 @@
 											<f:selectItems value="#{tenant.monthsSearch}"/>
 										</p:selectOneMenu>
 										<p:commandButton icon="pi pi-search" actionListener="#{tenant.loadBill}" update="dataBillForm" />
-									</div>	
-										
+									</div>
 		                         </f:facet>
 		                         
 		                         <p:column headerText="[*]" width="20" exportable="false" style="#{rpt.style}">
@@ -541,6 +540,111 @@
 	        			
 	        			</div>
 	        			</div>	
+	        			
+	        		</p:tab>
+	        		
+	        		<p:tab title="Summary Report">
+	        			
+	        			
+	        			<p:dataTable id="dataSummary" value="#{tenant.summaries}" var="rt" stickyHeader="false" stripedRows="true"
+									rows="100" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		                         rowsPerPageTemplate="100,500,1000"
+		                         scrollable="true" paginatorPosition="top" reflow="true" lazy="false"
+		                         >
+		                         
+		                         <f:facet name="{Exporters}" >
+		                         	<div class="ui-inputgroup" style="float:left">
+			                         	<p:inputText value="#{tenant.searchSummary}" style="width: 20em; float: left" placeholder="Search...">
+		    								<p:ajax event="keyup" listener="#{tenant.loadSummary}" delay="800" update="dataSummary" />
+		    							</p:inputText>
+		    							<p:selectOneMenu value="#{tenant.locationId}" style="width: 10em" filterMatchMode="contains" filter="true">
+												<f:selectItems value="#{tenant.locations}"/>
+										</p:selectOneMenu>
+		    							<p:selectOneMenu value="#{tenant.yearSummary}" style="width: 10em" filterMatchMode="contains" filter="true">
+												<f:selectItems value="#{tenant.yearSummaries}"/>
+										</p:selectOneMenu>
+										<p:commandButton icon="pi pi-search" actionListener="#{tenant.loadSummary}" update="dataSummary" />
+										
+									</div>
+									
+									<p:commandButton value="Export to Excel" ajax="false" style="float:right">
+									        <p:dataExporter type="xls" target="dataSummary" fileName="SummaryBilling" />
+									</p:commandButton>	
+		                         </f:facet>
+		                         
+		                         <p:column headerText="Year" width="50">
+		            				<p:outputLabel value="#{rt.year}"/>
+		            			 </p:column>
+		            			 <p:column headerText="Location" width="70">
+		            				<p:outputLabel value="#{rt.location}"/>
+		            			 </p:column>
+		            			 <p:column headerText="Tenant" width="150">
+		            				<p:outputLabel value="#{rt.tenant}"/>
+		            			 </p:column>
+		            			 <p:column headerText="Contract" width="50">
+		            				<p:outputLabel value="#{rt.principal}">
+		            					<f:convertNumber currencySymbol="" type="currency"/>
+		            				</p:outputLabel>
+		            			 </p:column>
+		            			 <p:column headerText="Arrears" width="50">
+		            				<p:outputLabel value="#{rt.arrears}">
+		            					<f:convertNumber currencySymbol="" type="currency"/>
+		            				</p:outputLabel>
+		            			 </p:column>
+		            			  <p:column headerText="Surcharge" width="50">
+		            				<p:outputLabel value="#{rt.totalSurcharge}">
+		            					<f:convertNumber currencySymbol="" type="currency"/>
+		            				</p:outputLabel>
+		            			 </p:column>
+		            			  <p:column headerText="Interest" width="50">
+		            				<p:outputLabel value="#{rt.totalInterest}">
+		            					<f:convertNumber currencySymbol="" type="currency"/>
+		            				</p:outputLabel>
+		            			 </p:column>
+		            			 <p:column headerText="Bill" width="50">
+		            				<p:outputLabel value="#{rt.balance}">
+		            					<f:convertNumber currencySymbol="" type="currency"/>
+		            				</p:outputLabel>
+		            			 </p:column>
+		            			 <p:column headerText="Jan" width="10" style="#{rt.style1}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Feb" width="10" style="#{rt.style2}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Mar" width="10" style="#{rt.style3}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Apr" width="10" style="#{rt.style4}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="May" width="10" style="#{rt.style5}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Jun" width="10" style="#{rt.style6}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Jul" width="10" style="#{rt.style7}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Aug" width="10" style="#{rt.style8}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Sep" width="10" style="#{rt.style9}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Oct" width="10" style="#{rt.style10}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Nov" width="10" style="#{rt.style11}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 <p:column headerText="Dec" width="10" style="#{rt.style12}">
+		            				<p:outputLabel value=""/>
+		            			 </p:column>
+		            			 
+		            			 
+	        			</p:dataTable>
 	        			
 	        		</p:tab>
 	        	
