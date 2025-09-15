@@ -846,7 +846,7 @@ public class LogformBean implements Serializable{
         		
         		CollectionInfo info = getNewForms().get(index);
         		
-        		if(info.getFormType() == FormType.CT_2.getId() || info.getFormType() == FormType.CT_5.getId()) {
+        		if(info.getFormType() == FormType.CT_20.getId() || info.getFormType() == FormType.CT_5.getId()) {
         			getNewForms().get(index).setAmount((Double)oldValue);
         			Application.addMessage(3, "Error", "Cash Ticket amount is not editable");
         		}else {
@@ -1022,7 +1022,7 @@ public class LogformBean implements Serializable{
 	}
 	
 	public void checkHasCashTicket(CollectionInfo info) {
-		if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
+		if(FormType.CT_20.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 			PrimeFaces pm = PrimeFaces.current();
 			pm.executeScript("PF('dlgCash').show();");
 		}else {
@@ -1117,8 +1117,8 @@ public class LogformBean implements Serializable{
 				
 				qty = 0;
 				
-				if(FormType.CT_2.getId()==info.getFormType()) {
-					qty = beg / 2;
+				if(FormType.CT_20.getId()==info.getFormType()) {
+					qty = beg / 20;
 				}else if(FormType.CT_5.getId()==info.getFormType()) {
 					qty = beg / 5;
 				} 
@@ -1153,8 +1153,8 @@ public class LogformBean implements Serializable{
 				
 				long qty = 0;
 				
-				if(FormType.CT_2.getId()==forms.get(0).getFormType()) {
-					qty = beg / 2;
+				if(FormType.CT_20.getId()==forms.get(0).getFormType()) {
+					qty = beg / 20;
 				}else if(FormType.CT_5.getId()==forms.get(0).getFormType()) {
 					qty = beg / 5;
 				} 
@@ -1197,8 +1197,8 @@ public class LogformBean implements Serializable{
 			
 			int qty = getQuantity();
 			//long prev = getSelectedCollectionData().getEndingNo() - getSelectedCollectionData().getBeginningNo();
-			if(FormType.CT_2.getId()==getFormTypeId()) {
-				qty *= 2;
+			if(FormType.CT_20.getId()==getFormTypeId()) {
+				qty *= 20;
 			}else if(FormType.CT_5.getId()==getFormTypeId()) {
 				qty *= 5;
 			}
@@ -1229,7 +1229,7 @@ public class LogformBean implements Serializable{
 		
 		if(getBeginningNo()<=0) {
 			
-			if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+			if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 				//do nothing it means all issued
 			}else {
 				isOk = false;
@@ -1313,7 +1313,7 @@ public class LogformBean implements Serializable{
 		try{form.setFormTypeName(FormType.val(getFormTypeId()).getDescription());}catch(NullPointerException e){}
 		
 		//cash ticket
-		if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+		if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 			if(getBeginningNo()==0) {
 				form.setStatus(FormStatus.ALL_ISSUED.getId());
 				form.setStatusName(FormStatus.ALL_ISSUED.getName());
@@ -1463,7 +1463,7 @@ public class LogformBean implements Serializable{
 		if(newForms!=null && newForms.size()>0) {
 			System.out.println("checkCashTicketBeforeSaving with none zero");
 			for(CollectionInfo i : newForms) {
-				if(FormType.CT_2.getId()==i.getFormType() || FormType.CT_5.getId()==i.getFormType()) {
+				if(FormType.CT_20.getId()==i.getFormType() || FormType.CT_5.getId()==i.getFormType()) {
 					//setHasTicket(true);
 					System.out.println("with cash ticket>>>>");
 					return true;
@@ -1985,7 +1985,7 @@ public class LogformBean implements Serializable{
 				dt.setFormId(cnt+"");
 				dt.setName(i.getFormTypeName());
 				dt.setStabNo(stabNo);				
-				if(FormType.CT_2.getId()== i .getFormType() || FormType.CT_5.getId() == i .getFormType()) {
+				if(FormType.CT_20.getId()== i .getFormType() || FormType.CT_5.getId() == i .getFormType()) {
 					dt.setSeriesFrom(Currency.formatAmount(i.getAmount()));
 					dt.setSeriesTo("");
 					
@@ -2474,7 +2474,7 @@ public class LogformBean implements Serializable{
 					String ctc = frm.getF1();
 					
 						param.put("PARAM_T"+cnt,i.getFormTypeName());
-						if(FormType.CT_2.getId()== i .getFormType() || FormType.CT_5.getId() == i .getFormType()) {
+						if(FormType.CT_20.getId()== i .getFormType() || FormType.CT_5.getId() == i .getFormType()) {
 							param.put("PARAM_FROM"+cnt,Currency.formatAmount(i.getAmount()));
 							param.put("PARAM_TO"+cnt,"");
 						}else {
@@ -2918,7 +2918,7 @@ public class LogformBean implements Serializable{
 		}*/
 		
 		//change the value if the form is Cash ticket
-				if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
+				if(FormType.CT_20.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 					
 					rpt.setF1(FormType.nameId(info.getFormType()));
 					//String allIssued = info.getBeginningNo()==0? "All Issued" : "";
@@ -3071,7 +3071,7 @@ public class LogformBean implements Serializable{
 		rpt.setF14("");
 		
 		//change the value if the form is Cash ticket
-		if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
+		if(FormType.CT_20.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 			if(info.getAmount()>0) {
 				int logmonth = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[1]);
 				int logDay = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[2]);
@@ -3121,7 +3121,7 @@ public class LogformBean implements Serializable{
 		
 		
 		if(endingQty==0) {//this only for cash ticket if no issuance on the next collection report
-			if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
+			if(FormType.CT_20.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 				if(info.getAmount()>0) {
 					int logmonth = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[1]);
 					int logDay = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[2]);
@@ -3478,7 +3478,7 @@ public class LogformBean implements Serializable{
 		}
 		
 		//change the value if the form is Cash ticket
-		if(FormType.CT_2.getId()==isform.getFormType() || FormType.CT_5.getId()==isform.getFormType()) {
+		if(FormType.CT_20.getId()==isform.getFormType() || FormType.CT_5.getId()==isform.getFormType()) {
 			
 			int logmonth = Integer.valueOf(isform.getIssuedDate().split("-")[1]);
 			int logDay = Integer.valueOf(isform.getIssuedDate().split("-")[2]);
@@ -3487,8 +3487,8 @@ public class LogformBean implements Serializable{
 						
 						
 						double amount = 0d;
-						if(FormType.CT_2.getId()==isform.getFormType()) {
-							amount = isform.getPcs() * 2;
+						if(FormType.CT_20.getId()==isform.getFormType()) {
+							amount = isform.getPcs() * 20;
 						}else if(FormType.CT_5.getId()==isform.getFormType()) {
 							amount = isform.getPcs() * 5;
 						}

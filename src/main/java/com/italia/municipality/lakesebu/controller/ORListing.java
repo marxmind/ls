@@ -317,7 +317,7 @@ public class ORListing {
 		String len = orno+"";
 		int size = len.length();
 		
-		if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
+		if(FormType.CT_20.getId()==formType || FormType.CT_5.getId()==formType) {
 			orNumber = "0";
 		}else if(FormType.CTC_INDIVIDUAL.getId()==formType || FormType.CTC_CORPORATION.getId()==formType) {
 			

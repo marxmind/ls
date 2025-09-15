@@ -66,14 +66,14 @@ public class CashTicketMovement {
 		List<String> vals = new ArrayList<String>();
 		
 		ResultSet rs = OpenTableAccess.query("SELECT issueddate,stabno,logpcs,formtypelog FROM logissuedform WHERE isactivelog=1  AND isid="+ 
-		collectorId + " AND month(issueddate)="+month + " AND year(issueddate)=" + year + " AND ( formtypelog="+ FormType.CT_2.getId() +" OR formtypelog="+ FormType.CT_5.getId() +"  )  ORDER BY issueddate", new String[0], new WebTISDatabaseConnect());
+		collectorId + " AND month(issueddate)="+month + " AND year(issueddate)=" + year + " AND ( formtypelog="+ FormType.CT_20.getId() +" OR formtypelog="+ FormType.CT_5.getId() +"  )  ORDER BY issueddate", new String[0], new WebTISDatabaseConnect());
 		
 		try {
 			while(rs.next()) {
 				double amount = 0d;
 				int pcs = rs.getInt("logpcs");
-				if(FormType.CT_2.getId() == rs.getInt("formtypelog") ) {
-					amount = pcs * 2;
+				if(FormType.CT_20.getId() == rs.getInt("formtypelog") ) {
+					amount = pcs * 20;
 				}else if(FormType.CT_5.getId() == rs.getInt("formtypelog") ) {
 					amount = pcs * 5;
 				}
@@ -91,7 +91,7 @@ public class CashTicketMovement {
 	public static List<String> getIssuedForms(int collectorId, int month, int year){
 		List<String> vals = new ArrayList<String>();
 		
-		ResultSet rs = OpenTableAccess.query("SELECT receiveddate,amount FROM collectioninfo WHERE isactivecol=1  AND isid="+ collectorId + " AND month(receiveddate)="+month + " AND year(receiveddate)=" + year + " AND (formtypecol="+ FormType.CT_2.getId() +" OR formtypecol="+FormType.CT_5.getId()+" )", new String[0], new WebTISDatabaseConnect());
+		ResultSet rs = OpenTableAccess.query("SELECT receiveddate,amount FROM collectioninfo WHERE isactivecol=1  AND isid="+ collectorId + " AND month(receiveddate)="+month + " AND year(receiveddate)=" + year + " AND (formtypecol="+ FormType.CT_20.getId() +" OR formtypecol="+FormType.CT_5.getId()+" )", new String[0], new WebTISDatabaseConnect());
 		
 		try {
 			while(rs.next()) {

@@ -2161,7 +2161,7 @@ public class ORListingBean implements Serializable{
 		
 		
 		if(getOrNumber()==null || getOrNumber().isEmpty()) {
-			if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+			if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 				//do nothing...
 			}else {
 				isOk = false;
@@ -2178,7 +2178,7 @@ public class ORListingBean implements Serializable{
 			Application.addMessage(3, "Error", "Please provide payment name");
 		}
 		
-		if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+		if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 			isCashTicket = true;
 			isOk = true;
 			setPayorName("N/A");
@@ -3358,7 +3358,7 @@ private void close(Closeable resource) {
 	public void updateORNumber() {
 		//orNumber = ORListing.getLatestORNumber(getFormTypeId(),getCollectorId());
 		ctcFlds(false);
-		if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+		if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 			setPayorName("N/A");
 			setOrNumber("0");
 			setSearchPayName("cash");

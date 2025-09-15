@@ -241,7 +241,7 @@ public class CashTicketMonitoringBean implements Serializable {
 		collectorMvs = new ArrayList<>();
 		collectors.add(new SelectItem(0, "Select Collector"));
 		collectorMvs.add(new SelectItem(0, "Select Collector"));
-		String sql = "SELECT distinct isid FROM logissuedform WHERE isactivelog=1 AND (formtypelog="+ FormType.CT_2.getId() +" OR formtypelog="+ FormType.CT_5.getId() +") order by isid";
+		String sql = "SELECT distinct isid FROM logissuedform WHERE isactivelog=1 AND (formtypelog="+ FormType.CT_20.getId() +" OR formtypelog="+ FormType.CT_5.getId() +") order by isid";
 		ResultSet rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
 		int cnt = 1;
 		
@@ -407,14 +407,14 @@ public class CashTicketMonitoringBean implements Serializable {
 		//System.out.println("get all cash ticket for the month of " + DateUtils.getMonthName(month));
 		sql = "SELECT logpcs,formtypelog FROM logissuedform WHERE isactivelog=1 AND isid="+ 
 		collectorId + " AND month(issueddate)=" + month + " AND year(issueddate)=" + year + 
-		" AND (formtypelog=" + FormType.CT_2.getId() + " OR formtypelog=" +FormType.CT_5.getId()+")" ;
+		" AND (formtypelog=" + FormType.CT_20.getId() + " OR formtypelog=" +FormType.CT_5.getId()+")" ;
 		rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
 		double amount_2 = 0d, amount_5 = 0d;
 		double totalStabAmount = 0d;
 		try {
 			while (rs.next()) {
-				if(FormType.CT_2.getId()==rs.getInt("formtypelog")) {
-					amount_2 += rs.getInt("logpcs") * 2;
+				if(FormType.CT_20.getId()==rs.getInt("formtypelog")) {
+					amount_2 += rs.getInt("logpcs") * 20;
 				}else if(FormType.CT_5.getId()==rs.getInt("formtypelog")) {
 					amount_5 += rs.getInt("logpcs") * 5;
 				}	
@@ -427,7 +427,7 @@ public class CashTicketMonitoringBean implements Serializable {
 		//System.out.println("amount_2: " + amount_2 + " amount_5: " + amount_5 + " total received cash ticket: "+ totalStabAmount);
 		double amountIssued=0d;
 		sql = "SELECT sum(amount) as totalissued FROM collectioninfo WHERE isactivecol=1 AND isid="+collectorId + 
-				" AND (formtypecol="+ FormType.CT_2.getId() +" OR formtypecol="+FormType.CT_5.getId() +") AND month(receiveddate)=" + month + " AND year(receiveddate)=" + year;
+				" AND (formtypecol="+ FormType.CT_20.getId() +" OR formtypecol="+FormType.CT_5.getId() +") AND month(receiveddate)=" + month + " AND year(receiveddate)=" + year;
 		//System.out.println("Checking sql for issued cash ticket : " + sql);
 		rs = OpenTableAccess.query(sql, new String[0], new WebTISDatabaseConnect());
 		try {

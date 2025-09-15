@@ -53,6 +53,7 @@ public class TenantBilling {
 	private double total;
 	private double interestRate;
 	private double unpaidPrincipal;
+	private int sms;
 	
 	private Tenant tenant;
 	private TenantContract contract;
@@ -171,6 +172,7 @@ public class TenantBilling {
 					.total(rs.getDouble("total"))
 					.interestRate(rs.getDouble("interestrate"))
 					.unpaidPrincipal(rs.getDouble("unpaidprincipal"))
+					.sms(rs.getInt("sms"))
 					.build();
 			
 			billed.put(bill.getContract().getId(), bill);
@@ -251,6 +253,7 @@ public class TenantBilling {
 					.total(rs.getDouble("total"))
 					.interestRate(rs.getDouble("interestrate"))
 					.unpaidPrincipal(rs.getDouble("unpaidprincipal"))
+					.sms(rs.getInt("sms"))
 					.build();
 			
 			unpaidBillLastMonth.put(bill.getContract().getId(), bill);
@@ -291,6 +294,7 @@ public class TenantBilling {
 							.total(rs.getDouble("total"))
 							.interestRate(rs.getDouble("interestrate"))
 							.unpaidPrincipal(rs.getDouble("unpaidprincipal"))
+							.sms(rs.getInt("sms"))
 							.build();
 					
 					unpaidBeforeLastMonth.put(bill.getContract().getId(), bill);
@@ -395,6 +399,7 @@ public class TenantBilling {
 				.contract(unpaidBillLastMonth.get(contractId).getContract())
 				.total(total)
 				.unpaidPrincipal(newUnpaid)
+				.sms(0)
 				.build()
 				.save();
 			}else {
@@ -425,6 +430,7 @@ public class TenantBilling {
 				.total(contractData.get(contractId).getAmount())
 				.interestRate(0)
 				.unpaidPrincipal(0)
+				.sms(0)
 				.build()
 				.save();
 			}
@@ -585,6 +591,7 @@ public class TenantBilling {
 					.interestRate(rs.getDouble("interestrate"))
 					.unpaidPrincipal(rs.getDouble("unpaidprincipal"))
 					.style(style)
+					.sms(rs.getInt("sms"))
 					.build();
 			
 			
@@ -645,8 +652,9 @@ public class TenantBilling {
 				+ "mnt,"
 				+ "total,"
 				+ "interestrate,"
-				+ "unpaidprincipal)" 
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "unpaidprincipal,"
+				+ "sms)" 
+				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -686,6 +694,7 @@ public class TenantBilling {
 		ps.setDouble(cnt++, st.getTotal());
 		ps.setDouble(cnt++, st.getInterestRate());;
 		ps.setDouble(cnt++, st.getUnpaidPrincipal());
+		ps.setInt(cnt++, st.getSms());
 		
 		LogU.add(st.getDate());
 		LogU.add(st.getBillNo());
@@ -704,6 +713,7 @@ public class TenantBilling {
 		LogU.add(st.getTotal());
 		LogU.add(st.getInterestRate());;
 		LogU.add(st.getUnpaidPrincipal());
+		LogU.add(st.getSms());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -736,7 +746,8 @@ public class TenantBilling {
 				+ "mnt=?,"
 				+ "total=?,"
 				+ "interestrate=?,"
-				+ "unpaidprincipal=?" 
+				+ "unpaidprincipal=?,"
+				+ "sms=?" 
 				+ " WHERE bid=?";
 		
 		PreparedStatement ps = null;
@@ -766,6 +777,7 @@ public class TenantBilling {
 		ps.setDouble(cnt++, st.getTotal());
 		ps.setDouble(cnt++, st.getInterestRate());;
 		ps.setDouble(cnt++, st.getUnpaidPrincipal());
+		ps.setInt(cnt++, st.getSms());
 		ps.setLong(cnt++, st.getId());
 		
 		LogU.add(st.getDate());
@@ -785,6 +797,7 @@ public class TenantBilling {
 		LogU.add(st.getTotal());
 		LogU.add(st.getInterestRate());
 		LogU.add(st.getUnpaidPrincipal());
+		LogU.add(st.getSms());
 		LogU.add(st.getId());
 		
 		LogU.add("executing for saving...");

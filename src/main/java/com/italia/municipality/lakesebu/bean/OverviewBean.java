@@ -434,7 +434,7 @@ public class OverviewBean implements Serializable {
 		String val = "";
 		String valNum = num+"";
 		int len = valNum.length();
-		if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
+		if(FormType.CT_20.getId()==formType || FormType.CT_5.getId()==formType) {
 			val = num+"";
 		}else if(FormType.AF_51.getId()==formType || FormType.AF_52.getId()==formType || FormType.AF_56.getId()==formType || FormType.AF_53.getId()==formType) {
 			

@@ -30,8 +30,10 @@ import com.italia.municipality.lakesebu.global.GlobalVar;
 import com.italia.municipality.lakesebu.licensing.controller.Words;
 import com.italia.municipality.lakesebu.reports.ReportCompiler;
 import com.italia.municipality.lakesebu.utils.Application;
+import com.italia.municipality.lakesebu.utils.CheckInternetConnection;
 import com.italia.municipality.lakesebu.utils.Currency;
 import com.italia.municipality.lakesebu.utils.DateUtils;
+import com.italia.municipality.lakesebu.utils.SendSMS;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.context.ExternalContext;
@@ -976,6 +978,7 @@ public class TenantBean implements Serializable {
 				.total(0)
 				.isActive(1)
 				.isPaid(0)
+				.sms(0)
 				.build();
 	}
 	
@@ -1400,10 +1403,16 @@ public void printBillIndividual(TenantBilling py) {
 					MarketSummaryReport market = new MarketSummaryReport();
 					int location = sortedData.get(year).get(conId).get(0).getContract().getClassType();
 					String tenant = sortedData.get(year).get(conId).get(0).getTenant().getFullName();
+					String contactNo = sortedData.get(year).get(conId).get(0).getTenant().getContactNumber();
+					int sms = sortedData.get(year).get(conId).get(0).getSms();
 					
+					market.setBilling(sortedData.get(year).get(conId).get(0));
 					market.setYear(year);
 					market.setLocation(ClassType.val(location).getName());
 					market.setTenant(tenant);
+					market.setSms(sms);
+					market.setContactNo(contactNo);
+					
 					int lastIndex = sortedData.get(year).get(conId).size() - 1;
 					double arrears = sortedData.get(year).get(conId).get(lastIndex).getContract().getArrears();
 					double currentAmountBill = sortedData.get(year).get(conId).get(lastIndex).getBillAmount();
@@ -1443,6 +1452,72 @@ public void printBillIndividual(TenantBilling py) {
 		}
 		
 		
+	}
+	
+	public void sendSms(MarketSummaryReport mk) {
+		if(!mk.getContactNo().isEmpty()) {
+			if(CheckInternetConnection.isInternetPresent("https://semaphore.co/")) {
+				System.out.println("The site is accessible...");
+				String contactNo = mk.getContactNo();
+				contactNo = contactNo.replace("+63", "");
+				int len = contactNo.length();
+				if(len==11) {
+					String api_key = Words.getTagName("sms-api-key");
+					String post_url_msg = Words.getTagName("sms-post-url-msg");
+					String user_agent = Words.getTagName("sms-user-agent");
+					String msg = "Dear "; 
+					
+					try {
+						String first = mk.getTenant().substring(0, 1).toUpperCase();
+						String therest = mk.getTenant().substring(1).toLowerCase();
+						String name = first + therest;
+						name = name.split(",")[0];
+						msg +=  name;
+					}catch(Exception e) { msg +=  mk.getTenant().substring(0, 5) + "...";}		
+							
+					msg += ",\nMarket bill reminder.";	
+					
+					double principal = (mk.getBalance() - mk.getArrears() - mk.getTotalInterest() - mk.getTotalSurcharge());
+					double monthNo = principal / mk.getPrincipal();
+					
+					msg += "\nTotal Principal: " + Currency.formatAmount(principal);
+					msg += "\nUnpaid Month/s: " + monthNo;
+					if(mk.getArrears()>0) {
+						msg += "\nArrears: " + Currency.formatAmount(mk.getArrears());
+					}
+					if(mk.getTotalSurcharge()>0) {
+						msg += "\nSurcharge: " + Currency.formatAmount(mk.getTotalSurcharge());
+					}
+					if(mk.getTotalInterest()>0) {
+						msg += "\nInterest: " + Currency.formatAmount(mk.getTotalInterest());
+					}
+					
+					msg += "\nTotal Bill: " + Currency.formatAmount(mk.getBalance());
+					
+					//msg += "\nPlease disregard, if already settled.";
+					
+					System.out.println("sending info "+ msg + " number: " + contactNo);
+					String[] response = SendSMS.sendSMS(api_key, contactNo, msg,post_url_msg, user_agent);
+					
+					//String[] response = {"SUCCESS"};
+					if("SUCCESS".equalsIgnoreCase(response[0])) {
+						Application.addMessage(1, "Success", "You have successfully sent the message to " + mk.getTenant());
+						TenantBilling bill = mk.getBilling();
+						bill.setSms(1);						bill.save();
+						loadSummary();
+					}else {
+						Application.addMessage(3, "Error", "Sending sms was not successfully. Please try again.");
+					}
+				}else {
+					Application.addMessage(3, "Error", "Please check the contact number of the client. It seems that is not correct.");
+				}
+			}else {
+				System.out.println("Not accessible at this moment....");
+				Application.addMessage(3, "Error", "Provider is not available or the internet is not present at this moment. Please re-send the notification to the user once online.");
+			}
+		}else {
+			Application.addMessage(3, "Error", "Please add contact number on tenant details. You cannot send sms without number");
+		}
 	}
 
 	

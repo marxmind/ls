@@ -606,6 +606,9 @@
 		            					<f:convertNumber currencySymbol="" type="currency"/>
 		            				</p:outputLabel>
 		            			 </p:column>
+		            			 <p:column headerText="Sms Sent?" width="50">
+		            				<p:commandButton value="#{rt.sms==0? 'No' : 'Yes'}" actionListener="#{tenant.sendSms(rt)}" />
+		            			 </p:column>
 		            			 <p:column headerText="Jan" width="10" style="#{rt.style1}">
 		            				<p:outputLabel value=""/>
 		            			 </p:column>

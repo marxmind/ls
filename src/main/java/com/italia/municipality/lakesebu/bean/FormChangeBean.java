@@ -181,9 +181,9 @@ public class FormChangeBean implements Serializable {/**
 					|| FormType.CTC_INDIVIDUAL.getId()==col.getFormType() || FormType.CTC_CORPORATION.getId()==col.getFormType()) {
 				available=(col.getPrevPcs() - col.getPcs()) + 1;
 				
-			}else if(FormType.CT_2.getId()==col.getFormType()) {
+			}else if(FormType.CT_20.getId()==col.getFormType()) {
 				long avail =(col.getEndingNo() - col.getPrevPcs());
-				avail /=2;
+				avail /=20;
 				available = Integer.valueOf(avail+"");
 				
 			}else if(FormType.CT_5.getId()==col.getFormType()) {
@@ -602,7 +602,7 @@ public class FormChangeBean implements Serializable {/**
 		    		Application.addMessage(3, "Error", "Only 0-deleted, 1-active is acceptable.");
 		    	}
 	        }else if("Amount".equalsIgnoreCase(column)) { 
-	        	if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
+	        	if(FormType.CT_20.getId()==formType || FormType.CT_5.getId()==formType) {
 	        		//editing is not allowed for the amount. Because Cash Ticket is based on number of ticket
 	        		Application.addMessage(2, "Error", "Editing for amount is not allowed. Ticket amount is based on quantity declared");
 	        	}else {
@@ -660,11 +660,11 @@ public class FormChangeBean implements Serializable {/**
 	        	int issued = getColData().get(index).getPcs(); //issued qty
 	        	long newEnd = 0l;
 	        	int newAvailQty = 0;
-	        	if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
+	        	if(FormType.CT_20.getId()==formType || FormType.CT_5.getId()==formType) {
 	        		
 	        		int divider = 5;
-	        		if(FormType.CT_2.getId()==formType) {
-	        			divider = 2;
+	        		if(FormType.CT_20.getId()==formType) {
+	        			divider = 20;
 	        		}
 	        		
 	        		newAvailQty = available + issued;
@@ -836,7 +836,7 @@ public class FormChangeBean implements Serializable {/**
 		String val = "";
 		String valNum = num+"";
 		int len = valNum.length();
-		if(FormType.CT_2.getId()==formType || FormType.CT_5.getId()==formType) {
+		if(FormType.CT_20.getId()==formType || FormType.CT_5.getId()==formType) {
 			val = num+"";
 		}else if(FormType.AF_51.getId()==formType || FormType.AF_56.getId()==formType || FormType.AF_53.getId()==formType) {
 			

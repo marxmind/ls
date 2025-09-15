@@ -17,7 +17,8 @@ import lombok.ToString;
 @Builder
 @ToString
 public class MarketSummaryReport {
-
+	
+	private TenantBilling billing;
 	private int year;
 	private String location;
 	private String tenant;
@@ -40,6 +41,8 @@ public class MarketSummaryReport {
 	private double totalSurcharge;
 	private double totalInterest;
 	private double totalBill;
+	private int sms;
+	private String contactNo;
 	
 	private String style1;
 	private String style2;

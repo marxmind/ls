@@ -8,10 +8,10 @@ public class CharacterLibrary {
 	
 	public static void main(String[] args) {
 		
-		String uname = readCharacterEncode("marina");
-		String password = readCharacterEncode("marina");
-		String passcode = readCharacterEncode("1111");
-		String fullName = readCharacterEncode("MARINA ABAN");
+		String uname = readCharacterEncode("arnold");
+		String password = readCharacterEncode("9632");
+		String passcode = readCharacterEncode("9632");
+		String fullName = readCharacterEncode("ARNOLD BANDALAN");
 		
 		System.out.println("Decode:"+ readCharacterDecode("2349"));
 		

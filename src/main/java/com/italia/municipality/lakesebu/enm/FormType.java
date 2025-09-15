@@ -17,7 +17,7 @@ public enum FormType {
 	AF_54(6, "AF-54","Form 54"),
 	AF_56(7, "AF-56","Form 56"),
 	AF_56_I(8, "AF-56(I)","Form 56(I)"),
-	CT_2(9,"CT 2.00","Form 55(A) Cash Ticket 2"),
+	CT_20(9,"CT 20.00","Form 55(A) Cash Ticket 20"),
 	CT_5(10,"CT 5.00","Form 55(A) Cash Ticket 5"),
 	AF_51_C(11, "AF-51 C","Form 51-C"),
 	AF_57(12,"AF-57","Form 57"),

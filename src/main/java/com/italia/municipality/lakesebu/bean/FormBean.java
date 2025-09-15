@@ -161,7 +161,7 @@ public class FormBean implements Serializable{
 		
 		seriesForm = new ArrayList<Form11Report>();//Collections.synchronizedList(new ArrayList<Form11Report>());
 		for(FormType form : FormType.values()) {
-			if(FormType.CT_2.getId()==form.getId() || FormType.CT_5.getId()==form.getId()) {
+			if(FormType.CT_20.getId()==form.getId() || FormType.CT_5.getId()==form.getId()) {
 				//do nothing for now
 			}else {	
 			//sql = " AND frm.formstatus="+ FormStatus.HANDED.getId() +" AND frm.formtypelog="+form.getId();
@@ -770,7 +770,7 @@ public class FormBean implements Serializable{
 		
 		
 		//change the value if the form is Cash ticket
-				if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
+				if(FormType.CT_20.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 					
 					rpt.setF1(FormType.nameId(info.getFormType()));
 					//String allIssued = info.getBeginningNo()==0? "All Issued" : "";
@@ -991,7 +991,7 @@ public class FormBean implements Serializable{
 		rpt.setF14(info.getReceivedDate()==null? "" : info.getReceivedDate());
 		
 		//change the value if the form is Cash ticket
-		if(FormType.CT_2.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
+		if(FormType.CT_20.getId()==info.getFormType() || FormType.CT_5.getId()==info.getFormType()) {
 			if(info.getAmount()>0) {
 				int logmonth = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[1]);
 				int logDay = Integer.valueOf(info.getIssuedForm().getIssuedDate().split("-")[2]);
@@ -1228,7 +1228,7 @@ public class FormBean implements Serializable{
 		}
 		
 		//change the value if the form is Cash ticket
-		if(FormType.CT_2.getId()==isform.getFormType() || FormType.CT_5.getId()==isform.getFormType()) {
+		if(FormType.CT_20.getId()==isform.getFormType() || FormType.CT_5.getId()==isform.getFormType()) {
 			
 			int logmonth = Integer.valueOf(isform.getIssuedDate().split("-")[1]);
 			int logDay = Integer.valueOf(isform.getIssuedDate().split("-")[2]);
@@ -1237,8 +1237,8 @@ public class FormBean implements Serializable{
 						rpt.setF1(FormType.val(isform.getFormType()).getName() + " " + FormType.val(isform.getFormType()).getDescription());
 						
 						double amount = 0d;
-						if(FormType.CT_2.getId()==isform.getFormType()) {
-							amount = isform.getPcs() * 2;
+						if(FormType.CT_20.getId()==isform.getFormType()) {
+							amount = isform.getPcs() * 20;
 						}else if(FormType.CT_5.getId()==isform.getFormType()) {
 							amount = isform.getPcs() * 5;
 						}
@@ -1323,9 +1323,9 @@ public class FormBean implements Serializable{
 		}else {
 			int qty = st.getQuantity();
 			
-			if(FormType.CT_2.getId()==st.getFormType()) {
+			if(FormType.CT_20.getId()==st.getFormType()) {
 				
-				qty *= 2;
+				qty *= 20;
 				
 			}else if(FormType.CT_5.getId()==st.getFormType()) {
 				
@@ -1354,9 +1354,9 @@ public class FormBean implements Serializable{
 			
 			int qty = getQuantity();
 			
-			if(FormType.CT_2.getId()==getFormTypeId()) {
+			if(FormType.CT_20.getId()==getFormTypeId()) {
 				
-				qty *= 2;
+				qty *= 20;
 				
 			}else if(FormType.CT_5.getId()==getFormTypeId()) {
 				
@@ -1413,8 +1413,8 @@ public class FormBean implements Serializable{
 			isOk = false;
 			Application.addMessage(3, "Error", "Please provide Quantity");
 			
-			if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_2.getId()==getFormTypeId()) {
-				if(getQuantity()==2000 || getQuantity()==4000 || getQuantity()==6000 || getQuantity()==8000 || getQuantity()==10000 || getQuantity()==12000) {
+			if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+				if(getQuantity()==2000 || getQuantity()==4000 || getQuantity()==6000 || getQuantity()==8000 || getQuantity()==10000 || getQuantity()==12000 || getQuantity()==40000) {
 					
 				}else {
 					isOk = false;

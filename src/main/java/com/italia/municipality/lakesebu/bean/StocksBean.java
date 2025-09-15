@@ -193,8 +193,8 @@ public class StocksBean implements Serializable{
 				
 				qty = 0;
 				
-				if(FormType.CT_2.getId()==info.getFormType()) {
-					qty = beg / 2;
+				if(FormType.CT_20.getId()==info.getFormType()) {
+					qty = beg / 20;
 				}else if(FormType.CT_5.getId()==info.getFormType()) {
 					qty = beg / 5;
 				} 
@@ -230,8 +230,8 @@ public class StocksBean implements Serializable{
 				
 				long qty = 0;
 				
-				if(FormType.CT_2.getId()==isfrm.getFormType()) {
-					qty = beg / 2;
+				if(FormType.CT_20.getId()==isfrm.getFormType()) {
+					qty = beg / 20;
 				}else if(FormType.CT_5.getId()==isfrm.getFormType()) {
 					qty = beg / 5;
 				} 
@@ -331,7 +331,7 @@ public class StocksBean implements Serializable{
 		
 		if(isOk) {
 		
-		if(FormType.CT_2.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
+		if(FormType.CT_20.getId()==getFormTypeId() || FormType.CT_5.getId()==getFormTypeId()) {
 			
 			if(getNumberOfStab()>1) {
 				 
@@ -853,8 +853,8 @@ public class StocksBean implements Serializable{
 					double totalCost =0d;
 					if(FormType.CT_5.getId()==s.getFormType()) {
 						totalCost = s.getQuantity() * 5;
-					}else if(FormType.CT_2.getId()==s.getFormType()) {
-						totalCost = s.getQuantity() * 2;
+					}else if(FormType.CT_20.getId()==s.getFormType()) {
+						totalCost = s.getQuantity() * 20;
 					}	
 					
 					Requisition.builder()
@@ -905,8 +905,8 @@ public class StocksBean implements Serializable{
 							.build();
 							 
 							long amount = 0l;
-							if(FormType.CT_2.getId()==s.getFormType()) { 
-								amount = 2*2000;
+							if(FormType.CT_20.getId()==s.getFormType()) { 
+								amount = 20*2000;
 								form.setBeginningNo(amount);
 								form.setEndingNo(amount);
 							}else if(FormType.CT_5.getId()==s.getFormType()) {
@@ -1071,8 +1071,8 @@ public class StocksBean implements Serializable{
 		double totalCost =0d;
 		if(FormType.CT_5.getId()==stock.getFormType()) {
 			totalCost = stock.getQuantity() * 5;
-		}else if(FormType.CT_2.getId()==stock.getFormType()) {
-			totalCost = stock.getQuantity() * 2;
+		}else if(FormType.CT_20.getId()==stock.getFormType()) {
+			totalCost = stock.getQuantity() * 20;
 		}	
 		
 		Requisition res = req;
@@ -1089,8 +1089,8 @@ public class StocksBean implements Serializable{
 		iss.setStabNo(stock.getStabNo());
 		
 		long amount = 0l;
-		if(FormType.CT_2.getId()==res.getFormType()) { 
-			amount = 2*res.getQuantity();
+		if(FormType.CT_20.getId()==res.getFormType()) { 
+			amount = 20*res.getQuantity();
 			iss.setBeginningNo(amount);
 			iss.setEndingNo(4000);
 		}else if(FormType.CT_5.getId()==res.getFormType()) {
